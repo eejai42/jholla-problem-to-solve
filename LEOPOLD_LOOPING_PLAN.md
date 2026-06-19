@@ -50,8 +50,32 @@ derivation is in `bootstrap/derivation-spec.md`; the dependency tree bottoms out
 - Postgres builds; keystone verified: `pred-a,pred-g = TRUE`; `pred-b..f = FALSE`.
 - **Commits:** `rule: keystone IsClinicallyActionable now derived from observations`; `state: Loop 0 — Postgres solve-by-inference verified`.
 
-### ▶ Loop 1 — Intake app skeleton (NEXT)
-- Scaffold Express + Vite per `effortless-setup-postgres` REFERENCE Step 7 (`start.sh`, odd/even port pair).
+### ▶ Loop 0.5 — Test Harness First (the red contract for the whole app) (NEXT)
+**Inserted before Loop 1 deliberately: red-green test-first.** Before the intake app surfaces a
+single prediction, the admin app ships with a **witnessed inference test harness** that asserts the
+*entire* DAG — every derived node, from raw observations up to the keystone — for all seven oracle
+patients. Each test carries three things:
+1. **Raw test facts** — the leaf observations the node bottoms out in (allele freq, ZStat inputs,
+   replication signs/p-values/ancestry, permutation effect sizes, calibration coverage, cryptic flag).
+2. **Witnessed line of reasoning** — the expert-verifiable derivation trace from
+   `bootstrap/derivation-spec.md` §3 (e.g. "conf 0.758 ≥ 0.7 ∧ falsifiable ∧ ¬spurious ⇒ node").
+3. **Expected derived value** — the ground truth captured live from `vw_*` (committed as the oracle).
+
+These tests are **RED on arrival** because the app's prediction surface (the `/api/*` endpoints + the
+panel the UI renders) does not exist yet. They are **load-bearing**: Loops 1–5 turn them green by
+actually building the app surface that serves each node. A node is "done in the UI" only when its
+witnessed test passes against the real running server — not when it merely exists in Postgres.
+- Scaffold the Express + Vite admin app skeleton now (server reads `vw_*`, writes base tables; Vite SPA).
+- Harness lives **inside** the app (`admin-app/tests/`): every DAG node × 7 patients, levels L0→L7,
+  each with its raw facts + reasoning witness + expected value.
+- The harness hits the app's own API (not the DB directly) so it proves the *app* surfaces the
+  inference faithfully — that's what makes it load-bearing on the app, not just on Postgres.
+- **Commit (rule):** none — "app-only loop, test-harness-first, no rule change".
+- **Commit (state):** "state: Loop 0.5 — red witnessed-inference harness is the app's contract".
+
+### ▶ Loop 1 — Intake app skeleton
+- App skeleton already scaffolded in Loop 0.5; this loop **turns the keystone-level red tests green**
+  by wiring the cohort + prediction-panel endpoints the harness asserts against.
 - Read-only cohort list from `vw_individual_predictions` + a patient-detail **full prediction panel**:
   keystone boolean, `PatientStratificationTier`, `PredictedValue`, `CalibratedUncertainty`, and the four
   gate booleans with pass/fail styling. No editing yet.
