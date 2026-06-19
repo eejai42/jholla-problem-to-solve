@@ -595,6 +595,8 @@ SELECT
   t.sort_order,                                                                 -- Ordering within the plan.
   calc_leopold_loops_name(t.leopold_loop_id) AS name,                           -- Display label.
   calc_leopold_loops_completedness(t.leopold_loop_id) AS completedness,         -- Normalized status used by the derived plan to decide placement.
-  calc_leopold_loops_is_in_current_plan(t.leopold_loop_id) AS is_in_current_plan-- TRUE for the current "next" loop and anything still planned/backlog (not done).
+  calc_leopold_loops_is_in_current_plan(t.leopold_loop_id) AS is_in_current_plan,-- TRUE for the current "next" loop and anything still planned/backlog (not done).
+  t.status_badge,                                                               -- Display badge for the derived plan, e.g. [DONE] / [NEXT] / [PLANNED] / [BACKLOG].
+  t.status_line                                                                 -- Extra plan line: commit messages for done/next loops; empty otherwise.
 FROM leopold_loops t;
 

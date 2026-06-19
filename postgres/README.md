@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-19 21:02:15 UTC
+**Timestamp:** 2026-06-19 21:12:16 UTC
 
 ## Parsing Rulebook
 
@@ -36,9 +36,9 @@ Found **28** tables in rulebook
   - **OpenQuestions** (6 fields, 3 records)
   - **NonGoals** (4 fields, 5 records)
   - **GlossaryTerms** (4 fields, 6 records)
-  - **LeopoldLoops** (11 fields, 10 records)
+  - **LeopoldLoops** (13 fields, 10 records)
 
-Generated **28** table definitions with **159** raw fields (mode=check-add)
+Generated **28** table definitions with **161** raw fields (mode=check-add)
 Generated **218** calculation functions
 Generated **28** views
 Enabled RLS on **28** tables

@@ -35,6 +35,14 @@
         "formula": "={{DiseaseLabel}}"
       },
       {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical path to this AutoimmuneDisease page: /diseases/<slug-or-id>.",
+        "formula": "=\"/diseases/\" & {{AutoimmuneDiseaseId}}"
+      },
+      {
         "name": "CountOfDiseaseStages",
         "datatype": "integer",
         "type": "aggregation",
@@ -157,6 +165,25 @@
         "formula": "={{AutoimmuneDiseaseDiseaseLabel}} & \" — \" & {{StageLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: AutoimmuneDiseases.RelativePath via AutoimmuneDisease — used to chain this entity's path under its parent.",
+        "RelatedTo": "AutoimmuneDiseases",
+        "LookupField": "RelativePath",
+        "ViaField": "AutoimmuneDisease",
+        "formula": "=INDEX(AutoimmuneDiseases!{{RelativePath}}, MATCH({{AutoimmuneDisease}}, AutoimmuneDiseases!{{AutoimmuneDiseaseId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this DiseaseStage page, chained under its AutoimmuneDisease parent.",
+        "formula": "={{ParentPath}} & \"/stages/\" & {{DiseaseStageId}}"
+      },
+      {
         "name": "AutoimmuneDiseaseDiseaseLabel",
         "datatype": "string",
         "type": "calculated",
@@ -238,6 +265,14 @@
         "formula": "={{TissueLabel}}"
       },
       {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical path to this Tissue page: /tissues/<slug-or-id>.",
+        "formula": "=\"/tissues/\" & {{TissueId}}"
+      },
+      {
         "name": "CountOfOmicsAssays",
         "datatype": "integer",
         "type": "aggregation",
@@ -308,6 +343,14 @@
         "nullable": true,
         "Description": "Display label for the omics modality.",
         "formula": "={{ModalityLabel}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical path to this OmicsModalitie page: /omics-modalities/<slug-or-id>.",
+        "formula": "=\"/omics-modalities/\" & {{OmicsModalityId}}"
       },
       {
         "name": "CountOfOmicsAssays",
@@ -409,6 +452,14 @@
         "formula": "={{NodeLabel}}"
       },
       {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical path to this FederatedDataset page: /datasets/<slug-or-id>.",
+        "formula": "=\"/datasets/\" & {{FederatedDatasetId}}"
+      },
+      {
         "name": "CountOfIndividuals",
         "datatype": "integer",
         "type": "aggregation",
@@ -499,6 +550,14 @@
         "nullable": true,
         "Description": "Display label for variant type.",
         "formula": "={{TypeLabel}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical path to this VariantType page: /variant-types/<slug-or-id>.",
+        "formula": "=\"/variant-types/\" & {{VariantTypeId}}"
       },
       {
         "name": "CountOfGenomicVariants",
@@ -618,6 +677,22 @@
         "nullable": true,
         "Description": "Display name for the individual.",
         "formula": "={{GivenName}} & \" \" & {{FamilyName}}"
+      },
+      {
+        "name": "Slug",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "URL slug for this case, family-given kebab (e.g. reyes-ana). Used in RelativePath.",
+        "formula": "=SUBSTITUTE(LOWER({{FamilyName}} & \"-\" & {{GivenName}}), \" \", \"-\")"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical path to this Individual page: /intake/new-patient/<slug-or-id>.",
+        "formula": "=\"/intake/new-patient/\" & {{Slug}}"
       },
       {
         "name": "FederatedDatasetNodeLabel",
@@ -914,6 +989,25 @@
         "formula": "={{VariantLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this GenomicVariant page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/variants/\" & {{GenomicVariantId}}"
+      },
+      {
         "name": "VariantTypeLabel",
         "datatype": "string",
         "type": "calculated",
@@ -1086,6 +1180,25 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{AssayLabel}}"
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this OmicsAssay page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/assays/\" & {{OmicsAssayId}}"
       },
       {
         "name": "ModalityLabel",
@@ -1446,6 +1559,25 @@
         "formula": "={{EvidenceLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "RelatedTo": "CausalMechanisms",
+        "LookupField": "RelativePath",
+        "ViaField": "CausalMechanism",
+        "formula": "=INDEX(CausalMechanisms!{{RelativePath}}, MATCH({{CausalMechanism}}, CausalMechanisms!{{CausalMechanismId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this EvidenceItem page, chained under its CausalMechanism parent.",
+        "formula": "={{ParentPath}} & \"/evidence/\" & {{EvidenceItemId}}"
+      },
+      {
         "name": "AssayIsHighQuality",
         "datatype": "boolean",
         "type": "lookup",
@@ -1796,6 +1928,25 @@
         "formula": "={{ReplicationLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "RelatedTo": "CausalMechanisms",
+        "LookupField": "RelativePath",
+        "ViaField": "CausalMechanism",
+        "formula": "=INDEX(CausalMechanisms!{{RelativePath}}, MATCH({{CausalMechanism}}, CausalMechanisms!{{CausalMechanismId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this CohortReplication page, chained under its CausalMechanism parent.",
+        "formula": "={{ParentPath}} & \"/replications/\" & {{CohortReplicationId}}"
+      },
+      {
         "name": "ReplicatedAtNominalSig",
         "datatype": "boolean",
         "type": "calculated",
@@ -2075,6 +2226,25 @@
         "formula": "={{ControlLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "RelatedTo": "CausalMechanisms",
+        "LookupField": "RelativePath",
+        "ViaField": "CausalMechanism",
+        "formula": "=INDEX(CausalMechanisms!{{RelativePath}}, MATCH({{CausalMechanism}}, CausalMechanisms!{{CausalMechanismId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this NegativeControlTest page, chained under its CausalMechanism parent.",
+        "formula": "={{ParentPath}} & \"/neg-controls/\" & {{NegativeControlTestId}}"
+      },
+      {
         "name": "IsSurvived",
         "datatype": "boolean",
         "type": "calculated",
@@ -2252,6 +2422,25 @@
         "formula": "={{ExposureLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this EnvironmentalExposure page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/exposures/\" & {{EnvironmentalExposureId}}"
+      },
+      {
         "name": "IndividualAncestryLabel",
         "datatype": "string",
         "type": "calculated",
@@ -2345,6 +2534,25 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{TreatmentLabel}}"
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this Treatment page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/treatments/\" & {{TreatmentId}}"
       },
       {
         "name": "AutoimmuneDiseaseLabel",
@@ -2451,6 +2659,25 @@
         "formula": "={{PhenotypeLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this ClinicalPhenotype page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/phenotypes/\" & {{ClinicalPhenotypeId}}"
+      },
+      {
         "name": "DiseaseStageLabel",
         "datatype": "string",
         "type": "calculated",
@@ -2548,6 +2775,25 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{MechanismLabel}}"
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this CausalMechanism page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/mechanisms/\" & {{CausalMechanismId}}"
       },
       {
         "name": "IndividualAncestryLabel",
@@ -2853,6 +3099,25 @@
         "formula": "={{InteractionLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this EpistaticInteraction page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/epistasis/\" & {{EpistaticInteractionId}}"
+      },
+      {
         "name": "IsHighOrderEpistasis",
         "datatype": "boolean",
         "type": "calculated",
@@ -2934,6 +3199,25 @@
         "formula": "={{TrajectoryLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this CounterfactualTrajectorie page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/trajectories/\" & {{CounterfactualTrajectoryId}}"
+      },
+      {
         "name": "AutoimmuneDiseaseLabel",
         "datatype": "string",
         "type": "calculated",
@@ -3007,6 +3291,25 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{PredictionLabel}}"
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "RelatedTo": "Individuals",
+        "LookupField": "RelativePath",
+        "ViaField": "Individual",
+        "formula": "=INDEX(Individuals!{{RelativePath}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this IndividualPrediction page, chained under its Individual parent.",
+        "formula": "={{ParentPath}} & \"/predictions/\" & {{IndividualPredictionId}}"
       },
       {
         "name": "IndividualAncestryLabel",
@@ -3290,6 +3593,25 @@
         "nullable": false,
         "Description": "Display name.",
         "formula": "={{BinLabel}}"
+      },
+      {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: IndividualPredictions.RelativePath via IndividualPrediction — used to chain this entity's path under its parent.",
+        "RelatedTo": "IndividualPredictions",
+        "LookupField": "RelativePath",
+        "ViaField": "IndividualPrediction",
+        "formula": "=INDEX(IndividualPredictions!{{RelativePath}}, MATCH({{IndividualPrediction}}, IndividualPredictions!{{IndividualPredictionId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this CalibrationBin page, chained under its IndividualPrediction parent.",
+        "formula": "={{ParentPath}} & \"/bins/\" & {{CalibrationBinId}}"
       },
       {
         "name": "BinAbsError",
@@ -3645,6 +3967,25 @@
         "formula": "={{TargetLabel}}"
       },
       {
+        "name": "ParentPath",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "RelatedTo": "CausalMechanisms",
+        "LookupField": "RelativePath",
+        "ViaField": "CausalMechanism",
+        "formula": "=INDEX(CausalMechanisms!{{RelativePath}}, MATCH({{CausalMechanism}}, CausalMechanisms!{{CausalMechanismId}}, 0))"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this InterventionTarget page, chained under its CausalMechanism parent.",
+        "formula": "={{ParentPath}} & \"/targets/\" & {{InterventionTargetId}}"
+      },
+      {
         "name": "CausalMechanismLabel",
         "datatype": "string",
         "type": "calculated",
@@ -3758,6 +4099,14 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{Statement}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this Axioms entry: /admin/axioms/<id>.",
+        "formula": "=\"/admin/axioms/\" & {{AxiomId}}"
       }
     ],
     "data": [
@@ -3856,6 +4205,14 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{Claim}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this TestsForSuccess entry: /admin/tests-for-success/<id>.",
+        "formula": "=\"/admin/tests-for-success/\" & {{TestForSuccessId}}"
       }
     ],
     "data": [
@@ -3941,6 +4298,14 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{Title}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this Features entry: /admin/features/<id>.",
+        "formula": "=\"/admin/features/\" & {{FeatureId}}"
       }
     ],
     "data": [
@@ -4027,6 +4392,14 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{Question}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this OpenQuestions entry: /admin/open-questions/<id>.",
+        "formula": "=\"/admin/open-questions/\" & {{OpenQuestionId}}"
       }
     ],
     "data": [
@@ -4084,6 +4457,14 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{Statement}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this NonGoals entry: /admin/non-goals/<id>.",
+        "formula": "=\"/admin/non-goals/\" & {{NonGoalId}}"
       }
     ],
     "data": [
@@ -4145,6 +4526,14 @@
         "nullable": true,
         "Description": "Display label.",
         "formula": "={{Term}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this GlossaryTerms entry: /admin/glossary/<id>.",
+        "formula": "=\"/admin/glossary/\" & {{GlossaryTermId}}"
       }
     ],
     "data": [
@@ -4248,6 +4637,14 @@
         "formula": "=CONCATENATE(\"Loop \", {{LoopNumber}}, \" — \", {{Title}})"
       },
       {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this LeopoldLoops entry: /admin/leopold-loops/<id>.",
+        "formula": "=\"/admin/leopold-loops/\" & {{LeopoldLoopId}}"
+      },
+      {
         "name": "Completedness",
         "datatype": "string",
         "type": "calculated",
@@ -4264,32 +4661,18 @@
         "formula": "=IF({{Status}} = \"done\", FALSE, TRUE)"
       },
       {
-        "name": "IsDone",
-        "datatype": "boolean",
+        "name": "StatusBadge",
+        "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
+        "Description": "Display badge for the derived plan, e.g. [DONE] / [NEXT] / [PLANNED] / [BACKLOG]."
       },
       {
-        "name": "IsNext",
-        "datatype": "boolean",
+        "name": "StatusLine",
+        "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
-      },
-      {
-        "name": "IsPlanned",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
-      },
-      {
-        "name": "IsBacklog",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": true,
-        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
+        "Description": "Extra plan line: commit messages for done/next loops; empty otherwise."
       }
     ],
     "data": [
@@ -4297,15 +4680,13 @@
         "LeopoldLoopId": "loop-0",
         "LoopNumber": "0",
         "Title": "Solve-by-inference rulebook",
-        "Goal": "Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations -> keystone.",
+        "Goal": "Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations to keystone.",
         "Status": "done",
         "RuleCommitMsg": "rule: keystone IsClinicallyActionable now derived from observations",
-        "StateCommitMsg": "state: Loop 0 — Postgres solve-by-inference verified",
+        "StateCommitMsg": "state: Loop 0 - Postgres solve-by-inference verified",
         "SortOrder": 0,
-        "IsDone": true,
-        "IsNext": false,
-        "IsPlanned": false,
-        "IsBacklog": false
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `rule: keystone IsClinicallyActionable now derived from observations`; state `state: Loop 0 - Postgres solve-by-inference verified`"
       },
       {
         "LeopoldLoopId": "loop-0-5",
@@ -4313,13 +4694,11 @@
         "Title": "Test Harness First (the red contract)",
         "Goal": "Ship a witnessed inference harness asserting the entire DAG x 7 patients via the app API; red on arrival, load-bearing.",
         "Status": "next",
-        "RuleCommitMsg": "none — app-only loop, test-harness-first, no rule change",
-        "StateCommitMsg": "state: Loop 0.5 — red witnessed-inference harness is the app's contract",
+        "RuleCommitMsg": "none - app-only loop, test-harness-first, no rule change",
+        "StateCommitMsg": "state: Loop 0.5 - red witnessed-inference harness is the app's contract",
         "SortOrder": 1,
-        "IsDone": false,
-        "IsNext": true,
-        "IsPlanned": false,
-        "IsBacklog": false
+        "StatusBadge": "[NEXT]",
+        "StatusLine": " - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app's contract`"
       },
       {
         "LeopoldLoopId": "loop-1",
@@ -4327,13 +4706,11 @@
         "Title": "Intake app skeleton",
         "Goal": "Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*.",
         "Status": "planned",
-        "RuleCommitMsg": "none — app-only loop, no rule change",
-        "StateCommitMsg": "state: Loop 1 — read-only intake app surfaces the keystone",
+        "RuleCommitMsg": "none - app-only loop, no rule change",
+        "StateCommitMsg": "state: Loop 1 - read-only intake app surfaces the keystone",
         "SortOrder": 2,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": true,
-        "IsBacklog": false
+        "StatusBadge": "[PLANNED]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-2",
@@ -4342,12 +4719,10 @@
         "Goal": "Form writes a new Individual + child observation rows to base tables, then re-reads the derived panel. The knob-editing payoff.",
         "Status": "planned",
         "RuleCommitMsg": "rule (if any) for new intake field",
-        "StateCommitMsg": "state: Loop 2 — facts-in -> derived diagnosis works end to end",
+        "StateCommitMsg": "state: Loop 2 - facts-in to derived diagnosis works end to end",
         "SortOrder": 3,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": true,
-        "IsBacklog": false
+        "StatusBadge": "[PLANNED]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-3",
@@ -4356,12 +4731,10 @@
         "Goal": "Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.",
         "Status": "planned",
         "RuleCommitMsg": "rule: install explainer-dag",
-        "StateCommitMsg": "state: Loop 3 — gate explainability",
+        "StateCommitMsg": "state: Loop 3 - gate explainability",
         "SortOrder": 4,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": true,
-        "IsBacklog": false
+        "StatusBadge": "[PLANNED]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-4",
@@ -4370,12 +4743,10 @@
         "Goal": "Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.",
         "Status": "planned",
         "RuleCommitMsg": "rule: severity prediction derived from clinical-activity evidence",
-        "StateCommitMsg": "state: Loop 4 — severity prediction",
+        "StateCommitMsg": "state: Loop 4 - severity prediction",
         "SortOrder": 5,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": true,
-        "IsBacklog": false
+        "StatusBadge": "[PLANNED]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-5",
@@ -4384,12 +4755,10 @@
         "Goal": "Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.",
         "Status": "planned",
         "RuleCommitMsg": "rule: treatment-response prediction",
-        "StateCommitMsg": "state: Loop 5 — treatment-response prediction",
+        "StateCommitMsg": "state: Loop 5 - treatment-response prediction",
         "SortOrder": 6,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": true,
-        "IsBacklog": false
+        "StatusBadge": "[PLANNED]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-llm-intake",
@@ -4398,12 +4767,10 @@
         "Goal": "Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.",
         "Status": "backlog",
         "RuleCommitMsg": "rule (if any) for provenance fields",
-        "StateCommitMsg": "state: Loop 6 — LLM intake clerk, everything-is-a-knob",
+        "StateCommitMsg": "state: Loop 6 - LLM intake clerk, everything-is-a-knob",
         "SortOrder": 7,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": false,
-        "IsBacklog": true
+        "StatusBadge": "[BACKLOG]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-adverse",
@@ -4414,10 +4781,8 @@
         "RuleCommitMsg": "",
         "StateCommitMsg": "",
         "SortOrder": 8,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": false,
-        "IsBacklog": true
+        "StatusBadge": "[BACKLOG]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-equity",
@@ -4428,10 +4793,8 @@
         "RuleCommitMsg": "",
         "StateCommitMsg": "",
         "SortOrder": 9,
-        "IsDone": false,
-        "IsNext": false,
-        "IsPlanned": false,
-        "IsBacklog": true
+        "StatusBadge": "[BACKLOG]",
+        "StatusLine": ""
       }
     ]
   },
@@ -4444,5 +4807,795 @@
       "export_mode": "rulebook_first",
       "vocabulary_coverage": "all domain terms in descriptions, field names, and data values"
     }
+  },
+  "RoutingAndNavigation": {
+    "Description": "Role-based navigation: open-ended parent->child->leaf routes with computed paths. Each route has a template (/intake/case/:caseId); entities carry RelativePath that substitutes their own id/slug. Roles: admin, intake-clinician, diagnosing-doctor, external-llm.",
+    "schema": [
+      {
+        "name": "RoutingAndNavigationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK for this nav node, e.g. nav-intake-case."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Slug of the display name.",
+        "formula": "=SUBSTITUTE(LOWER({{DisplayName}}), \" \", \"-\")"
+      },
+      {
+        "name": "DisplayName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable nav label."
+      },
+      {
+        "name": "Route",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "URL template, role/workflow-prefixed with :params, e.g. /intake/case/:caseId."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What this route shows."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Display order within its nav level."
+      },
+      {
+        "name": "ParentRouteKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "RouteKey of the parent nav node (empty for top-level). Self-referential recursion."
+      },
+      {
+        "name": "RouteKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Stable dot-delimited slug, e.g. diagnosis.case.mechanism."
+      },
+      {
+        "name": "NavLevel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Hierarchy level: top / sub / leaf."
+      },
+      {
+        "name": "RoleVisibility",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "CSV of roles that can see this nav item: admin,intake-clinician,diagnosing-doctor,external-llm."
+      },
+      {
+        "name": "PrimaryTable",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Backing table name."
+      },
+      {
+        "name": "PrimaryView",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Backing vw_* view."
+      },
+      {
+        "name": "IconHint",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Optional icon name for the UI."
+      },
+      {
+        "name": "IsDynamic",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "True if the route template contains :params."
+      },
+      {
+        "name": "PinToTop",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Pin to the top of its nav level, before SortOrder."
+      },
+      {
+        "name": "AdminCRUD",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Admin CRUD grant for this route (contains C/R/U/D). Empty = no access."
+      },
+      {
+        "name": "IntakeClinicianCRUD",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "IntakeClinician CRUD grant for this route (contains C/R/U/D). Empty = no access."
+      },
+      {
+        "name": "DiagnosingDoctorCRUD",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "DiagnosingDoctor CRUD grant for this route (contains C/R/U/D). Empty = no access."
+      },
+      {
+        "name": "ExternalLlmCRUD",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "ExternalLlm CRUD grant for this route (contains C/R/U/D). Empty = no access."
+      },
+      {
+        "name": "AdminCanCreate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: AdminCRUD contains 'C'.",
+        "formula": "=IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"C\",{{AdminCRUD}}))))"
+      },
+      {
+        "name": "AdminCanRead",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: AdminCRUD contains 'R'.",
+        "formula": "=IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"R\",{{AdminCRUD}}))))"
+      },
+      {
+        "name": "AdminCanUpdate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: AdminCRUD contains 'U'.",
+        "formula": "=IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"U\",{{AdminCRUD}}))))"
+      },
+      {
+        "name": "AdminCanDelete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: AdminCRUD contains 'D'.",
+        "formula": "=IF({{AdminCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"D\",{{AdminCRUD}}))))"
+      },
+      {
+        "name": "IntakeClinicianCanCreate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: IntakeClinicianCRUD contains 'C'.",
+        "formula": "=IF({{IntakeClinicianCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"C\",{{IntakeClinicianCRUD}}))))"
+      },
+      {
+        "name": "IntakeClinicianCanRead",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: IntakeClinicianCRUD contains 'R'.",
+        "formula": "=IF({{IntakeClinicianCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"R\",{{IntakeClinicianCRUD}}))))"
+      },
+      {
+        "name": "IntakeClinicianCanUpdate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: IntakeClinicianCRUD contains 'U'.",
+        "formula": "=IF({{IntakeClinicianCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"U\",{{IntakeClinicianCRUD}}))))"
+      },
+      {
+        "name": "IntakeClinicianCanDelete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: IntakeClinicianCRUD contains 'D'.",
+        "formula": "=IF({{IntakeClinicianCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"D\",{{IntakeClinicianCRUD}}))))"
+      },
+      {
+        "name": "DiagnosingDoctorCanCreate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: DiagnosingDoctorCRUD contains 'C'.",
+        "formula": "=IF({{DiagnosingDoctorCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"C\",{{DiagnosingDoctorCRUD}}))))"
+      },
+      {
+        "name": "DiagnosingDoctorCanRead",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: DiagnosingDoctorCRUD contains 'R'.",
+        "formula": "=IF({{DiagnosingDoctorCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"R\",{{DiagnosingDoctorCRUD}}))))"
+      },
+      {
+        "name": "DiagnosingDoctorCanUpdate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: DiagnosingDoctorCRUD contains 'U'.",
+        "formula": "=IF({{DiagnosingDoctorCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"U\",{{DiagnosingDoctorCRUD}}))))"
+      },
+      {
+        "name": "DiagnosingDoctorCanDelete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: DiagnosingDoctorCRUD contains 'D'.",
+        "formula": "=IF({{DiagnosingDoctorCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"D\",{{DiagnosingDoctorCRUD}}))))"
+      },
+      {
+        "name": "ExternalLlmCanCreate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: ExternalLlmCRUD contains 'C'.",
+        "formula": "=IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"C\",{{ExternalLlmCRUD}}))))"
+      },
+      {
+        "name": "ExternalLlmCanRead",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: ExternalLlmCRUD contains 'R'.",
+        "formula": "=IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"R\",{{ExternalLlmCRUD}}))))"
+      },
+      {
+        "name": "ExternalLlmCanUpdate",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: ExternalLlmCRUD contains 'U'.",
+        "formula": "=IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"U\",{{ExternalLlmCRUD}}))))"
+      },
+      {
+        "name": "ExternalLlmCanDelete",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: ExternalLlmCRUD contains 'D'.",
+        "formula": "=IF({{ExternalLlmCRUD}}=BLANK(),BLANK(),NOT(ISERROR(FIND(\"D\",{{ExternalLlmCRUD}}))))"
+      },
+      {
+        "name": "Depth",
+        "datatype": "integer",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Nesting depth: 0 = top-level; otherwise number of dot-segments in RouteKey.",
+        "formula": "=IF({{ParentRouteKey}}=BLANK(), 0, LEN({{RouteKey}}) - LEN(SUBSTITUTE({{RouteKey}}, \".\", \"\")))"
+      },
+      {
+        "name": "FullPath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Canonical role-agnostic URL path (equals Route).",
+        "formula": "={{Route}}"
+      },
+      {
+        "name": "HandlerBaseName",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Space-delimited form of RouteKey; client PascalCases + prefixes role to derive a handler component.",
+        "formula": "=SUBSTITUTE(SUBSTITUTE({{RouteKey}}, \".\", \" \"), \"-\", \" \")"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this routing node's own admin page.",
+        "formula": "=\"/admin/routing/\" & {{RoutingAndNavigationId}}"
+      },
+      {
+        "name": "CreatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when first inserted."
+      },
+      {
+        "name": "CreatedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: owner who created it."
+      },
+      {
+        "name": "ModifiedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when last written."
+      },
+      {
+        "name": "ModifiedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: who last wrote it."
+      },
+      {
+        "name": "ModifiedByModel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: AI model credited on last save, if any."
+      }
+    ],
+    "data": [
+      {
+        "RoutingAndNavigationId": "nav-intake",
+        "DisplayName": "Intake",
+        "Route": "/intake",
+        "Description": "Clinician intake workspace — bring a new patient case in.",
+        "SortOrder": 10,
+        "ParentRouteKey": "",
+        "RouteKey": "intake",
+        "NavLevel": "top",
+        "RoleVisibility": "admin,intake-clinician",
+        "IsDynamic": false,
+        "PinToTop": true,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "CRU",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "Individuals",
+        "PrimaryView": "vw_individuals",
+        "IconHint": "clipboard-plus"
+      },
+      {
+        "RoutingAndNavigationId": "nav-intake-new",
+        "DisplayName": "New Patient",
+        "Route": "/intake/new-patient/:caseId",
+        "Description": "Open or start a case by slug, e.g. /intake/new-patient/reyes-ana.",
+        "SortOrder": 11,
+        "ParentRouteKey": "intake",
+        "RouteKey": "intake.new-patient",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin,intake-clinician",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "CRU",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "Individuals",
+        "PrimaryView": "vw_individuals",
+        "IconHint": "user-plus"
+      },
+      {
+        "RoutingAndNavigationId": "nav-intake-observations",
+        "DisplayName": "Observations",
+        "Route": "/intake/new-patient/:caseId/observations",
+        "Description": "Raw presenting facts: ancestry, age, federated node, cryptic-relatedness flag.",
+        "SortOrder": 12,
+        "ParentRouteKey": "intake.new-patient",
+        "RouteKey": "intake.new-patient.observations",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,intake-clinician",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "CRU",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "Individuals",
+        "PrimaryView": "vw_individuals",
+        "IconHint": "stethoscope"
+      },
+      {
+        "RoutingAndNavigationId": "nav-intake-variants",
+        "DisplayName": "Variants",
+        "Route": "/intake/new-patient/:caseId/variants",
+        "Description": "Genomic variant calls: allele frequency, allele-specific expression.",
+        "SortOrder": 13,
+        "ParentRouteKey": "intake.new-patient",
+        "RouteKey": "intake.new-patient.variants",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,intake-clinician",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "CRU",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "GenomicVariants",
+        "PrimaryView": "vw_genomic_variants",
+        "IconHint": "dna"
+      },
+      {
+        "RoutingAndNavigationId": "nav-intake-assays",
+        "DisplayName": "Assays",
+        "Route": "/intake/new-patient/:caseId/assays",
+        "Description": "Omics assays per modality/tissue: measurement error, cell-state effects.",
+        "SortOrder": 14,
+        "ParentRouteKey": "intake.new-patient",
+        "RouteKey": "intake.new-patient.assays",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,intake-clinician",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "CRU",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "OmicsAssays",
+        "PrimaryView": "vw_omics_assays",
+        "IconHint": "flask-conical"
+      },
+      {
+        "RoutingAndNavigationId": "nav-intake-submit",
+        "DisplayName": "Submit Case",
+        "Route": "/intake/new-patient/:caseId/submit",
+        "Description": "Hand the assembled raw facts to the deterministic inference graph.",
+        "SortOrder": 15,
+        "ParentRouteKey": "intake.new-patient",
+        "RouteKey": "intake.new-patient.submit",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,intake-clinician",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "RU",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "IconHint": "send"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis",
+        "DisplayName": "Diagnosis",
+        "Route": "/diagnosis",
+        "Description": "Diagnosing doctor workspace — walk a case to its keystone.",
+        "SortOrder": 20,
+        "ParentRouteKey": "",
+        "RouteKey": "diagnosis",
+        "NavLevel": "top",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": false,
+        "PinToTop": true,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "brain-circuit"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-case",
+        "DisplayName": "Case",
+        "Route": "/diagnosis/case/:predictionId",
+        "Description": "One case's diagnostic walk, anchored on its lifecycle state.",
+        "SortOrder": 21,
+        "ParentRouteKey": "diagnosis",
+        "RouteKey": "diagnosis.case",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "folder-open"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-evidence",
+        "DisplayName": "Evidence",
+        "Route": "/diagnosis/case/:predictionId/evidence",
+        "Description": "L1 evidence atoms: effect size / SE / ZStat, confound controls.",
+        "SortOrder": 22,
+        "ParentRouteKey": "diagnosis.case",
+        "RouteKey": "diagnosis.case.evidence",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "EvidenceItems",
+        "PrimaryView": "vw_evidence_items",
+        "IconHint": "microscope"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-mechanism",
+        "DisplayName": "Mechanism",
+        "Route": "/diagnosis/case/:predictionId/mechanism",
+        "Description": "L2/L3 mechanism aggregations + IsCausalArchitectureNode verdict.",
+        "SortOrder": 23,
+        "ParentRouteKey": "diagnosis.case",
+        "RouteKey": "diagnosis.case.mechanism",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "CausalMechanisms",
+        "PrimaryView": "vw_causal_mechanisms",
+        "IconHint": "git-branch"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-replication",
+        "DisplayName": "Replication",
+        "Route": "/diagnosis/case/:predictionId/replication",
+        "Description": "Cross-cohort / cross-ancestry replication — the transport atoms.",
+        "SortOrder": 24,
+        "ParentRouteKey": "diagnosis.case",
+        "RouteKey": "diagnosis.case.replication",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "CohortReplications",
+        "PrimaryView": "vw_cohort_replications",
+        "IconHint": "copy-check"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-controls",
+        "DisplayName": "Neg Controls",
+        "Route": "/diagnosis/case/:predictionId/controls",
+        "Description": "Permutation / stratification controls — the anti-spurious atoms.",
+        "SortOrder": 25,
+        "ParentRouteKey": "diagnosis.case",
+        "RouteKey": "diagnosis.case.controls",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "NegativeControlTests",
+        "PrimaryView": "vw_negative_control_tests",
+        "IconHint": "shield"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-calibration",
+        "DisplayName": "Calibration",
+        "Route": "/diagnosis/case/:predictionId/calibration",
+        "Description": "Per-bin reliability coverage — the calibration atoms.",
+        "SortOrder": 26,
+        "ParentRouteKey": "diagnosis.case",
+        "RouteKey": "diagnosis.case.calibration",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "CalibrationBins",
+        "PrimaryView": "vw_calibration_bins",
+        "IconHint": "gauge"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-gates",
+        "DisplayName": "Gates",
+        "Route": "/diagnosis/case/:predictionId/gates",
+        "Description": "The four gates: confidence, falsifiability, transport, predicted value.",
+        "SortOrder": 27,
+        "ParentRouteKey": "diagnosis.case",
+        "RouteKey": "diagnosis.case.gates",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "door-open"
+      },
+      {
+        "RoutingAndNavigationId": "nav-diagnosis-keystone",
+        "DisplayName": "Keystone",
+        "Route": "/diagnosis/case/:predictionId/keystone",
+        "Description": "IsClinicallyActionable — the derived conclusion.",
+        "SortOrder": 28,
+        "ParentRouteKey": "diagnosis.case",
+        "RouteKey": "diagnosis.case.keystone",
+        "NavLevel": "leaf",
+        "RoleVisibility": "admin,diagnosing-doctor",
+        "IsDynamic": true,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "R",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "key-round"
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin",
+        "DisplayName": "Admin",
+        "Route": "/admin",
+        "Description": "Model & platform administration.",
+        "SortOrder": 90,
+        "ParentRouteKey": "",
+        "RouteKey": "admin",
+        "NavLevel": "top",
+        "RoleVisibility": "admin",
+        "IsDynamic": false,
+        "PinToTop": true,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "IconHint": "settings"
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin-harness",
+        "DisplayName": "Harness",
+        "Route": "/admin/harness",
+        "Description": "The witnessed inference harness (home screen).",
+        "SortOrder": 91,
+        "ParentRouteKey": "admin",
+        "RouteKey": "admin.harness",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin",
+        "IsDynamic": false,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "IconHint": "list-checks"
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin-routing",
+        "DisplayName": "Routing",
+        "Route": "/admin/routing",
+        "Description": "Edit role-based navigation.",
+        "SortOrder": 92,
+        "ParentRouteKey": "admin",
+        "RouteKey": "admin.routing",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin",
+        "IsDynamic": false,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "RoutingAndNavigation",
+        "PrimaryView": "vw_routing_and_navigation",
+        "IconHint": "route"
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin-state-machine",
+        "DisplayName": "State Machine",
+        "Route": "/admin/state-machine",
+        "Description": "View/edit the diagnosis lifecycle.",
+        "SortOrder": 93,
+        "ParentRouteKey": "admin",
+        "RouteKey": "admin.state-machine",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin",
+        "IsDynamic": false,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "StateMachines",
+        "PrimaryView": "vw_state_machines",
+        "IconHint": "workflow"
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin-explainer",
+        "DisplayName": "Explainer DAG",
+        "Route": "/admin/explainer",
+        "Description": "Click any derived field to see how it was computed.",
+        "SortOrder": 94,
+        "ParentRouteKey": "admin",
+        "RouteKey": "admin.explainer",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin",
+        "IsDynamic": false,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "IconHint": "share-2"
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin-cohort",
+        "DisplayName": "Cohort",
+        "Route": "/admin/cohort",
+        "Description": "All 7 cases and their keystone verdicts.",
+        "SortOrder": 95,
+        "ParentRouteKey": "admin",
+        "RouteKey": "admin.cohort",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin",
+        "IsDynamic": false,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "users"
+      }
+    ]
   }
 }

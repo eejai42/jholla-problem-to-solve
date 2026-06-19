@@ -738,33 +738,33 @@ VALUES ('gt-laundering-objection', 'laundering objection', 'The skeptic''s claim
 -- ----------------------------------------------------------------------------
 -- LeopoldLoops: The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.
 -- ----------------------------------------------------------------------------
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-0', '0', 'Solve-by-inference rulebook', 'Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations -> keystone.', 'done', 'rule: keystone IsClinicallyActionable now derived from observations', 'state: Loop 0 — Postgres solve-by-inference verified', 0) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-0', '0', 'Solve-by-inference rulebook', 'Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations to keystone.', 'done', 'rule: keystone IsClinicallyActionable now derived from observations', 'state: Loop 0 - Postgres solve-by-inference verified', 0, '[DONE]', ' - rule `rule: keystone IsClinicallyActionable now derived from observations`; state `state: Loop 0 - Postgres solve-by-inference verified`') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-0-5', '0.5', 'Test Harness First (the red contract)', 'Ship a witnessed inference harness asserting the entire DAG x 7 patients via the app API; red on arrival, load-bearing.', 'next', 'none — app-only loop, test-harness-first, no rule change', 'state: Loop 0.5 — red witnessed-inference harness is the app''s contract', 1) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-0-5', '0.5', 'Test Harness First (the red contract)', 'Ship a witnessed inference harness asserting the entire DAG x 7 patients via the app API; red on arrival, load-bearing.', 'next', 'none - app-only loop, test-harness-first, no rule change', 'state: Loop 0.5 - red witnessed-inference harness is the app''s contract', 1, '[NEXT]', ' - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app''s contract`') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-1', '1', 'Intake app skeleton', 'Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*.', 'planned', 'none — app-only loop, no rule change', 'state: Loop 1 — read-only intake app surfaces the keystone', 2) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-1', '1', 'Intake app skeleton', 'Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*.', 'planned', 'none - app-only loop, no rule change', 'state: Loop 1 - read-only intake app surfaces the keystone', 2, '[PLANNED]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-2', '2', 'Patient intake (facts in)', 'Form writes a new Individual + child observation rows to base tables, then re-reads the derived panel. The knob-editing payoff.', 'planned', 'rule (if any) for new intake field', 'state: Loop 2 — facts-in -> derived diagnosis works end to end', 3) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-2', '2', 'Patient intake (facts in)', 'Form writes a new Individual + child observation rows to base tables, then re-reads the derived panel. The knob-editing payoff.', 'planned', 'rule (if any) for new intake field', 'state: Loop 2 - facts-in to derived diagnosis works end to end', 3, '[PLANNED]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-3', '3', 'Gate explainability in the UI', 'Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.', 'planned', 'rule: install explainer-dag', 'state: Loop 3 — gate explainability', 4) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-3', '3', 'Gate explainability in the UI', 'Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.', 'planned', 'rule: install explainer-dag', 'state: Loop 3 - gate explainability', 4, '[PLANNED]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-4', '4', 'Second prediction type (severity)', 'Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.', 'planned', 'rule: severity prediction derived from clinical-activity evidence', 'state: Loop 4 — severity prediction', 5) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-4', '4', 'Second prediction type (severity)', 'Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.', 'planned', 'rule: severity prediction derived from clinical-activity evidence', 'state: Loop 4 - severity prediction', 5, '[PLANNED]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-5', '5', 'Treatment-response prediction', 'Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.', 'planned', 'rule: treatment-response prediction', 'state: Loop 5 — treatment-response prediction', 6) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-5', '5', 'Treatment-response prediction', 'Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.', 'planned', 'rule: treatment-response prediction', 'state: Loop 5 - treatment-response prediction', 6, '[PLANNED]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-llm-intake', '6', 'LLM intake clerk + synthetic lab', 'Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.', 'backlog', 'rule (if any) for provenance fields', 'state: Loop 6 — LLM intake clerk, everything-is-a-knob', 7) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-llm-intake', '6', 'LLM intake clerk + synthetic lab', 'Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.', 'backlog', 'rule (if any) for provenance fields', 'state: Loop 6 - LLM intake clerk, everything-is-a-knob', 7, '[BACKLOG]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-adverse', '7', 'Adverse-effect prediction', 'Wire adverse-effect prediction to observed treatment adverse-event rows.', 'backlog', '', '', 8) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-adverse', '7', 'Adverse-effect prediction', 'Wire adverse-effect prediction to observed treatment adverse-event rows.', 'backlog', '', '', 8, '[BACKLOG]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
-INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
-VALUES ('loop-equity', '8', 'Cohort-level equity report', 'Calibration & actionability rates by ancestry (ancestry-equity dashboard).', 'backlog', '', '', 9) ON CONFLICT (leopold_loop_id) DO NOTHING;
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
+VALUES ('loop-equity', '8', 'Cohort-level equity report', 'Calibration & actionability rates by ancestry (ancestry-equity dashboard).', 'backlog', '', '', 9, '[BACKLOG]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 

@@ -43,11 +43,18 @@
       "IsSSoTTranspiler": false,
       "Name": "JsonHbarsTransform",
       "RelativePath": "/plan",
-      "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./leopold-plan.hbs -o ../LEOPOLD_LOOPING_PLAN.md",
+      "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./leopold-plan.hbs",
       "IsDisabled": false,
       "PinnedVersion": "v2026.04.14.0155",
       "LastVersionUsed": "v2026.04.14.0155",
       "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "publish-derived-plan",
+      "RelativePath": "/plan",
+      "CommandLine": "-exec ./publish-plan.sh",
+      "IsDisabled": false
     }
   ]
 }
