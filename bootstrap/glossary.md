@@ -1,191 +1,91 @@
 # Glossary — Causal Autoimmune Architecture Platform
 
-Formal vocabulary for a platform that infers the complete causal architecture of heterogeneous autoimmune disease from multi-omic cohort data and produces falsifiable, ancestry-equitable predictions.
+> **Demonstration of inference structure, not validated clinical decision support.**
+
+Vocabulary organized by whether a term is **load-bearing** (on the dependency path of the keystone
+`IndividualPredictions.IsClinicallyActionable`) or **context** (kept to represent the breadth of the
+problem statement, but deliberately not gating the keystone — see the anti-hallucination rule in
+`../LEOPOLD_LOOPING_PLAN.md`).
 
 ---
 
-## Cohort & Participants
+## Part 1 — Load-bearing terms (each maps to a derived field)
 
-**individuals** — The one million ancestrally diverse participants whose phased telomere-to-telomere long-read genomes, omics profiles, exposures, and clinical phenotypes feed the causal model.
+### The keystone
+**clinically actionable** — `IndividualPredictions.IsClinicallyActionable`. The single terminal boolean:
+TRUE only when a prediction is causally grounded, well calibrated, not spurious, and ancestry-generalizable.
 
-**ancestrally diverse** — Cohort composition spanning multiple ancestries so the model can be tested on populations absent from training data.
+### Evidence layer
+**evidence item** — `EvidenceItems`: one measured support signal for a mechanism, from one omics assay.
+**effect size / standard error** — raw observations on an evidence item; their ratio is the derived **Z-stat**.
+**qualified evidence** — `EvidenceItems.IsQualifiedEvidence`: clean assay, real support arm, Z-stat ≥ 2, confound-controlled.
+**confound-controlled** — analysis adjusted for both ancestry PCs and batch (`IsConfoundControlled`).
+**cross-modality** — evidence from a different omics modality; ≥2 supporting modalities required for a non-spurious mechanism.
+**high-quality assay** — `OmicsAssays.IsHighQualityAssay`: derived from a low `MeasurementErrorScore`.
 
-**ancestries** — Population genetic background labels used to audit ancestry-equitable risk prediction and population stratification controls.
+### Replication & control layer
+**cohort replication** — `CohortReplications`: a re-test of a mechanism in another federated cohort.
+**replicated at nominal significance** — derived from the re-test's p-value and effect sign.
+**cross-ancestry concordant** — replicated AND in a different ancestry than discovery: the transportability atom.
+**negative-control test** — `NegativeControlTests`: a permutation/stratification control; a true causal signal **collapses** under it (`IsSurvived`).
+**survives negative controls** — at least one control run and all collapsed within the null band.
 
-**longitudinal** — Repeated measurements over development and aging that capture disease progression and treatment-induced changes.
+### Mechanism layer
+**causal mechanism** — `CausalMechanisms`: a variant-or-exposure → phenotype edge.
+**causal confidence** — `CausalConfidence`: derived bounded blend of qualified-evidence count, modality breadth, replication rate, and control survival.
+**experimentally falsifiable** — `IsExperimentallyFalsifiable`: a measurable qualified effect plus a named perturbable intervention target.
+**spurious (derived)** — `IsSpuriousDerived`: not replicated, or fails controls, or <2 modalities, or purely pleiotropic.
+**causal architecture node** — `IsCausalArchitectureNode`: a confirmed edge (confident ≥0.7, falsifiable, non-spurious, variant- or exposure-grounded).
+**ancestry-transportable** — `IsAncestryTransportable`: a confirmed node whose effect replicated in ≥1 different ancestry.
+**pleiotropy** — observed property (`HasPleiotropy`) that, alone, marks a mechanism as not cleanly causal.
 
-**privacy-preserving federated datasets** — Distributed data nodes that contribute summaries without centralizing raw genomes, enabling analysis under privacy constraints.
+### Individual & prediction layer
+**confirmed causal nodes** — per-individual count and summed confidence (`CausalArchitectureScore` basis).
+**predicted value** — `PredictedValue`: derived risk magnitude (0–10) from validated causal mass only — rides mechanism, not ancestry correlation.
+**calibration bin** — `CalibrationBins`: a reliability-curve bin seeded from held-out coverage for this individual's ancestry × disease.
+**calibrated uncertainty** — `CalibratedUncertainty`: derived reliability (HIGH = trustworthy); 0 when coverage is absent.
+**cryptic relatedness** — observed leakage flag (`HasCrypticRelatednessFlag`) that forces a spurious prediction.
+**spurious correlation flag** — `HasSpuriousCorrelationFlag`: derived — no confirmed mechanism OR cryptic-relatedness leakage.
+**ancestry holdout** — `IsAncestryHoldout`: individual's ancestry absent from training (`IsAncestryAbsentFromTraining`).
+**ancestry-transport-safe** — `IsAncestryTransportSafe`: holdout requires a measured cross-ancestry node; in-training is vacuously safe.
+**patient stratification tier** — `PatientStratificationTier`: High / Moderate / Low-Risk Pathway from the derived `PredictedValue`.
 
-**federated datasets** — Registered remote cohort partitions linked to the platform for harmonized causal inference.
-
----
-
-## Omics & Molecular Data
-
-**phased telomere-to-telomere** — Complete haplotype-resolved genome assemblies used to anchor variant calls and structural variant discovery.
-
-**long-read genomes** — Sequencing reads long enough to resolve repeats, mobile-element insertions, and complex structural variants.
-
-**pangenome graphs** — Graph-based reference structures that represent population variation beyond a single linear reference.
-
-**single-cell** — Measurements resolved to individual cells rather than bulk tissue averages.
-
-**spatial** — Tissue-context-preserving assays that localize RNA or chromatin signals within histological sections.
-
-**RNA-seq** — Transcript abundance profiling used for allele-specific expression and cell-state-specific effects.
-
-**ATAC-seq** — Chromatin accessibility profiling that informs enhancer–promoter interactions and regulatory variant interpretation.
-
-**proteomics** — Protein abundance and modification data linking genetic variation to molecular state.
-
-**metabolomics** — Small-molecule profiles reflecting downstream biochemical consequences of immune dysfunction.
-
-**methylomes** — Genome-wide DNA methylation maps supporting epigenetic inheritance and treatment-induced changes.
-
-**chromatin-conformation** — Hi-C and related data capturing 3D enhancer–promoter interactions across tissues.
-
-**immune-receptor repertoires** — T-cell and B-cell receptor sequencing data characterizing adaptive immune states.
-
-**microbiomes** — Community profiles of gut and other niches that participate in gene–environment–microbiome interactions.
-
-**omics modalities** — Canonical assay types (genome, transcriptome, epigenome, proteome, metabolome, repertoire, microbiome) registered in the platform.
-
----
-
-## Disease Context
-
-**heterogeneous autoimmune disease** — A clinically and molecularly diverse autoimmune condition whose causal architecture spans tissues, stages, and ancestries.
-
-**autoimmune disease** — The target disease domain whose complete causal map the platform seeks to reconstruct.
-
-**disease stages** — Ordered phases (presymptomatic, active, remission, treatment-refractory) along disease progression.
-
-**development** — Early-life windows when maternal and developmental effects shape later autoimmune risk.
-
-**aging** — Later-life processes that modify molecular state and feedback with disease progression.
-
-**tissues** — Anatomical sites (blood, gut, synovium, skin, brain) where cell-state-specific effects are measured.
-
-**missing tissues** — Absent biopsy or assay data that the model must remain valid despite.
-
-**clinical phenotypes** — Observed signs, symptoms, lab values, and severity scores linked to each individual.
-
-**immune dysfunction** — The pathological immune activation or tolerance failure connecting variation to disease.
+### Cohort primitives
+**individual** — `Individuals`: a cohort participant with ancestry, age, and observed leakage flags.
+**ancestry** — population label used for transport and calibration matching.
+**federated dataset** — `FederatedDatasets`: a privacy-preserving cohort node where replications run.
+**genomic variant** — `GenomicVariants`: a variant call; `IsCausalCandidate` derived from rarity + allele-specific expression.
+**allele frequency** — raw observation; `< 0.01` ⇒ rare (gnomAD convention).
+**allele-specific expression** — observed differential allelic transcript output; required for a causal-candidate variant.
 
 ---
 
-## Variation & Genetics
+## Part 2 — Context terms (kept, NOT gating the keystone)
 
-**regulatory variants** — Noncoding alleles that alter enhancer–promoter interactions or expression; must be distinguished from spurious correlations.
+These represent the full breadth of the problem statement and remain as sparse ontology / future evidence
+inputs. They are deliberately off the keystone's dependency path so the core inference stays minimal and testable.
 
-**coding variants** — Protein-altering alleles with direct functional consequences.
+**omics modalities** — RNA-seq, single-cell RNA-seq, ATAC-seq, proteomics, microbiome (load-bearing as assay
+quality + modality breadth); **methylome, chromatin-conformation (Hi-C), long-read genomes, metabolomics,
+immune-receptor repertoires, mitochondrial variation, somatic mosaicism** (present as modality/variant rows,
+not yet wired into evidence).
 
-**repeat expansions** — Pathogenic expansion of tandem repeats implicated in autoimmune and neuroimmune phenotypes.
+**disease context** — autoimmune disease, disease stages (presymptomatic/active/remission), tissues,
+clinical phenotypes, severity scores, immune dysfunction. Observed clinical context; could later supply
+outcome labels but the keystone is mechanism- and calibration-driven.
 
-**mobile-element insertions** — Retrotransposon and other insertional events contributing to structural variation.
+**genetics breadth** — coding variants, repeat expansions, mobile-element insertions, HLA haplotypes,
+structural variants, de novo mutations, epigenetic inheritance, rare-variant burden, higher-order epistasis.
+Represented as variant types / epistatic-interaction context.
 
-**HLA haplotypes** — MHC allele combinations with strong autoimmune associations requiring dedicated modeling.
+**other influences** — environmental exposures, gene–environment–microbiome interactions, maternal &
+developmental effects, treatment-induced changes, counterfactual trajectories, feedback. Held as context rows.
 
-**structural variants** — Large insertions, deletions, inversions, and complex rearrangements.
+**bias/quality vocabulary** — population stratification, assortative mating, batch effects, measurement
+error, ascertainment bias, shifting environments. Of these, **measurement error** (assay quality),
+**cryptic relatedness**, **confounding/stratification** (negative controls), and **ancestry portability**
+(transport gate) are load-bearing; the rest are context.
 
-**de novo mutations** — Germline variants absent in both parents, relevant to early-onset cases.
-
-**somatic mosaicism** — Post-zygotic mutations present in subsets of cells.
-
-**mitochondrial variation** — Heteroplasmic or homoplasmic mtDNA changes affecting energy metabolism and immunity.
-
-**epigenetic inheritance** — Transgenerational or persistent epigenetic marks not encoded in DNA sequence alone.
-
-**genetic variation** — The full spectrum of inherited and acquired sequence and epigenetic differences across individuals.
-
-**rare-variant burden** — Aggregate counts of low-frequency alleles in genes or pathways.
-
-**allele-specific expression** — Differential transcript output from maternal versus paternal alleles.
-
-**cell-state-specific effects** — Regulatory or expression consequences confined to particular immune or stromal cell types.
-
----
-
-## Causal Inference
-
-**causal architecture** — The directed network linking variants, exposures, molecular states, and clinical outcomes.
-
-**causal map** — A near-complete visualization and machine-readable encoding of that architecture.
-
-**higher-order epistasis** — Multi-locus interaction effects beyond pairwise epistasis.
-
-**epistasis** — Statistical or mechanistic interaction between genetic variants.
-
-**pleiotropy** — Single variants or pathways influencing multiple phenotypes or diseases.
-
-**gene–environment–microbiome interactions** — Joint effects of genotype, exposure, and microbial community on disease risk.
-
-**maternal effects** — In utero or perinatal influences on offspring autoimmune trajectories.
-
-**developmental effects** — Age-window-specific causal influences during organ and immune system maturation.
-
-**treatment-induced changes** — Molecular or phenotypic shifts caused by therapy rather than disease biology alone.
-
-**feedback** — Bidirectional coupling between disease progression and molecular state.
-
-**counterfactual trajectories** — Predicted disease courses under unobserved interventions or environmental shifts.
-
-**randomized perturbation** — Experimental interventions; absent data the model must infer counterfactuals without them.
-
-**experimentally falsifiable mechanisms** — Causal hypotheses with explicit predictions testable in lab or clinic.
-
-**intervention targets** — Validated nodes in the causal map suitable for gene-based or cell-based therapies.
-
----
-
-## Model Quality & Bias
-
-**population stratification** — Confounding from ancestry structure that must not masquerade as causality.
-
-**assortative mating** — Non-random mating patterns that induce cryptic relatedness and allele frequency distortion.
-
-**cryptic relatedness** — Hidden kinship among ostensibly unrelated individuals.
-
-**batch effects** — Technical variation between sequencing or assay runs.
-
-**measurement error** — Noise in omics and phenotype readouts that propagates into uncertainty.
-
-**ascertainment bias** — Skewed case enrollment that distorts effect estimates.
-
-**shifting environments** — Temporal or geographic changes in exposure profiles not represented in training.
-
-**calibrated uncertainty** — Prediction intervals whose stated coverage matches empirical frequency.
-
-**spurious correlations** — Associations without causal support that the model must not rely on.
-
----
-
-## Predictions & Outcomes
-
-**disease onset** — Time-to-diagnosis or presymptomatic conversion events the platform predicts.
-
-**severity** — Continuous or staged measures of disease burden.
-
-**treatment response** — Individualized expected benefit from specific therapies.
-
-**adverse effects** — Predicted harm from immunosuppression or targeted treatments.
-
-**ancestry-equitable risk prediction** — Risk scores with comparable calibration across ancestries.
-
-**patient stratification** — Assigning individuals to molecular subtypes sharing causal pathways.
-
-**causal molecular pathway** — The mechanistic route from variant or exposure to phenotype for a given person.
-
-**individualized prevention** — Risk-guided interventions before clinical diagnosis.
-
-**presymptomatic diagnosis** — Detection of autoimmune processes before overt symptoms.
-
-**clinical trials** — Studies whose failure rates may drop when enrollment follows causal stratification.
-
-**complex diseases** — Multifactorial conditions beyond autoimmune disease for which the framework generalizes.
-
-**gene-based therapies** — Interventions editing or modulating specific causal genes.
-
-**cell-based therapies** — Treatments using engineered or transplanted cells targeting causal nodes.
-
-**adverse effects** — Harmful outcomes including broad immune suppression when causal pathways are mis-targeted.
+**outcomes vocabulary** — disease onset, severity, treatment response, adverse effects, individualized
+prevention, presymptomatic diagnosis, gene-/cell-based therapies, clinical trials. The platform predicts
+onset risk as `PredictedValue`; the other prediction types are representable but seeded sparsely.

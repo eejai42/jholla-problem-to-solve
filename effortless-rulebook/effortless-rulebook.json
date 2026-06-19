@@ -111,8 +111,8 @@
         "IsComplexDisease": true
       },
       {
-        "AutoimmuneDiseaseId": "t1d",
-        "DiseaseLabel": "Type 1 Diabetes",
+        "AutoimmuneDiseaseId": "psa",
+        "DiseaseLabel": "Psoriatic Arthritis",
         "IsComplexDisease": true
       }
     ]
@@ -205,10 +205,10 @@
         "AutoimmuneDisease": "ra"
       },
       {
-        "DiseaseStageId": "t1d-presymptomatic",
-        "StageLabel": "Presymptomatic",
+        "DiseaseStageId": "psa-active",
+        "StageLabel": "Active",
         "SortOrder": 1,
-        "AutoimmuneDisease": "t1d"
+        "AutoimmuneDisease": "psa"
       }
     ]
   },
@@ -272,8 +272,8 @@
         "TissueLabel": "Skin"
       },
       {
-        "TissueId": "brain",
-        "TissueLabel": "Brain"
+        "TissueId": "kidney",
+        "TissueLabel": "Kidney"
       }
     ]
   },
@@ -343,11 +343,6 @@
         "IsSingleCell": true
       },
       {
-        "OmicsModalityId": "spatial-rna",
-        "ModalityLabel": "Spatial RNA-seq",
-        "IsSingleCell": true
-      },
-      {
         "OmicsModalityId": "atac-seq",
         "ModalityLabel": "ATAC-seq",
         "IsSingleCell": false
@@ -358,13 +353,18 @@
         "IsSingleCell": false
       },
       {
-        "OmicsModalityId": "metabolomics",
-        "ModalityLabel": "Metabolomics",
+        "OmicsModalityId": "microbiome",
+        "ModalityLabel": "Microbiome",
         "IsSingleCell": false
       },
       {
-        "OmicsModalityId": "microbiome",
-        "ModalityLabel": "Microbiome",
+        "OmicsModalityId": "methylome",
+        "ModalityLabel": "Methylome (sparse context)",
+        "IsSingleCell": false
+      },
+      {
+        "OmicsModalityId": "hi-c",
+        "ModalityLabel": "Chromatin Conformation Hi-C (sparse context)",
         "IsSingleCell": false
       }
     ]
@@ -431,9 +431,29 @@
         "nullable": true,
         "Description": "Omics assays sourced from this node.",
         "RelatedTo": "OmicsAssays"
+      },
+      {
+        "name": "CohortReplications",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Replications run in this cohort node.",
+        "RelatedTo": "CohortReplications"
       }
     ],
     "data": [
+      {
+        "FederatedDatasetId": "fed-europe",
+        "NodeLabel": "European Reference Node",
+        "Region": "Europe",
+        "IsPrivacyPreserving": true
+      },
+      {
+        "FederatedDatasetId": "fed-east-asia",
+        "NodeLabel": "East Asia Federated Node",
+        "Region": "East Asia",
+        "IsPrivacyPreserving": true
+      },
       {
         "FederatedDatasetId": "fed-west-africa",
         "NodeLabel": "West Africa Federated Node",
@@ -441,7 +461,7 @@
         "IsPrivacyPreserving": true
       },
       {
-        "FederatedDatasetId": "fed-amazon-cohort",
+        "FederatedDatasetId": "fed-amazon",
         "NodeLabel": "Amazon Indigenous Cohort",
         "Region": "Amazon Basin",
         "IsPrivacyPreserving": true
@@ -506,17 +526,7 @@
       {
         "VariantTypeId": "coding",
         "TypeLabel": "Coding Variant",
-        "IsRareVariantClass": true
-      },
-      {
-        "VariantTypeId": "repeat-expansion",
-        "TypeLabel": "Repeat Expansion",
-        "IsRareVariantClass": true
-      },
-      {
-        "VariantTypeId": "mobile-element",
-        "TypeLabel": "Mobile-Element Insertion",
-        "IsRareVariantClass": true
+        "IsRareVariantClass": false
       },
       {
         "VariantTypeId": "hla-haplotype",
@@ -532,21 +542,6 @@
         "VariantTypeId": "de-novo",
         "TypeLabel": "De Novo Mutation",
         "IsRareVariantClass": true
-      },
-      {
-        "VariantTypeId": "somatic-mosaicism",
-        "TypeLabel": "Somatic Mosaicism",
-        "IsRareVariantClass": true
-      },
-      {
-        "VariantTypeId": "mitochondrial",
-        "TypeLabel": "Mitochondrial Variation",
-        "IsRareVariantClass": true
-      },
-      {
-        "VariantTypeId": "epigenetic-inheritance",
-        "TypeLabel": "Epigenetic Inheritance",
-        "IsRareVariantClass": false
       }
     ]
   },
@@ -689,6 +684,30 @@
         "formula": "=IF({{AgeYears}} >= 60, TRUE(), FALSE())"
       },
       {
+        "name": "CountConfirmedCausalNodes",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of this individual's confirmed causal-architecture nodes.",
+        "formula": "=COUNTIFS(CausalMechanisms!{{Individual}}, {{IndividualId}}, CausalMechanisms!{{IsCausalArchitectureNode}}, TRUE())"
+      },
+      {
+        "name": "SumConfirmedCausalConfidence",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Summed confidence of this individual's confirmed causal nodes (derived causal mass).",
+        "formula": "=SUMIFS(CausalMechanisms!{{CausalConfidence}}, CausalMechanisms!{{Individual}}, {{IndividualId}}, CausalMechanisms!{{IsCausalArchitectureNode}}, TRUE())"
+      },
+      {
+        "name": "CountCrossAncestryConfirmedNodes",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Confirmed nodes that also showed cross-ancestry replication.",
+        "formula": "=COUNTIFS(CausalMechanisms!{{Individual}}, {{IndividualId}}, CausalMechanisms!{{IsAncestryTransportable}}, TRUE())"
+      },
+      {
         "name": "GenomicVariants",
         "datatype": "string",
         "type": "relationship",
@@ -763,69 +782,80 @@
     ],
     "data": [
       {
-        "IndividualId": "ind-yoruba-0042",
-        "GivenName": "Amara",
-        "FamilyName": "Okafor",
-        "AncestryLabel": "Yoruba",
-        "AgeYears": 22,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "fed-west-africa",
-        "EnrollmentDate": "2024-01-15",
-        "HasCrypticRelatednessFlag": false
-      },
-      {
-        "IndividualId": "ind-european-1187",
-        "GivenName": "Elena",
-        "FamilyName": "Kowalski",
+        "IndividualId": "ind-a-reyes",
+        "GivenName": "Ana",
+        "FamilyName": "Reyes",
         "AncestryLabel": "European",
-        "AgeYears": 45,
+        "AgeYears": 34,
         "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "",
-        "EnrollmentDate": "2023-06-01",
+        "FederatedDataset": "fed-europe",
+        "EnrollmentDate": "2023-04-10",
         "HasCrypticRelatednessFlag": false
       },
       {
-        "IndividualId": "ind-east-asian-3301",
-        "GivenName": "Kenji",
-        "FamilyName": "Tanaka",
-        "AncestryLabel": "East Asian",
-        "AgeYears": 38,
+        "IndividualId": "ind-b-okafor",
+        "GivenName": "Bili",
+        "FamilyName": "Okafor",
+        "AncestryLabel": "European",
+        "AgeYears": 41,
         "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "",
-        "EnrollmentDate": "2022-11-20",
+        "FederatedDataset": "fed-europe",
+        "EnrollmentDate": "2023-05-12",
+        "HasCrypticRelatednessFlag": false
+      },
+      {
+        "IndividualId": "ind-c-chen",
+        "GivenName": "Chen",
+        "FamilyName": "Wei",
+        "AncestryLabel": "East Asian",
+        "AgeYears": 47,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-east-asia",
+        "EnrollmentDate": "2022-09-01",
+        "HasCrypticRelatednessFlag": false
+      },
+      {
+        "IndividualId": "ind-d-santos",
+        "GivenName": "Diego",
+        "FamilyName": "Santos",
+        "AncestryLabel": "European",
+        "AgeYears": 29,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-europe",
+        "EnrollmentDate": "2024-01-20",
         "HasCrypticRelatednessFlag": true
       },
       {
-        "IndividualId": "ind-indigenous-american-0099",
-        "GivenName": "Ixchel",
-        "FamilyName": "Mamani",
+        "IndividualId": "ind-e-mensah",
+        "GivenName": "Esi",
+        "FamilyName": "Mensah",
+        "AncestryLabel": "African",
+        "AgeYears": 38,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-west-africa",
+        "EnrollmentDate": "2023-07-15",
+        "HasCrypticRelatednessFlag": false
+      },
+      {
+        "IndividualId": "ind-f-haidar",
+        "GivenName": "Faisal",
+        "FamilyName": "Haidar",
         "AncestryLabel": "Indigenous American",
         "AgeYears": 31,
         "IsAncestryAbsentFromTraining": true,
-        "FederatedDataset": "fed-amazon-cohort",
+        "FederatedDataset": "fed-amazon",
         "EnrollmentDate": "2025-02-01",
         "HasCrypticRelatednessFlag": false
       },
       {
-        "IndividualId": "ind-african-0555",
-        "GivenName": "Kwame",
-        "FamilyName": "Asante",
-        "AncestryLabel": "African",
-        "AgeYears": 52,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "fed-west-africa",
-        "EnrollmentDate": "2021-08-10",
-        "HasCrypticRelatednessFlag": false
-      },
-      {
-        "IndividualId": "ind-south-asian-2200",
-        "GivenName": "Priya",
-        "FamilyName": "Sharma",
-        "AncestryLabel": "South Asian",
-        "AgeYears": 67,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "",
-        "EnrollmentDate": "2020-03-05",
+        "IndividualId": "ind-g-lin",
+        "GivenName": "Grace",
+        "FamilyName": "Lin",
+        "AncestryLabel": "Indigenous American",
+        "AgeYears": 36,
+        "IsAncestryAbsentFromTraining": true,
+        "FederatedDataset": "fed-amazon",
+        "EnrollmentDate": "2025-02-03",
         "HasCrypticRelatednessFlag": false
       }
     ]
@@ -876,13 +906,6 @@
         "Description": "True when allele-specific expression observed."
       },
       {
-        "name": "IsTrueCausalCandidate",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false,
-        "Description": "True when variant passes causal filter vs spurious correlations."
-      },
-      {
         "name": "Name",
         "datatype": "string",
         "type": "calculated",
@@ -897,6 +920,14 @@
         "nullable": true,
         "Description": "Lookup of variant type label.",
         "formula": "=INDEX(VariantTypes!{{TypeLabel}}, MATCH({{VariantType}}, VariantTypes!{{VariantTypeId}}, 0))"
+      },
+      {
+        "name": "VariantClassIsRare",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this variant's class is a rare-variant class (observed type property).",
+        "formula": "=INDEX(VariantTypes!{{IsRareVariantClass}}, MATCH({{VariantType}}, VariantTypes!{{VariantTypeId}}, 0))"
       },
       {
         "name": "IndividualAncestryLabel",
@@ -919,82 +950,66 @@
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "2nd-order: rare and flagged as true causal candidate.",
-        "formula": "=IF(AND({{IsRareVariant}}, {{IsTrueCausalCandidate}}), TRUE(), FALSE())"
+        "Description": "Derived: rare (by frequency or class) AND shows allele-specific expression.",
+        "formula": "=IF(AND(OR({{IsRareVariant}}, {{VariantClassIsRare}}), {{HasAlleleSpecificExpression}}), TRUE(), FALSE())"
       }
     ],
     "data": [
       {
-        "GenomicVariantId": "var-hla-dr15",
-        "VariantLabel": "HLA-DRB1*15:01",
-        "Individual": "ind-yoruba-0042",
-        "VariantType": "hla-haplotype",
-        "AlleleFrequency": 0.12,
-        "HasAlleleSpecificExpression": true,
-        "IsTrueCausalCandidate": true
+        "GenomicVariantId": "var-a-irf5",
+        "VariantLabel": "IRF5 regulatory (rs2004640)",
+        "Individual": "ind-a-reyes",
+        "VariantType": "regulatory",
+        "AlleleFrequency": 0.006,
+        "HasAlleleSpecificExpression": true
       },
       {
-        "GenomicVariantId": "var-reg-irf5",
-        "VariantLabel": "IRF5 regulatory",
-        "Individual": "ind-yoruba-0042",
+        "GenomicVariantId": "var-b-irf5",
+        "VariantLabel": "IRF5 regulatory (rs2004640)",
+        "Individual": "ind-b-okafor",
+        "VariantType": "regulatory",
+        "AlleleFrequency": 0.006,
+        "HasAlleleSpecificExpression": true
+      },
+      {
+        "GenomicVariantId": "var-c-stat4",
+        "VariantLabel": "STAT4 regulatory (rs7574865)",
+        "Individual": "ind-c-chen",
         "VariantType": "regulatory",
         "AlleleFrequency": 0.008,
-        "HasAlleleSpecificExpression": true,
-        "IsTrueCausalCandidate": true
+        "HasAlleleSpecificExpression": true
       },
       {
-        "GenomicVariantId": "var-coding-ptpn22",
-        "VariantLabel": "PTPN22 R620W",
-        "Individual": "ind-european-1187",
-        "VariantType": "coding",
-        "AlleleFrequency": 0.09,
-        "HasAlleleSpecificExpression": false,
-        "IsTrueCausalCandidate": true
-      },
-      {
-        "GenomicVariantId": "var-reg-ctla4",
-        "VariantLabel": "CTLA4 enhancer",
-        "Individual": "ind-african-0555",
+        "GenomicVariantId": "var-d-irf5",
+        "VariantLabel": "IRF5 regulatory (rs2004640)",
+        "Individual": "ind-d-santos",
         "VariantType": "regulatory",
-        "AlleleFrequency": 0.005,
-        "HasAlleleSpecificExpression": true,
-        "IsTrueCausalCandidate": true
+        "AlleleFrequency": 0.006,
+        "HasAlleleSpecificExpression": true
       },
       {
-        "GenomicVariantId": "var-reg-stat4",
-        "VariantLabel": "STAT4 regulatory",
-        "Individual": "ind-african-0555",
+        "GenomicVariantId": "var-e-ctla4",
+        "VariantLabel": "CTLA4 enhancer (rs3087243)",
+        "Individual": "ind-e-mensah",
         "VariantType": "regulatory",
         "AlleleFrequency": 0.007,
-        "HasAlleleSpecificExpression": true,
-        "IsTrueCausalCandidate": true
+        "HasAlleleSpecificExpression": true
       },
       {
-        "GenomicVariantId": "var-struct-complex",
-        "VariantLabel": "Complex SV chr6",
-        "Individual": "ind-east-asian-3301",
-        "VariantType": "structural",
-        "AlleleFrequency": 0.002,
-        "HasAlleleSpecificExpression": false,
-        "IsTrueCausalCandidate": false
+        "GenomicVariantId": "var-f-il23r",
+        "VariantLabel": "IL23R regulatory (rs11209026)",
+        "Individual": "ind-f-haidar",
+        "VariantType": "regulatory",
+        "AlleleFrequency": 0.009,
+        "HasAlleleSpecificExpression": true
       },
       {
-        "GenomicVariantId": "var-denovo-il2ra",
-        "VariantLabel": "IL2RA de novo",
-        "Individual": "ind-south-asian-2200",
-        "VariantType": "de-novo",
-        "AlleleFrequency": 0.0001,
-        "HasAlleleSpecificExpression": true,
-        "IsTrueCausalCandidate": true
-      },
-      {
-        "GenomicVariantId": "var-mito-16519",
-        "VariantLabel": "MT-16519T>C",
-        "Individual": "ind-indigenous-american-0099",
-        "VariantType": "mitochondrial",
-        "AlleleFrequency": 0.03,
-        "HasAlleleSpecificExpression": false,
-        "IsTrueCausalCandidate": false
+        "GenomicVariantId": "var-g-il23r",
+        "VariantLabel": "IL23R regulatory (rs11209026)",
+        "Individual": "ind-g-lin",
+        "VariantType": "regulatory",
+        "AlleleFrequency": 0.009,
+        "HasAlleleSpecificExpression": true
       }
     ]
   },
@@ -1103,74 +1118,1083 @@
         "nullable": true,
         "Description": "2nd-order quality flag.",
         "formula": "=IF(AND(NOT({{HasBatchEffectRisk}}), {{MeasurementErrorScore}} < 0.15), TRUE(), FALSE())"
+      },
+      {
+        "name": "EvidenceItems",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Evidence items measured in this assay.",
+        "RelatedTo": "EvidenceItems"
       }
     ],
     "data": [
       {
-        "OmicsAssayId": "assay-yoruba-rna-blood",
-        "AssayLabel": "Yoruba RNA-seq Blood",
-        "Individual": "ind-yoruba-0042",
+        "OmicsAssayId": "assay-a-rna",
+        "AssayLabel": "assay-a-rna",
+        "Individual": "ind-a-reyes",
         "OmicsModality": "rna-seq",
         "Tissue": "blood",
-        "FederatedDataset": "fed-west-africa",
-        "BatchId": "batch-2024-01",
-        "MeasurementErrorScore": 0.08,
-        "HasCellStateSpecificEffect": true
-      },
-      {
-        "OmicsAssayId": "assay-euro-micro-gut",
-        "AssayLabel": "European Microbiome Gut",
-        "Individual": "ind-european-1187",
-        "OmicsModality": "microbiome",
-        "Tissue": "gut",
         "FederatedDataset": "",
-        "BatchId": "batch-2023-06",
-        "MeasurementErrorScore": 0.12,
-        "HasCellStateSpecificEffect": false
-      },
-      {
-        "OmicsAssayId": "assay-euro-rna-synovium",
-        "AssayLabel": "European RNA-seq Synovium",
-        "Individual": "ind-european-1187",
-        "OmicsModality": "rna-seq",
-        "Tissue": "synovium",
-        "FederatedDataset": "",
-        "BatchId": "batch-2023-06",
-        "MeasurementErrorScore": 0.18,
-        "HasCellStateSpecificEffect": true
-      },
-      {
-        "OmicsAssayId": "assay-asian-atac-skin",
-        "AssayLabel": "East Asian ATAC-seq Skin",
-        "Individual": "ind-east-asian-3301",
-        "OmicsModality": "atac-seq",
-        "Tissue": "skin",
-        "FederatedDataset": "",
-        "BatchId": "batch-2022-11",
-        "MeasurementErrorScore": 0.35,
-        "HasCellStateSpecificEffect": true
-      },
-      {
-        "OmicsAssayId": "assay-indig-genome",
-        "AssayLabel": "Indigenous Long-Read Genome",
-        "Individual": "ind-indigenous-american-0099",
-        "OmicsModality": "long-read-genomes",
-        "Tissue": "blood",
-        "FederatedDataset": "fed-amazon-cohort",
-        "BatchId": "batch-2025-02",
+        "BatchId": "b1",
         "MeasurementErrorScore": 0.05,
-        "HasCellStateSpecificEffect": false
+        "HasCellStateSpecificEffect": true
       },
       {
-        "OmicsAssayId": "assay-african-sc-rna",
-        "AssayLabel": "African Single-Cell RNA",
-        "Individual": "ind-african-0555",
-        "OmicsModality": "single-cell-rna",
+        "OmicsAssayId": "assay-a-atac",
+        "AssayLabel": "assay-a-atac",
+        "Individual": "ind-a-reyes",
+        "OmicsModality": "atac-seq",
         "Tissue": "blood",
-        "FederatedDataset": "fed-west-africa",
-        "BatchId": "batch-2021-08",
-        "MeasurementErrorScore": 0.11,
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
         "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-a-prot",
+        "AssayLabel": "assay-a-prot",
+        "Individual": "ind-a-reyes",
+        "OmicsModality": "proteomics",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-b-rna",
+        "AssayLabel": "assay-b-rna",
+        "Individual": "ind-b-okafor",
+        "OmicsModality": "rna-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-b-atac",
+        "AssayLabel": "assay-b-atac",
+        "Individual": "ind-b-okafor",
+        "OmicsModality": "atac-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-b-prot",
+        "AssayLabel": "assay-b-prot",
+        "Individual": "ind-b-okafor",
+        "OmicsModality": "proteomics",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-c-rna",
+        "AssayLabel": "assay-c-rna",
+        "Individual": "ind-c-chen",
+        "OmicsModality": "rna-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-c-atac",
+        "AssayLabel": "assay-c-atac",
+        "Individual": "ind-c-chen",
+        "OmicsModality": "atac-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-c-prot",
+        "AssayLabel": "assay-c-prot",
+        "Individual": "ind-c-chen",
+        "OmicsModality": "proteomics",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-d-rna",
+        "AssayLabel": "assay-d-rna",
+        "Individual": "ind-d-santos",
+        "OmicsModality": "rna-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-d-atac",
+        "AssayLabel": "assay-d-atac",
+        "Individual": "ind-d-santos",
+        "OmicsModality": "atac-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-d-prot",
+        "AssayLabel": "assay-d-prot",
+        "Individual": "ind-d-santos",
+        "OmicsModality": "proteomics",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-e-rna",
+        "AssayLabel": "assay-e-rna",
+        "Individual": "ind-e-mensah",
+        "OmicsModality": "rna-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-e-atac",
+        "AssayLabel": "assay-e-atac",
+        "Individual": "ind-e-mensah",
+        "OmicsModality": "atac-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-e-prot",
+        "AssayLabel": "assay-e-prot",
+        "Individual": "ind-e-mensah",
+        "OmicsModality": "proteomics",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-f-rna",
+        "AssayLabel": "assay-f-rna",
+        "Individual": "ind-f-haidar",
+        "OmicsModality": "rna-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-f-atac",
+        "AssayLabel": "assay-f-atac",
+        "Individual": "ind-f-haidar",
+        "OmicsModality": "atac-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-f-prot",
+        "AssayLabel": "assay-f-prot",
+        "Individual": "ind-f-haidar",
+        "OmicsModality": "proteomics",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-g-rna",
+        "AssayLabel": "assay-g-rna",
+        "Individual": "ind-g-lin",
+        "OmicsModality": "rna-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-g-atac",
+        "AssayLabel": "assay-g-atac",
+        "Individual": "ind-g-lin",
+        "OmicsModality": "atac-seq",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      },
+      {
+        "OmicsAssayId": "assay-g-prot",
+        "AssayLabel": "assay-g-prot",
+        "Individual": "ind-g-lin",
+        "OmicsModality": "proteomics",
+        "Tissue": "blood",
+        "FederatedDataset": "",
+        "BatchId": "b1",
+        "MeasurementErrorScore": 0.05,
+        "HasCellStateSpecificEffect": true
+      }
+    ]
+  },
+  "EvidenceItems": {
+    "Description": "One observed support signal for a causal mechanism, measured by one omics assay. Mechanism confidence is an aggregation over these rows.",
+    "schema": [
+      {
+        "name": "EvidenceItemId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id for this evidence observation."
+      },
+      {
+        "name": "EvidenceLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human label for the evidence row."
+      },
+      {
+        "name": "CausalMechanism",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK to the mechanism this evidence supports.",
+        "RelatedTo": "CausalMechanisms"
+      },
+      {
+        "name": "OmicsAssay",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK to the omics assay this signal was measured in.",
+        "RelatedTo": "OmicsAssays"
+      },
+      {
+        "name": "EffectSize",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: measured (absolute) effect magnitude."
+      },
+      {
+        "name": "StandardError",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: measured standard error of the effect."
+      },
+      {
+        "name": "IsCrossModality",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: TRUE if this signal comes from a different omics modality than the mechanism's primary one."
+      },
+      {
+        "name": "IsNegativeControlArm",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: TRUE if this row is a measured control arm rather than support."
+      },
+      {
+        "name": "IsAdjustedForAncestryPCs",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: TRUE if the analysis adjusted for ancestry principal components."
+      },
+      {
+        "name": "IsAdjustedForBatch",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: TRUE if the analysis adjusted for batch."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name.",
+        "formula": "={{EvidenceLabel}}"
+      },
+      {
+        "name": "AssayIsHighQuality",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the supporting assay passed quality control.",
+        "formula": "=INDEX(OmicsAssays!{{IsHighQualityAssay}}, MATCH({{OmicsAssay}}, OmicsAssays!{{OmicsAssayId}}, 0))"
+      },
+      {
+        "name": "ZStat",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived signal-to-noise ratio (effect / SE), 0 if SE non-positive.",
+        "formula": "=IF({{StandardError}} > 0, {{EffectSize}} / {{StandardError}}, 0)"
+      },
+      {
+        "name": "IsConfoundControlled",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: both ancestry-PC and batch adjustment present.",
+        "formula": "=IF(AND({{IsAdjustedForAncestryPCs}}, {{IsAdjustedForBatch}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "IsQualifiedEvidence",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: clean assay, real support arm, signal-to-noise >= 2, confound-controlled.",
+        "formula": "=IF(AND({{AssayIsHighQuality}}, NOT({{IsNegativeControlArm}}), {{ZStat}} >= 2, {{IsConfoundControlled}}), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "EvidenceItemId": "ev-a-1",
+        "EvidenceLabel": "ev-a-1",
+        "CausalMechanism": "cm-a",
+        "OmicsAssay": "assay-a-rna",
+        "EffectSize": 0.8,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-a-2",
+        "EvidenceLabel": "ev-a-2",
+        "CausalMechanism": "cm-a",
+        "OmicsAssay": "assay-a-atac",
+        "EffectSize": 0.7,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-a-3",
+        "EvidenceLabel": "ev-a-3",
+        "CausalMechanism": "cm-a",
+        "OmicsAssay": "assay-a-prot",
+        "EffectSize": 0.6,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-b-1",
+        "EvidenceLabel": "ev-b-1",
+        "CausalMechanism": "cm-b",
+        "OmicsAssay": "assay-b-rna",
+        "EffectSize": 0.8,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-b-2",
+        "EvidenceLabel": "ev-b-2",
+        "CausalMechanism": "cm-b",
+        "OmicsAssay": "assay-b-atac",
+        "EffectSize": 0.7,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-b-3",
+        "EvidenceLabel": "ev-b-3",
+        "CausalMechanism": "cm-b",
+        "OmicsAssay": "assay-b-prot",
+        "EffectSize": 0.6,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-c-1",
+        "EvidenceLabel": "ev-c-1",
+        "CausalMechanism": "cm-c",
+        "OmicsAssay": "assay-c-rna",
+        "EffectSize": 0.8,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-c-2",
+        "EvidenceLabel": "ev-c-2",
+        "CausalMechanism": "cm-c",
+        "OmicsAssay": "assay-c-atac",
+        "EffectSize": 0.7,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-c-3",
+        "EvidenceLabel": "ev-c-3",
+        "CausalMechanism": "cm-c",
+        "OmicsAssay": "assay-c-prot",
+        "EffectSize": 0.6,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-d-1",
+        "EvidenceLabel": "ev-d-1",
+        "CausalMechanism": "cm-d",
+        "OmicsAssay": "assay-d-rna",
+        "EffectSize": 0.8,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-d-2",
+        "EvidenceLabel": "ev-d-2",
+        "CausalMechanism": "cm-d",
+        "OmicsAssay": "assay-d-atac",
+        "EffectSize": 0.7,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-d-3",
+        "EvidenceLabel": "ev-d-3",
+        "CausalMechanism": "cm-d",
+        "OmicsAssay": "assay-d-prot",
+        "EffectSize": 0.6,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-e-1",
+        "EvidenceLabel": "ev-e-1",
+        "CausalMechanism": "cm-e",
+        "OmicsAssay": "assay-e-rna",
+        "EffectSize": 0.8,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-e-2",
+        "EvidenceLabel": "ev-e-2",
+        "CausalMechanism": "cm-e",
+        "OmicsAssay": "assay-e-atac",
+        "EffectSize": 0.7,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-e-3",
+        "EvidenceLabel": "ev-e-3",
+        "CausalMechanism": "cm-e",
+        "OmicsAssay": "assay-e-prot",
+        "EffectSize": 0.6,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-f-1",
+        "EvidenceLabel": "ev-f-1",
+        "CausalMechanism": "cm-f",
+        "OmicsAssay": "assay-f-rna",
+        "EffectSize": 0.8,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-f-2",
+        "EvidenceLabel": "ev-f-2",
+        "CausalMechanism": "cm-f",
+        "OmicsAssay": "assay-f-atac",
+        "EffectSize": 0.7,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-f-3",
+        "EvidenceLabel": "ev-f-3",
+        "CausalMechanism": "cm-f",
+        "OmicsAssay": "assay-f-prot",
+        "EffectSize": 0.6,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-g-1",
+        "EvidenceLabel": "ev-g-1",
+        "CausalMechanism": "cm-g",
+        "OmicsAssay": "assay-g-rna",
+        "EffectSize": 0.8,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-g-2",
+        "EvidenceLabel": "ev-g-2",
+        "CausalMechanism": "cm-g",
+        "OmicsAssay": "assay-g-atac",
+        "EffectSize": 0.7,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      },
+      {
+        "EvidenceItemId": "ev-g-3",
+        "EvidenceLabel": "ev-g-3",
+        "CausalMechanism": "cm-g",
+        "OmicsAssay": "assay-g-prot",
+        "EffectSize": 0.6,
+        "StandardError": 0.2,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForAncestryPCs": true,
+        "IsAdjustedForBatch": true
+      }
+    ]
+  },
+  "CohortReplications": {
+    "Description": "One re-test of a causal mechanism in another federated cohort. Replication and cross-ancestry transport are aggregations over these rows.",
+    "schema": [
+      {
+        "name": "CohortReplicationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id for this replication attempt."
+      },
+      {
+        "name": "ReplicationLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human label."
+      },
+      {
+        "name": "CausalMechanism",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK to the mechanism being re-tested.",
+        "RelatedTo": "CausalMechanisms"
+      },
+      {
+        "name": "FederatedDataset",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK to the cohort node the re-test ran in.",
+        "RelatedTo": "FederatedDatasets"
+      },
+      {
+        "name": "ReplicationEffectSign",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: sign of the re-estimated effect (+1 / -1 / 0)."
+      },
+      {
+        "name": "ReplicationPValue",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: p-value of the re-test."
+      },
+      {
+        "name": "ReplicationAncestryLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: ancestry of the cohort the re-test ran in."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name.",
+        "formula": "={{ReplicationLabel}}"
+      },
+      {
+        "name": "ReplicatedAtNominalSig",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: reproduced the predicted (positive) sign at nominal significance.",
+        "formula": "=IF(AND({{ReplicationPValue}} <= 0.05, {{ReplicationEffectSign}} = 1), TRUE(), FALSE())"
+      },
+      {
+        "name": "MechanismPrimaryAncestry",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Ancestry of the individual the mechanism was discovered in.",
+        "formula": "=INDEX(CausalMechanisms!{{IndividualAncestryLabel}}, MATCH({{CausalMechanism}}, CausalMechanisms!{{CausalMechanismId}}, 0))"
+      },
+      {
+        "name": "IsDifferentAncestryReplication",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: the re-test ran in a different ancestry than discovery.",
+        "formula": "=IF({{ReplicationAncestryLabel}} = {{MechanismPrimaryAncestry}}, FALSE(), TRUE())"
+      },
+      {
+        "name": "IsCrossAncestryConcordant",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: replicated at significance AND in a different ancestry (the transportability atom).",
+        "formula": "=IF(AND({{ReplicatedAtNominalSig}}, {{IsDifferentAncestryReplication}}), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "CohortReplicationId": "rep-a-1",
+        "ReplicationLabel": "rep-a-1",
+        "CausalMechanism": "cm-a",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.01,
+        "ReplicationAncestryLabel": "East Asian"
+      },
+      {
+        "CohortReplicationId": "rep-a-2",
+        "ReplicationLabel": "rep-a-2",
+        "CausalMechanism": "cm-a",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.02,
+        "ReplicationAncestryLabel": "African"
+      },
+      {
+        "CohortReplicationId": "rep-a-3",
+        "ReplicationLabel": "rep-a-3",
+        "CausalMechanism": "cm-a",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.2,
+        "ReplicationAncestryLabel": "European"
+      },
+      {
+        "CohortReplicationId": "rep-b-1",
+        "ReplicationLabel": "rep-b-1",
+        "CausalMechanism": "cm-b",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.01,
+        "ReplicationAncestryLabel": "East Asian"
+      },
+      {
+        "CohortReplicationId": "rep-b-2",
+        "ReplicationLabel": "rep-b-2",
+        "CausalMechanism": "cm-b",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.02,
+        "ReplicationAncestryLabel": "African"
+      },
+      {
+        "CohortReplicationId": "rep-b-3",
+        "ReplicationLabel": "rep-b-3",
+        "CausalMechanism": "cm-b",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.2,
+        "ReplicationAncestryLabel": "European"
+      },
+      {
+        "CohortReplicationId": "rep-c-1",
+        "ReplicationLabel": "rep-c-1",
+        "CausalMechanism": "cm-c",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.01,
+        "ReplicationAncestryLabel": "East Asian"
+      },
+      {
+        "CohortReplicationId": "rep-c-2",
+        "ReplicationLabel": "rep-c-2",
+        "CausalMechanism": "cm-c",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": -1,
+        "ReplicationPValue": 0.02,
+        "ReplicationAncestryLabel": "African"
+      },
+      {
+        "CohortReplicationId": "rep-c-3",
+        "ReplicationLabel": "rep-c-3",
+        "CausalMechanism": "cm-c",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.3,
+        "ReplicationAncestryLabel": "European"
+      },
+      {
+        "CohortReplicationId": "rep-d-1",
+        "ReplicationLabel": "rep-d-1",
+        "CausalMechanism": "cm-d",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.01,
+        "ReplicationAncestryLabel": "East Asian"
+      },
+      {
+        "CohortReplicationId": "rep-d-2",
+        "ReplicationLabel": "rep-d-2",
+        "CausalMechanism": "cm-d",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.02,
+        "ReplicationAncestryLabel": "African"
+      },
+      {
+        "CohortReplicationId": "rep-d-3",
+        "ReplicationLabel": "rep-d-3",
+        "CausalMechanism": "cm-d",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.2,
+        "ReplicationAncestryLabel": "European"
+      },
+      {
+        "CohortReplicationId": "rep-e-1",
+        "ReplicationLabel": "rep-e-1",
+        "CausalMechanism": "cm-e",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.01,
+        "ReplicationAncestryLabel": "East Asian"
+      },
+      {
+        "CohortReplicationId": "rep-e-2",
+        "ReplicationLabel": "rep-e-2",
+        "CausalMechanism": "cm-e",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.02,
+        "ReplicationAncestryLabel": "European"
+      },
+      {
+        "CohortReplicationId": "rep-e-3",
+        "ReplicationLabel": "rep-e-3",
+        "CausalMechanism": "cm-e",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.2,
+        "ReplicationAncestryLabel": "African"
+      },
+      {
+        "CohortReplicationId": "rep-f-1",
+        "ReplicationLabel": "rep-f-1",
+        "CausalMechanism": "cm-f",
+        "FederatedDataset": "fed-amazon",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.01,
+        "ReplicationAncestryLabel": "Indigenous American"
+      },
+      {
+        "CohortReplicationId": "rep-f-2",
+        "ReplicationLabel": "rep-f-2",
+        "CausalMechanism": "cm-f",
+        "FederatedDataset": "fed-amazon",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.02,
+        "ReplicationAncestryLabel": "Indigenous American"
+      },
+      {
+        "CohortReplicationId": "rep-f-3",
+        "ReplicationLabel": "rep-f-3",
+        "CausalMechanism": "cm-f",
+        "FederatedDataset": "fed-amazon",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.03,
+        "ReplicationAncestryLabel": "Indigenous American"
+      },
+      {
+        "CohortReplicationId": "rep-g-1",
+        "ReplicationLabel": "rep-g-1",
+        "CausalMechanism": "cm-g",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.01,
+        "ReplicationAncestryLabel": "European"
+      },
+      {
+        "CohortReplicationId": "rep-g-2",
+        "ReplicationLabel": "rep-g-2",
+        "CausalMechanism": "cm-g",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.02,
+        "ReplicationAncestryLabel": "East Asian"
+      },
+      {
+        "CohortReplicationId": "rep-g-3",
+        "ReplicationLabel": "rep-g-3",
+        "CausalMechanism": "cm-g",
+        "FederatedDataset": "fed-amazon",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.03,
+        "ReplicationAncestryLabel": "Indigenous American"
+      }
+    ]
+  },
+  "NegativeControlTests": {
+    "Description": "One stratification / permutation control on a causal mechanism. A true causal signal collapses under the control.",
+    "schema": [
+      {
+        "name": "NegativeControlTestId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id for this control test."
+      },
+      {
+        "name": "ControlLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human label."
+      },
+      {
+        "name": "CausalMechanism",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK to the mechanism being controlled.",
+        "RelatedTo": "CausalMechanisms"
+      },
+      {
+        "name": "TestKind",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: kind of control (ancestry-permutation / batch-stratified / negative-control)."
+      },
+      {
+        "name": "PermutationEffectSize",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: (absolute) effect measured under the null/permuted control."
+      },
+      {
+        "name": "NullThreshold",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: pre-registered null-band half-width the control must stay within."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name.",
+        "formula": "={{ControlLabel}}"
+      },
+      {
+        "name": "IsSurvived",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: signal collapses under the control (within the null band), as a true causal effect should.",
+        "formula": "=IF({{PermutationEffectSize}} <= {{NullThreshold}}, TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "NegativeControlTestId": "nct-a-1",
+        "ControlLabel": "nct-a-1",
+        "CausalMechanism": "cm-a",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.01,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-a-2",
+        "ControlLabel": "nct-a-2",
+        "CausalMechanism": "cm-a",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.02,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-b-1",
+        "ControlLabel": "nct-b-1",
+        "CausalMechanism": "cm-b",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.01,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-b-2",
+        "ControlLabel": "nct-b-2",
+        "CausalMechanism": "cm-b",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.02,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-d-1",
+        "ControlLabel": "nct-d-1",
+        "CausalMechanism": "cm-d",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.01,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-d-2",
+        "ControlLabel": "nct-d-2",
+        "CausalMechanism": "cm-d",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.02,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-e-1",
+        "ControlLabel": "nct-e-1",
+        "CausalMechanism": "cm-e",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.01,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-e-2",
+        "ControlLabel": "nct-e-2",
+        "CausalMechanism": "cm-e",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.02,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-f-1",
+        "ControlLabel": "nct-f-1",
+        "CausalMechanism": "cm-f",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.01,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-f-2",
+        "ControlLabel": "nct-f-2",
+        "CausalMechanism": "cm-f",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.02,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-g-1",
+        "ControlLabel": "nct-g-1",
+        "CausalMechanism": "cm-g",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.01,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-g-2",
+        "ControlLabel": "nct-g-2",
+        "CausalMechanism": "cm-g",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.02,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-c-1",
+        "ControlLabel": "nct-c-1",
+        "CausalMechanism": "cm-c",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.01,
+        "NullThreshold": 0.1
+      },
+      {
+        "NegativeControlTestId": "nct-c-2",
+        "ControlLabel": "nct-c-2",
+        "CausalMechanism": "cm-c",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.5,
+        "NullThreshold": 0.1
       }
     ]
   },
@@ -1246,28 +2270,12 @@
     ],
     "data": [
       {
-        "EnvironmentalExposureId": "exp-smoking-pack-years",
-        "ExposureLabel": "Smoking Pack-Years",
-        "Individual": "ind-european-1187",
-        "ExposureLevel": 12.5,
-        "ExposureStartDate": "1998-01-01",
+        "EnvironmentalExposureId": "exp-context",
+        "ExposureLabel": "Smoking pack-years (context only)",
+        "Individual": "ind-a-reyes",
+        "ExposureLevel": 3.0,
+        "ExposureStartDate": "2015-01-01",
         "IsMaternalEffect": false
-      },
-      {
-        "EnvironmentalExposureId": "exp-uv-index",
-        "ExposureLabel": "UV Radiation Index",
-        "Individual": "ind-yoruba-0042",
-        "ExposureLevel": 8.2,
-        "ExposureStartDate": "2020-06-01",
-        "IsMaternalEffect": false
-      },
-      {
-        "EnvironmentalExposureId": "exp-maternal-infection",
-        "ExposureLabel": "Maternal Infection During Pregnancy",
-        "Individual": "ind-south-asian-2200",
-        "ExposureLevel": 1,
-        "ExposureStartDate": "1958-03-01",
-        "IsMaternalEffect": true
       }
     ]
   },
@@ -1357,34 +2365,14 @@
     ],
     "data": [
       {
-        "TreatmentId": "tx-rituximab-3301",
-        "TreatmentLabel": "Rituximab",
-        "Individual": "ind-east-asian-3301",
-        "AutoimmuneDisease": "ra",
+        "TreatmentId": "tx-context",
+        "TreatmentLabel": "Anifrolumab (context only)",
+        "Individual": "ind-a-reyes",
+        "AutoimmuneDisease": "sle",
         "TreatmentResponse": "Partial",
         "HasTreatmentInducedChange": true,
         "HasAdverseEffect": false,
-        "StartDate": "2023-04-01"
-      },
-      {
-        "TreatmentId": "tx-hydroxy-sle",
-        "TreatmentLabel": "Hydroxychloroquine",
-        "Individual": "ind-yoruba-0042",
-        "AutoimmuneDisease": "sle",
-        "TreatmentResponse": "None",
-        "HasTreatmentInducedChange": false,
-        "HasAdverseEffect": false,
-        "StartDate": "2024-06-01"
-      },
-      {
-        "TreatmentId": "tx-insulin-t1d",
-        "TreatmentLabel": "Insulin Therapy",
-        "Individual": "ind-south-asian-2200",
-        "AutoimmuneDisease": "t1d",
-        "TreatmentResponse": "Complete",
-        "HasTreatmentInducedChange": true,
-        "HasAdverseEffect": true,
-        "StartDate": "1965-01-01"
+        "StartDate": "2024-01-01"
       }
     ]
   },
@@ -1489,69 +2477,14 @@
     ],
     "data": [
       {
-        "ClinicalPhenotypeId": "ph-yoruba-ana",
-        "PhenotypeLabel": "ANA Titer Elevation",
-        "Individual": "ind-yoruba-0042",
+        "ClinicalPhenotypeId": "ph-context",
+        "PhenotypeLabel": "ANA elevation (context only)",
+        "Individual": "ind-a-reyes",
         "AutoimmuneDisease": "sle",
         "DiseaseStage": "sle-presymptomatic",
         "Tissue": "blood",
-        "SeverityScore": 2.1,
-        "MeasurementDate": "2024-07-01",
-        "HasImmuneDysfunction": true
-      },
-      {
-        "ClinicalPhenotypeId": "ph-euro-das28",
-        "PhenotypeLabel": "DAS28 Joint Score",
-        "Individual": "ind-european-1187",
-        "AutoimmuneDisease": "ra",
-        "DiseaseStage": "ra-active",
-        "Tissue": "synovium",
-        "SeverityScore": 6.8,
-        "MeasurementDate": "2023-08-15",
-        "HasImmuneDysfunction": true
-      },
-      {
-        "ClinicalPhenotypeId": "ph-asian-das28-rem",
-        "PhenotypeLabel": "DAS28 Post-Treatment",
-        "Individual": "ind-east-asian-3301",
-        "AutoimmuneDisease": "ra",
-        "DiseaseStage": "ra-remission",
-        "Tissue": "synovium",
-        "SeverityScore": 3.1,
-        "MeasurementDate": "2024-01-10",
-        "HasImmuneDysfunction": false
-      },
-      {
-        "ClinicalPhenotypeId": "ph-asian-das28-pre",
-        "PhenotypeLabel": "DAS28 Pre-Treatment",
-        "Individual": "ind-east-asian-3301",
-        "AutoimmuneDisease": "ra",
-        "DiseaseStage": "ra-active",
-        "Tissue": "synovium",
-        "SeverityScore": 8.2,
-        "MeasurementDate": "2023-03-01",
-        "HasImmuneDysfunction": true
-      },
-      {
-        "ClinicalPhenotypeId": "ph-indig-risk",
-        "PhenotypeLabel": "Autoimmune Risk Score",
-        "Individual": "ind-indigenous-american-0099",
-        "AutoimmuneDisease": "sle",
-        "DiseaseStage": "sle-presymptomatic",
-        "Tissue": "",
-        "SeverityScore": 1.5,
-        "MeasurementDate": "2025-03-01",
-        "HasImmuneDysfunction": false
-      },
-      {
-        "ClinicalPhenotypeId": "ph-south-hba1c",
-        "PhenotypeLabel": "HbA1c",
-        "Individual": "ind-south-asian-2200",
-        "AutoimmuneDisease": "t1d",
-        "DiseaseStage": "t1d-presymptomatic",
-        "Tissue": "blood",
-        "SeverityScore": 7.5,
-        "MeasurementDate": "2024-12-01",
+        "SeverityScore": 4.0,
+        "MeasurementDate": "2024-02-01",
         "HasImmuneDysfunction": true
       }
     ]
@@ -1602,27 +2535,6 @@
         "Description": "Type: regulatory, coding, gene-environment-microbiome, epigenetic-inheritance, enhancer-promoter, feedback."
       },
       {
-        "name": "CausalConfidence",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Calibrated uncertainty confidence (0-1)."
-      },
-      {
-        "name": "IsExperimentallyFalsifiable",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false,
-        "Description": "True when mechanism has testable predictions."
-      },
-      {
-        "name": "HasSpuriousCorrelationFlag",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false,
-        "Description": "True when flagged as possible spurious correlation."
-      },
-      {
         "name": "HasPleiotropy",
         "datatype": "boolean",
         "type": "raw",
@@ -1646,12 +2558,140 @@
         "formula": "=INDEX(Individuals!{{AncestryLabel}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
       },
       {
+        "name": "CountQualifiedEvidence",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of qualified evidence items supporting this mechanism.",
+        "formula": "=COUNTIFS(EvidenceItems!{{CausalMechanism}}, {{CausalMechanismId}}, EvidenceItems!{{IsQualifiedEvidence}}, TRUE())"
+      },
+      {
+        "name": "CountModalitiesSupporting",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of qualified cross-modality evidence items (multi-omic corroboration).",
+        "formula": "=COUNTIFS(EvidenceItems!{{CausalMechanism}}, {{CausalMechanismId}}, EvidenceItems!{{IsCrossModality}}, TRUE(), EvidenceItems!{{IsQualifiedEvidence}}, TRUE())"
+      },
+      {
+        "name": "CountInterventionTargets",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of perturbable intervention targets for this mechanism (falsifiability requires >=1).",
+        "formula": "=COUNTIFS(InterventionTargets!{{CausalMechanism}}, {{CausalMechanismId}})"
+      },
+      {
+        "name": "IsExperimentallyFalsifiable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: a measurable qualified effect exists AND a named intervention can perturb it.",
+        "formula": "=IF(AND({{CountInterventionTargets}} >= 1, {{CountQualifiedEvidence}} >= 1), TRUE(), FALSE())"
+      },
+      {
+        "name": "CountReplications",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total cross-cohort re-tests of this mechanism.",
+        "formula": "=COUNTIFS(CohortReplications!{{CausalMechanism}}, {{CausalMechanismId}})"
+      },
+      {
+        "name": "CountConcordantReplications",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Re-tests reproducing the predicted sign at significance.",
+        "formula": "=COUNTIFS(CohortReplications!{{CausalMechanism}}, {{CausalMechanismId}}, CohortReplications!{{ReplicatedAtNominalSig}}, TRUE())"
+      },
+      {
+        "name": "CountCrossAncestryConcordant",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Concordant re-tests that ran in a DIFFERENT ancestry (the transportability measurement).",
+        "formula": "=COUNTIFS(CohortReplications!{{CausalMechanism}}, {{CausalMechanismId}}, CohortReplications!{{IsCrossAncestryConcordant}}, TRUE())"
+      },
+      {
+        "name": "ReplicationFraction",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: fraction of re-tests that were concordant (guarded division).",
+        "formula": "=IF({{CountReplications}} > 0, {{CountConcordantReplications}} / {{CountReplications}}, 0)"
+      },
+      {
+        "name": "ReplicatesAcrossCohorts",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: >=2 independent re-tests and >=2 concordant.",
+        "formula": "=IF(AND({{CountReplications}} >= 2, {{CountConcordantReplications}} >= 2), TRUE(), FALSE())"
+      },
+      {
+        "name": "CountNegControlTests",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Negative-control tests run on this mechanism.",
+        "formula": "=COUNTIFS(NegativeControlTests!{{CausalMechanism}}, {{CausalMechanismId}})"
+      },
+      {
+        "name": "CountNegControlSurvived",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Negative-control tests the mechanism survived (collapsed under the null).",
+        "formula": "=COUNTIFS(NegativeControlTests!{{CausalMechanism}}, {{CausalMechanismId}}, NegativeControlTests!{{IsSurvived}}, TRUE())"
+      },
+      {
+        "name": "SurvivesNegativeControls",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: at least one control run AND all of them survived.",
+        "formula": "=IF(AND({{CountNegControlTests}} >= 1, {{CountNegControlSurvived}} = {{CountNegControlTests}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "IsSpuriousDerived",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: spurious unless replicated, survives controls, has >=2 modalities, and is not purely pleiotropic.",
+        "formula": "=IF(OR(NOT({{ReplicatesAcrossCohorts}}), NOT({{SurvivesNegativeControls}}), {{CountModalitiesSupporting}} < 2, {{HasPleiotropy}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "CausalConfidence",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived bounded blend of qualified-evidence count, modality breadth, replication rate, and control survival.",
+        "formula": "=IF(((0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0))) > 1, 1, (0.30 * IF({{CountQualifiedEvidence}} >= 4, 1, {{CountQualifiedEvidence}} / 4)) + (0.20 * IF({{CountModalitiesSupporting}} >= 3, 1, {{CountModalitiesSupporting}} / 3)) + (0.30 * {{ReplicationFraction}}) + (0.20 * IF({{SurvivesNegativeControls}}, 1, 0)))"
+      },
+      {
+        "name": "VariantIsCausalCandidate",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether the linked variant is itself a derived causal candidate (empty-guarded).",
+        "formula": "=IF({{GenomicVariant}} = \"\", FALSE(), INDEX(GenomicVariants!{{IsCausalCandidate}}, MATCH({{GenomicVariant}}, GenomicVariants!{{GenomicVariantId}}, 0)))"
+      },
+      {
         "name": "IsCausalArchitectureNode",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "True when confidence high and not spurious.",
-        "formula": "=IF(AND({{CausalConfidence}} >= 0.7, NOT({{HasSpuriousCorrelationFlag}}), {{IsExperimentallyFalsifiable}}), TRUE(), FALSE())"
+        "Description": "Derived: a confirmed causal edge - confident, falsifiable, non-spurious, and grounded in a candidate variant or a real exposure.",
+        "formula": "=IF(AND({{CausalConfidence}} >= 0.7, {{IsExperimentallyFalsifiable}}, NOT({{IsSpuriousDerived}}), OR({{VariantIsCausalCandidate}}, {{EnvironmentalExposure}} <> \"\")), TRUE(), FALSE())"
+      },
+      {
+        "name": "IsAncestryTransportable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: a confirmed node whose effect replicated in >=1 different ancestry (measured invariance).",
+        "formula": "=IF(AND({{IsCausalArchitectureNode}}, {{CountCrossAncestryConcordant}} >= 1), TRUE(), FALSE())"
       },
       {
         "name": "InterventionTargets",
@@ -1660,55 +2700,94 @@
         "nullable": true,
         "Description": "Intervention targets derived from this mechanism.",
         "RelatedTo": "InterventionTargets"
+      },
+      {
+        "name": "EvidenceItems",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Evidence items supporting this mechanism.",
+        "RelatedTo": "EvidenceItems"
+      },
+      {
+        "name": "CohortReplications",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Cross-cohort replications of this mechanism.",
+        "RelatedTo": "CohortReplications"
+      },
+      {
+        "name": "NegativeControlTests",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Negative-control tests on this mechanism.",
+        "RelatedTo": "NegativeControlTests"
       }
     ],
     "data": [
       {
-        "CausalMechanismId": "cm-hla-irf5-sle",
-        "MechanismLabel": "HLA-DR15 + IRF5 regulatory \u2192 SLE presymptomatic",
-        "Individual": "ind-yoruba-0042",
-        "GenomicVariant": "var-reg-irf5",
+        "CausalMechanismId": "cm-a",
+        "MechanismLabel": "IRF5 regulatory -> type-I IFN -> SLE risk",
+        "Individual": "ind-a-reyes",
+        "GenomicVariant": "var-a-irf5",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
-        "CausalConfidence": 0.85,
-        "IsExperimentallyFalsifiable": true,
-        "HasSpuriousCorrelationFlag": false,
-        "HasPleiotropy": true
-      },
-      {
-        "CausalMechanismId": "cm-ptpn22-smoke-micro",
-        "MechanismLabel": "PTPN22 + smoking + microbiome \u2192 RA T-cell activation",
-        "Individual": "ind-european-1187",
-        "GenomicVariant": "var-coding-ptpn22",
-        "EnvironmentalExposure": "exp-smoking-pack-years",
-        "MechanismType": "gene-environment-microbiome",
-        "CausalConfidence": 0.78,
-        "IsExperimentallyFalsifiable": true,
-        "HasSpuriousCorrelationFlag": false,
         "HasPleiotropy": false
       },
       {
-        "CausalMechanismId": "cm-il17-pathway",
-        "MechanismLabel": "IL-17 enhancer-promoter interaction in skin",
-        "Individual": "ind-east-asian-3301",
-        "GenomicVariant": "",
+        "CausalMechanismId": "cm-b",
+        "MechanismLabel": "IRF5 regulatory -> type-I IFN -> SLE risk",
+        "Individual": "ind-b-okafor",
+        "GenomicVariant": "var-b-irf5",
         "EnvironmentalExposure": "",
-        "MechanismType": "enhancer-promoter",
-        "CausalConfidence": 0.72,
-        "IsExperimentallyFalsifiable": true,
-        "HasSpuriousCorrelationFlag": false,
+        "MechanismType": "regulatory",
         "HasPleiotropy": false
       },
       {
-        "CausalMechanismId": "cm-feedback-ra",
-        "MechanismLabel": "Treatment feedback on RA disease progression",
-        "Individual": "ind-east-asian-3301",
-        "GenomicVariant": "",
+        "CausalMechanismId": "cm-c",
+        "MechanismLabel": "STAT4 regulatory -> Th1/IFN -> SLE risk",
+        "Individual": "ind-c-chen",
+        "GenomicVariant": "var-c-stat4",
         "EnvironmentalExposure": "",
-        "MechanismType": "feedback",
-        "CausalConfidence": 0.68,
-        "IsExperimentallyFalsifiable": true,
-        "HasSpuriousCorrelationFlag": false,
+        "MechanismType": "regulatory",
+        "HasPleiotropy": false
+      },
+      {
+        "CausalMechanismId": "cm-d",
+        "MechanismLabel": "IRF5 regulatory -> type-I IFN -> SLE risk",
+        "Individual": "ind-d-santos",
+        "GenomicVariant": "var-d-irf5",
+        "EnvironmentalExposure": "",
+        "MechanismType": "regulatory",
+        "HasPleiotropy": false
+      },
+      {
+        "CausalMechanismId": "cm-e",
+        "MechanismLabel": "CTLA4 enhancer -> T-cell costimulation -> SLE risk",
+        "Individual": "ind-e-mensah",
+        "GenomicVariant": "var-e-ctla4",
+        "EnvironmentalExposure": "",
+        "MechanismType": "regulatory",
+        "HasPleiotropy": false
+      },
+      {
+        "CausalMechanismId": "cm-f",
+        "MechanismLabel": "IL23R regulatory -> IL-17 axis -> PsA risk",
+        "Individual": "ind-f-haidar",
+        "GenomicVariant": "var-f-il23r",
+        "EnvironmentalExposure": "",
+        "MechanismType": "regulatory",
+        "HasPleiotropy": false
+      },
+      {
+        "CausalMechanismId": "cm-g",
+        "MechanismLabel": "IL23R regulatory -> IL-17 axis -> PsA risk",
+        "Individual": "ind-g-lin",
+        "GenomicVariant": "var-g-il23r",
+        "EnvironmentalExposure": "",
+        "MechanismType": "regulatory",
         "HasPleiotropy": false
       }
     ]
@@ -1784,22 +2863,13 @@
     ],
     "data": [
       {
-        "EpistaticInteractionId": "epi-ctla4-stat4",
-        "InteractionLabel": "CTLA4-STAT4 regulatory epistasis",
-        "Individual": "ind-african-0555",
-        "PrimaryVariant": "var-reg-ctla4",
-        "SecondaryVariant": "var-reg-stat4",
-        "EpistasisScore": 0.67,
-        "HasPleiotropy": true
-      },
-      {
-        "EpistaticInteractionId": "epi-hla-irf5",
-        "InteractionLabel": "HLA-IRF5 haplotype epistasis",
-        "Individual": "ind-yoruba-0042",
-        "PrimaryVariant": "var-hla-dr15",
-        "SecondaryVariant": "var-reg-irf5",
-        "EpistasisScore": 0.55,
-        "HasPleiotropy": true
+        "EpistaticInteractionId": "epi-context",
+        "InteractionLabel": "IRF5 x STAT4 (context only)",
+        "Individual": "ind-a-reyes",
+        "PrimaryVariant": "var-a-irf5",
+        "SecondaryVariant": "var-c-stat4",
+        "EpistasisScore": 0.4,
+        "HasPleiotropy": false
       }
     ]
   },
@@ -1882,31 +2952,13 @@
     ],
     "data": [
       {
-        "CounterfactualTrajectoryId": "cf-3301-no-tx",
-        "TrajectoryLabel": "RA without rituximab at 12mo",
-        "Individual": "ind-east-asian-3301",
-        "AutoimmuneDisease": "ra",
-        "ProjectedSeverity": 9.4,
+        "CounterfactualTrajectoryId": "cf-context",
+        "TrajectoryLabel": "Untreated SLE projection (context only)",
+        "Individual": "ind-a-reyes",
+        "AutoimmuneDisease": "sle",
+        "ProjectedSeverity": 6.0,
         "HorizonMonths": 12,
-        "InterventionApplied": ""
-      },
-      {
-        "CounterfactualTrajectoryId": "cf-yoruba-prevention",
-        "TrajectoryLabel": "SLE with UV reduction prevention",
-        "Individual": "ind-yoruba-0042",
-        "AutoimmuneDisease": "sle",
-        "ProjectedSeverity": 1.2,
-        "HorizonMonths": 24,
-        "InterventionApplied": "UV shielding"
-      },
-      {
-        "CounterfactualTrajectoryId": "cf-indig-onset",
-        "TrajectoryLabel": "SLE onset trajectory Amazon holdout",
-        "Individual": "ind-indigenous-american-0099",
-        "AutoimmuneDisease": "sle",
-        "ProjectedSeverity": 4.5,
-        "HorizonMonths": 36,
-        "InterventionApplied": ""
+        "InterventionApplied": "none"
       }
     ]
   },
@@ -1949,27 +3001,6 @@
         "Description": "Onset, Severity, TreatmentResponse, or AdverseEffect."
       },
       {
-        "name": "PredictedValue",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Point prediction value."
-      },
-      {
-        "name": "CalibratedUncertainty",
-        "datatype": "number",
-        "type": "raw",
-        "nullable": false,
-        "Description": "Calibrated uncertainty interval width (0-1)."
-      },
-      {
-        "name": "HasSpuriousCorrelationFlag",
-        "datatype": "boolean",
-        "type": "raw",
-        "nullable": false,
-        "Description": "True when prediction relies on spurious correlations."
-      },
-      {
         "name": "Name",
         "datatype": "string",
         "type": "calculated",
@@ -1994,11 +3025,139 @@
         "formula": "=INDEX(Individuals!{{IsAncestryAbsentFromTraining}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
       },
       {
+        "name": "IndividualCausalMass",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Summed confirmed causal confidence for this individual (empty-guarded).",
+        "formula": "=IF({{Individual}} = \"\", 0, INDEX(Individuals!{{SumConfirmedCausalConfidence}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
+      },
+      {
+        "name": "IndividualConfirmedNodeCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Count of this individual's confirmed causal nodes (empty-guarded).",
+        "formula": "=IF({{Individual}} = \"\", 0, INDEX(Individuals!{{CountConfirmedCausalNodes}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
+      },
+      {
+        "name": "IndividualCrossAncestryNodeCount",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Count of this individual's cross-ancestry-replicated confirmed nodes (empty-guarded).",
+        "formula": "=IF({{Individual}} = \"\", 0, INDEX(Individuals!{{CountCrossAncestryConfirmedNodes}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
+      },
+      {
+        "name": "IndividualHasCrypticRelatedness",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this individual carries a cryptic-relatedness leakage flag (empty-guarded).",
+        "formula": "=IF({{Individual}} = \"\", FALSE(), INDEX(Individuals!{{HasCrypticRelatednessFlag}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
+      },
+      {
+        "name": "PredictedValue",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived risk magnitude (0-10), a monotone function of validated causal mass only - rides mechanism, not ancestry correlation.",
+        "formula": "=IF(((2 * {{IndividualCausalMass}}) + (1.5 * {{IndividualConfirmedNodeCount}})) > 10, 10, (2 * {{IndividualCausalMass}}) + (1.5 * {{IndividualConfirmedNodeCount}}))"
+      },
+      {
+        "name": "CountBins",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Total reliability bins for this prediction.",
+        "formula": "=COUNTIFS(CalibrationBins!{{IndividualPrediction}}, {{IndividualPredictionId}})"
+      },
+      {
+        "name": "CountWellCalibratedBins",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Bins passing coverage and accuracy.",
+        "formula": "=COUNTIFS(CalibrationBins!{{IndividualPrediction}}, {{IndividualPredictionId}}, CalibrationBins!{{IsWellCalibratedBin}}, TRUE())"
+      },
+      {
+        "name": "SumBinAbsError",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Summed reliability gap across this prediction's bins.",
+        "formula": "=SUMIFS(CalibrationBins!{{BinAbsError}}, CalibrationBins!{{IndividualPrediction}}, {{IndividualPredictionId}})"
+      },
+      {
+        "name": "MeanBinAbsError",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived mean reliability gap; defaults to 1 (worst) when no bins exist.",
+        "formula": "=IF({{CountBins}} > 0, {{SumBinAbsError}} / {{CountBins}}, 1)"
+      },
+      {
+        "name": "WellCalibratedFraction",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived fraction of trustworthy bins (guarded division).",
+        "formula": "=IF({{CountBins}} > 0, {{CountWellCalibratedBins}} / {{CountBins}}, 0)"
+      },
+      {
+        "name": "CalibratedUncertainty",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived reliability (HIGH = trustworthy): (1 - mean gap) scaled by well-covered-bin fraction; 0 for uncovered predictions.",
+        "formula": "=IF((1 - {{MeanBinAbsError}}) < 0, 0, (1 - {{MeanBinAbsError}})) * {{WellCalibratedFraction}}"
+      },
+      {
+        "name": "RestsOnConfirmedMechanism",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: grounded in >=1 validated mechanism.",
+        "formula": "=IF({{IndividualConfirmedNodeCount}} >= 1, TRUE(), FALSE())"
+      },
+      {
+        "name": "HasSpuriousCorrelationFlag",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: spurious if no validated mechanism OR cryptic-relatedness leakage.",
+        "formula": "=IF(OR(NOT({{RestsOnConfirmedMechanism}}), {{IndividualHasCrypticRelatedness}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "IsFalsifiabilityBacked",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: inherits falsifiability - every confirmed node required IsExperimentallyFalsifiable.",
+        "formula": "=IF({{IndividualConfirmedNodeCount}} >= 1, TRUE(), FALSE())"
+      },
+      {
+        "name": "IsTransportableToAbsentAncestry",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: a holdout individual is transportable only with >=1 cross-ancestry-replicated node and no spurious flag.",
+        "formula": "=IF(AND({{IsAncestryHoldout}}, {{IndividualCrossAncestryNodeCount}} >= 1, NOT({{HasSpuriousCorrelationFlag}})), TRUE(), FALSE())"
+      },
+      {
+        "name": "IsAncestryTransportSafe",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: holdout requires measured transport; in-training is vacuously safe.",
+        "formula": "=IF({{IsAncestryHoldout}}, {{IsTransportableToAbsentAncestry}}, TRUE())"
+      },
+      {
         "name": "IsHighConfidencePrediction",
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "3rd-order: high confidence without spurious flag.",
+        "Description": "Derived: calibrated AND not spurious.",
         "formula": "=IF(AND({{CalibratedUncertainty}} >= 0.7, NOT({{HasSpuriousCorrelationFlag}})), TRUE(), FALSE())"
       },
       {
@@ -2006,50 +3165,429 @@
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "4th-order patient stratification tier from prediction value.",
+        "Description": "Derived risk tier from the derived PredictedValue.",
         "formula": "=IF({{PredictedValue}} >= 7, \"High-Risk Pathway\", IF({{PredictedValue}} >= 4, \"Moderate-Risk Pathway\", \"Low-Risk Pathway\"))"
+      },
+      {
+        "name": "IsClinicallyActionable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "KEYSTONE: TRUE only when the prediction is high-confidence (calibrated + not spurious), falsifiability-backed, ancestry-transport-safe, and rests on a non-null derived magnitude.",
+        "formula": "=IF(AND({{IsHighConfidencePrediction}}, {{IsFalsifiabilityBacked}}, {{IsAncestryTransportSafe}}, {{PredictedValue}} > 0), TRUE(), FALSE())"
+      },
+      {
+        "name": "CalibrationBins",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reliability bins for this prediction.",
+        "RelatedTo": "CalibrationBins"
       }
     ],
     "data": [
       {
-        "IndividualPredictionId": "pred-yoruba-onset",
-        "PredictionLabel": "SLE Disease Onset Probability",
-        "Individual": "ind-yoruba-0042",
+        "IndividualPredictionId": "pred-a",
+        "PredictionLabel": "pred-a",
+        "Individual": "ind-a-reyes",
         "AutoimmuneDisease": "sle",
-        "PredictionType": "Onset",
-        "PredictedValue": 0.72,
-        "CalibratedUncertainty": 0.82,
-        "HasSpuriousCorrelationFlag": false
+        "PredictionType": "Onset"
       },
       {
-        "IndividualPredictionId": "pred-euro-response",
-        "PredictionLabel": "RA TNF Inhibitor Response",
-        "Individual": "ind-european-1187",
-        "AutoimmuneDisease": "ra",
-        "PredictionType": "TreatmentResponse",
-        "PredictedValue": 0.45,
-        "CalibratedUncertainty": 0.75,
-        "HasSpuriousCorrelationFlag": false
-      },
-      {
-        "IndividualPredictionId": "pred-indig-risk",
-        "PredictionLabel": "SLE Ancestry-Equitable Risk Score",
-        "Individual": "ind-indigenous-american-0099",
+        "IndividualPredictionId": "pred-b",
+        "PredictionLabel": "pred-b",
+        "Individual": "ind-b-okafor",
         "AutoimmuneDisease": "sle",
-        "PredictionType": "Onset",
-        "PredictedValue": 0.38,
-        "CalibratedUncertainty": 0.71,
-        "HasSpuriousCorrelationFlag": false
+        "PredictionType": "Onset"
       },
       {
-        "IndividualPredictionId": "pred-south-adverse",
-        "PredictionLabel": "Insulin Adverse Effect Risk",
-        "Individual": "ind-south-asian-2200",
-        "AutoimmuneDisease": "t1d",
-        "PredictionType": "AdverseEffect",
-        "PredictedValue": 0.25,
-        "CalibratedUncertainty": 0.68,
-        "HasSpuriousCorrelationFlag": false
+        "IndividualPredictionId": "pred-c",
+        "PredictionLabel": "pred-c",
+        "Individual": "ind-c-chen",
+        "AutoimmuneDisease": "sle",
+        "PredictionType": "Onset"
+      },
+      {
+        "IndividualPredictionId": "pred-d",
+        "PredictionLabel": "pred-d",
+        "Individual": "ind-d-santos",
+        "AutoimmuneDisease": "sle",
+        "PredictionType": "Onset"
+      },
+      {
+        "IndividualPredictionId": "pred-e",
+        "PredictionLabel": "pred-e",
+        "Individual": "ind-e-mensah",
+        "AutoimmuneDisease": "sle",
+        "PredictionType": "Onset"
+      },
+      {
+        "IndividualPredictionId": "pred-f",
+        "PredictionLabel": "pred-f",
+        "Individual": "ind-f-haidar",
+        "AutoimmuneDisease": "psa",
+        "PredictionType": "Onset"
+      },
+      {
+        "IndividualPredictionId": "pred-g",
+        "PredictionLabel": "pred-g",
+        "Individual": "ind-g-lin",
+        "AutoimmuneDisease": "psa",
+        "PredictionType": "Onset"
+      }
+    ]
+  },
+  "CalibrationBins": {
+    "Description": "Per-prediction reliability-curve bins, seeded from the held-out coverage of this individual's own ancestry x disease. Calibration is an aggregation over these rows.",
+    "schema": [
+      {
+        "name": "CalibrationBinId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable id for this bin."
+      },
+      {
+        "name": "BinLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human label."
+      },
+      {
+        "name": "IndividualPrediction",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "FK to the prediction this bin calibrates.",
+        "RelatedTo": "IndividualPredictions"
+      },
+      {
+        "name": "PredictedProbabilityBand",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: predicted-probability midpoint of this bin (0-1)."
+      },
+      {
+        "name": "ObservedEventRate",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: empirical event rate among held-out cases in this band, matched to this individual's ancestry x disease."
+      },
+      {
+        "name": "CoverageCount",
+        "datatype": "integer",
+        "type": "raw",
+        "nullable": false,
+        "Description": "OBSERVATION: number of held-out outcomes in this band for this ancestry x disease."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": false,
+        "Description": "Display name.",
+        "formula": "={{BinLabel}}"
+      },
+      {
+        "name": "BinAbsError",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: absolute gap between predicted band and observed rate.",
+        "formula": "=IF({{PredictedProbabilityBand}} >= {{ObservedEventRate}}, {{PredictedProbabilityBand}} - {{ObservedEventRate}}, {{ObservedEventRate}} - {{PredictedProbabilityBand}})"
+      },
+      {
+        "name": "IsWellCalibratedBin",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: enough held-out coverage AND small reliability gap.",
+        "formula": "=IF(AND({{CoverageCount}} >= 20, {{BinAbsError}} <= 0.1), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "CalibrationBinId": "cb-a-0",
+        "BinLabel": "cb-a-0",
+        "IndividualPrediction": "pred-a",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-a-1",
+        "BinLabel": "cb-a-1",
+        "IndividualPrediction": "pred-a",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-a-2",
+        "BinLabel": "cb-a-2",
+        "IndividualPrediction": "pred-a",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.52,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-a-3",
+        "BinLabel": "cb-a-3",
+        "IndividualPrediction": "pred-a",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.68,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-a-4",
+        "BinLabel": "cb-a-4",
+        "IndividualPrediction": "pred-a",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.92,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-c-0",
+        "BinLabel": "cb-c-0",
+        "IndividualPrediction": "pred-c",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-c-1",
+        "BinLabel": "cb-c-1",
+        "IndividualPrediction": "pred-c",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-c-2",
+        "BinLabel": "cb-c-2",
+        "IndividualPrediction": "pred-c",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.52,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-c-3",
+        "BinLabel": "cb-c-3",
+        "IndividualPrediction": "pred-c",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.68,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-c-4",
+        "BinLabel": "cb-c-4",
+        "IndividualPrediction": "pred-c",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.92,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-d-0",
+        "BinLabel": "cb-d-0",
+        "IndividualPrediction": "pred-d",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-d-1",
+        "BinLabel": "cb-d-1",
+        "IndividualPrediction": "pred-d",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-d-2",
+        "BinLabel": "cb-d-2",
+        "IndividualPrediction": "pred-d",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.52,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-d-3",
+        "BinLabel": "cb-d-3",
+        "IndividualPrediction": "pred-d",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.68,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-d-4",
+        "BinLabel": "cb-d-4",
+        "IndividualPrediction": "pred-d",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.92,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-e-0",
+        "BinLabel": "cb-e-0",
+        "IndividualPrediction": "pred-e",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-e-1",
+        "BinLabel": "cb-e-1",
+        "IndividualPrediction": "pred-e",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-e-2",
+        "BinLabel": "cb-e-2",
+        "IndividualPrediction": "pred-e",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.52,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-e-3",
+        "BinLabel": "cb-e-3",
+        "IndividualPrediction": "pred-e",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.68,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-e-4",
+        "BinLabel": "cb-e-4",
+        "IndividualPrediction": "pred-e",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.92,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-f-0",
+        "BinLabel": "cb-f-0",
+        "IndividualPrediction": "pred-f",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-f-1",
+        "BinLabel": "cb-f-1",
+        "IndividualPrediction": "pred-f",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-f-2",
+        "BinLabel": "cb-f-2",
+        "IndividualPrediction": "pred-f",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.52,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-f-3",
+        "BinLabel": "cb-f-3",
+        "IndividualPrediction": "pred-f",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.68,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-f-4",
+        "BinLabel": "cb-f-4",
+        "IndividualPrediction": "pred-f",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.92,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-g-0",
+        "BinLabel": "cb-g-0",
+        "IndividualPrediction": "pred-g",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-g-1",
+        "BinLabel": "cb-g-1",
+        "IndividualPrediction": "pred-g",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-g-2",
+        "BinLabel": "cb-g-2",
+        "IndividualPrediction": "pred-g",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.52,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-g-3",
+        "BinLabel": "cb-g-3",
+        "IndividualPrediction": "pred-g",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.68,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-g-4",
+        "BinLabel": "cb-g-4",
+        "IndividualPrediction": "pred-g",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.92,
+        "CoverageCount": 30
+      },
+      {
+        "CalibrationBinId": "cb-b-0",
+        "BinLabel": "cb-b-0",
+        "IndividualPrediction": "pred-b",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 8
+      },
+      {
+        "CalibrationBinId": "cb-b-1",
+        "BinLabel": "cb-b-1",
+        "IndividualPrediction": "pred-b",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 8
+      },
+      {
+        "CalibrationBinId": "cb-b-2",
+        "BinLabel": "cb-b-2",
+        "IndividualPrediction": "pred-b",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.52,
+        "CoverageCount": 8
+      },
+      {
+        "CalibrationBinId": "cb-b-3",
+        "BinLabel": "cb-b-3",
+        "IndividualPrediction": "pred-b",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.68,
+        "CoverageCount": 8
+      },
+      {
+        "CalibrationBinId": "cb-b-4",
+        "BinLabel": "cb-b-4",
+        "IndividualPrediction": "pred-b",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.92,
+        "CoverageCount": 8
       }
     ]
   },
@@ -2133,37 +3671,61 @@
     ],
     "data": [
       {
-        "InterventionTargetId": "it-irf5-modulation",
+        "InterventionTargetId": "it-a",
         "TargetLabel": "IRF5 Regulatory Modulation",
-        "CausalMechanism": "cm-hla-irf5-sle",
+        "CausalMechanism": "cm-a",
         "AutoimmuneDisease": "sle",
         "TherapyClass": "Gene-based",
         "IsValidated": true
       },
       {
-        "InterventionTargetId": "it-il17-blockade",
-        "TargetLabel": "IL-17 Pathway Blockade",
-        "CausalMechanism": "cm-il17-pathway",
-        "AutoimmuneDisease": "ra",
+        "InterventionTargetId": "it-b",
+        "TargetLabel": "IRF5 Regulatory Modulation",
+        "CausalMechanism": "cm-b",
+        "AutoimmuneDisease": "sle",
+        "TherapyClass": "Gene-based",
+        "IsValidated": true
+      },
+      {
+        "InterventionTargetId": "it-c",
+        "TargetLabel": "STAT4 Pathway Modulation",
+        "CausalMechanism": "cm-c",
+        "AutoimmuneDisease": "sle",
+        "TherapyClass": "Gene-based",
+        "IsValidated": false
+      },
+      {
+        "InterventionTargetId": "it-d",
+        "TargetLabel": "IRF5 Regulatory Modulation",
+        "CausalMechanism": "cm-d",
+        "AutoimmuneDisease": "sle",
+        "TherapyClass": "Gene-based",
+        "IsValidated": true
+      },
+      {
+        "InterventionTargetId": "it-f",
+        "TargetLabel": "IL-17 Pathway Blockade (secukinumab)",
+        "CausalMechanism": "cm-f",
+        "AutoimmuneDisease": "psa",
         "TherapyClass": "Cell-based",
         "IsValidated": true
       },
       {
-        "InterventionTargetId": "it-microbiome-reset",
-        "TargetLabel": "Gut Microbiome Reset",
-        "CausalMechanism": "cm-ptpn22-smoke-micro",
-        "AutoimmuneDisease": "ra",
-        "TherapyClass": "Environmental",
-        "IsValidated": false
+        "InterventionTargetId": "it-g",
+        "TargetLabel": "IL-17 Pathway Blockade (secukinumab)",
+        "CausalMechanism": "cm-g",
+        "AutoimmuneDisease": "psa",
+        "TherapyClass": "Cell-based",
+        "IsValidated": true
       }
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Shadle bootstrap rulebook for Causal Autoimmune Architecture Platform \u2014 multi-omic causal inference with comprehensive DAG.",
+    "_CMCC_Summary": "Loop 0: solve-by-inference rulebook for the Causal Autoimmune Architecture Platform. The keystone IndividualPredictions.IsClinicallyActionable is derived through a calculated-field DAG bottoming out only in raw observations.",
     "_conversion_metadata": {
       "source": "shadle-bootstrap",
-      "table_count": 16,
-      "tool_version": "manual-bootstrap-2026-06-19",
+      "table_count": 21,
+      "tool_version": "loop-0-solve-by-inference-2026-06-19",
       "export_mode": "rulebook_first",
       "vocabulary_coverage": "all domain terms in descriptions, field names, and data values"
     }

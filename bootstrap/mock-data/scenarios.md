@@ -1,89 +1,74 @@
-# Mock Data Scenarios
+# Mock Data Scenarios — the test oracle for `IsClinicallyActionable`
 
-## Scenario S1 — Presymptomatic systemic lupus (SLE)
+> **Demonstration of inference structure, not validated clinical decision support.**
+> Real loci/HLA/drug names and literature-aligned thresholds (`../clinical-reference.md`) are used
+> only to make the synthetic story plausible.
 
-**Individual:** `ind-yoruba-0042` — Yoruba ancestry, age 22, enrolled in federated West-Africa node.
+Seven named patients. Each is constructed so the **derived** keystone
+`IndividualPredictions.IsClinicallyActionable` comes out to a known value **for a known reason** —
+and each failing patient fails on **exactly one** of the four gates. Two patients pass (one in-training,
+one ancestry-holdout-that-transports), so every gate is exercised by both a passing and a failing case.
 
-**Variants:**
-- `var-hla-dr15` — HLA haplotype (VariantType: hla-haplotype)
-- `var-reg-irf5` — regulatory variant near IRF5
+Nothing below is entered as a conclusion. The only inputs are **observations** — allele frequencies,
+measured effect sizes/standard errors, replication p-values and effect signs, permutation effect sizes,
+calibration-bin coverage counts, ancestry labels, and a cryptic-relatedness flag.
 
-**Phenotype:** presymptomatic ANA elevation, DiseaseStage `sle-presymptomatic`
+## The four gates (all derived)
 
-**Prediction:** elevated disease-onset probability with calibrated uncertainty 0.82
+| Gate | Field | Passes when… |
+|---|---|---|
+| Causally grounded | `RestsOnConfirmedMechanism` / `PredictedValue > 0` | ≥1 confirmed `IsCausalArchitectureNode` (confident ≥0.7, falsifiable, non-spurious) |
+| Well calibrated | `CalibratedUncertainty >= 0.7` | reliability bins have coverage ≥20 and gap ≤0.1 for this ancestry × disease |
+| Not spurious | `NOT HasSpuriousCorrelationFlag` | rests on a confirmed mechanism AND no cryptic-relatedness leakage |
+| Ancestry-generalizable | `IsAncestryTransportSafe` | in-training (vacuous) OR holdout with ≥1 cross-ancestry-replicated node |
 
----
+## The patients
 
-## Scenario S2 — Rheumatoid arthritis with microbiome interaction
+| # | Patient | Ancestry | Expected `IsClinicallyActionable` | Why (the single deciding gate) |
+|---|---------|----------|:---:|--------------------------------|
+| A | **Ana Reyes** | European (in-training) | **TRUE** | All gates pass: confirmed IRF5→IFN node, well-calibrated, not spurious, in-training. |
+| B | **Bili Okafor** | European (in-training) | **FALSE** | **Calibration** — identical confirmed mechanism to A, but reliability bins have coverage 8 (<20) ⇒ `CalibratedUncertainty = 0`. |
+| C | **Chen Wei** | East Asian (in-training) | **FALSE** | **Spurious mechanism** — STAT4 edge replication sign-flips (only 1 concordant) and one negative control does not collapse (perm 0.5 > 0.1) ⇒ `IsSpuriousDerived` ⇒ not a node. |
+| D | **Diego Santos** | European (in-training) | **FALSE** | **Cryptic relatedness** — fully confirmed mechanism and good calibration, but `HasCrypticRelatednessFlag = TRUE` ⇒ `HasSpuriousCorrelationFlag` at the prediction. |
+| E | **Esi Mensah** | African (in-training) | **FALSE** | **Falsifiability** — qualified, replicated, control-surviving CTLA4 mechanism, but **zero** intervention targets ⇒ `IsExperimentallyFalsifiable = FALSE` ⇒ not a node. |
+| F | **Faisal Haidar** | Indigenous American (holdout) | **FALSE** | **Ancestry transport** — confirmed IL23R node, but all replications ran in the same (Indigenous-American) ancestry ⇒ `CountCrossAncestryConcordant = 0` ⇒ not transportable to an absent-from-training ancestry. |
+| G | **Grace Lin** | Indigenous American (holdout) | **TRUE** | The positive twin of F: same setup, but the IL23R effect **replicated in European and East-Asian cohorts** ⇒ `IsAncestryTransportable` ⇒ actionable despite holdout status. |
 
-**Individual:** `ind-european-1187` — European ancestry, age 45
+## Coverage matrix
 
-**Exposure:** `exp-smoking-pack-years` — longitudinal smoking (environmental exposure)
+```
+              causally-   calibrated  not-spurious  ancestry-
+              grounded                (mech+cryptic) transport
+A (pass)         ✓            ✓            ✓             ✓ (vacuous)   => TRUE
+B (calib)        ✓            ✗            ✓             ✓             => FALSE
+C (spurious)     ✗            ✓            ✗ (mech)      ✓             => FALSE
+D (cryptic)      ✓            ✓            ✗ (cryptic)   ✓             => FALSE
+E (falsifiab.)   ✗            ✓            ✗ (no node)   ✓             => FALSE
+F (transport)    ✓            ✓            ✓             ✗             => FALSE
+G (transp pass)  ✓            ✓            ✓             ✓ (measured)  => TRUE
+```
 
-**OmicsAssay:** gut microbiome + RNA-seq from synovial tissue
+## How to verify after `effortless build`
 
-**CausalMechanism:** gene–environment–microbiome interaction linking PTPN22 coding variant + smoking + dysbiotic microbiome → T-cell activation
+```sql
+SELECT individualpredictionid,
+       isclinicallyactionable,
+       ishighconfidenceprediction,    -- calibration ∧ not-spurious
+       isfalsifiabilitybacked,
+       isancestrytransportsafe,
+       predictedvalue,
+       calibrateduncertainty,
+       patientstratificationtier
+FROM vw_individualpredictions
+ORDER BY individualpredictionid;
+```
 
----
+Expected: `pred-a` and `pred-g` → `isclinicallyactionable = true`; `pred-b, pred-c, pred-d, pred-e, pred-f` → `false`.
+The build verification step asserts exactly this oracle.
 
-## Scenario S3 — Treatment-induced remission with feedback
+## Sparse / unused ontology (kept as context, not gating)
 
-**Individual:** `ind-east-asian-3301`
-
-**Treatment:** rituximab — treatment response = Partial, treatment-induced molecular change recorded
-
-**ClinicalPhenotype:** severity drops from 8.2 → 3.1 (feedback on disease progression)
-
-**CounterfactualTrajectory:** without treatment, projected severity 9.4 at 12 months
-
----
-
-## Scenario S4 — Ancestry holdout prediction
-
-**Individual:** `ind-indigenous-american-0099` — ancestry absent from primary training
-
-**FederatedDataset:** `fed-amazon-cohort` — privacy-preserving federated node
-
-**Prediction:** ancestry-equitable risk score with calibrated uncertainty; no spurious-correlation flag
-
----
-
-## Scenario S5 — Higher-order epistasis
-
-**Individual:** `ind-african-0555`
-
-**Variants:** two regulatory variants (`var-reg-ctla4`, `var-reg-stat4`)
-
-**EpistaticInteraction:** higher-order epistasis score 0.67, pleiotropy across SLE and RA phenotypes
-
----
-
-## Scenario S6 — Falsifiable mechanism → intervention target
-
-**CausalMechanism:** `cm-il17-pathway` — IL-17 enhancer–promoter interaction in skin tissue
-
-**InterventionTarget:** `it-il17-blockade` — experimentally falsifiable; guides cell-based therapy trial
-
----
-
-## Seed Row Counts (rulebook data arrays)
-
-| Table | Rows |
-|-------|------|
-| Individuals | 6 |
-| AutoimmuneDiseases | 3 |
-| DiseaseStages | 6 |
-| Tissues | 5 |
-| OmicsModalities | 8 |
-| FederatedDatasets | 2 |
-| VariantTypes | 10 |
-| GenomicVariants | 8 |
-| OmicsAssays | 6 |
-| EnvironmentalExposures | 3 |
-| Treatments | 3 |
-| ClinicalPhenotypes | 6 |
-| CausalMechanisms | 4 |
-| EpistaticInteractions | 2 |
-| CounterfactualTrajectories | 3 |
-| IndividualPredictions | 4 |
-| InterventionTargets | 3 |
+`EnvironmentalExposures`, `Treatments`, `ClinicalPhenotypes`, `EpistaticInteractions`,
+`CounterfactualTrajectories`, and the methylome / Hi-C / single-cell modality rows hold one
+"(context only)" row each. They represent the breadth of the problem statement but are deliberately
+off the keystone's dependency path (see the anti-hallucination rule in `../../LEOPOLD_LOOPING_PLAN.md`).
