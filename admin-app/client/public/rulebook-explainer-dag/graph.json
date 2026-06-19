@@ -7438,7 +7438,7 @@
     ]
   },
   "__meta__": {
-    "Description": "Global settings table: the one place for random/global/third-party/configuration values, choices, parameters, thresholds, and the reusable phrasebook the derived report draws on. Distinct from the `_meta` conversion-metadata section. Each row is one key/value setting. Narrative fragment fields elsewhere in the rulebook reference these keys so common language and shared numbers are authored and corrected once, never re-implemented per case. NOTE: banding-threshold rows (e.g. the temperature bands) are the numeric atoms; the per-case decision of which band applies lives in a calculated fragment field on the patient row, not here — this table holds the reusable pieces, not the case logic.",
+    "Description": "General-purpose, global name/value settings ENTITY — deliberately transpiler-IGNORED (leading underscore). The one place for random/global/third-party/configuration values, choices, parameters, thresholds, and the reusable phrase atoms the derived report draws on. Just global key/value configuration data; that's it. Distinct from the `_meta` conversion-metadata section, and NOT a domain table (no FKs in, nothing aggregates over it, not in the DAG). Each row is one key/value setting. Narrative fragment fields on domain rows reference these keys so common language and shared numbers are authored and corrected once, never re-implemented per case. NOTE: banding-threshold rows (e.g. the temperature bands) are the numeric atoms; the per-case decision of which band applies lives in a calculated fragment field on the patient row, not here — this table holds the reusable pieces, not the case logic. See the effortless-meta-table skill.",
     "schema": [
       {
         "name": "MetaKey",
