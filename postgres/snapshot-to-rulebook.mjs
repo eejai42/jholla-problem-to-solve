@@ -102,19 +102,42 @@ types.setTypeParser(1700, (v) => (v === null ? null : parseFloat(v)));
 types.setTypeParser(20, (v) => (v === null ? null : parseInt(v, 10)));
 
 // Dates/timestamps: by default pg parses these into JS Date objects, which
-// JSON.stringify then renders as full UTC ISO strings — turning an authored bare
-// date "2023-04-10" into "2023-04-10T05:00:00.000Z" (a TZ-shifted, lossy diff).
-// Keep the DB's own TEXT instead, and collapse a pure-midnight timestamp back to
-// the bare YYYY-MM-DD it was authored as, so date columns round-trip unchanged.
-// (Non-midnight timestamps keep their full "YYYY-MM-DD HH:MM:SS…" text.)
-const keepDateText = (v) => {
-  if (v === null) return null;
-  const m = /^(\d{4}-\d{2}-\d{2})[ T]00:00:00(?:\.0+)?(?:[+-]\d{2}(?::?\d{2})?|Z)?$/.exec(v);
-  return m ? m[1] : v;
+// JSON.stringify renders with millisecond precision and a TZ-shifted local form
+// — so an authored "2023-04-10" becomes "2023-04-10T05:00:00.000Z" and an
+// authored "2026-06-02T09:00:00Z" comes back local. Both are lossy/noisy
+// round-trips that churn the rulebook AND the regenerated seed SQL.
+//
+// This rulebook authors timestamptz columns in TWO shapes, and we must round-trip
+// each back to the SAME shape:
+//   * a bare DATE  "2023-04-10"           — stored as LOCAL midnight, e.g. the
+//                                           DB text "2023-04-10 00:00:00-05".
+//   * a UTC instant "2026-06-02T09:00:00Z" — stored at that instant, e.g. the DB
+//                                            text "2026-06-02 04:00:00-05".
+// The disambiguator is the LOCAL wall-clock time: midnight => it was a bare date.
+// So we parse the DB's own TEXT (which already carries the session-local wall
+// clock + offset) rather than a JS Date:
+//   * local time is 00:00:00            -> emit bare "YYYY-MM-DD"
+//   * otherwise                          -> emit canonical UTC ISO "…T..:..:..Z"
+// Working from the text keeps this correct regardless of the DB session timezone
+// and drops sub-second noise (none of this rulebook's datetimes carry it).
+const pad = (n, w = 2) => String(n).padStart(w, '0');
+const canonicalTs = (text) => {
+  if (text === null) return null;
+  // "YYYY-MM-DD HH:MM:SS[.ffff][+-HH[:MM]]"  (pg's timestamptz text form)
+  const m = /^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})(?:\.\d+)?([+-]\d{2})(?::?(\d{2}))?$/.exec(text);
+  if (!m) return text; // unrecognized shape — leave it exactly as the DB gave it
+  const [, Y, Mo, D, h, mi, s, offH, offM = '00'] = m;
+  if (h === '00' && mi === '00' && s === '00') return `${Y}-${Mo}-${D}`; // local midnight => bare date
+  // Convert local wall-clock + offset to a UTC instant, then format as ...Z.
+  const utcMs = Date.UTC(+Y, +Mo - 1, +D, +h, +mi, +s) - (Number(offH) * 60 + Math.sign(Number(offH)) * Number(offM)) * 60000;
+  const d = new Date(utcMs);
+  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}Z`;
 };
-types.setTypeParser(1082, keepDateText); // date
-types.setTypeParser(1114, keepDateText); // timestamp without time zone
-types.setTypeParser(1184, keepDateText); // timestamp with time zone
+// Tell pg NOT to pre-parse these into Date objects — hand us the raw text so the
+// rules above see the session-local wall clock.
+types.setTypeParser(1082, (v) => v);          // date — already bare "YYYY-MM-DD"
+types.setTypeParser(1114, canonicalTs);       // timestamp without time zone
+types.setTypeParser(1184, canonicalTs);       // timestamp with time zone
 
 async function main() {
   const raw = readFileSync(RULEBOOK_PATH, 'utf8');

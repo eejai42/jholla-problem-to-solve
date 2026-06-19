@@ -3056,7 +3056,7 @@ $$ LANGUAGE sql STABLE;
 -- Used for join-free cross-table references in aggregations
 
 CREATE OR REPLACE FUNCTION get_state_transitions_transition_at(p_state_transition_id TEXT)
-RETURNS DATE AS $$
+RETURNS TIMESTAMPTZ AS $$
   SELECT (SELECT transition_at FROM state_transitions WHERE state_transition_id = p_state_transition_id);
 $$ LANGUAGE sql STABLE;
 

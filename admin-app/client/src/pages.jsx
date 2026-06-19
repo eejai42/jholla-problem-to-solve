@@ -7,8 +7,35 @@
 //   LeopoldEditor    the Leopold-loop editor + regenerate-plan
 import React, { useEffect, useState } from 'react';
 import { C, useFetch, send, Markdown } from './ui.jsx';
+import { Link, useQueryParam, useLocation } from './router.jsx';
 
 const STATUS_LABEL = { pass: '✓ green', fail: '✗ FAIL', not_surfaced: '○ not surfaced (501)' };
+
+// Shared value formatter (booleans, nulls, arrays → display strings).
+const fmtVal = (v) => (v === true ? 'true' : v === false ? 'false' : v == null ? '—' : Array.isArray(v) ? `[${v.join(', ')}]` : String(v));
+
+// A patient chip rendered as a real Link to that case's route. Used wherever a
+// cohort is shown so every patient is reachable by URL (no click-to-select).
+function PatientChips({ list, predId }) {
+  return (
+    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
+      {list.map((p) => {
+        const active = predId === p.individual_prediction_id;
+        return (
+          <Link key={p.individual_prediction_id}
+            to={`/diagnosis/case/${p.individual_prediction_id}`}
+            title={`${p.individual_ancestry_label}${p.is_ancestry_holdout ? ', holdout' : ''}`}
+            style={{
+              padding: '6px 10px', borderRadius: 6, border: `1px solid ${active ? C.ink : C.border}`,
+              background: active ? '#222' : '#fff', color: active ? '#fff' : C.ink, fontSize: 13,
+            }}>
+            {p.individual}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
 
 // ===========================================================================
 //  HARNESS
@@ -84,45 +111,255 @@ export function HarnessView() {
 //    "Summary"     the doctor-style Markdown writeup (the PDF-able artifact)
 //  The patient selector is shared; both tabs render the SAME selected patient.
 // ===========================================================================
+// DiagnosisView — the /diagnosis index: the cohort, each patient a Link to its
+// own case route. (Selecting a patient is navigation, not local state.)
 export function DiagnosisView() {
   const { data: patients } = useFetch('/api/patients');
-  const [sel, setSel] = useState(null);
-  const [tab, setTab] = useState('chain');
   const list = Array.isArray(patients) ? patients : [];
-  useEffect(() => { if (!sel && list.length) setSel(list[0].individual_prediction_id); }, [list, sel]);
-  const patient = list.find((p) => p.individual_prediction_id === sel);
-  const TABS = [
-    ['chain', 'Full chain'],
-    ['summary', 'Summary writeup'],
+  return (
+    <div>
+      <h2 style={{ marginTop: 0 }}>Patient Diagnosis — cohort</h2>
+      <p style={{ color: C.sub, fontSize: 13 }}>
+        Each patient below is a real, linkable thing. Open one to walk its case up the inference DAG —
+        every conclusion is <strong>derived</strong> from raw observations, none entered by hand.
+      </p>
+      {!list.length ? <p style={{ color: C.sub }}>Loading patients…</p> : (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 }}>
+          {list.map((p) => (
+            <Link key={p.individual_prediction_id} to={`/diagnosis/case/${p.individual_prediction_id}`}
+              style={{ display: 'block', border: `1px solid ${C.border}`, borderRadius: 8, padding: '12px 14px', background: '#fff' }}>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{p.individual}</div>
+              <div style={{ color: C.sub, fontSize: 12, marginTop: 2 }}>
+                {p.individual_ancestry_label}{p.is_ancestry_holdout ? ' · holdout ancestry' : ''}
+              </div>
+              <div style={{ color: C.accent, fontSize: 12, marginTop: 6 }}>open case ›</div>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// The /diagnosis/case/:predictionId tabs. Each tab is a SUB-ROUTE, so selecting
+// one changes the URL — F5 (and a shared link) reopens the exact same tab.
+const CASE_TABS = [
+  ['', 'Case walk'],
+  ['report', 'Summary writeup'],
+  ['evidence', 'Evidence'],
+  ['mechanism', 'Mechanism'],
+  ['replication', 'Replication'],
+  ['controls', 'Controls'],
+  ['calibration', 'Calibration'],
+  ['gates', 'Gates'],
+  ['keystone', 'Full chain'],
+];
+
+// CaseDetail — the canonical URL-driven case page. `routeKey` tells it which
+// pane to show (diagnosis.case = walk; diagnosis.case.<sub> = that sub-pane).
+// `predId` is the captured :predictionId. A patient picker links across cases;
+// a tab strip links across panes. Nothing here is local selection state.
+export function CaseDetail({ predId, routeKey }) {
+  const { data: patients } = useFetch('/api/patients');
+  const list = Array.isArray(patients) ? patients : [];
+  const patient = list.find((p) => p.individual_prediction_id === predId);
+  const sub = (routeKey || 'diagnosis.case').replace(/^diagnosis\.case\.?/, ''); // '' | 'evidence' | …
+  const base = `/diagnosis/case/${predId}`;
+
+  return (
+    <div>
+      <h2 style={{ marginTop: 0 }}>
+        Case — {patient ? patient.individual : predId}
+        {patient ? <span style={{ color: C.sub, fontWeight: 400, fontSize: 14 }}> · {patient.individual_ancestry_label}{patient.is_ancestry_holdout ? ', holdout' : ''}</span> : null}
+      </h2>
+      <PatientChips list={list} predId={predId} />
+
+      {/* tab strip — each tab is a Link to its sub-route */}
+      <div style={{ display: 'flex', gap: 4, borderBottom: `1px solid ${C.border}`, marginBottom: 14, flexWrap: 'wrap' }}>
+        {CASE_TABS.map(([k, lbl]) => {
+          const active = sub === k;
+          return (
+            <Link key={k || 'walk'} to={k ? `${base}/${k}` : base}
+              style={{ padding: '7px 14px', borderBottom: `2px solid ${active ? C.accent : 'transparent'}`, color: active ? C.ink : C.sub, fontWeight: active ? 700 : 500, fontSize: 14 }}>
+              {lbl}
+            </Link>
+          );
+        })}
+      </div>
+
+      {!predId ? <p style={{ color: C.sub }}>No case selected.</p> : <CasePane predId={predId} sub={sub} patient={patient} />}
+    </div>
+  );
+}
+
+// Which pane to render for a given sub-route. Reuses the existing renderers
+// where they already exist (walk, full chain, summary); the leaf-list sub-routes
+// render a focused list whose rows pop a URL-addressable detail panel.
+function CasePane({ predId, sub, patient }) {
+  switch (sub) {
+    case '': return <CaseWalkBody predId={predId} />;
+    case 'keystone': return <DiagnosisChain predId={predId} patient={patient} />;
+    case 'report': return <DiagnosisSummary predId={predId} />;
+    case 'evidence':
+    case 'mechanism':
+    case 'replication':
+    case 'controls':
+    case 'calibration':
+    case 'gates':
+      return <LeafPane predId={predId} sub={sub} patient={patient} />;
+    default: return <CaseWalkBody predId={predId} />;
+  }
+}
+
+// ===========================================================================
+//  LEAF PANES — the deep diagnosis.case.* sub-routes. Each shows a focused list
+//  of leaf rows for the case; clicking a row opens a URL-addressable detail
+//  DRAWER (?panel=<sub>:<id>) instead of navigating, per the "leaves pop,
+//  entities navigate" rule. The drawer is in the query string, so F5 (and a
+//  shared link) reopens the exact same leaf.
+// ===========================================================================
+const mechOf = (predId) => `cm-${predId.split('-')[1]}`; // pred-a -> cm-a (oracle convention)
+
+// Per sub-route: how to fetch the list, the row id field, the title, and which
+// columns to show. endpoint() takes the predId.
+const LEAF_CONFIG = {
+  evidence: {
+    title: 'Qualified evidence', noun: 'evidence item', idField: 'evidence_item_id',
+    endpoint: (p) => `/api/mechanisms/${mechOf(p)}/evidence`,
+    cols: [['evidence_item_id', 'ID'], ['measured_effect_size', 'Effect'], ['standard_error', 'SE'], ['z_stat', 'Z'], ['is_qualified_evidence', 'Qualified']],
+  },
+  replication: {
+    title: 'Cross-cohort replication', noun: 'replication', idField: 'cohort_replication_id',
+    endpoint: (p) => `/api/mechanisms/${mechOf(p)}/replications`,
+    cols: [['cohort_replication_id', 'ID'], ['replication_ancestry_label', 'Ancestry'], ['replication_effect_sign', 'Sign'], ['replication_p_value', 'p'], ['is_concordant_replication', 'Concordant']],
+  },
+  controls: {
+    title: 'Negative controls', noun: 'control test', idField: 'negative_control_test_id',
+    endpoint: (p) => `/api/mechanisms/${mechOf(p)}/controls`,
+    cols: [['negative_control_test_id', 'ID'], ['permuted_effect_size', 'Permuted effect'], ['survives_negative_control', 'Survives']],
+  },
+  calibration: {
+    title: 'Calibration bins', noun: 'calibration bin', idField: 'calibration_bin_id',
+    endpoint: (p) => `/api/predictions/${p}/calibration`,
+    cols: [['calibration_bin_id', 'ID'], ['nominal_coverage', 'Nominal'], ['empirical_coverage', 'Empirical'], ['is_well_calibrated_bin', 'Well-calibrated']],
+  },
+};
+
+// The gates sub-route: the four keystone gates, read straight off the prediction.
+function GatesPane({ predId }) {
+  const { data, loading, error } = useFetch(`/api/predictions/${predId}`, [predId]);
+  if (loading) return <p style={{ color: C.sub }}>Loading gates…</p>;
+  if (error) return <p style={{ color: C.fail }}>{error}</p>;
+  const GATES = [
+    ['is_causal_mechanism_confirmed', 'Mechanism confirmed'],
+    ['is_high_confidence_prediction', 'High-confidence prediction'],
+    ['is_ancestry_transport_safe', 'Ancestry transport safe'],
+    ['is_clinically_actionable', 'Keystone — clinically actionable'],
   ];
   return (
     <div>
-      <h2 style={{ marginTop: 0 }}>Patient Diagnosis</h2>
-      <p style={{ color: C.sub, fontSize: 13 }}>
-        Every value below is <strong>derived</strong> from raw observations through the inference DAG — none of the
-        conclusions are entered by hand. The full chain lets you drill any value down to ground truth.
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
+        The keystone ANDs the first three gates. Each is itself derived — open the full chain to see how.
       </p>
-      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
-        {list.map((p) => (
-          <button key={p.individual_prediction_id} onClick={() => setSel(p.individual_prediction_id)}
-            style={{ padding: '6px 10px', borderRadius: 6, cursor: 'pointer', border: `1px solid ${sel === p.individual_prediction_id ? C.ink : C.border}`, background: sel === p.individual_prediction_id ? '#222' : '#fff', color: sel === p.individual_prediction_id ? '#fff' : C.ink }}
-            title={`${p.individual_ancestry_label}${p.is_ancestry_holdout ? ', holdout' : ''}`}>
-            {p.individual}
-          </button>
-        ))}
+      {GATES.map(([k, lbl]) => <GateChip key={k} label={lbl} value={data?.[k]} />)}
+    </div>
+  );
+}
+
+function LeafPane({ predId, sub, patient }) {
+  const [panel, setPanel] = useQueryParam('panel');
+  if (sub === 'gates') return <GatesPane predId={predId} />;
+  if (sub === 'mechanism') return <MechanismPane predId={predId} />;
+  const cfg = LEAF_CONFIG[sub];
+  return <LeafList predId={predId} sub={sub} cfg={cfg} panel={panel} setPanel={setPanel} />;
+}
+
+function LeafList({ predId, sub, cfg, panel, setPanel }) {
+  const { data, loading, error } = useFetch(cfg.endpoint(predId), [predId]);
+  const rows = Array.isArray(data) ? data : [];
+  const openId = panel && panel.startsWith(`${sub}:`) ? panel.slice(sub.length + 1) : null;
+  const openRow = rows.find((r) => String(r[cfg.idField]) === openId);
+  return (
+    <div>
+      <h3 style={{ marginTop: 0 }}>{cfg.title} <span style={{ color: C.sub, fontWeight: 400, fontSize: 13 }}>({rows.length})</span></h3>
+      <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>Click any {cfg.noun} to open its detail — it stays in the URL, so a refresh (or a shared link) reopens the same one.</p>
+      {loading ? <p style={{ color: C.sub }}>Loading…</p> : error ? <p style={{ color: C.fail }}>{error}</p> : !rows.length ? <p style={{ color: C.sub }}>No rows.</p> : (
+        <table style={{ borderCollapse: 'collapse', fontSize: 13, width: '100%' }}>
+          <thead><tr>{cfg.cols.map(([, h]) => <th key={h} style={{ border: `1px solid ${C.border}`, padding: '4px 8px', background: '#f5f5f5', textAlign: 'left' }}>{h}</th>)}</tr></thead>
+          <tbody>
+            {rows.map((r) => {
+              const id = String(r[cfg.idField]);
+              const isOpen = id === openId;
+              return (
+                <tr key={id} onClick={() => setPanel(isOpen ? null : `${sub}:${id}`)}
+                  style={{ cursor: 'pointer', background: isOpen ? C.bgAccent : 'transparent' }}>
+                  {cfg.cols.map(([k]) => <td key={k} style={{ border: `1px solid ${C.border}`, padding: '4px 8px', fontFamily: /id$/.test(k) ? 'ui-monospace, monospace' : 'inherit' }}>{fmtVal(r[k])}</td>)}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+      {openRow ? <LeafDrawer title={`${cfg.noun} · ${openId}`} row={openRow} onClose={() => setPanel(null)} /> : null}
+    </div>
+  );
+}
+
+// The URL-addressable detail drawer for one leaf row. Every field is shown
+// (the leaf IS the bottom of the spreadsheet — every number visible & editable
+// later). Closing clears ?panel. relative_path, if present, is shown as the
+// row's own canonical URL.
+function LeafDrawer({ title, row, onClose }) {
+  return (
+    <div onClick={onClose} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.25)', display: 'flex', justifyContent: 'flex-end', zIndex: 50 }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ width: 420, maxWidth: '90vw', height: '100%', background: '#fff', boxShadow: '-4px 0 24px rgba(0,0,0,0.12)', overflowY: 'auto', padding: '18px 20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 10 }}>
+          <h3 style={{ margin: 0, fontSize: 15 }}>{title}</h3>
+          <button onClick={onClose} style={{ border: 'none', background: 'none', cursor: 'pointer', fontSize: 18, color: C.sub }}>×</button>
+        </div>
+        {row.relative_path ? (
+          <div style={{ fontSize: 11, color: C.sub, marginBottom: 10, wordBreak: 'break-all' }}>
+            canonical path: <code>{row.relative_path}</code>
+          </div>
+        ) : null}
+        <table style={{ borderCollapse: 'collapse', fontSize: 12.5, width: '100%' }}>
+          <tbody>
+            {Object.entries(row).map(([k, v]) => (
+              <tr key={k}>
+                <td style={{ padding: '3px 10px 3px 0', color: C.sub, verticalAlign: 'top', whiteSpace: 'nowrap' }}>{k}</td>
+                <td style={{ padding: '3px 0', fontFamily: 'ui-monospace, monospace' }}>{fmtVal(v)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-      {/* tab strip */}
-      <div style={{ display: 'flex', gap: 4, borderBottom: `1px solid ${C.border}`, marginBottom: 14 }}>
-        {TABS.map(([k, lbl]) => (
-          <button key={k} onClick={() => setTab(k)}
-            style={{ padding: '7px 14px', cursor: 'pointer', border: 'none', borderBottom: `2px solid ${tab === k ? C.accent : 'transparent'}`, background: 'none', color: tab === k ? C.ink : C.sub, fontWeight: tab === k ? 700 : 500, fontSize: 14 }}>
-            {lbl}
-          </button>
-        ))}
-      </div>
-      {!sel ? <p style={{ color: C.sub }}>Loading patients…</p>
-        : tab === 'chain' ? <DiagnosisChain predId={sel} patient={patient} />
-        : <DiagnosisSummary predId={sel} />}
+    </div>
+  );
+}
+
+// MechanismPane — the mechanism node for this case (the cm-X rollup + verdict).
+function MechanismPane({ predId }) {
+  const mech = mechOf(predId);
+  const { data, loading, error } = useFetch(`/api/mechanisms/${mech}`, [mech]);
+  if (loading) return <p style={{ color: C.sub }}>Loading mechanism…</p>;
+  if (error) return <p style={{ color: C.fail }}>{error}</p>;
+  const row = data && !data.error ? data : {};
+  const SHOW = [
+    ['causal_mechanism_id', 'Mechanism'], ['count_qualified_evidence', 'Qualified evidence'],
+    ['replicates_across_cohorts', 'Replicates'], ['survives_negative_controls', 'Survives controls'],
+    ['is_spurious_derived', 'Spurious'], ['is_causal_architecture_node', 'Confirmed node'],
+    ['is_transportable_to_absent_ancestry', 'Transportable'],
+  ];
+  return (
+    <div>
+      <h3 style={{ marginTop: 0 }}>Mechanism node</h3>
+      <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>
+        Aggregations over this mechanism's atoms decide whether it is a real causal-architecture node.
+        Drill into <Link to={`/diagnosis/case/${predId}/evidence`} style={{ color: C.accent }}>evidence</Link>,{' '}
+        <Link to={`/diagnosis/case/${predId}/replication`} style={{ color: C.accent }}>replication</Link>, or{' '}
+        <Link to={`/diagnosis/case/${predId}/controls`} style={{ color: C.accent }}>controls</Link>.
+      </p>
+      <div>{SHOW.map(([k, lbl]) => <GateChip key={k} label={lbl} value={row[k]} />)}</div>
     </div>
   );
 }
@@ -183,8 +420,6 @@ function statusDot(status) {
   const color = status === 'pass' ? C.pass : status === 'fail' ? C.fail : C.not_surfaced;
   return <span style={{ display: 'inline-block', width: 9, height: 9, borderRadius: 5, background: color, marginRight: 8, flex: '0 0 auto' }} />;
 }
-
-const fmtVal = (v) => (v === true ? 'true' : v === false ? 'false' : v == null ? '—' : Array.isArray(v) ? `[${v.join(', ')}]` : String(v));
 
 // One node card: collapsed shows field = value + status; expanded reveals the
 // derivation (witness), expected vs actual, and the source endpoint (provenance).
@@ -325,18 +560,24 @@ function GateChip({ label, value }) {
   );
 }
 
-function WalkStep({ level, patient, reached, isDeciding }) {
+function WalkStep({ level, patient, reached, isDeciding, drillTo }) {
   const { data } = useFetch(level.endpoint(patient), [patient.prediction, patient.individual]);
   const row = data && !data.error ? data : {};
   const dim = !reached;
+  const Title = (
+    <>
+      {level.title} <span style={{ color: C.sub, fontWeight: 400, fontFamily: 'monospace', fontSize: 12 }}>· {level.state}</span>
+    </>
+  );
   return (
     <div style={{ position: 'relative', paddingLeft: 26, marginBottom: 14, opacity: dim ? 0.4 : 1 }}>
       <div style={{ position: 'absolute', left: 0, top: 2, width: 14, height: 14, borderRadius: 7, background: reached ? (isDeciding ? C.accent : C.pass) : '#ccc', border: '2px solid #fff', boxShadow: `0 0 0 1px ${C.border}` }} />
       {/* connector line */}
       <div style={{ position: 'absolute', left: 6, top: 16, bottom: -14, width: 2, background: C.border }} />
       <div style={{ fontWeight: 700, fontSize: 14 }}>
-        {level.title} <span style={{ color: C.sub, fontWeight: 400, fontFamily: 'monospace', fontSize: 12 }}>· {level.state}</span>
+        {drillTo ? <Link to={drillTo} style={{ color: C.ink, borderBottom: `1px dotted ${C.sub}` }}>{Title}</Link> : Title}
         {isDeciding ? <span style={{ marginLeft: 8, color: C.accent, fontSize: 12, fontWeight: 700 }}>◀ deciding step</span> : null}
+        {drillTo ? <span style={{ marginLeft: 8, color: C.accent, fontSize: 12 }}>drill in ›</span> : null}
       </div>
       <div style={{ fontSize: 12.5, color: C.sub, margin: '2px 0 4px' }}>{level.blurb}</div>
       <div>{level.fields.map(([k, lbl]) => <GateChip key={k} label={lbl} value={row[k]} />)}</div>
@@ -344,18 +585,30 @@ function WalkStep({ level, patient, reached, isDeciding }) {
   );
 }
 
+// CaseWalk — the admin.cohort entry point: a thin wrapper that, lacking a
+// predId in the URL, renders the cohort grid (each patient a Link). The actual
+// walk lives in CaseWalkBody, reused by CaseDetail's default pane.
 export function CaseWalk() {
-  const { data: patients } = useFetch('/api/patients');
-  const list = Array.isArray(patients) ? patients : [];
-  const [predId, setPredId] = useState(null);
-  useEffect(() => { if (!predId && list.length) setPredId(list[0].individual_prediction_id); }, [list, predId]);
+  return <DiagnosisView />;
+}
+
+// Each walk level can deep-link to the matching case sub-route, so the walk
+// itself is clickable down to its evidence / mechanism / calibration panes.
+const LEVEL_SUBROUTE = {
+  Intake: null,
+  EvidenceAssessed: 'evidence',
+  MechanismConfirmed: 'mechanism',
+  CalibrationChecked: 'calibration',
+  TransportChecked: 'replication',
+};
+
+// CaseWalkBody — the upside-down reasoning walk for ONE case (predId from URL).
+// No patient picker / header here: those belong to CaseDetail.
+export function CaseWalkBody({ predId }) {
   const { data: lc } = useFetch(predId ? `/api/predictions/${predId}/lifecycle` : '/api/health', [predId]);
-  const patient = list.find((p) => p.individual_prediction_id === predId);
-  // enrich with the oracle ids the walk endpoints need (mechanism / variant / individual).
   const { data: pred } = useFetch(predId ? `/api/predictions/${predId}` : '/api/health', [predId]);
-  // the payoff writeup, rendered inline (not a link to the raw endpoint).
   const { data: dx, loading: dxLoading, error: dxError } = useFetch(predId ? `/api/diagnosis/${predId}` : '/api/health', [predId]);
-  if (!patient || !pred) return <div><h2 style={{ marginTop: 0 }}>Case Walk</h2><p>Loading cases…</p></div>;
+  if (!pred || pred.error) return <p style={{ color: C.sub }}>Loading case…</p>;
 
   const ctx = {
     prediction: predId,
@@ -369,20 +622,11 @@ export function CaseWalk() {
 
   return (
     <div>
-      <h2 style={{ marginTop: 0 }}>Case Walk — facts on the ground, building to the diagnosis</h2>
-      <p style={{ color: C.sub, fontSize: 13 }}>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
         An upside-down reasoning model: start from the raw facts, climb the deterministic DAG one level at a time,
-        and watch each case branch at its single deciding gate until the conclusion reveals itself.
+        and watch the case branch at its single deciding gate until the conclusion reveals itself.
+        <br />Each level links to its detail pane — click any to drill in.
       </p>
-      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 16 }}>
-        {list.map((p) => (
-          <button key={p.individual_prediction_id} onClick={() => setPredId(p.individual_prediction_id)}
-            style={{ padding: '6px 10px', borderRadius: 6, cursor: 'pointer', border: `1px solid ${predId === p.individual_prediction_id ? C.ink : C.border}`, background: predId === p.individual_prediction_id ? '#222' : '#fff', color: predId === p.individual_prediction_id ? '#fff' : C.ink }}
-            title={`${p.individual_ancestry_label}${p.is_ancestry_holdout ? ', holdout' : ''}`}>
-            {p.individual}
-          </button>
-        ))}
-      </div>
 
       <div style={{ marginTop: 8 }}>
         {LEVELS.map((lvl, i) => {
@@ -390,7 +634,9 @@ export function CaseWalk() {
           // the deciding step is the LAST non-terminal level the case reached
           const nextState = LEVELS[i + 1]?.state;
           const isDeciding = reached && (terminal === 'NotActionable') && (!visited.has(nextState) && nextState !== undefined ? !visited.has(nextState) : false) && lc?.states?.[lc.states.length - 2] === lvl.state;
-          return <WalkStep key={lvl.state} level={lvl} patient={ctx} reached={reached} isDeciding={isDeciding} />;
+          const sub = LEVEL_SUBROUTE[lvl.state];
+          return <WalkStep key={lvl.state} level={lvl} patient={ctx} reached={reached} isDeciding={isDeciding}
+            drillTo={sub ? `/diagnosis/case/${predId}/${sub}` : null} />;
         })}
         {/* terminal verdict */}
         <div style={{ paddingLeft: 26, position: 'relative', marginTop: 4 }}>
