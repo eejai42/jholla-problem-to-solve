@@ -154,7 +154,7 @@
         "type": "calculated",
         "nullable": true,
         "Description": "Display label combining disease and stage.",
-        "formula": "={{AutoimmuneDiseaseDiseaseLabel}} & \" \u2014 \" & {{StageLabel}}"
+        "formula": "={{AutoimmuneDiseaseDiseaseLabel}} & \" — \" & {{StageLabel}}"
       },
       {
         "name": "AutoimmuneDiseaseDiseaseLabel",
@@ -2273,7 +2273,7 @@
         "EnvironmentalExposureId": "exp-context",
         "ExposureLabel": "Smoking pack-years (context only)",
         "Individual": "ind-a-reyes",
-        "ExposureLevel": 3.0,
+        "ExposureLevel": 3,
         "ExposureStartDate": "2015-01-01",
         "IsMaternalEffect": false
       }
@@ -2483,7 +2483,7 @@
         "AutoimmuneDisease": "sle",
         "DiseaseStage": "sle-presymptomatic",
         "Tissue": "blood",
-        "SeverityScore": 4.0,
+        "SeverityScore": 4,
         "MeasurementDate": "2024-02-01",
         "HasImmuneDysfunction": true
       }
@@ -2956,7 +2956,7 @@
         "TrajectoryLabel": "Untreated SLE projection (context only)",
         "Individual": "ind-a-reyes",
         "AutoimmuneDisease": "sle",
-        "ProjectedSeverity": 6.0,
+        "ProjectedSeverity": 6,
         "HorizonMonths": 12,
         "InterventionApplied": "none"
       }
@@ -3717,6 +3717,721 @@
         "AutoimmuneDisease": "psa",
         "TherapyClass": "Cell-based",
         "IsValidated": true
+      }
+    ]
+  },
+  "Axioms": {
+    "Description": "Non-negotiable invariants the platform must obey. Load-bearing constraints, not per-loop work. Captured from the gauntlet conversation.",
+    "schema": [
+      {
+        "name": "AxiomId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier for the axiom."
+      },
+      {
+        "name": "Statement",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The invariant, stated as a rule."
+      },
+      {
+        "name": "Rationale",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Why this must hold / what it defends against."
+      },
+      {
+        "name": "Category",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Grouping: trust-boundary | solve-by-inference | knob | witness | scope."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{Statement}}"
+      }
+    ],
+    "data": [
+      {
+        "AxiomId": "ax-llm-no-vote",
+        "Statement": "The LLM never gets a vote on the conclusion.",
+        "Rationale": "Demotes the model to intake-clerk + lab; the verdict is the deterministic DAG's, never the model's.",
+        "Category": "trust-boundary"
+      },
+      {
+        "AxiomId": "ax-keystone-computed",
+        "Statement": "IsClinicallyActionable is computed, never entered.",
+        "Rationale": "No field a curator (human or LLM) can set to make the diagnosis come out right.",
+        "Category": "solve-by-inference"
+      },
+      {
+        "AxiomId": "ax-line-in-dag",
+        "Statement": "The trust boundary is a line in the DAG: fields with a formula are the model's; raw-input leaf fields are the LLM's (or a human's).",
+        "Rationale": "Makes the boundary mechanically checkable rather than a vibe.",
+        "Category": "trust-boundary"
+      },
+      {
+        "AxiomId": "ax-llm-leaves-only",
+        "Statement": "The LLM does exactly two things, both at the leaf layer: interpret intake facts, and produce synthetic-but-transparent test results.",
+        "Rationale": "Intake clerk + lab — the un-alarming medical roles. It computes no higher-order inference.",
+        "Category": "trust-boundary"
+      },
+      {
+        "AxiomId": "ax-every-choice-knob",
+        "Statement": "Every choice the LLM makes is a literal, editable knob in the admin UI.",
+        "Rationale": "The model's judgment is fully externalized; a wrong input is nudged, not re-prompted.",
+        "Category": "knob"
+      },
+      {
+        "AxiomId": "ax-formula-local-edit",
+        "Statement": "Every DAG formula is inspectable and correctable in place, like a spreadsheet cell.",
+        "Rationale": "Editing a value or formula body is local to its dependency subtree; only retyping/regraphing ripples.",
+        "Category": "knob"
+      },
+      {
+        "AxiomId": "ax-independent-witness",
+        "Statement": "Extraction and derivation are verifiable independently (three-panel witness).",
+        "Rationale": "Input case text -> extracted facts w/ provenance -> deterministic diagnosis. Defeats the laundering objection.",
+        "Category": "witness"
+      },
+      {
+        "AxiomId": "ax-both-verdicts",
+        "Statement": "The same deterministic machine must land on either side and name the single deciding gate.",
+        "Rationale": "An engine that only ever says \"actionable\" proves nothing.",
+        "Category": "solve-by-inference"
+      }
+    ]
+  },
+  "TestsForSuccess": {
+    "Description": "Falsifiable conditions that prove the axioms hold. The human-readable index of what each demonstration shows; many are realized in the witnessed harness.",
+    "schema": [
+      {
+        "name": "TestForSuccessId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier."
+      },
+      {
+        "name": "Claim",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The success condition, stated falsifiably."
+      },
+      {
+        "name": "HowWitnessed",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How a human/expert confirms it without trusting the code."
+      },
+      {
+        "name": "RelatedHarnessFile",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Harness file that realizes it, if any."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "red | green | planned."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{Claim}}"
+      }
+    ],
+    "data": [
+      {
+        "TestForSuccessId": "tfs-one-gate-each",
+        "Claim": "Five of seven patients fail, each on exactly one gate.",
+        "HowWitnessed": "Coverage matrix in scenarios.md; L6/L7 harness assert the deciding gate per patient.",
+        "RelatedHarnessFile": "admin-app/tests/L6-gates.test.js",
+        "Status": "red"
+      },
+      {
+        "TestForSuccessId": "tfs-both-sides",
+        "Claim": "The same machine produces TRUE for {A,G} and FALSE for {B,C,D,E,F}.",
+        "HowWitnessed": "L7-cohort.test.js asserts exactly {A,G} actionable as a set.",
+        "RelatedHarnessFile": "admin-app/tests/L7-cohort.test.js",
+        "Status": "red"
+      },
+      {
+        "TestForSuccessId": "tfs-no-hand-entry",
+        "Claim": "Raw facts alone derive the keystone with no hand-entered answer anywhere.",
+        "HowWitnessed": "Every leaf in the harness is a raw observation; keystone == AND(gates) cross-check.",
+        "RelatedHarnessFile": "admin-app/tests/L7-keystone.test.js",
+        "Status": "red"
+      },
+      {
+        "TestForSuccessId": "tfs-extraction-faithful",
+        "Claim": "Extracted leaf facts are checkable against the source case text, independently of the verdict.",
+        "HowWitnessed": "Three-panel witness view: per-fact provenance pointer back into the case text.",
+        "RelatedHarnessFile": "",
+        "Status": "planned"
+      },
+      {
+        "TestForSuccessId": "tfs-all-seven",
+        "Claim": "All seven oracle patients resolve to their expected keystone value.",
+        "HowWitnessed": "Build verification asserts the scenarios.md oracle against vw_individualpredictions.",
+        "RelatedHarnessFile": "admin-app/tests/L7-keystone.test.js",
+        "Status": "red"
+      },
+      {
+        "TestForSuccessId": "tfs-witnessed-reasoning",
+        "Claim": "Each derived node carries an expert-verifiable line of reasoning.",
+        "HowWitnessed": "Derivation trace from derivation-spec.md printed in every test name/failure.",
+        "RelatedHarnessFile": "admin-app/tests/README.md",
+        "Status": "red"
+      }
+    ]
+  },
+  "Features": {
+    "Description": "Buildable capabilities surfaced by the conversation. Coarser grain than loops; AssignedLoop links a feature to the loop that delivers it (nullable until scheduled).",
+    "schema": [
+      {
+        "name": "FeatureId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier."
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short feature name."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "What it does."
+      },
+      {
+        "name": "AssignedLoop",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "FK -> LeopoldLoops.LeopoldLoopId; empty if unscheduled."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{Title}}"
+      }
+    ],
+    "data": [
+      {
+        "FeatureId": "feat-llm-intake-clerk",
+        "Title": "LLM intake clerk",
+        "Description": "LLM reads a natural-language case and writes raw intake observation rows (ancestry, allele freqs, presenting facts) to base tables.",
+        "AssignedLoop": ""
+      },
+      {
+        "FeatureId": "feat-synthetic-lab",
+        "Title": "Synthetic-but-transparent lab generator",
+        "Description": "LLM emits the case's test results (effect sizes/SEs, replication signs/p-values, permutation effect sizes, calibration coverage) as visible, sourced, editable leaf rows.",
+        "AssignedLoop": ""
+      },
+      {
+        "FeatureId": "feat-three-panel-witness",
+        "Title": "Three-panel witness view",
+        "Description": "Input case text | extracted facts with provenance | deterministic diagnosis + four-gate trace.",
+        "AssignedLoop": ""
+      },
+      {
+        "FeatureId": "feat-knob-edit-ui",
+        "Title": "Knob-editing admin UI",
+        "Description": "Every LLM-produced leaf value is an editable field; correcting it re-derives the DAG.",
+        "AssignedLoop": "loop-2"
+      },
+      {
+        "FeatureId": "feat-gate-explainability",
+        "Title": "Gate explainability",
+        "Description": "For a patient, show why each gate passed/failed by walking one level down (coverage, cross-ancestry count, etc.).",
+        "AssignedLoop": "loop-3"
+      },
+      {
+        "FeatureId": "feat-diagnosis-writeup",
+        "Title": "Per-patient diagnosis writeup",
+        "Description": "Doctor-style Markdown writeup (-> diagnosis.pdf once green) produced as an artifact of a passing run.",
+        "AssignedLoop": ""
+      }
+    ]
+  },
+  "OpenQuestions": {
+    "Description": "Decisions still pending, captured so they are not silently re-litigated in a later session.",
+    "schema": [
+      {
+        "name": "OpenQuestionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier."
+      },
+      {
+        "name": "Question",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The open question."
+      },
+      {
+        "name": "Context",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Why it is open / what it affects."
+      },
+      {
+        "name": "Resolution",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The decision, once made."
+      },
+      {
+        "name": "IsResolved",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TRUE when decided."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{Question}}"
+      }
+    ],
+    "data": [
+      {
+        "OpenQuestionId": "oq-publish-now",
+        "Question": "Publish README now as a design/thesis doc, or hold until the harness goes green?",
+        "Context": "Repo is at Loop 0.5 (harness red, no LLM intake yet). Receipts land harder green.",
+        "Resolution": "",
+        "IsResolved": false
+      },
+      {
+        "OpenQuestionId": "oq-extract-vs-invent",
+        "Question": "Does the LLM extract facts present in the case, or invent plausible facts for a described case?",
+        "Context": "Mode #1 (extract) vs mode #2 (invent) changes how strong the claim is.",
+        "Resolution": "Mode #1 at intake (extract/interpret), and synthetic-but-transparent test results for the invented case — every number visible, sourced, editable.",
+        "IsResolved": true
+      },
+      {
+        "OpenQuestionId": "oq-reworded-prompt",
+        "Question": "Confirm the reworded README prompt shares no distinctive phrasing with the prospect's original.",
+        "Context": "Anonymity / no verbatim leakage before publishing.",
+        "Resolution": "",
+        "IsResolved": false
+      }
+    ]
+  },
+  "NonGoals": {
+    "Description": "Explicit out-of-scope statements — the positive twin of the anti-hallucination ledger. Stops scope creep.",
+    "schema": [
+      {
+        "name": "NonGoalId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier."
+      },
+      {
+        "name": "Statement",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "What we are deliberately NOT doing."
+      },
+      {
+        "name": "WhyExcluded",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Why it is off the keystone path / out of scope."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{Statement}}"
+      }
+    ],
+    "data": [
+      {
+        "NonGoalId": "ng-clinical-use",
+        "Statement": "This is not validated clinical decision support and must never be used for clinical purposes.",
+        "WhyExcluded": "Demonstration of inference structure only; all patients synthetic, all figures literature ranges."
+      },
+      {
+        "NonGoalId": "ng-crud-ui",
+        "Statement": "This is not a CRUD UI.",
+        "WhyExcluded": "The home screen is the witnessed red/green harness; the payoff is a derived diagnosis writeup."
+      },
+      {
+        "NonGoalId": "ng-llm-reasoning",
+        "Statement": "The LLM does not perform higher-order reasoning or render the diagnosis.",
+        "WhyExcluded": "All reasoning lives in the open, editable DAG; the LLM is intake clerk + lab only."
+      },
+      {
+        "NonGoalId": "ng-full-breadth",
+        "Statement": "The full omics breadth (counterfactual trajectories, most modalities, epistasis, exposures) is not on the keystone's dependency path.",
+        "WhyExcluded": "Kept as deliberate sparse context for breadth; pulled onto the path only when it earns its place (anti-hallucination rule)."
+      },
+      {
+        "NonGoalId": "ng-publish-verbatim",
+        "Statement": "Never publish the prospect's verbatim problem text.",
+        "WhyExcluded": "Anonymity / good manners; the public artifact uses a reworded generic grand-challenge prompt."
+      }
+    ]
+  },
+  "GlossaryTerms": {
+    "Description": "Vocabulary coined in the gauntlet conversation, so the framing is shared and stable across sessions.",
+    "schema": [
+      {
+        "name": "GlossaryTermId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier."
+      },
+      {
+        "name": "Term",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The term."
+      },
+      {
+        "name": "Definition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "What it means here."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{Term}}"
+      }
+    ],
+    "data": [
+      {
+        "GlossaryTermId": "gt-knob",
+        "Term": "knob",
+        "Definition": "A literal, editable leaf value in the admin UI representing one choice the LLM (or a human) made; nudged, not re-prompted, when wrong."
+      },
+      {
+        "GlossaryTermId": "gt-intake-clerk-lab",
+        "Term": "intake clerk + lab",
+        "Definition": "The only two roles the LLM plays: interpret intake facts (clerk) and produce the case's test results (lab). Never the diagnostician."
+      },
+      {
+        "GlossaryTermId": "gt-line-in-dag",
+        "Term": "line in the DAG",
+        "Definition": "The trust boundary, stated mechanically: fields with a formula belong to the model; raw-input leaf fields are the LLM's or a human's."
+      },
+      {
+        "GlossaryTermId": "gt-three-panel-witness",
+        "Term": "three-panel witness",
+        "Definition": "Input case text | extracted facts with per-fact provenance | deterministic diagnosis + gate trace — the two halves checkable independently."
+      },
+      {
+        "GlossaryTermId": "gt-fake-but-transparent",
+        "Term": "fake-but-transparent",
+        "Definition": "Test results are synthetic (the case is invented) but every number is visible, sourced to the case, and editable; nothing is hidden."
+      },
+      {
+        "GlossaryTermId": "gt-laundering-objection",
+        "Term": "laundering objection",
+        "Definition": "The skeptic's claim that a deterministic function over LLM-chosen inputs just launders a hallucination; defeated by externalized knobs + independent witness."
+      }
+    ]
+  },
+  "LeopoldLoops": {
+    "Description": "The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.",
+    "schema": [
+      {
+        "name": "LeopoldLoopId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier."
+      },
+      {
+        "name": "LoopNumber",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Display number (0, 0.5, 1...)."
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Loop title."
+      },
+      {
+        "name": "Goal",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The one coherent rule-change / outcome."
+      },
+      {
+        "name": "Status",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "done | next | planned | backlog (the raw input that drives Completedness)."
+      },
+      {
+        "name": "RuleCommitMsg",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The rule commit message (or \"none — app-only loop\")."
+      },
+      {
+        "name": "StateCommitMsg",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "The state commit message."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Ordering within the plan."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "=CONCATENATE(\"Loop \", {{LoopNumber}}, \" — \", {{Title}})"
+      },
+      {
+        "name": "Completedness",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Normalized status used by the derived plan to decide placement.",
+        "formula": "={{Status}}"
+      },
+      {
+        "name": "IsInCurrentPlan",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE for the current \"next\" loop and anything still planned/backlog (not done).",
+        "formula": "=IF({{Status}} = \"done\", FALSE, TRUE)"
+      },
+      {
+        "name": "IsDone",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
+      },
+      {
+        "name": "IsNext",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
+      },
+      {
+        "name": "IsPlanned",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
+      },
+      {
+        "name": "IsBacklog",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Raw grouping flag for the derived plan (kept in sync with Status)."
+      }
+    ],
+    "data": [
+      {
+        "LeopoldLoopId": "loop-0",
+        "LoopNumber": "0",
+        "Title": "Solve-by-inference rulebook",
+        "Goal": "Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations -> keystone.",
+        "Status": "done",
+        "RuleCommitMsg": "rule: keystone IsClinicallyActionable now derived from observations",
+        "StateCommitMsg": "state: Loop 0 — Postgres solve-by-inference verified",
+        "SortOrder": 0,
+        "IsDone": true,
+        "IsNext": false,
+        "IsPlanned": false,
+        "IsBacklog": false
+      },
+      {
+        "LeopoldLoopId": "loop-0-5",
+        "LoopNumber": "0.5",
+        "Title": "Test Harness First (the red contract)",
+        "Goal": "Ship a witnessed inference harness asserting the entire DAG x 7 patients via the app API; red on arrival, load-bearing.",
+        "Status": "next",
+        "RuleCommitMsg": "none — app-only loop, test-harness-first, no rule change",
+        "StateCommitMsg": "state: Loop 0.5 — red witnessed-inference harness is the app's contract",
+        "SortOrder": 1,
+        "IsDone": false,
+        "IsNext": true,
+        "IsPlanned": false,
+        "IsBacklog": false
+      },
+      {
+        "LeopoldLoopId": "loop-1",
+        "LoopNumber": "1",
+        "Title": "Intake app skeleton",
+        "Goal": "Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*.",
+        "Status": "planned",
+        "RuleCommitMsg": "none — app-only loop, no rule change",
+        "StateCommitMsg": "state: Loop 1 — read-only intake app surfaces the keystone",
+        "SortOrder": 2,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": true,
+        "IsBacklog": false
+      },
+      {
+        "LeopoldLoopId": "loop-2",
+        "LoopNumber": "2",
+        "Title": "Patient intake (facts in)",
+        "Goal": "Form writes a new Individual + child observation rows to base tables, then re-reads the derived panel. The knob-editing payoff.",
+        "Status": "planned",
+        "RuleCommitMsg": "rule (if any) for new intake field",
+        "StateCommitMsg": "state: Loop 2 — facts-in -> derived diagnosis works end to end",
+        "SortOrder": 3,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": true,
+        "IsBacklog": false
+      },
+      {
+        "LeopoldLoopId": "loop-3",
+        "LoopNumber": "3",
+        "Title": "Gate explainability in the UI",
+        "Goal": "Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.",
+        "Status": "planned",
+        "RuleCommitMsg": "rule: install explainer-dag",
+        "StateCommitMsg": "state: Loop 3 — gate explainability",
+        "SortOrder": 4,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": true,
+        "IsBacklog": false
+      },
+      {
+        "LeopoldLoopId": "loop-4",
+        "LoopNumber": "4",
+        "Title": "Second prediction type (severity)",
+        "Goal": "Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.",
+        "Status": "planned",
+        "RuleCommitMsg": "rule: severity prediction derived from clinical-activity evidence",
+        "StateCommitMsg": "state: Loop 4 — severity prediction",
+        "SortOrder": 5,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": true,
+        "IsBacklog": false
+      },
+      {
+        "LeopoldLoopId": "loop-5",
+        "LoopNumber": "5",
+        "Title": "Treatment-response prediction",
+        "Goal": "Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.",
+        "Status": "planned",
+        "RuleCommitMsg": "rule: treatment-response prediction",
+        "StateCommitMsg": "state: Loop 5 — treatment-response prediction",
+        "SortOrder": 6,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": true,
+        "IsBacklog": false
+      },
+      {
+        "LeopoldLoopId": "loop-llm-intake",
+        "LoopNumber": "6",
+        "Title": "LLM intake clerk + synthetic lab",
+        "Goal": "Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.",
+        "Status": "backlog",
+        "RuleCommitMsg": "rule (if any) for provenance fields",
+        "StateCommitMsg": "state: Loop 6 — LLM intake clerk, everything-is-a-knob",
+        "SortOrder": 7,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": false,
+        "IsBacklog": true
+      },
+      {
+        "LeopoldLoopId": "loop-adverse",
+        "LoopNumber": "7",
+        "Title": "Adverse-effect prediction",
+        "Goal": "Wire adverse-effect prediction to observed treatment adverse-event rows.",
+        "Status": "backlog",
+        "RuleCommitMsg": "",
+        "StateCommitMsg": "",
+        "SortOrder": 8,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": false,
+        "IsBacklog": true
+      },
+      {
+        "LeopoldLoopId": "loop-equity",
+        "LoopNumber": "8",
+        "Title": "Cohort-level equity report",
+        "Goal": "Calibration & actionability rates by ancestry (ancestry-equity dashboard).",
+        "Status": "backlog",
+        "RuleCommitMsg": "",
+        "StateCommitMsg": "",
+        "SortOrder": 9,
+        "IsDone": false,
+        "IsNext": false,
+        "IsPlanned": false,
+        "IsBacklog": true
       }
     ]
   },

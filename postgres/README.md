@@ -2,11 +2,11 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-19 20:13:24 UTC
+**Timestamp:** 2026-06-19 21:02:15 UTC
 
 ## Parsing Rulebook
 
-Found **21** tables in rulebook
+Found **28** tables in rulebook
 
 
   - **AutoimmuneDiseases** (12 fields, 3 records)
@@ -30,12 +30,19 @@ Found **21** tables in rulebook
   - **IndividualPredictions** (28 fields, 7 records)
   - **CalibrationBins** (9 fields, 35 records)
   - **InterventionTargets** (10 fields, 6 records)
+  - **Axioms** (5 fields, 8 records)
+  - **TestsForSuccess** (6 fields, 6 records)
+  - **Features** (5 fields, 6 records)
+  - **OpenQuestions** (6 fields, 3 records)
+  - **NonGoals** (4 fields, 5 records)
+  - **GlossaryTerms** (4 fields, 6 records)
+  - **LeopoldLoops** (11 fields, 10 records)
 
-Generated **21** table definitions with **127** raw fields (mode=check-add)
-Generated **209** calculation functions
-Generated **21** views
-Enabled RLS on **21** tables
-Generated insert statements for **182** records
+Generated **28** table definitions with **159** raw fields (mode=check-add)
+Generated **218** calculation functions
+Generated **28** views
+Enabled RLS on **28** tables
+Generated insert statements for **226** records
 ## Script Generation Complete
 
 Generated files:

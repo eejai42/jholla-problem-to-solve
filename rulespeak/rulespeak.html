@@ -269,6 +269,13 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-individualpredictions">Individual Prediction</a> <span class="toc-meta">22 rules · 1 links</span></li>
     <li><a href="#t-calibrationbins">Calibration Bin</a> <span class="toc-meta">3 rules · 0 links</span></li>
     <li><a href="#t-interventiontargets">Intervention Target</a> <span class="toc-meta">4 rules · 0 links</span></li>
+    <li><a href="#t-axioms">Axiom</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#t-testsforsuccess">Tests for Success</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#t-features">Feature</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#t-openquestions">Open Question</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#t-nongoals">Non Goal</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#t-glossaryterms">Glossary Term</a> <span class="toc-meta">1 rules · 0 links</span></li>
+    <li><a href="#t-leopoldloops">Leopold Loop</a> <span class="toc-meta">3 rules · 0 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-autoimmunediseases" data-entity="Autoimmune Diseas">
@@ -8647,6 +8654,713 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">True when therapy class is cell-based.</p>
+    </article>
+</section>
+<section class="entity" id="t-axioms" data-entity="Axiom">
+  <header class="entity-head">
+    <h2 class="entity-title">Axiom</h2>
+    <p class="entity-synopsis">Non-negotiable invariants the platform must obey. Load-bearing constraints, not per-loop work. Captured from the gauntlet conversation.</p>
+  </header>
+  <article class="field tone-raw" id="f-axioms-statement" data-entity="Axiom" data-field="Statement">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Statement</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The invariant, stated as a rule.</p>
+    </article>
+  <article class="field tone-raw" id="f-axioms-rationale" data-entity="Axiom" data-field="Rationale">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Rationale</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Why this must hold / what it defends against.</p>
+    </article>
+  <article class="field tone-raw" id="f-axioms-category" data-entity="Axiom" data-field="Category">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Category</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Grouping: trust-boundary | solve-by-inference | knob | witness | scope.</p>
+    </article>
+  <article class="field tone-calc" id="f-axioms-name" data-entity="Axiom" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-113</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An axiom's name is computed as the <a class="ref" href="#f-axioms-statement">statement</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-axioms-statement">Statement</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-axioms-statement">Statement</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-axioms-statement">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Statement</span><span class="input-table">Axioms</span></span>
+          <span class="input-en muted">The invariant, stated as a rule.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-axioms-statement">● Statement <span class="ref-pill-tbl">Axioms</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display label.</p>
+    </article>
+</section>
+<section class="entity" id="t-testsforsuccess" data-entity="Tests for Success">
+  <header class="entity-head">
+    <h2 class="entity-title">Tests for Success</h2>
+    <p class="entity-synopsis">Falsifiable conditions that prove the axioms hold. The human-readable index of what each demonstration shows; many are realized in the witnessed harness.</p>
+  </header>
+  <article class="field tone-raw" id="f-testsforsuccess-claim" data-entity="Tests for Success" data-field="Claim">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Claim</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The success condition, stated falsifiably.</p>
+    </article>
+  <article class="field tone-raw" id="f-testsforsuccess-howwitnessed" data-entity="Tests for Success" data-field="How Witnessed">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">How Witnessed</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">How a human/expert confirms it without trusting the code.</p>
+    </article>
+  <article class="field tone-raw" id="f-testsforsuccess-relatedharnessfile" data-entity="Tests for Success" data-field="Related Harness File">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Related Harness File</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Harness file that realizes it, if any.</p>
+    </article>
+  <article class="field tone-raw" id="f-testsforsuccess-status" data-entity="Tests for Success" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">red | green | planned.</p>
+    </article>
+  <article class="field tone-calc" id="f-testsforsuccess-name" data-entity="Tests for Success" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-114</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A tests for success's name is computed as the <a class="ref" href="#f-testsforsuccess-claim">claim</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-testsforsuccess-claim">Claim</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-testsforsuccess-claim">Claim</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-testsforsuccess-claim">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Claim</span><span class="input-table">TestsForSuccess</span></span>
+          <span class="input-en muted">The success condition, stated falsifiably.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-testsforsuccess-claim">● Claim <span class="ref-pill-tbl">TestsForSuccess</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display label.</p>
+    </article>
+</section>
+<section class="entity" id="t-features" data-entity="Feature">
+  <header class="entity-head">
+    <h2 class="entity-title">Feature</h2>
+    <p class="entity-synopsis">Buildable capabilities surfaced by the conversation. Coarser grain than loops; AssignedLoop links a feature to the loop that delivers it (nullable until scheduled).</p>
+  </header>
+  <article class="field tone-raw" id="f-features-title" data-entity="Feature" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Short feature name.</p>
+    </article>
+  <article class="field tone-raw" id="f-features-description" data-entity="Feature" data-field="Description">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Description</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">What it does.</p>
+    </article>
+  <article class="field tone-raw" id="f-features-assignedloop" data-entity="Feature" data-field="Assigned Loop">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Assigned Loop</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">FK -&gt; LeopoldLoops.LeopoldLoopId; empty if unscheduled.</p>
+    </article>
+  <article class="field tone-calc" id="f-features-name" data-entity="Feature" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-115</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A feature's name is computed as the <a class="ref" href="#f-features-title">title</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-features-title">Title</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-features-title">Title</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-features-title">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Title</span><span class="input-table">Features</span></span>
+          <span class="input-en muted">Short feature name.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-features-title">● Title <span class="ref-pill-tbl">Features</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display label.</p>
+    </article>
+</section>
+<section class="entity" id="t-openquestions" data-entity="Open Question">
+  <header class="entity-head">
+    <h2 class="entity-title">Open Question</h2>
+    <p class="entity-synopsis">Decisions still pending, captured so they are not silently re-litigated in a later session.</p>
+  </header>
+  <article class="field tone-raw" id="f-openquestions-question" data-entity="Open Question" data-field="Question">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Question</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The open question.</p>
+    </article>
+  <article class="field tone-raw" id="f-openquestions-context" data-entity="Open Question" data-field="Context">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Context</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Why it is open / what it affects.</p>
+    </article>
+  <article class="field tone-raw" id="f-openquestions-resolution" data-entity="Open Question" data-field="Resolution">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Resolution</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The decision, once made.</p>
+    </article>
+  <article class="field tone-raw" id="f-openquestions-isresolved" data-entity="Open Question" data-field="Is Resolved">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Is Resolved</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>boolean</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">TRUE when decided.</p>
+    </article>
+  <article class="field tone-calc" id="f-openquestions-name" data-entity="Open Question" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-116</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">An open <a class="ref" href="#f-openquestions-question">question</a>'s name is computed as the question.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-openquestions-question">Question</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-openquestions-question">Question</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-openquestions-question">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Question</span><span class="input-table">OpenQuestions</span></span>
+          <span class="input-en muted">The open question.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-openquestions-question">● Question <span class="ref-pill-tbl">OpenQuestions</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display label.</p>
+    </article>
+</section>
+<section class="entity" id="t-nongoals" data-entity="Non Goal">
+  <header class="entity-head">
+    <h2 class="entity-title">Non Goal</h2>
+    <p class="entity-synopsis">Explicit out-of-scope statements — the positive twin of the anti-hallucination ledger. Stops scope creep.</p>
+  </header>
+  <article class="field tone-raw" id="f-nongoals-statement" data-entity="Non Goal" data-field="Statement">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Statement</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">What we are deliberately NOT doing.</p>
+    </article>
+  <article class="field tone-raw" id="f-nongoals-whyexcluded" data-entity="Non Goal" data-field="Why Excluded">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Why Excluded</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Why it is off the keystone path / out of scope.</p>
+    </article>
+  <article class="field tone-calc" id="f-nongoals-name" data-entity="Non Goal" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-117</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A non goal's name is computed as the <a class="ref" href="#f-nongoals-statement">statement</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-nongoals-statement">Statement</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-nongoals-statement">Statement</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-nongoals-statement">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Statement</span><span class="input-table">NonGoals</span></span>
+          <span class="input-en muted">What we are deliberately NOT doing.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-nongoals-statement">● Statement <span class="ref-pill-tbl">NonGoals</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display label.</p>
+    </article>
+</section>
+<section class="entity" id="t-glossaryterms" data-entity="Glossary Term">
+  <header class="entity-head">
+    <h2 class="entity-title">Glossary Term</h2>
+    <p class="entity-synopsis">Vocabulary coined in the gauntlet conversation, so the framing is shared and stable across sessions.</p>
+  </header>
+  <article class="field tone-raw" id="f-glossaryterms-term" data-entity="Glossary Term" data-field="Term">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Term</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The term.</p>
+    </article>
+  <article class="field tone-raw" id="f-glossaryterms-definition" data-entity="Glossary Term" data-field="Definition">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Definition</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">What it means here.</p>
+    </article>
+  <article class="field tone-calc" id="f-glossaryterms-name" data-entity="Glossary Term" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-118</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A glossary <a class="ref" href="#f-glossaryterms-term">term</a>'s name is computed as the term.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-glossaryterms-term">Term</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-glossaryterms-term">Term</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-glossaryterms-term">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Term</span><span class="input-table">GlossaryTerms</span></span>
+          <span class="input-en muted">The term.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-glossaryterms-term">● Term <span class="ref-pill-tbl">GlossaryTerms</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display label.</p>
+    </article>
+</section>
+<section class="entity" id="t-leopoldloops" data-entity="Leopold Loop">
+  <header class="entity-head">
+    <h2 class="entity-title">Leopold Loop</h2>
+    <p class="entity-synopsis">The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.</p>
+  </header>
+  <article class="field tone-raw" id="f-leopoldloops-loopnumber" data-entity="Leopold Loop" data-field="Loop Number">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Loop Number</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Display number (0, 0.5, 1...).</p>
+    </article>
+  <article class="field tone-raw" id="f-leopoldloops-title" data-entity="Leopold Loop" data-field="Title">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Title</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Loop title.</p>
+    </article>
+  <article class="field tone-raw" id="f-leopoldloops-goal" data-entity="Leopold Loop" data-field="Goal">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Goal</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The one coherent rule-change / outcome.</p>
+    </article>
+  <article class="field tone-raw" id="f-leopoldloops-status" data-entity="Leopold Loop" data-field="Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">done | next | planned | backlog (the raw input that drives Completedness).</p>
+    </article>
+  <article class="field tone-raw" id="f-leopoldloops-rulecommitmsg" data-entity="Leopold Loop" data-field="Rule Commit Msg">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Rule Commit Msg</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The rule commit message (or &quot;none — app-only loop&quot;).</p>
+    </article>
+  <article class="field tone-raw" id="f-leopoldloops-statecommitmsg" data-entity="Leopold Loop" data-field="State Commit Msg">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">State Commit Msg</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">The state commit message.</p>
+    </article>
+  <article class="field tone-raw" id="f-leopoldloops-sortorder" data-entity="Leopold Loop" data-field="Sort Order">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Sort Order</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">number</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>number</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Ordering within the plan.</p>
+    </article>
+  <article class="field tone-calc" id="f-leopoldloops-name" data-entity="Leopold Loop" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-119</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A leopold loop's name is computed as the literal “Loop ”, followed by the <a class="ref" href="#f-leopoldloops-loopnumber">loop number</a>, followed by the literal “ — ”, followed by the <a class="ref" href="#f-leopoldloops-title">title</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">&quot;Loop &quot;, <a class="ref" href="#f-leopoldloops-loopnumber">loop number</a>, &quot; — &quot;, joined with <a class="ref" href="#f-leopoldloops-title">title</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>CONCATENATE(&quot;Loop &quot;, <a class="fx-chip" href="#f-leopoldloops-loopnumber">Loop Number</a>, &quot; — &quot;, <a class="fx-chip" href="#f-leopoldloops-title">Title</a>)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">2</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-leopoldloops-loopnumber">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Loop Number</span><span class="input-table">LeopoldLoops</span></span>
+          <span class="input-en muted">Display number (0, 0.5, 1...).</span>
+        </a>
+        <a class="input tone-raw" href="#f-leopoldloops-title">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Title</span><span class="input-table">LeopoldLoops</span></span>
+          <span class="input-en muted">Loop title.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">2</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-leopoldloops-loopnumber">● Loop Number <span class="ref-pill-tbl">LeopoldLoops</span></a>
+        <a class="ref-pill tone-raw" href="#f-leopoldloops-title">● Title <span class="ref-pill-tbl">LeopoldLoops</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Display label.</p>
+    </article>
+  <article class="field tone-calc" id="f-leopoldloops-completedness" data-entity="Leopold Loop" data-field="Completedness">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Completedness</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-120</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A leopold loop's completedness is computed as the <a class="ref" href="#f-leopoldloops-status">status</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-leopoldloops-status">Status</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-leopoldloops-status">Status</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-leopoldloops-status">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Status</span><span class="input-table">LeopoldLoops</span></span>
+          <span class="input-en muted">done | next | planned | backlog (the raw input that drives Completedness).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-leopoldloops-status">● Status <span class="ref-pill-tbl">LeopoldLoops</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Normalized status used by the derived plan to decide placement.</p>
+    </article>
+  <article class="field tone-calc" id="f-leopoldloops-isincurrentplan" data-entity="Leopold Loop" data-field="Is in Current Plan">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is in Current Plan</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-121</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The leopold loop's is in current plan is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">the FALSE</span> <span class="rt-when">if the status is the literal “done”</span></li><li><span class="rt-value">the TRUE</span> <span class="rt-otherwise">otherwise</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">True when not <a class="ref" href="#f-leopoldloops-status">status</a> is &quot;done&quot;.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-leopoldloops-status">Status</a> = &quot;done&quot;, FALSE, TRUE)</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-leopoldloops-status">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Status</span><span class="input-table">LeopoldLoops</span></span>
+          <span class="input-en muted">done | next | planned | backlog (the raw input that drives Completedness).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-leopoldloops-status">● Status <span class="ref-pill-tbl">LeopoldLoops</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE for the current &quot;next&quot; loop and anything still planned/backlog (not done).</p>
     </article>
 </section>
 <footer class="doc-footer">

@@ -412,7 +412,7 @@ VALUES ('nct-c-2', 'nct-c-2', 'cm-c', 'ancestry-permutation', 0.5, 0.1) ON CONFL
 -- EnvironmentalExposures: Longitudinal environmental exposures contributing to gene-environment-microbiome interactions and shifting environments.
 -- ----------------------------------------------------------------------------
 INSERT INTO environmental_exposures (environmental_exposure_id, exposure_label, individual, exposure_level, exposure_start_date, is_maternal_effect)
-VALUES ('exp-context', 'Smoking pack-years (context only)', 'ind-a-reyes', 3.0, '2015-01-01', FALSE) ON CONFLICT (environmental_exposure_id) DO NOTHING;
+VALUES ('exp-context', 'Smoking pack-years (context only)', 'ind-a-reyes', 3, '2015-01-01', FALSE) ON CONFLICT (environmental_exposure_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Treatments: Treatment histories capturing treatment-induced changes, treatment response, and adverse effects.
@@ -424,7 +424,7 @@ VALUES ('tx-context', 'Anifrolumab (context only)', 'ind-a-reyes', 'sle', 'Parti
 -- ClinicalPhenotypes: Clinical phenotypes including severity, immune dysfunction markers, and feedback from disease progression.
 -- ----------------------------------------------------------------------------
 INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
-VALUES ('ph-context', 'ANA elevation (context only)', 'ind-a-reyes', 'sle', 'sle-presymptomatic', 'blood', 4.0, '2024-02-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+VALUES ('ph-context', 'ANA elevation (context only)', 'ind-a-reyes', 'sle', 'sle-presymptomatic', 'blood', 4, '2024-02-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CausalMechanisms: Inferred causal mechanisms linking variants, exposures, and molecular state to clinical phenotypes; must be experimentally falsifiable.
@@ -460,7 +460,7 @@ VALUES ('epi-context', 'IRF5 x STAT4 (context only)', 'ind-a-reyes', 'var-a-irf5
 -- CounterfactualTrajectories: Counterfactual disease trajectories inferred without randomized perturbation data.
 -- ----------------------------------------------------------------------------
 INSERT INTO counterfactual_trajectories (counterfactual_trajectory_id, trajectory_label, individual, autoimmune_disease, projected_severity, horizon_months, intervention_applied)
-VALUES ('cf-context', 'Untreated SLE projection (context only)', 'ind-a-reyes', 'sle', 6.0, 12, 'none') ON CONFLICT (counterfactual_trajectory_id) DO NOTHING;
+VALUES ('cf-context', 'Untreated SLE projection (context only)', 'ind-a-reyes', 'sle', 6, 12, 'none') ON CONFLICT (counterfactual_trajectory_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- IndividualPredictions: Predictions of disease onset, severity, treatment response, and adverse effects with calibrated uncertainty for ancestry-equitable risk prediction.
@@ -614,4 +614,157 @@ VALUES ('it-f', 'IL-17 Pathway Blockade (secukinumab)', 'cm-f', 'psa', 'Cell-bas
 
 INSERT INTO intervention_targets (intervention_target_id, target_label, causal_mechanism, autoimmune_disease, therapy_class, is_validated)
 VALUES ('it-g', 'IL-17 Pathway Blockade (secukinumab)', 'cm-g', 'psa', 'Cell-based', TRUE) ON CONFLICT (intervention_target_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- Axioms: Non-negotiable invariants the platform must obey. Load-bearing constraints, not per-loop work. Captured from the gauntlet conversation.
+-- ----------------------------------------------------------------------------
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-llm-no-vote', 'The LLM never gets a vote on the conclusion.', 'Demotes the model to intake-clerk + lab; the verdict is the deterministic DAG''s, never the model''s.', 'trust-boundary') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-keystone-computed', 'IsClinicallyActionable is computed, never entered.', 'No field a curator (human or LLM) can set to make the diagnosis come out right.', 'solve-by-inference') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-line-in-dag', 'The trust boundary is a line in the DAG: fields with a formula are the model''s; raw-input leaf fields are the LLM''s (or a human''s).', 'Makes the boundary mechanically checkable rather than a vibe.', 'trust-boundary') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-llm-leaves-only', 'The LLM does exactly two things, both at the leaf layer: interpret intake facts, and produce synthetic-but-transparent test results.', 'Intake clerk + lab — the un-alarming medical roles. It computes no higher-order inference.', 'trust-boundary') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-every-choice-knob', 'Every choice the LLM makes is a literal, editable knob in the admin UI.', 'The model''s judgment is fully externalized; a wrong input is nudged, not re-prompted.', 'knob') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-formula-local-edit', 'Every DAG formula is inspectable and correctable in place, like a spreadsheet cell.', 'Editing a value or formula body is local to its dependency subtree; only retyping/regraphing ripples.', 'knob') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-independent-witness', 'Extraction and derivation are verifiable independently (three-panel witness).', 'Input case text -> extracted facts w/ provenance -> deterministic diagnosis. Defeats the laundering objection.', 'witness') ON CONFLICT (axiom_id) DO NOTHING;
+
+INSERT INTO axioms (axiom_id, statement, rationale, category)
+VALUES ('ax-both-verdicts', 'The same deterministic machine must land on either side and name the single deciding gate.', 'An engine that only ever says "actionable" proves nothing.', 'solve-by-inference') ON CONFLICT (axiom_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- TestsForSuccess: Falsifiable conditions that prove the axioms hold. The human-readable index of what each demonstration shows; many are realized in the witnessed harness.
+-- ----------------------------------------------------------------------------
+INSERT INTO tests_for_success (test_for_success_id, claim, how_witnessed, related_harness_file, status)
+VALUES ('tfs-one-gate-each', 'Five of seven patients fail, each on exactly one gate.', 'Coverage matrix in scenarios.md; L6/L7 harness assert the deciding gate per patient.', 'admin-app/tests/L6-gates.test.js', 'red') ON CONFLICT (test_for_success_id) DO NOTHING;
+
+INSERT INTO tests_for_success (test_for_success_id, claim, how_witnessed, related_harness_file, status)
+VALUES ('tfs-both-sides', 'The same machine produces TRUE for {A,G} and FALSE for {B,C,D,E,F}.', 'L7-cohort.test.js asserts exactly {A,G} actionable as a set.', 'admin-app/tests/L7-cohort.test.js', 'red') ON CONFLICT (test_for_success_id) DO NOTHING;
+
+INSERT INTO tests_for_success (test_for_success_id, claim, how_witnessed, related_harness_file, status)
+VALUES ('tfs-no-hand-entry', 'Raw facts alone derive the keystone with no hand-entered answer anywhere.', 'Every leaf in the harness is a raw observation; keystone == AND(gates) cross-check.', 'admin-app/tests/L7-keystone.test.js', 'red') ON CONFLICT (test_for_success_id) DO NOTHING;
+
+INSERT INTO tests_for_success (test_for_success_id, claim, how_witnessed, related_harness_file, status)
+VALUES ('tfs-extraction-faithful', 'Extracted leaf facts are checkable against the source case text, independently of the verdict.', 'Three-panel witness view: per-fact provenance pointer back into the case text.', '', 'planned') ON CONFLICT (test_for_success_id) DO NOTHING;
+
+INSERT INTO tests_for_success (test_for_success_id, claim, how_witnessed, related_harness_file, status)
+VALUES ('tfs-all-seven', 'All seven oracle patients resolve to their expected keystone value.', 'Build verification asserts the scenarios.md oracle against vw_individualpredictions.', 'admin-app/tests/L7-keystone.test.js', 'red') ON CONFLICT (test_for_success_id) DO NOTHING;
+
+INSERT INTO tests_for_success (test_for_success_id, claim, how_witnessed, related_harness_file, status)
+VALUES ('tfs-witnessed-reasoning', 'Each derived node carries an expert-verifiable line of reasoning.', 'Derivation trace from derivation-spec.md printed in every test name/failure.', 'admin-app/tests/README.md', 'red') ON CONFLICT (test_for_success_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- Features: Buildable capabilities surfaced by the conversation. Coarser grain than loops; AssignedLoop links a feature to the loop that delivers it (nullable until scheduled).
+-- ----------------------------------------------------------------------------
+INSERT INTO features (feature_id, title, description, assigned_loop)
+VALUES ('feat-llm-intake-clerk', 'LLM intake clerk', 'LLM reads a natural-language case and writes raw intake observation rows (ancestry, allele freqs, presenting facts) to base tables.', '') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO features (feature_id, title, description, assigned_loop)
+VALUES ('feat-synthetic-lab', 'Synthetic-but-transparent lab generator', 'LLM emits the case''s test results (effect sizes/SEs, replication signs/p-values, permutation effect sizes, calibration coverage) as visible, sourced, editable leaf rows.', '') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO features (feature_id, title, description, assigned_loop)
+VALUES ('feat-three-panel-witness', 'Three-panel witness view', 'Input case text | extracted facts with provenance | deterministic diagnosis + four-gate trace.', '') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO features (feature_id, title, description, assigned_loop)
+VALUES ('feat-knob-edit-ui', 'Knob-editing admin UI', 'Every LLM-produced leaf value is an editable field; correcting it re-derives the DAG.', 'loop-2') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO features (feature_id, title, description, assigned_loop)
+VALUES ('feat-gate-explainability', 'Gate explainability', 'For a patient, show why each gate passed/failed by walking one level down (coverage, cross-ancestry count, etc.).', 'loop-3') ON CONFLICT (feature_id) DO NOTHING;
+
+INSERT INTO features (feature_id, title, description, assigned_loop)
+VALUES ('feat-diagnosis-writeup', 'Per-patient diagnosis writeup', 'Doctor-style Markdown writeup (-> diagnosis.pdf once green) produced as an artifact of a passing run.', '') ON CONFLICT (feature_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- OpenQuestions: Decisions still pending, captured so they are not silently re-litigated in a later session.
+-- ----------------------------------------------------------------------------
+INSERT INTO open_questions (open_question_id, question, context, resolution, is_resolved)
+VALUES ('oq-publish-now', 'Publish README now as a design/thesis doc, or hold until the harness goes green?', 'Repo is at Loop 0.5 (harness red, no LLM intake yet). Receipts land harder green.', '', FALSE) ON CONFLICT (open_question_id) DO NOTHING;
+
+INSERT INTO open_questions (open_question_id, question, context, resolution, is_resolved)
+VALUES ('oq-extract-vs-invent', 'Does the LLM extract facts present in the case, or invent plausible facts for a described case?', 'Mode #1 (extract) vs mode #2 (invent) changes how strong the claim is.', 'Mode #1 at intake (extract/interpret), and synthetic-but-transparent test results for the invented case — every number visible, sourced, editable.', TRUE) ON CONFLICT (open_question_id) DO NOTHING;
+
+INSERT INTO open_questions (open_question_id, question, context, resolution, is_resolved)
+VALUES ('oq-reworded-prompt', 'Confirm the reworded README prompt shares no distinctive phrasing with the prospect''s original.', 'Anonymity / no verbatim leakage before publishing.', '', FALSE) ON CONFLICT (open_question_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- NonGoals: Explicit out-of-scope statements — the positive twin of the anti-hallucination ledger. Stops scope creep.
+-- ----------------------------------------------------------------------------
+INSERT INTO non_goals (non_goal_id, statement, why_excluded)
+VALUES ('ng-clinical-use', 'This is not validated clinical decision support and must never be used for clinical purposes.', 'Demonstration of inference structure only; all patients synthetic, all figures literature ranges.') ON CONFLICT (non_goal_id) DO NOTHING;
+
+INSERT INTO non_goals (non_goal_id, statement, why_excluded)
+VALUES ('ng-crud-ui', 'This is not a CRUD UI.', 'The home screen is the witnessed red/green harness; the payoff is a derived diagnosis writeup.') ON CONFLICT (non_goal_id) DO NOTHING;
+
+INSERT INTO non_goals (non_goal_id, statement, why_excluded)
+VALUES ('ng-llm-reasoning', 'The LLM does not perform higher-order reasoning or render the diagnosis.', 'All reasoning lives in the open, editable DAG; the LLM is intake clerk + lab only.') ON CONFLICT (non_goal_id) DO NOTHING;
+
+INSERT INTO non_goals (non_goal_id, statement, why_excluded)
+VALUES ('ng-full-breadth', 'The full omics breadth (counterfactual trajectories, most modalities, epistasis, exposures) is not on the keystone''s dependency path.', 'Kept as deliberate sparse context for breadth; pulled onto the path only when it earns its place (anti-hallucination rule).') ON CONFLICT (non_goal_id) DO NOTHING;
+
+INSERT INTO non_goals (non_goal_id, statement, why_excluded)
+VALUES ('ng-publish-verbatim', 'Never publish the prospect''s verbatim problem text.', 'Anonymity / good manners; the public artifact uses a reworded generic grand-challenge prompt.') ON CONFLICT (non_goal_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- GlossaryTerms: Vocabulary coined in the gauntlet conversation, so the framing is shared and stable across sessions.
+-- ----------------------------------------------------------------------------
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-knob', 'knob', 'A literal, editable leaf value in the admin UI representing one choice the LLM (or a human) made; nudged, not re-prompted, when wrong.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-intake-clerk-lab', 'intake clerk + lab', 'The only two roles the LLM plays: interpret intake facts (clerk) and produce the case''s test results (lab). Never the diagnostician.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-line-in-dag', 'line in the DAG', 'The trust boundary, stated mechanically: fields with a formula belong to the model; raw-input leaf fields are the LLM''s or a human''s.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-three-panel-witness', 'three-panel witness', 'Input case text | extracted facts with per-fact provenance | deterministic diagnosis + gate trace — the two halves checkable independently.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-fake-but-transparent', 'fake-but-transparent', 'Test results are synthetic (the case is invented) but every number is visible, sourced to the case, and editable; nothing is hidden.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-laundering-objection', 'laundering objection', 'The skeptic''s claim that a deterministic function over LLM-chosen inputs just launders a hallucination; defeated by externalized knobs + independent witness.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- LeopoldLoops: The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.
+-- ----------------------------------------------------------------------------
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-0', '0', 'Solve-by-inference rulebook', 'Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations -> keystone.', 'done', 'rule: keystone IsClinicallyActionable now derived from observations', 'state: Loop 0 — Postgres solve-by-inference verified', 0) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-0-5', '0.5', 'Test Harness First (the red contract)', 'Ship a witnessed inference harness asserting the entire DAG x 7 patients via the app API; red on arrival, load-bearing.', 'next', 'none — app-only loop, test-harness-first, no rule change', 'state: Loop 0.5 — red witnessed-inference harness is the app''s contract', 1) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-1', '1', 'Intake app skeleton', 'Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*.', 'planned', 'none — app-only loop, no rule change', 'state: Loop 1 — read-only intake app surfaces the keystone', 2) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-2', '2', 'Patient intake (facts in)', 'Form writes a new Individual + child observation rows to base tables, then re-reads the derived panel. The knob-editing payoff.', 'planned', 'rule (if any) for new intake field', 'state: Loop 2 — facts-in -> derived diagnosis works end to end', 3) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-3', '3', 'Gate explainability in the UI', 'Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.', 'planned', 'rule: install explainer-dag', 'state: Loop 3 — gate explainability', 4) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-4', '4', 'Second prediction type (severity)', 'Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.', 'planned', 'rule: severity prediction derived from clinical-activity evidence', 'state: Loop 4 — severity prediction', 5) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-5', '5', 'Treatment-response prediction', 'Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.', 'planned', 'rule: treatment-response prediction', 'state: Loop 5 — treatment-response prediction', 6) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-llm-intake', '6', 'LLM intake clerk + synthetic lab', 'Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.', 'backlog', 'rule (if any) for provenance fields', 'state: Loop 6 — LLM intake clerk, everything-is-a-knob', 7) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-adverse', '7', 'Adverse-effect prediction', 'Wire adverse-effect prediction to observed treatment adverse-event rows.', 'backlog', '', '', 8) ON CONFLICT (leopold_loop_id) DO NOTHING;
+
+INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order)
+VALUES ('loop-equity', '8', 'Cohort-level equity report', 'Calibration & actionability rates by ancestry (ancestry-equity dashboard).', 'backlog', '', '', 9) ON CONFLICT (leopold_loop_id) DO NOTHING;
 

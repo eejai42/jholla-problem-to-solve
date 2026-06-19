@@ -1,0 +1,3 @@
+ROOT-IF:{{#if handlebars.Name}}ROOTHASNAME{{/if}}
+{{#each handlebars.LeopoldLoops.data}}L{{LoopNumber}} this-if:{{#if this.Goal}}G{{/if}} this.IsNext:[{{this.IsNext}}]
+{{/each}}

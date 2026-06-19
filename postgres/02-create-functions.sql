@@ -2033,6 +2033,96 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (SELECT NULLIF(therapy_class, '') FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id) = 'Cell-based' THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_axioms_name
+-- Field: Axioms.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_axioms_name(p_axiom_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(statement, '') FROM axioms WHERE axiom_id = p_axiom_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tests_for_success_name
+-- Field: TestsForSuccess.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tests_for_success_name(p_test_for_success_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(claim, '') FROM tests_for_success WHERE test_for_success_id = p_test_for_success_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_features_name
+-- Field: Features.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_features_name(p_feature_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(title, '') FROM features WHERE feature_id = p_feature_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_open_questions_name
+-- Field: OpenQuestions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_open_questions_name(p_open_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(question, '') FROM open_questions WHERE open_question_id = p_open_question_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_non_goals_name
+-- Field: NonGoals.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_non_goals_name(p_non_goal_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(statement, '') FROM non_goals WHERE non_goal_id = p_non_goal_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_glossary_terms_name
+-- Field: GlossaryTerms.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_glossary_terms_name(p_glossary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(term, '') FROM glossary_terms WHERE glossary_term_id = p_glossary_term_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_leopold_loops_name
+-- Field: LeopoldLoops.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_leopold_loops_name(p_leopold_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('Loop ', (SELECT NULLIF(loop_number, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id), ' — ', (SELECT NULLIF(title, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_leopold_loops_completedness
+-- Field: LeopoldLoops.Completedness
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_leopold_loops_completedness(p_leopold_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(status, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_leopold_loops_is_in_current_plan
+-- Field: LeopoldLoops.IsInCurrentPlan
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_leopold_loops_is_in_current_plan(p_leopold_loop_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id) = 'done' THEN FALSE ELSE TRUE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

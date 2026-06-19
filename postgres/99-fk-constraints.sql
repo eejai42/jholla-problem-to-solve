@@ -252,4 +252,9 @@ ALTER TABLE intervention_targets DROP CONSTRAINT IF EXISTS fk_intervention_targe
 ALTER TABLE intervention_targets ADD CONSTRAINT fk_intervention_targets_autoimmune_disease
   FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
 
--- 66 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- Features
+ALTER TABLE features DROP CONSTRAINT IF EXISTS fk_features_assigned_loop;
+ALTER TABLE features ADD CONSTRAINT fk_features_assigned_loop
+  FOREIGN KEY (assigned_loop) REFERENCES leopold_loops (leopold_loop_id);
+
+-- 67 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

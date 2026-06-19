@@ -144,6 +144,22 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Causal Mechanism Label | The mechanism label of the intervention target's causal mechanism. | _Mechanism label lookup._ |
 | Is Gene Based Therapy | True when the therapy class is the literal “Gene-based”. | _True when therapy class is gene-based._ |
 | Is Cell Based Therapy | True when the therapy class is the literal “Cell-based”. | _True when therapy class is cell-based._ |
+| **Axiom** | Non-negotiable invariants the platform must obey. Load-bearing constraints, not per-loop work. Captured from the gauntlet conversation. | — |
+| Name | Computed as the statement. | _Display label._ |
+| **Tests for Success** | Falsifiable conditions that prove the axioms hold. The human-readable index of what each demonstration shows; many are realized in the witnessed harness. | — |
+| Name | Computed as the claim. | _Display label._ |
+| **Feature** | Buildable capabilities surfaced by the conversation. Coarser grain than loops; AssignedLoop links a feature to the loop that delivers it (nullable until scheduled). | — |
+| Name | Computed as the title. | _Display label._ |
+| **Open Question** | Decisions still pending, captured so they are not silently re-litigated in a later session. | — |
+| Name | Computed as the question. | _Display label._ |
+| **Non Goal** | Explicit out-of-scope statements — the positive twin of the anti-hallucination ledger. Stops scope creep. | — |
+| Name | Computed as the statement. | _Display label._ |
+| **Glossary Term** | Vocabulary coined in the gauntlet conversation, so the framing is shared and stable across sessions. | — |
+| Name | Computed as the term. | _Display label._ |
+| **Leopold Loop** | The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN. | — |
+| Name | Computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title. | _Display label._ |
+| Completedness | Computed as the status. | _Normalized status used by the derived plan to decide placement._ |
+| Is in Current Plan | True when it is not the case that the status is the literal “done”. | _TRUE for the current "next" loop and anything still planned/backlog (not done)._ |
 
 ## 3 Operative Rules
 
@@ -175,6 +191,13 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - An individual prediction **must** have a prediction label, an individual, an autoimmune disease, and a prediction type.
 - A calibration bin **must** have a bin label, an individual prediction, a predicted probability band, an observed event rate, and a coverage count.
 - An intervention target **must** have a target label, a causal mechanism, an autoimmune disease, and a therapy class, and record whether it is validated.
+- An axiom **must** have a statement, a rationale, and a category.
+- A tests for success **must** have a claim, a how witnessed, and a status.
+- A feature **must** have a title and a description.
+- An open question **must** have a question and a context, and record whether it is resolved.
+- A non goal **must** have a statement and a why excluded.
+- A glossary term **must** have a term and a definition.
+- A leopold loop **must** have a loop number, a title, a goal, a status, and a sort order.
 
 ## 4 Definitional Rules
 
@@ -298,6 +321,15 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-110 Causal Mechanism Label** | An intervention target's causal mechanism label is the mechanism label of the intervention target's causal mechanism. |
 | **DR-111 Is Gene Based Therapy** | An intervention target is considered a gene based therapy if the therapy class is the literal “Gene-based”. |
 | **DR-112 Is Cell Based Therapy** | An intervention target is considered a cell based therapy if the therapy class is the literal “Cell-based”. |
+| **DR-113 Name** | An axiom's name is computed as the statement. |
+| **DR-114 Name** | A tests for success's name is computed as the claim. |
+| **DR-115 Name** | A feature's name is computed as the title. |
+| **DR-116 Name** | An open question's name is computed as the question. |
+| **DR-117 Name** | A non goal's name is computed as the statement. |
+| **DR-118 Name** | A glossary term's name is computed as the term. |
+| **DR-119 Name** | A leopold loop's name is computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title. |
+| **DR-120 Completedness** | A leopold loop's completedness is computed as the status. |
+| **DR-121 Is in Current Plan** | A leopold loop is considered in current plan if it is not the case that the status is the literal “done”. |
 
 ## 5 Traceability to Schema
 
@@ -418,6 +450,15 @@ the same logic the rulebook stores, written for a business reader._
 | **InterventionTargets.CausalMechanismLabel** | formula | `Lookup(CausalMechanisms.MechanismLabel via CausalMechanism)` |
 | **InterventionTargets.IsGeneBasedTherapy** | formula | `If(TherapyClass = "Gene-based", True(), False())` |
 | **InterventionTargets.IsCellBasedTherapy** | formula | `If(TherapyClass = "Cell-based", True(), False())` |
+| **Axioms.Name** | formula | `Statement` |
+| **TestsForSuccess.Name** | formula | `Claim` |
+| **Features.Name** | formula | `Title` |
+| **OpenQuestions.Name** | formula | `Question` |
+| **NonGoals.Name** | formula | `Statement` |
+| **GlossaryTerms.Name** | formula | `Term` |
+| **LeopoldLoops.Name** | formula | `Concat("Loop ", LoopNumber, " — ", Title)` |
+| **LeopoldLoops.Completedness** | formula | `Status` |
+| **LeopoldLoops.IsInCurrentPlan** | formula | `If(Status = "done", FALSE, TRUE)` |
 
 ---
 
