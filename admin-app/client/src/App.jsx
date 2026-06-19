@@ -6,7 +6,7 @@
 // Roles: admin / intake-clinician / diagnosing-doctor. A role switcher stands in
 // for magic-link auth until it lands.
 import React, { useEffect, useState } from 'react';
-import { C, useFetch } from './ui.jsx';
+import { C, useFetch, send } from './ui.jsx';
 import {
   HarnessView, DiagnosisView, CaseWalk, StateMachineView, RoutingEditor, LeopoldEditor, ExplainerView,
 } from './pages.jsx';
@@ -53,6 +53,51 @@ function PlaceholderPage({ node }) {
 function flatten(tree, depth = 0, out = []) {
   for (const n of tree) { out.push({ ...n, depth }); if (n.children?.length) flatten(n.children, depth + 1, out); }
   return out;
+}
+
+// "Save to rulebook" — the reverse-sync trigger, pinned in the left nav.
+// Default click = upsert (safe: updates/adds rows, never deletes). The
+// "full overwrite" checkbox sends mode=replace, rebuilding each entity's rows
+// from its view so DB deletions also drop out of the rulebook. Either way the
+// rulebook gets every CURRENT value — raw AND computed (scores, the
+// IsClinicallyActionable keystone, RelativePath, counts…) — written back to disk.
+function SaveToRulebook() {
+  const [busy, setBusy] = useState(false);
+  const [replace, setReplace] = useState(false);
+  const [msg, setMsg] = useState(null);
+
+  async function save() {
+    const label = replace ? 'FULL OVERWRITE' : 'save';
+    if (replace && !window.confirm(
+      'Full overwrite: each table’s rulebook rows are REBUILT from the live database. '
+      + 'Rows deleted in the DB will be removed from the rulebook too. Continue?')) return;
+    setBusy(true); setMsg(null);
+    try {
+      const r = await send(`/api/snapshot-to-rulebook${replace ? '?mode=replace' : ''}`, 'POST');
+      const s = r.summary || {};
+      const n = replace ? `${s.replaced ?? 0} rows written`
+        : `${s.updated ?? 0} updated, ${s.added ?? 0} added`;
+      setMsg(`Saved to rulebook (${r.mode}): ${n}.`);
+    } catch (e) {
+      setMsg('Save failed: ' + e.message);
+    }
+    setBusy(false);
+  }
+
+  return (
+    <div style={{ borderTop: `1px solid ${C.border}`, padding: '10px 12px' }}>
+      <button onClick={save} disabled={busy}
+        title="Write the live DB's current raw + computed values back into effortless-rulebook.json"
+        style={{ width: '100%', padding: '7px 10px', borderRadius: 6, border: 'none', background: C.accent, color: '#fff', cursor: busy ? 'default' : 'pointer', fontSize: 13, fontWeight: 600 }}>
+        {busy ? 'Saving…' : '⇡ Save to rulebook'}
+      </button>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6, fontSize: 11, color: C.sub, cursor: 'pointer' }}>
+        <input type="checkbox" checked={replace} onChange={(e) => setReplace(e.target.checked)} />
+        full overwrite (replace, not merge)
+      </label>
+      {msg && <div style={{ fontSize: 11, marginTop: 6, color: msg.startsWith('Save failed') ? C.fail : C.pass }}>{msg}</div>}
+    </div>
+  );
 }
 
 export default function App() {
@@ -123,8 +168,10 @@ export default function App() {
               );
             })}
           </div>
-          {/* Pinned bottom-left: the Explainer DAG (ƒ) provenance toggle mounts here.
-              The toggle renders its own "PROVENANCE · ON/OFF" label — no extra text. */}
+          {/* Pinned bottom-left actions. "Save to rulebook" is the reverse-sync
+              (DB -> rulebook); below it, the Explainer DAG (ƒ) provenance toggle
+              mounts (it renders its own "PROVENANCE · ON/OFF" label). */}
+          <SaveToRulebook />
           <div style={{ borderTop: `1px solid ${C.border}`, padding: '10px 12px', display: 'flex', alignItems: 'center' }}>
             <span id="explainer-toggle-mount" />
           </div>

@@ -44,6 +44,7 @@ import { router as routingRouter } from './routes/routing.js';
 import { router as stateMachineRouter } from './routes/state-machines.js';
 import { router as leopoldRouter } from './routes/leopold.js';
 import { router as exportRouter } from './routes/export.js';
+import { router as snapshotRouter } from './routes/snapshot.js';
 
 export const app = express();
 app.use(express.json());
@@ -200,6 +201,7 @@ app.use('/api/routing', routingRouter);
 app.use('/api/state-machines', stateMachineRouter);
 app.use('/api/leopold-loops', leopoldRouter);
 app.use('/api', exportRouter); // GET /api/export.xlsx
+app.use('/api', snapshotRouter); // POST /api/snapshot-to-rulebook[?mode=replace]
 
 // ---- start only when run directly (not when imported by the harness) -------
 const PORT = process.env.PORT || 4173;

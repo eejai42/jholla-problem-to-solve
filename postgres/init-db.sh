@@ -140,3 +140,37 @@ MANIFEST="${SCRIPT_DIR}/.applied-manifest.json"
 } > "$MANIFEST"
 
 echo "[init-db] complete (manifest: .applied-manifest.json)"
+
+# ----------------------------------------------------------------------
+# 5. REVERSE-SYNC (DB -> rulebook), the input spoke that closes the loop.
+#    We only reach this line if every step above succeeded (set -euo pipefail
+#    aborts before here on any failure), so the DB is fully seeded and the
+#    vw_* views are computed. Snapshot every view's RAW + COMPUTED values back
+#    into effortless-rulebook.json so the hub is snapshot-consistent on disk.
+#
+#    Mode is UPSERT (conservative): existing rows are updated in place, rows
+#    only in the DB are added, rows only in the rulebook are LEFT ALONE. So
+#    even if this step fails, worst case the rulebook keeps exactly the data it
+#    already had — nothing is ever removed here. (The admin "Save to rulebook"
+#    button offers an explicit full-overwrite/replace mode; init-db never does.)
+#
+#    Opt out with SNAPSHOT_RULEBOOK=false (e.g. a pure reseed where you don't
+#    want the rulebook touched).
+# ----------------------------------------------------------------------
+if [ "${SNAPSHOT_RULEBOOK:-true}" = "true" ]; then
+    SNAP="${SCRIPT_DIR}/snapshot-to-rulebook.mjs"
+    if [ -f "$SNAP" ]; then
+        echo "[init-db] [RUN]  snapshot-to-rulebook.mjs (DB -> rulebook, upsert)"
+        # Non-fatal: a snapshot failure must not fail the build; the seeded DB
+        # and the existing rulebook both remain valid.
+        if DATABASE_URL="$DATABASE_URL" node "$SNAP" >/dev/null; then
+            echo "[init-db] rulebook snapshot-consistent with DB (raw + computed values written back)"
+        else
+            echo "[init-db] [WARN] snapshot-to-rulebook failed (non-fatal); rulebook left as-is" >&2
+        fi
+    else
+        echo "[init-db] note: snapshot-to-rulebook.mjs not present — skipping DB -> rulebook reverse-sync"
+    fi
+else
+    echo "[init-db] SNAPSHOT_RULEBOOK=false — skipping DB -> rulebook reverse-sync"
+fi

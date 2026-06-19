@@ -756,7 +756,7 @@ ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS subject_table_name TEXT; 
 ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS subject_id TEXT;                             -- Polymorphic: id of the subject row (raw string, NOT a FK).
 ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS from_state_key TEXT;                         -- Bare from-state value. Null on the initial creation transition.
 ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS to_state_key TEXT;                           -- Bare to-state value.
-ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS transition_at TIMESTAMPTZ;                   -- When the transition occurred.
+ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS transition_at DATE;                          -- When the transition occurred.
 ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS triggered_by_role TEXT;                      -- Role that fired this transition.
 ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS reason TEXT;                                 -- Why the transition happened (free text).
 ALTER TABLE state_transitions ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ;                      -- Audit: when first inserted.
