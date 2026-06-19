@@ -325,6 +325,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(disease_label, '') FROM autoimmune_diseases WHERE autoimmune_disease_id = p_autoimmune_disease_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_autoimmune_diseases_relative_path
+-- Field: AutoimmuneDiseases.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_autoimmune_diseases_relative_path(p_autoimmune_disease_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/diseases/', (SELECT NULLIF(autoimmune_disease_id, '') FROM autoimmune_diseases WHERE autoimmune_disease_id = p_autoimmune_disease_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_autoimmune_diseases_count_of_disease_stages
 -- Field: AutoimmuneDiseases.CountOfDiseaseStages
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -345,6 +355,17 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM intervention_targets WHERE autoimmune_disease = (SELECT NULLIF(autoimmune_disease_id, '') FROM autoimmune_diseases WHERE autoimmune_disease_id = p_autoimmune_disease_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_disease_stages_parent_path
+-- Field: DiseaseStages.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related AutoimmuneDiseases
+
+
+CREATE OR REPLACE FUNCTION calc_disease_stages_parent_path(p_disease_stage_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_autoimmune_diseases_relative_path((SELECT autoimmune_disease FROM disease_stages WHERE disease_stage_id = p_disease_stage_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_disease_stages_autoimmune_disease_disease_label
 -- Field: DiseaseStages.AutoimmuneDiseaseDiseaseLabel
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -356,6 +377,24 @@ RETURNS TEXT AS $$
   SELECT (SELECT disease_label::text FROM autoimmune_diseases WHERE autoimmune_disease_id = (SELECT autoimmune_disease FROM disease_stages WHERE disease_stage_id = p_disease_stage_id));
 $$ LANGUAGE sql STABLE;
 
+-- get_autoimmune_diseases_disease_label
+-- Helper function: Get DiseaseLabel from AutoimmuneDiseases by AutoimmuneDiseaseId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_autoimmune_diseases_disease_label(p_autoimmune_disease_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT disease_label FROM autoimmune_diseases WHERE autoimmune_disease_id = p_autoimmune_disease_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_autoimmune_diseases_is_complex_disease
+-- Helper function: Get IsComplexDisease from AutoimmuneDiseases by AutoimmuneDiseaseId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_autoimmune_diseases_is_complex_disease(p_autoimmune_disease_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_complex_disease FROM autoimmune_diseases WHERE autoimmune_disease_id = p_autoimmune_disease_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_disease_stages_name
 -- Field: DiseaseStages.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -364,6 +403,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_disease_stages_name(p_disease_stage_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT(calc_disease_stages_autoimmune_disease_disease_label(p_disease_stage_id), ' — ', (SELECT NULLIF(stage_label, '') FROM disease_stages WHERE disease_stage_id = p_disease_stage_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_disease_stages_relative_path
+-- Field: DiseaseStages.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_disease_stages_relative_path(p_disease_stage_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_disease_stages_parent_path(p_disease_stage_id), '/stages/', (SELECT NULLIF(disease_stage_id, '') FROM disease_stages WHERE disease_stage_id = p_disease_stage_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_disease_stages_is_presymptomatic
@@ -449,6 +498,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(tissue_label, '') FROM tissues WHERE tissue_id = p_tissue_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_tissues_relative_path
+-- Field: Tissues.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tissues_relative_path(p_tissue_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/tissues/', (SELECT NULLIF(tissue_id, '') FROM tissues WHERE tissue_id = p_tissue_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_tissues_count_of_omics_assays
 -- Field: Tissues.CountOfOmicsAssays
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -467,6 +526,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_omics_modalities_name(p_omics_modality_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(modality_label, '') FROM omics_modalities WHERE omics_modality_id = p_omics_modality_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_omics_modalities_relative_path
+-- Field: OmicsModalities.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_omics_modalities_relative_path(p_omics_modality_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/omics-modalities/', (SELECT NULLIF(omics_modality_id, '') FROM omics_modalities WHERE omics_modality_id = p_omics_modality_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_omics_modalities_count_of_omics_assays
@@ -615,6 +684,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(node_label, '') FROM federated_datasets WHERE federated_dataset_id = p_federated_dataset_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_federated_datasets_relative_path
+-- Field: FederatedDatasets.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_federated_datasets_relative_path(p_federated_dataset_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/datasets/', (SELECT NULLIF(federated_dataset_id, '') FROM federated_datasets WHERE federated_dataset_id = p_federated_dataset_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_federated_datasets_count_of_individuals
 -- Field: FederatedDatasets.CountOfIndividuals
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -678,6 +757,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_variant_types_name(p_variant_type_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(type_label, '') FROM variant_types WHERE variant_type_id = p_variant_type_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_variant_types_relative_path
+-- Field: VariantTypes.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_variant_types_relative_path(p_variant_type_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/variant-types/', (SELECT NULLIF(variant_type_id, '') FROM variant_types WHERE variant_type_id = p_variant_type_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_variant_types_count_of_genomic_variants
@@ -864,6 +953,26 @@ RETURNS TEXT AS $$
   SELECT (CONCAT((SELECT NULLIF(given_name, '') FROM individuals WHERE individual_id = p_individual_id), ' ', (SELECT NULLIF(family_name, '') FROM individuals WHERE individual_id = p_individual_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_individuals_slug
+-- Field: Individuals.Slug
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_slug(p_individual_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER(CONCAT((SELECT NULLIF(family_name, '') FROM individuals WHERE individual_id = p_individual_id), '-', (SELECT NULLIF(given_name, '') FROM individuals WHERE individual_id = p_individual_id))), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_relative_path
+-- Field: Individuals.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_relative_path(p_individual_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/intake/new-patient/', calc_individuals_slug(p_individual_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_individuals_count_of_genomic_variants
 -- Field: Individuals.CountOfGenomicVariants
 -- Type: aggregation | DataType: integer | Returns: INTEGER
@@ -964,6 +1073,17 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM causal_mechanisms WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_causal_mechanisms_is_ancestry_transportable(causal_mechanism_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_genomic_variants_parent_path
+-- Field: GenomicVariants.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_genomic_variants_parent_path(p_genomic_variant_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_genomic_variants_variant_type_label
 -- Field: GenomicVariants.VariantTypeLabel
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1025,6 +1145,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(variant_label, '') FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_genomic_variants_relative_path
+-- Field: GenomicVariants.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_genomic_variants_relative_path(p_genomic_variant_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_genomic_variants_parent_path(p_genomic_variant_id), '/variants/', (SELECT NULLIF(genomic_variant_id, '') FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_genomic_variants_is_rare_variant
 -- Field: GenomicVariants.IsRareVariant
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1043,6 +1173,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_genomic_variants_is_causal_candidate(p_genomic_variant_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN ((calc_genomic_variants_is_rare_variant(p_genomic_variant_id) OR calc_genomic_variants_variant_class_is_rare(p_genomic_variant_id)) AND COALESCE((SELECT has_allele_specific_expression FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id), FALSE)) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_omics_assays_parent_path
+-- Field: OmicsAssays.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_omics_assays_parent_path(p_omics_assay_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM omics_assays WHERE omics_assay_id = p_omics_assay_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_omics_assays_modality_label
@@ -1158,6 +1299,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(assay_label, '') FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_omics_assays_relative_path
+-- Field: OmicsAssays.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_omics_assays_relative_path(p_omics_assay_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_omics_assays_parent_path(p_omics_assay_id), '/assays/', (SELECT NULLIF(omics_assay_id, '') FROM omics_assays WHERE omics_assay_id = p_omics_assay_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_omics_assays_has_batch_effect_risk
 -- Field: OmicsAssays.HasBatchEffectRisk
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1176,6 +1327,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_omics_assays_is_high_quality_assay(p_omics_assay_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (NOT (calc_omics_assays_has_batch_effect_risk(p_omics_assay_id)) AND ((SELECT measurement_error_score FROM omics_assays WHERE omics_assay_id = p_omics_assay_id))::NUMERIC < 0.15) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evidence_items_parent_path
+-- Field: EvidenceItems.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related CausalMechanisms
+
+
+CREATE OR REPLACE FUNCTION calc_evidence_items_parent_path(p_evidence_item_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_causal_mechanisms_relative_path((SELECT causal_mechanism FROM evidence_items WHERE evidence_item_id = p_evidence_item_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_evidence_items_assay_is_high_quality
@@ -1197,6 +1359,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_evidence_items_name(p_evidence_item_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(evidence_label, '') FROM evidence_items WHERE evidence_item_id = p_evidence_item_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_evidence_items_relative_path
+-- Field: EvidenceItems.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_evidence_items_relative_path(p_evidence_item_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_evidence_items_parent_path(p_evidence_item_id), '/evidence/', (SELECT NULLIF(evidence_item_id, '') FROM evidence_items WHERE evidence_item_id = p_evidence_item_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_evidence_items_z_stat
@@ -1229,6 +1401,17 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (calc_evidence_items_assay_is_high_quality(p_evidence_item_id) AND NOT (COALESCE((SELECT is_negative_control_arm FROM evidence_items WHERE evidence_item_id = p_evidence_item_id), FALSE)) AND (calc_evidence_items_z_stat(p_evidence_item_id))::NUMERIC >= 2 AND calc_evidence_items_is_confound_controlled(p_evidence_item_id)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_cohort_replications_parent_path
+-- Field: CohortReplications.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related CausalMechanisms
+
+
+CREATE OR REPLACE FUNCTION calc_cohort_replications_parent_path(p_cohort_replication_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_causal_mechanisms_relative_path((SELECT causal_mechanism FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_cohort_replications_mechanism_primary_ancestry
 -- Field: CohortReplications.MechanismPrimaryAncestry
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -1248,6 +1431,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_cohort_replications_name(p_cohort_replication_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(replication_label, '') FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_cohort_replications_relative_path
+-- Field: CohortReplications.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_cohort_replications_relative_path(p_cohort_replication_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_cohort_replications_parent_path(p_cohort_replication_id), '/replications/', (SELECT NULLIF(cohort_replication_id, '') FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_cohort_replications_replicated_at_nominal_sig
@@ -1280,6 +1473,17 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (calc_cohort_replications_replicated_at_nominal_sig(p_cohort_replication_id) AND calc_cohort_replications_is_different_ancestry_replication(p_cohort_replication_id)) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_negative_control_tests_parent_path
+-- Field: NegativeControlTests.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related CausalMechanisms
+
+
+CREATE OR REPLACE FUNCTION calc_negative_control_tests_parent_path(p_negative_control_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_causal_mechanisms_relative_path((SELECT causal_mechanism FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_negative_control_tests_name
 -- Field: NegativeControlTests.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1290,6 +1494,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(control_label, '') FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_negative_control_tests_relative_path
+-- Field: NegativeControlTests.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_negative_control_tests_relative_path(p_negative_control_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_negative_control_tests_parent_path(p_negative_control_test_id), '/neg-controls/', (SELECT NULLIF(negative_control_test_id, '') FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_negative_control_tests_is_survived
 -- Field: NegativeControlTests.IsSurvived
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1298,6 +1512,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_negative_control_tests_is_survived(p_negative_control_test_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (SELECT permutation_effect_size FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id) <= (SELECT null_threshold FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_environmental_exposures_parent_path
+-- Field: EnvironmentalExposures.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_environmental_exposures_parent_path(p_environmental_exposure_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM environmental_exposures WHERE environmental_exposure_id = p_environmental_exposure_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_environmental_exposures_individual_ancestry_label
@@ -1321,6 +1546,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(exposure_label, '') FROM environmental_exposures WHERE environmental_exposure_id = p_environmental_exposure_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_environmental_exposures_relative_path
+-- Field: EnvironmentalExposures.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_environmental_exposures_relative_path(p_environmental_exposure_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_environmental_exposures_parent_path(p_environmental_exposure_id), '/exposures/', (SELECT NULLIF(environmental_exposure_id, '') FROM environmental_exposures WHERE environmental_exposure_id = p_environmental_exposure_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_environmental_exposures_is_high_exposure
 -- Field: EnvironmentalExposures.IsHighExposure
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1329,6 +1564,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_environmental_exposures_is_high_exposure(p_environmental_exposure_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN ((SELECT exposure_level FROM environmental_exposures WHERE environmental_exposure_id = p_environmental_exposure_id))::NUMERIC > 5 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatments_parent_path
+-- Field: Treatments.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_treatments_parent_path(p_treatment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM treatments WHERE treatment_id = p_treatment_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_treatments_autoimmune_disease_label
@@ -1352,6 +1598,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(treatment_label, '') FROM treatments WHERE treatment_id = p_treatment_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatments_relative_path
+-- Field: Treatments.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatments_relative_path(p_treatment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_treatments_parent_path(p_treatment_id), '/treatments/', (SELECT NULLIF(treatment_id, '') FROM treatments WHERE treatment_id = p_treatment_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_treatments_is_effective_treatment
 -- Field: Treatments.IsEffectiveTreatment
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1360,6 +1616,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatments_is_effective_treatment(p_treatment_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Complete' OR (SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Partial') AND NOT (COALESCE((SELECT has_adverse_effect FROM treatments WHERE treatment_id = p_treatment_id), FALSE))) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_clinical_phenotypes_parent_path
+-- Field: ClinicalPhenotypes.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_clinical_phenotypes_parent_path(p_clinical_phenotype_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_clinical_phenotypes_disease_stage_label
@@ -1383,6 +1650,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(phenotype_label, '') FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_clinical_phenotypes_relative_path
+-- Field: ClinicalPhenotypes.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_clinical_phenotypes_relative_path(p_clinical_phenotype_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_clinical_phenotypes_parent_path(p_clinical_phenotype_id), '/phenotypes/', (SELECT NULLIF(clinical_phenotype_id, '') FROM clinical_phenotypes WHERE clinical_phenotype_id = p_clinical_phenotype_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_clinical_phenotypes_is_high_severity
 -- Field: ClinicalPhenotypes.IsHighSeverity
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1401,6 +1678,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_clinical_phenotypes_is_presymptomatic_phenotype(p_clinical_phenotype_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN calc_clinical_phenotypes_disease_stage_label(p_clinical_phenotype_id) = 'Presymptomatic' THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_causal_mechanisms_parent_path
+-- Field: CausalMechanisms.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_causal_mechanisms_parent_path(p_causal_mechanism_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_individual_ancestry_label
@@ -1478,6 +1766,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_causal_mechanisms_name(p_causal_mechanism_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(mechanism_label, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_causal_mechanisms_relative_path
+-- Field: CausalMechanisms.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_causal_mechanisms_relative_path(p_causal_mechanism_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_causal_mechanisms_parent_path(p_causal_mechanism_id), '/mechanisms/', (SELECT NULLIF(causal_mechanism_id, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_causal_mechanisms_count_qualified_evidence
@@ -1640,6 +1938,17 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (calc_causal_mechanisms_is_causal_architecture_node(p_causal_mechanism_id) AND (calc_causal_mechanisms_count_cross_ancestry_concordant(p_causal_mechanism_id))::NUMERIC >= 1) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_epistatic_interactions_parent_path
+-- Field: EpistaticInteractions.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_epistatic_interactions_parent_path(p_epistatic_interaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM epistatic_interactions WHERE epistatic_interaction_id = p_epistatic_interaction_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_epistatic_interactions_name
 -- Field: EpistaticInteractions.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1650,6 +1959,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(interaction_label, '') FROM epistatic_interactions WHERE epistatic_interaction_id = p_epistatic_interaction_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_epistatic_interactions_relative_path
+-- Field: EpistaticInteractions.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_epistatic_interactions_relative_path(p_epistatic_interaction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_epistatic_interactions_parent_path(p_epistatic_interaction_id), '/epistasis/', (SELECT NULLIF(epistatic_interaction_id, '') FROM epistatic_interactions WHERE epistatic_interaction_id = p_epistatic_interaction_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_epistatic_interactions_is_high_order_epistasis
 -- Field: EpistaticInteractions.IsHighOrderEpistasis
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1658,6 +1977,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_epistatic_interactions_is_high_order_epistasis(p_epistatic_interaction_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN ((SELECT epistasis_score FROM epistatic_interactions WHERE epistatic_interaction_id = p_epistatic_interaction_id))::NUMERIC > 0.5 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_counterfactual_trajectories_parent_path
+-- Field: CounterfactualTrajectories.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_counterfactual_trajectories_parent_path(p_counterfactual_trajectory_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM counterfactual_trajectories WHERE counterfactual_trajectory_id = p_counterfactual_trajectory_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_counterfactual_trajectories_autoimmune_disease_label
@@ -1681,6 +2011,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(trajectory_label, '') FROM counterfactual_trajectories WHERE counterfactual_trajectory_id = p_counterfactual_trajectory_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_counterfactual_trajectories_relative_path
+-- Field: CounterfactualTrajectories.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_counterfactual_trajectories_relative_path(p_counterfactual_trajectory_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_counterfactual_trajectories_parent_path(p_counterfactual_trajectory_id), '/trajectories/', (SELECT NULLIF(counterfactual_trajectory_id, '') FROM counterfactual_trajectories WHERE counterfactual_trajectory_id = p_counterfactual_trajectory_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_counterfactual_trajectories_is_worsening_trajectory
 -- Field: CounterfactualTrajectories.IsWorseningTrajectory
 -- Type: calculated | DataType: boolean | Returns: BOOLEAN
@@ -1689,6 +2029,17 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_counterfactual_trajectories_is_worsening_trajectory(p_counterfactual_trajectory_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN ((SELECT projected_severity FROM counterfactual_trajectories WHERE counterfactual_trajectory_id = p_counterfactual_trajectory_id))::NUMERIC > 7 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_parent_path
+-- Field: IndividualPredictions.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_parent_path(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_relative_path((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_individual_ancestry_label
@@ -1810,6 +2161,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_individual_predictions_name(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(prediction_label, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_relative_path
+-- Field: IndividualPredictions.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_relative_path(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_individual_predictions_parent_path(p_individual_prediction_id), '/predictions/', (SELECT NULLIF(individual_prediction_id, '') FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_predicted_value
@@ -1962,6 +2323,27 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id) AND calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id) AND calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id) AND (calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC > 0) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_individual_predictions_lifecycle_state_key
+-- Field: IndividualPredictions.LifecycleStateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_lifecycle_state_key(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id) AND calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id) AND calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id) AND (calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC > 0) THEN ('Actionable')::text ELSE (CASE WHEN (NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) OR NOT (calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id))) THEN ('NotActionable')::text ELSE (CASE WHEN calc_individual_predictions_individual_has_cryptic_relatedness(p_individual_prediction_id) THEN ('NotActionable')::text ELSE (CASE WHEN (calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC < 0.7 THEN ('NotActionable')::text ELSE (CASE WHEN NOT (calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id)) THEN ('NotActionable')::text ELSE ('Actionable')::text END)::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_calibration_bins_parent_path
+-- Field: CalibrationBins.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related IndividualPredictions
+
+
+CREATE OR REPLACE FUNCTION calc_calibration_bins_parent_path(p_calibration_bin_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individual_predictions_relative_path((SELECT individual_prediction FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_calibration_bins_name
 -- Field: CalibrationBins.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1970,6 +2352,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_calibration_bins_name(p_calibration_bin_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(bin_label, '') FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_calibration_bins_relative_path
+-- Field: CalibrationBins.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_calibration_bins_relative_path(p_calibration_bin_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_calibration_bins_parent_path(p_calibration_bin_id), '/bins/', (SELECT NULLIF(calibration_bin_id, '') FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_calibration_bins_bin_abs_error
@@ -1992,6 +2384,17 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (((SELECT coverage_count FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id))::NUMERIC >= 20 AND (calc_calibration_bins_bin_abs_error(p_calibration_bin_id))::NUMERIC <= 0.1) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_intervention_targets_parent_path
+-- Field: InterventionTargets.ParentPath
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: RelativePath from related CausalMechanisms
+
+
+CREATE OR REPLACE FUNCTION calc_intervention_targets_parent_path(p_intervention_target_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_causal_mechanisms_relative_path((SELECT causal_mechanism FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_intervention_targets_causal_mechanism_label
 -- Field: InterventionTargets.CausalMechanismLabel
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2011,6 +2414,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_intervention_targets_name(p_intervention_target_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(target_label, '') FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_intervention_targets_relative_path
+-- Field: InterventionTargets.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_intervention_targets_relative_path(p_intervention_target_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT(calc_intervention_targets_parent_path(p_intervention_target_id), '/targets/', (SELECT NULLIF(intervention_target_id, '') FROM intervention_targets WHERE intervention_target_id = p_intervention_target_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_intervention_targets_is_gene_based_therapy
@@ -2043,6 +2456,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(statement, '') FROM axioms WHERE axiom_id = p_axiom_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_axioms_relative_path
+-- Field: Axioms.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_axioms_relative_path(p_axiom_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/axioms/', (SELECT NULLIF(axiom_id, '') FROM axioms WHERE axiom_id = p_axiom_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_tests_for_success_name
 -- Field: TestsForSuccess.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2051,6 +2474,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_tests_for_success_name(p_test_for_success_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(claim, '') FROM tests_for_success WHERE test_for_success_id = p_test_for_success_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_tests_for_success_relative_path
+-- Field: TestsForSuccess.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_tests_for_success_relative_path(p_test_for_success_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/tests-for-success/', (SELECT NULLIF(test_for_success_id, '') FROM tests_for_success WHERE test_for_success_id = p_test_for_success_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_features_name
@@ -2063,6 +2496,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(title, '') FROM features WHERE feature_id = p_feature_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_features_relative_path
+-- Field: Features.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_features_relative_path(p_feature_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/features/', (SELECT NULLIF(feature_id, '') FROM features WHERE feature_id = p_feature_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_open_questions_name
 -- Field: OpenQuestions.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2071,6 +2514,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_open_questions_name(p_open_question_id TEXT)
 RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(question, '') FROM open_questions WHERE open_question_id = p_open_question_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_open_questions_relative_path
+-- Field: OpenQuestions.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_open_questions_relative_path(p_open_question_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/open-questions/', (SELECT NULLIF(open_question_id, '') FROM open_questions WHERE open_question_id = p_open_question_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_non_goals_name
@@ -2083,6 +2536,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(statement, '') FROM non_goals WHERE non_goal_id = p_non_goal_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_non_goals_relative_path
+-- Field: NonGoals.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_non_goals_relative_path(p_non_goal_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/non-goals/', (SELECT NULLIF(non_goal_id, '') FROM non_goals WHERE non_goal_id = p_non_goal_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_glossary_terms_name
 -- Field: GlossaryTerms.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2093,6 +2556,16 @@ RETURNS TEXT AS $$
   SELECT ((SELECT NULLIF(term, '') FROM glossary_terms WHERE glossary_term_id = p_glossary_term_id))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_glossary_terms_relative_path
+-- Field: GlossaryTerms.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_glossary_terms_relative_path(p_glossary_term_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/glossary/', (SELECT NULLIF(glossary_term_id, '') FROM glossary_terms WHERE glossary_term_id = p_glossary_term_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_leopold_loops_name
 -- Field: LeopoldLoops.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2101,6 +2574,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_leopold_loops_name(p_leopold_loop_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT('Loop ', (SELECT NULLIF(loop_number, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id), ' — ', (SELECT NULLIF(title, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_leopold_loops_relative_path
+-- Field: LeopoldLoops.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_leopold_loops_relative_path(p_leopold_loop_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/leopold-loops/', (SELECT NULLIF(leopold_loop_id, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_leopold_loops_completedness
@@ -2121,6 +2604,839 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_leopold_loops_is_in_current_plan(p_leopold_loop_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (SELECT NULLIF(status, '') FROM leopold_loops WHERE leopold_loop_id = p_leopold_loop_id) = 'done' THEN FALSE ELSE TRUE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_name
+-- Field: RoutingAndNavigation.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_name(p_routing_and_navigation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(LOWER((SELECT NULLIF(display_name, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id)), ' ', '-'))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_admin_can_create
+-- Field: RoutingAndNavigation.AdminCanCreate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_create(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_admin_can_read
+-- Field: RoutingAndNavigation.AdminCanRead
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_read(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_admin_can_update
+-- Field: RoutingAndNavigation.AdminCanUpdate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_update(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_admin_can_delete
+-- Field: RoutingAndNavigation.AdminCanDelete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_admin_can_delete(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(admin_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_intake_clinician_can_create
+-- Field: RoutingAndNavigation.IntakeClinicianCanCreate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_create(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_intake_clinician_can_read
+-- Field: RoutingAndNavigation.IntakeClinicianCanRead
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_read(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_intake_clinician_can_update
+-- Field: RoutingAndNavigation.IntakeClinicianCanUpdate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_update(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_intake_clinician_can_delete
+-- Field: RoutingAndNavigation.IntakeClinicianCanDelete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_intake_clinician_can_delete(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(intake_clinician_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_diagnosing_doctor_can_create
+-- Field: RoutingAndNavigation.DiagnosingDoctorCanCreate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_create(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_diagnosing_doctor_can_read
+-- Field: RoutingAndNavigation.DiagnosingDoctorCanRead
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_read(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_diagnosing_doctor_can_update
+-- Field: RoutingAndNavigation.DiagnosingDoctorCanUpdate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_update(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_diagnosing_doctor_can_delete
+-- Field: RoutingAndNavigation.DiagnosingDoctorCanDelete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_diagnosing_doctor_can_delete(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(diagnosing_doctor_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_external_llm_can_create
+-- Field: RoutingAndNavigation.ExternalLlmCanCreate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_create(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('C' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_external_llm_can_read
+-- Field: RoutingAndNavigation.ExternalLlmCanRead
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_read(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('R' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_external_llm_can_update
+-- Field: RoutingAndNavigation.ExternalLlmCanUpdate
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_update(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('U' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_external_llm_can_delete
+-- Field: RoutingAndNavigation.ExternalLlmCanDelete
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_external_llm_can_delete(p_routing_and_navigation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (NULL)::text ELSE (NOT (((POSITION('D' IN (SELECT NULLIF(external_llm_crud, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))) = 0)))::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_depth
+-- Field: RoutingAndNavigation.Depth
+-- Type: calculated | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_depth(p_routing_and_navigation_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(parent_route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id) IS NULL THEN (0)::text ELSE ((COALESCE(CASE WHEN (LENGTH((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (LENGTH((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id)))::numeric ELSE NULL END, 0) - COALESCE(CASE WHEN (LENGTH(REPLACE((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id), '.', '')))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (LENGTH(REPLACE((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id), '.', '')))::numeric ELSE NULL END, 0)))::text END)::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_full_path
+-- Field: RoutingAndNavigation.FullPath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_full_path(p_routing_and_navigation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(route, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_handler_base_name
+-- Field: RoutingAndNavigation.HandlerBaseName
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_handler_base_name(p_routing_and_navigation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (REPLACE(REPLACE((SELECT NULLIF(route_key, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id), '.', ' '), '-', ' '))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_routing_and_navigation_relative_path
+-- Field: RoutingAndNavigation.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_routing_and_navigation_relative_path(p_routing_and_navigation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/routing/', (SELECT NULLIF(routing_and_navigation_id, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_state_key
+-- Helper function: Get StateKey from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_state_key(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT state_key FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_title
+-- Helper function: Get Title from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_title(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_order_index
+-- Helper function: Get OrderIndex from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_order_index(p_machine_state_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT order_index FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_is_initial
+-- Helper function: Get IsInitial from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_is_initial(p_machine_state_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_initial FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_is_terminal
+-- Helper function: Get IsTerminal from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_is_terminal(p_machine_state_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_terminal FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_created_at
+-- Helper function: Get CreatedAt from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_created_at(p_machine_state_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT created_at FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_created_by
+-- Helper function: Get CreatedBy from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_created_by(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT created_by FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_modified_at
+-- Helper function: Get ModifiedAt from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_modified_at(p_machine_state_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT modified_at FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_modified_by
+-- Helper function: Get ModifiedBy from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_modified_by(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_modified_by_model
+-- Helper function: Get ModifiedByModel from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_modified_by_model(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by_model FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_guard_description
+-- Helper function: Get GuardDescription from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_guard_description(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT guard_description FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_rule_refs
+-- Helper function: Get RuleRefs from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_rule_refs(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT rule_refs FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_trigger_endpoint
+-- Helper function: Get TriggerEndpoint from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_trigger_endpoint(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT trigger_endpoint FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_triggered_by_role
+-- Helper function: Get TriggeredByRole from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_triggered_by_role(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT triggered_by_role FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_created_at
+-- Helper function: Get CreatedAt from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_created_at(p_state_transition_rule_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT created_at FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_created_by
+-- Helper function: Get CreatedBy from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_created_by(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT created_by FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_modified_at
+-- Helper function: Get ModifiedAt from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_modified_at(p_state_transition_rule_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT modified_at FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_modified_by
+-- Helper function: Get ModifiedBy from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_modified_by(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transition_rules_modified_by_model
+-- Helper function: Get ModifiedByModel from StateTransitionRules by StateTransitionRuleId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transition_rules_modified_by_model(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by_model FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_subject_table_name
+-- Helper function: Get SubjectTableName from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_subject_table_name(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT subject_table_name FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_from_state_key
+-- Helper function: Get FromStateKey from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_from_state_key(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT from_state_key FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_to_state_key
+-- Helper function: Get ToStateKey from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_to_state_key(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT to_state_key FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_transition_at
+-- Helper function: Get TransitionAt from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_transition_at(p_state_transition_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT transition_at FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_triggered_by_role
+-- Helper function: Get TriggeredByRole from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_triggered_by_role(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT triggered_by_role FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_reason
+-- Helper function: Get Reason from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_reason(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT reason FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_created_at
+-- Helper function: Get CreatedAt from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_created_at(p_state_transition_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT created_at FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_created_by
+-- Helper function: Get CreatedBy from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_created_by(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT created_by FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_modified_at
+-- Helper function: Get ModifiedAt from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_modified_at(p_state_transition_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT modified_at FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_modified_by
+-- Helper function: Get ModifiedBy from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_modified_by(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_transitions_modified_by_model
+-- Helper function: Get ModifiedByModel from StateTransitions by StateTransitionId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_transitions_modified_by_model(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by_model FROM state_transitions WHERE state_transition_id = p_state_transition_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_machines_name
+-- Field: StateMachines.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_state_machines_name(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(state_machine_id, '') FROM state_machines WHERE state_machine_id = p_state_machine_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_machines_relative_path
+-- Field: StateMachines.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_state_machines_relative_path(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/state-machine/', (SELECT NULLIF(state_machine_id, '') FROM state_machines WHERE state_machine_id = p_state_machine_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_machines_state_count
+-- Field: StateMachines.StateCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_state_machines_state_count(p_state_machine_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM machine_states WHERE state_machine = (SELECT NULLIF(state_machine_id, '') FROM state_machines WHERE state_machine_id = p_state_machine_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_machines_transition_rule_count
+-- Field: StateMachines.TransitionRuleCount
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_state_machines_transition_rule_count(p_state_machine_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM state_transition_rules WHERE state_machine = (SELECT NULLIF(state_machine_id, '') FROM state_machines WHERE state_machine_id = p_state_machine_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_title
+-- Helper function: Get Title from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_title(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_description
+-- Helper function: Get Description from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_description(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT description FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_subject_table_name
+-- Helper function: Get SubjectTableName from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_subject_table_name(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT subject_table_name FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_subject_state_column
+-- Helper function: Get SubjectStateColumn from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_subject_state_column(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT subject_state_column FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_created_at
+-- Helper function: Get CreatedAt from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_created_at(p_state_machine_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT created_at FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_created_by
+-- Helper function: Get CreatedBy from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_created_by(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT created_by FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_modified_at
+-- Helper function: Get ModifiedAt from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_modified_at(p_state_machine_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT modified_at FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_modified_by
+-- Helper function: Get ModifiedBy from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_modified_by(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_state_machines_modified_by_model
+-- Helper function: Get ModifiedByModel from StateMachines by StateMachineId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_state_machines_modified_by_model(p_state_machine_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by_model FROM state_machines WHERE state_machine_id = p_state_machine_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_machine_states_name
+-- Field: MachineStates.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_machine_states_name(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(machine_state_id, '') FROM machine_states WHERE machine_state_id = p_machine_state_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_machine_states_relative_path
+-- Field: MachineStates.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_machine_states_relative_path(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/state-machine/states/', (SELECT NULLIF(machine_state_id, '') FROM machine_states WHERE machine_state_id = p_machine_state_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transition_rules_from_state_key
+-- Field: StateTransitionRules.FromStateKey
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: StateKey from related MachineStates
+
+
+CREATE OR REPLACE FUNCTION calc_state_transition_rules_from_state_key(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT state_key::text FROM machine_states WHERE machine_state_id = (SELECT from_state FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transition_rules_to_state_key
+-- Field: StateTransitionRules.ToStateKey
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: StateKey from related MachineStates
+
+
+CREATE OR REPLACE FUNCTION calc_state_transition_rules_to_state_key(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT state_key::text FROM machine_states WHERE machine_state_id = (SELECT to_state FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transition_rules_name
+-- Field: StateTransitionRules.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_state_transition_rules_name(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(state_transition_rule_id, '') FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transition_rules_relative_path
+-- Field: StateTransitionRules.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_state_transition_rules_relative_path(p_state_transition_rule_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/state-machine/rules/', (SELECT NULLIF(state_transition_rule_id, '') FROM state_transition_rules WHERE state_transition_rule_id = p_state_transition_rule_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transition_rules_is_forward_edge
+-- Field: StateTransitionRules.IsForwardEdge
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_state_transition_rules_is_forward_edge(p_state_transition_rule_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT (calc_state_transition_rules_to_state_key(p_state_transition_rule_id) = calc_state_transition_rules_from_state_key(p_state_transition_rule_id)))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transitions_name
+-- Field: StateTransitions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_state_transitions_name(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(state_transition_id, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transitions_relative_path
+-- Field: StateTransitions.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_state_transitions_relative_path(p_state_transition_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/state-machine/transitions/', (SELECT NULLIF(state_transition_id, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_state_transitions_is_forward
+-- Field: StateTransitions.IsForward
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_state_transitions_is_forward(p_state_transition_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (NOT ((SELECT NULLIF(to_state_key, '') FROM state_transitions WHERE state_transition_id = p_state_transition_id) = 'Intake'))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_subject_table_name
+-- Helper function: Get SubjectTableName from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_subject_table_name(p_subject_state_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT subject_table_name FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_state_key
+-- Helper function: Get StateKey from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_state_key(p_subject_state_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT state_key FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_entered_at
+-- Helper function: Get EnteredAt from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_entered_at(p_subject_state_instance_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT entered_at FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_exited_at
+-- Helper function: Get ExitedAt from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_exited_at(p_subject_state_instance_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT exited_at FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_sequence_index
+-- Helper function: Get SequenceIndex from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_sequence_index(p_subject_state_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_created_at
+-- Helper function: Get CreatedAt from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_created_at(p_subject_state_instance_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT created_at FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_created_by
+-- Helper function: Get CreatedBy from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_created_by(p_subject_state_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT created_by FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_modified_at
+-- Helper function: Get ModifiedAt from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_modified_at(p_subject_state_instance_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT modified_at FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_modified_by
+-- Helper function: Get ModifiedBy from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_modified_by(p_subject_state_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_subject_state_instances_modified_by_model
+-- Helper function: Get ModifiedByModel from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_modified_by_model(p_subject_state_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by_model FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_subject_state_instances_name
+-- Field: SubjectStateInstances.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_subject_state_instances_name(p_subject_state_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(subject_state_instance_id, '') FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_subject_state_instances_relative_path
+-- Field: SubjectStateInstances.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_subject_state_instances_relative_path(p_subject_state_instance_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/state-machine/instances/', (SELECT NULLIF(subject_state_instance_id, '') FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_subject_state_instances_is_current
+-- Field: SubjectStateInstances.IsCurrent
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_subject_state_instances_is_current(p_subject_state_instance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT ((((SELECT exited_at::timestamptz FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id)) IS NULL OR ((SELECT exited_at::timestamptz FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::text = ''))::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_subject_state_instances_has_complete_lineage
+-- Field: SubjectStateInstances.HasCompleteLineage
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_subject_state_instances_has_complete_lineage(p_subject_state_instance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (((SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC >= 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

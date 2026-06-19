@@ -257,4 +257,53 @@ ALTER TABLE features DROP CONSTRAINT IF EXISTS fk_features_assigned_loop;
 ALTER TABLE features ADD CONSTRAINT fk_features_assigned_loop
   FOREIGN KEY (assigned_loop) REFERENCES leopold_loops (leopold_loop_id);
 
--- 67 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- StateMachines
+ALTER TABLE state_machines DROP CONSTRAINT IF EXISTS fk_state_machines_machine_states;
+ALTER TABLE state_machines ADD CONSTRAINT fk_state_machines_machine_states
+  FOREIGN KEY (machine_states) REFERENCES machine_states (machine_state_id);
+ALTER TABLE state_machines DROP CONSTRAINT IF EXISTS fk_state_machines_state_transition_rules;
+ALTER TABLE state_machines ADD CONSTRAINT fk_state_machines_state_transition_rules
+  FOREIGN KEY (state_transition_rules) REFERENCES state_transition_rules (state_transition_rule_id);
+ALTER TABLE state_machines DROP CONSTRAINT IF EXISTS fk_state_machines_state_transitions;
+ALTER TABLE state_machines ADD CONSTRAINT fk_state_machines_state_transitions
+  FOREIGN KEY (state_transitions) REFERENCES state_transitions (state_transition_id);
+
+-- MachineStates
+ALTER TABLE machine_states DROP CONSTRAINT IF EXISTS fk_machine_states_state_machine;
+ALTER TABLE machine_states ADD CONSTRAINT fk_machine_states_state_machine
+  FOREIGN KEY (state_machine) REFERENCES state_machines (state_machine_id);
+ALTER TABLE machine_states DROP CONSTRAINT IF EXISTS fk_machine_states_from_transition_rules;
+ALTER TABLE machine_states ADD CONSTRAINT fk_machine_states_from_transition_rules
+  FOREIGN KEY (from_transition_rules) REFERENCES state_transition_rules (state_transition_rule_id);
+ALTER TABLE machine_states DROP CONSTRAINT IF EXISTS fk_machine_states_to_transition_rules;
+ALTER TABLE machine_states ADD CONSTRAINT fk_machine_states_to_transition_rules
+  FOREIGN KEY (to_transition_rules) REFERENCES state_transition_rules (state_transition_rule_id);
+
+-- StateTransitionRules
+ALTER TABLE state_transition_rules DROP CONSTRAINT IF EXISTS fk_state_transition_rules_state_machine;
+ALTER TABLE state_transition_rules ADD CONSTRAINT fk_state_transition_rules_state_machine
+  FOREIGN KEY (state_machine) REFERENCES state_machines (state_machine_id);
+ALTER TABLE state_transition_rules DROP CONSTRAINT IF EXISTS fk_state_transition_rules_from_state;
+ALTER TABLE state_transition_rules ADD CONSTRAINT fk_state_transition_rules_from_state
+  FOREIGN KEY (from_state) REFERENCES machine_states (machine_state_id);
+ALTER TABLE state_transition_rules DROP CONSTRAINT IF EXISTS fk_state_transition_rules_to_state;
+ALTER TABLE state_transition_rules ADD CONSTRAINT fk_state_transition_rules_to_state
+  FOREIGN KEY (to_state) REFERENCES machine_states (machine_state_id);
+
+-- StateTransitions
+ALTER TABLE state_transitions DROP CONSTRAINT IF EXISTS fk_state_transitions_state_machine;
+ALTER TABLE state_transitions ADD CONSTRAINT fk_state_transitions_state_machine
+  FOREIGN KEY (state_machine) REFERENCES state_machines (state_machine_id);
+
+-- SubjectStateInstances
+ALTER TABLE subject_state_instances DROP CONSTRAINT IF EXISTS fk_subject_state_instances_state_machine;
+ALTER TABLE subject_state_instances ADD CONSTRAINT fk_subject_state_instances_state_machine
+  FOREIGN KEY (state_machine) REFERENCES state_machines (state_machine_id);
+ALTER TABLE subject_state_instances DROP CONSTRAINT IF EXISTS fk_subject_state_instances_prior_instance;
+ALTER TABLE subject_state_instances ADD CONSTRAINT fk_subject_state_instances_prior_instance
+  FOREIGN KEY (prior_instance) REFERENCES subject_state_instances (subject_state_instance_id);
+ALTER TABLE subject_state_instances DROP CONSTRAINT IF EXISTS fk_subject_state_instances_entered_via_transition;
+ALTER TABLE subject_state_instances ADD CONSTRAINT fk_subject_state_instances_entered_via_transition
+  FOREIGN KEY (entered_via_transition) REFERENCES state_transitions (state_transition_id);
+
+-- 80 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

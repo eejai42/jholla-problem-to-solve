@@ -35,6 +35,12 @@ ALTER TABLE open_questions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE non_goals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE glossary_terms ENABLE ROW LEVEL SECURITY;
 ALTER TABLE leopold_loops ENABLE ROW LEVEL SECURITY;
+ALTER TABLE routing_and_navigation ENABLE ROW LEVEL SECURITY;
+ALTER TABLE state_machines ENABLE ROW LEVEL SECURITY;
+ALTER TABLE machine_states ENABLE ROW LEVEL SECURITY;
+ALTER TABLE state_transition_rules ENABLE ROW LEVEL SECURITY;
+ALTER TABLE state_transitions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE subject_state_instances ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:

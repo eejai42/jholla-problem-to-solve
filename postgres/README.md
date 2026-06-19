@@ -2,47 +2,53 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-19 21:12:16 UTC
+**Timestamp:** 2026-06-19 21:18:05 UTC
 
 ## Parsing Rulebook
 
-Found **28** tables in rulebook
+Found **34** tables in rulebook
 
 
-  - **AutoimmuneDiseases** (12 fields, 3 records)
-  - **DiseaseStages** (7 fields, 6 records)
-  - **Tissues** (5 fields, 5 records)
-  - **OmicsModalities** (6 fields, 8 records)
-  - **FederatedDatasets** (9 fields, 4 records)
-  - **VariantTypes** (6 fields, 5 records)
-  - **Individuals** (30 fields, 7 records)
-  - **GenomicVariants** (12 fields, 7 records)
-  - **OmicsAssays** (15 fields, 21 records)
-  - **EvidenceItems** (15 fields, 21 records)
-  - **CohortReplications** (12 fields, 21 records)
-  - **NegativeControlTests** (8 fields, 14 records)
-  - **EnvironmentalExposures** (9 fields, 1 records)
-  - **Treatments** (11 fields, 1 records)
-  - **ClinicalPhenotypes** (13 fields, 1 records)
-  - **CausalMechanisms** (30 fields, 7 records)
-  - **EpistaticInteractions** (9 fields, 1 records)
-  - **CounterfactualTrajectories** (10 fields, 1 records)
-  - **IndividualPredictions** (28 fields, 7 records)
-  - **CalibrationBins** (9 fields, 35 records)
-  - **InterventionTargets** (10 fields, 6 records)
-  - **Axioms** (5 fields, 8 records)
-  - **TestsForSuccess** (6 fields, 6 records)
-  - **Features** (5 fields, 6 records)
-  - **OpenQuestions** (6 fields, 3 records)
-  - **NonGoals** (4 fields, 5 records)
-  - **GlossaryTerms** (4 fields, 6 records)
-  - **LeopoldLoops** (13 fields, 10 records)
+  - **AutoimmuneDiseases** (13 fields, 3 records)
+  - **DiseaseStages** (9 fields, 6 records)
+  - **Tissues** (6 fields, 5 records)
+  - **OmicsModalities** (7 fields, 8 records)
+  - **FederatedDatasets** (10 fields, 4 records)
+  - **VariantTypes** (7 fields, 5 records)
+  - **Individuals** (32 fields, 7 records)
+  - **GenomicVariants** (14 fields, 7 records)
+  - **OmicsAssays** (17 fields, 21 records)
+  - **EvidenceItems** (17 fields, 21 records)
+  - **CohortReplications** (14 fields, 21 records)
+  - **NegativeControlTests** (10 fields, 14 records)
+  - **EnvironmentalExposures** (11 fields, 1 records)
+  - **Treatments** (13 fields, 1 records)
+  - **ClinicalPhenotypes** (15 fields, 1 records)
+  - **CausalMechanisms** (32 fields, 7 records)
+  - **EpistaticInteractions** (11 fields, 1 records)
+  - **CounterfactualTrajectories** (12 fields, 1 records)
+  - **IndividualPredictions** (31 fields, 7 records)
+  - **CalibrationBins** (11 fields, 35 records)
+  - **InterventionTargets** (12 fields, 6 records)
+  - **Axioms** (6 fields, 8 records)
+  - **TestsForSuccess** (7 fields, 6 records)
+  - **Features** (6 fields, 6 records)
+  - **OpenQuestions** (7 fields, 3 records)
+  - **NonGoals** (5 fields, 5 records)
+  - **GlossaryTerms** (5 fields, 6 records)
+  - **LeopoldLoops** (14 fields, 10 records)
+  - **RoutingAndNavigation** (44 fields, 21 records)
+  - **StateMachines** (17 fields, 1 records)
+  - **MachineStates** (16 fields, 7 records)
+  - **StateTransitionRules** (18 fields, 9 records)
+  - **StateTransitions** (17 fields, 26 records)
+  - **SubjectStateInstances** (19 fields, 33 records)
 
-Generated **28** table definitions with **161** raw fields (mode=check-add)
-Generated **218** calculation functions
-Generated **28** views
-Enabled RLS on **28** tables
-Generated insert statements for **226** records
+Generated **34** table definitions with **240** raw fields (mode=check-add)
+Generated **353** calculation functions
+Generated **34** views
+Enabled RLS on **34** tables
+Generated insert statements for **323** records
 ## Script Generation Complete
 
 Generated files:

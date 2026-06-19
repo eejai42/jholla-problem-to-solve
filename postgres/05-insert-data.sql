@@ -768,3 +768,312 @@ VALUES ('loop-adverse', '7', 'Adverse-effect prediction', 'Wire adverse-effect p
 INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
 VALUES ('loop-equity', '8', 'Cohort-level equity report', 'Calibration & actionability rates by ancestry (ancestry-equity dashboard).', 'backlog', '', '', 9, '[BACKLOG]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
+-- ----------------------------------------------------------------------------
+-- RoutingAndNavigation: Role-based navigation: open-ended parent->child->leaf routes with computed paths. Each route has a template (/intake/case/:caseId); entities carry RelativePath that substitutes their own id/slug. Roles: admin, intake-clinician, diagnosing-doctor, external-llm.
+-- ----------------------------------------------------------------------------
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-intake', 'Intake', '/intake', 'Clinician intake workspace — bring a new patient case in.', 10, '', 'intake', 'top', 'admin,intake-clinician', 'Individuals', 'vw_individuals', 'clipboard-plus', FALSE, TRUE, 'CRUD', 'CRU', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-intake-new', 'New Patient', '/intake/new-patient/:caseId', 'Open or start a case by slug, e.g. /intake/new-patient/reyes-ana.', 11, 'intake', 'intake.new-patient', 'sub', 'admin,intake-clinician', 'Individuals', 'vw_individuals', 'user-plus', TRUE, FALSE, 'CRUD', 'CRU', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-intake-observations', 'Observations', '/intake/new-patient/:caseId/observations', 'Raw presenting facts: ancestry, age, federated node, cryptic-relatedness flag.', 12, 'intake.new-patient', 'intake.new-patient.observations', 'leaf', 'admin,intake-clinician', 'Individuals', 'vw_individuals', 'stethoscope', TRUE, FALSE, 'CRUD', 'CRU', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-intake-variants', 'Variants', '/intake/new-patient/:caseId/variants', 'Genomic variant calls: allele frequency, allele-specific expression.', 13, 'intake.new-patient', 'intake.new-patient.variants', 'leaf', 'admin,intake-clinician', 'GenomicVariants', 'vw_genomic_variants', 'dna', TRUE, FALSE, 'CRUD', 'CRU', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-intake-assays', 'Assays', '/intake/new-patient/:caseId/assays', 'Omics assays per modality/tissue: measurement error, cell-state effects.', 14, 'intake.new-patient', 'intake.new-patient.assays', 'leaf', 'admin,intake-clinician', 'OmicsAssays', 'vw_omics_assays', 'flask-conical', TRUE, FALSE, 'CRUD', 'CRU', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-intake-submit', 'Submit Case', '/intake/new-patient/:caseId/submit', 'Hand the assembled raw facts to the deterministic inference graph.', 15, 'intake.new-patient', 'intake.new-patient.submit', 'leaf', 'admin,intake-clinician', NULL, NULL, 'send', TRUE, FALSE, 'CRUD', 'RU', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis', 'Diagnosis', '/diagnosis', 'Diagnosing doctor workspace — walk a case to its keystone.', 20, '', 'diagnosis', 'top', 'admin,diagnosing-doctor', 'IndividualPredictions', 'vw_individual_predictions', 'brain-circuit', FALSE, TRUE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-case', 'Case', '/diagnosis/case/:predictionId', 'One case''s diagnostic walk, anchored on its lifecycle state.', 21, 'diagnosis', 'diagnosis.case', 'sub', 'admin,diagnosing-doctor', 'IndividualPredictions', 'vw_individual_predictions', 'folder-open', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-evidence', 'Evidence', '/diagnosis/case/:predictionId/evidence', 'L1 evidence atoms: effect size / SE / ZStat, confound controls.', 22, 'diagnosis.case', 'diagnosis.case.evidence', 'leaf', 'admin,diagnosing-doctor', 'EvidenceItems', 'vw_evidence_items', 'microscope', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-mechanism', 'Mechanism', '/diagnosis/case/:predictionId/mechanism', 'L2/L3 mechanism aggregations + IsCausalArchitectureNode verdict.', 23, 'diagnosis.case', 'diagnosis.case.mechanism', 'leaf', 'admin,diagnosing-doctor', 'CausalMechanisms', 'vw_causal_mechanisms', 'git-branch', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-replication', 'Replication', '/diagnosis/case/:predictionId/replication', 'Cross-cohort / cross-ancestry replication — the transport atoms.', 24, 'diagnosis.case', 'diagnosis.case.replication', 'leaf', 'admin,diagnosing-doctor', 'CohortReplications', 'vw_cohort_replications', 'copy-check', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-controls', 'Neg Controls', '/diagnosis/case/:predictionId/controls', 'Permutation / stratification controls — the anti-spurious atoms.', 25, 'diagnosis.case', 'diagnosis.case.controls', 'leaf', 'admin,diagnosing-doctor', 'NegativeControlTests', 'vw_negative_control_tests', 'shield', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-calibration', 'Calibration', '/diagnosis/case/:predictionId/calibration', 'Per-bin reliability coverage — the calibration atoms.', 26, 'diagnosis.case', 'diagnosis.case.calibration', 'leaf', 'admin,diagnosing-doctor', 'CalibrationBins', 'vw_calibration_bins', 'gauge', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-gates', 'Gates', '/diagnosis/case/:predictionId/gates', 'The four gates: confidence, falsifiability, transport, predicted value.', 27, 'diagnosis.case', 'diagnosis.case.gates', 'leaf', 'admin,diagnosing-doctor', 'IndividualPredictions', 'vw_individual_predictions', 'door-open', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-diagnosis-keystone', 'Keystone', '/diagnosis/case/:predictionId/keystone', 'IsClinicallyActionable — the derived conclusion.', 28, 'diagnosis.case', 'diagnosis.case.keystone', 'leaf', 'admin,diagnosing-doctor', 'IndividualPredictions', 'vw_individual_predictions', 'key-round', TRUE, FALSE, 'CRUD', '', 'R', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-admin', 'Admin', '/admin', 'Model & platform administration.', 90, '', 'admin', 'top', 'admin', NULL, NULL, 'settings', FALSE, TRUE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-admin-harness', 'Harness', '/admin/harness', 'The witnessed inference harness (home screen).', 91, 'admin', 'admin.harness', 'sub', 'admin', NULL, NULL, 'list-checks', FALSE, FALSE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-admin-routing', 'Routing', '/admin/routing', 'Edit role-based navigation.', 92, 'admin', 'admin.routing', 'sub', 'admin', 'RoutingAndNavigation', 'vw_routing_and_navigation', 'route', FALSE, FALSE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-admin-state-machine', 'State Machine', '/admin/state-machine', 'View/edit the diagnosis lifecycle.', 93, 'admin', 'admin.state-machine', 'sub', 'admin', 'StateMachines', 'vw_state_machines', 'workflow', FALSE, FALSE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-admin-explainer', 'Explainer DAG', '/admin/explainer', 'Click any derived field to see how it was computed.', 94, 'admin', 'admin.explainer', 'sub', 'admin', NULL, NULL, 'share-2', FALSE, FALSE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-admin-cohort', 'Cohort', '/admin/cohort', 'All 7 cases and their keystone verdicts.', 95, 'admin', 'admin.cohort', 'sub', 'admin', 'IndividualPredictions', 'vw_individual_predictions', 'users', FALSE, FALSE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- StateMachines: State-machine definitions.
+-- ----------------------------------------------------------------------------
+INSERT INTO state_machines (state_machine_id, title, description, subject_table_name, subject_state_column, machine_states, state_transition_rules, state_transitions, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle', 'Diagnosis Lifecycle', 'Walks each case from Intake through the four gates to a terminal Actionable / NotActionable verdict. Each patient branches at its single deciding gate. Current state is DERIVED (IndividualPredictions.LifecycleStateKey); the transition log is the witnessed history.', 'IndividualPredictions', 'LifecycleStateKey', NULL, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_machine_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- MachineStates: Legal states of each machine.
+-- ----------------------------------------------------------------------------
+INSERT INTO machine_states (machine_state_id, state_machine, state_key, title, order_index, is_initial, is_terminal, from_transition_rules, to_transition_rules, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--intake', 'diagnosis-lifecycle', 'Intake', 'Intake', 1, TRUE, FALSE, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (machine_state_id) DO NOTHING;
+
+INSERT INTO machine_states (machine_state_id, state_machine, state_key, title, order_index, is_initial, is_terminal, from_transition_rules, to_transition_rules, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--evidenceassessed', 'diagnosis-lifecycle', 'EvidenceAssessed', 'EvidenceAssessed', 2, FALSE, FALSE, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (machine_state_id) DO NOTHING;
+
+INSERT INTO machine_states (machine_state_id, state_machine, state_key, title, order_index, is_initial, is_terminal, from_transition_rules, to_transition_rules, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--mechanismconfirmed', 'diagnosis-lifecycle', 'MechanismConfirmed', 'MechanismConfirmed', 3, FALSE, FALSE, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (machine_state_id) DO NOTHING;
+
+INSERT INTO machine_states (machine_state_id, state_machine, state_key, title, order_index, is_initial, is_terminal, from_transition_rules, to_transition_rules, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--calibrationchecked', 'diagnosis-lifecycle', 'CalibrationChecked', 'CalibrationChecked', 4, FALSE, FALSE, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (machine_state_id) DO NOTHING;
+
+INSERT INTO machine_states (machine_state_id, state_machine, state_key, title, order_index, is_initial, is_terminal, from_transition_rules, to_transition_rules, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--transportchecked', 'diagnosis-lifecycle', 'TransportChecked', 'TransportChecked', 5, FALSE, FALSE, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (machine_state_id) DO NOTHING;
+
+INSERT INTO machine_states (machine_state_id, state_machine, state_key, title, order_index, is_initial, is_terminal, from_transition_rules, to_transition_rules, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--actionable', 'diagnosis-lifecycle', 'Actionable', 'Actionable', 6, FALSE, TRUE, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (machine_state_id) DO NOTHING;
+
+INSERT INTO machine_states (machine_state_id, state_machine, state_key, title, order_index, is_initial, is_terminal, from_transition_rules, to_transition_rules, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--notactionable', 'diagnosis-lifecycle', 'NotActionable', 'NotActionable', 7, FALSE, TRUE, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (machine_state_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- StateTransitionRules: Legal edges (guards) of each machine.
+-- ----------------------------------------------------------------------------
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--intake->evidenceassessed', 'diagnosis-lifecycle', 'diagnosis-lifecycle--intake', 'diagnosis-lifecycle--evidenceassessed', 'Intake facts transcribed; evidence atoms computed.', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--evidenceassessed->mechanismconfirmed', 'diagnosis-lifecycle', 'diagnosis-lifecycle--evidenceassessed', 'diagnosis-lifecycle--mechanismconfirmed', 'IsCausalArchitectureNode TRUE (replicated, controls survive, >=2 modalities).', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--evidenceassessed->notactionable', 'diagnosis-lifecycle', 'diagnosis-lifecycle--evidenceassessed', 'diagnosis-lifecycle--notactionable', 'Spurious mechanism OR no falsifiability (0 intervention targets).', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--mechanismconfirmed->calibrationchecked', 'diagnosis-lifecycle', 'diagnosis-lifecycle--mechanismconfirmed', 'diagnosis-lifecycle--calibrationchecked', 'RestsOnConfirmedMechanism and no cryptic leakage.', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--mechanismconfirmed->notactionable', 'diagnosis-lifecycle', 'diagnosis-lifecycle--mechanismconfirmed', 'diagnosis-lifecycle--notactionable', 'Cryptic-relatedness leakage ⇒ HasSpuriousCorrelationFlag.', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--calibrationchecked->transportchecked', 'diagnosis-lifecycle', 'diagnosis-lifecycle--calibrationchecked', 'diagnosis-lifecycle--transportchecked', 'CalibratedUncertainty >= 0.7.', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--calibrationchecked->notactionable', 'diagnosis-lifecycle', 'diagnosis-lifecycle--calibrationchecked', 'diagnosis-lifecycle--notactionable', 'CalibratedUncertainty < 0.7 (calibration gate fails).', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--transportchecked->actionable', 'diagnosis-lifecycle', 'diagnosis-lifecycle--transportchecked', 'diagnosis-lifecycle--actionable', 'IsAncestryTransportSafe AND keystone holds.', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+INSERT INTO state_transition_rules (state_transition_rule_id, state_machine, from_state, to_state, guard_description, rule_refs, trigger_endpoint, triggered_by_role, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('diagnosis-lifecycle--transportchecked->notactionable', 'diagnosis-lifecycle', 'diagnosis-lifecycle--transportchecked', 'diagnosis-lifecycle--notactionable', 'NOT IsAncestryTransportSafe (ancestry-transport gate fails).', NULL, NULL, 'system', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_rule_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- StateTransitions: Instance-level transition log (the witnessed history).
+-- ----------------------------------------------------------------------------
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-a-02-intake-to-evidenceassessed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'Intake', 'EvidenceAssessed', '2026-06-02T09:00:00Z', 'system', 'Intake → EvidenceAssessed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-a-03-evidenceassessed-to-mechanismconfirmed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-03T09:00:00Z', 'system', 'EvidenceAssessed → MechanismConfirmed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-a-04-mechanismconfirmed-to-calibrationchecked', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-04T09:00:00Z', 'system', 'MechanismConfirmed → CalibrationChecked.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-a-05-calibrationchecked-to-transportchecked', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'CalibrationChecked', 'TransportChecked', '2026-06-05T09:00:00Z', 'system', 'CalibrationChecked → TransportChecked.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-a-06-transportchecked-to-actionable', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'TransportChecked', 'Actionable', '2026-06-06T09:00:00Z', 'system', 'all gates pass.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-b-02-intake-to-evidenceassessed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'Intake', 'EvidenceAssessed', '2026-06-02T09:00:00Z', 'system', 'Intake → EvidenceAssessed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-b-03-evidenceassessed-to-mechanismconfirmed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-03T09:00:00Z', 'system', 'EvidenceAssessed → MechanismConfirmed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-b-04-mechanismconfirmed-to-calibrationchecked', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-04T09:00:00Z', 'system', 'MechanismConfirmed → CalibrationChecked.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-b-05-calibrationchecked-to-notactionable', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'CalibrationChecked', 'NotActionable', '2026-06-05T09:00:00Z', 'system', 'calibration gate fails.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-c-02-intake-to-evidenceassessed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-c', 'Intake', 'EvidenceAssessed', '2026-06-02T09:00:00Z', 'system', 'Intake → EvidenceAssessed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-c-03-evidenceassessed-to-notactionable', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-c', 'EvidenceAssessed', 'NotActionable', '2026-06-03T09:00:00Z', 'system', 'spurious mechanism.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-d-02-intake-to-evidenceassessed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-d', 'Intake', 'EvidenceAssessed', '2026-06-02T09:00:00Z', 'system', 'Intake → EvidenceAssessed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-d-03-evidenceassessed-to-mechanismconfirmed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-d', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-03T09:00:00Z', 'system', 'EvidenceAssessed → MechanismConfirmed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-d-04-mechanismconfirmed-to-notactionable', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-d', 'MechanismConfirmed', 'NotActionable', '2026-06-04T09:00:00Z', 'system', 'cryptic relatedness.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-e-02-intake-to-evidenceassessed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-e', 'Intake', 'EvidenceAssessed', '2026-06-02T09:00:00Z', 'system', 'Intake → EvidenceAssessed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-e-03-evidenceassessed-to-notactionable', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-e', 'EvidenceAssessed', 'NotActionable', '2026-06-03T09:00:00Z', 'system', 'falsifiability gate fails.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-f-02-intake-to-evidenceassessed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'Intake', 'EvidenceAssessed', '2026-06-02T09:00:00Z', 'system', 'Intake → EvidenceAssessed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-f-03-evidenceassessed-to-mechanismconfirmed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-03T09:00:00Z', 'system', 'EvidenceAssessed → MechanismConfirmed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-f-04-mechanismconfirmed-to-calibrationchecked', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-04T09:00:00Z', 'system', 'MechanismConfirmed → CalibrationChecked.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-f-05-calibrationchecked-to-transportchecked', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'CalibrationChecked', 'TransportChecked', '2026-06-05T09:00:00Z', 'system', 'CalibrationChecked → TransportChecked.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-f-06-transportchecked-to-notactionable', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'TransportChecked', 'NotActionable', '2026-06-06T09:00:00Z', 'system', 'ancestry-transport gate fails.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-g-02-intake-to-evidenceassessed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'Intake', 'EvidenceAssessed', '2026-06-02T09:00:00Z', 'system', 'Intake → EvidenceAssessed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-g-03-evidenceassessed-to-mechanismconfirmed', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-03T09:00:00Z', 'system', 'EvidenceAssessed → MechanismConfirmed.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-g-04-mechanismconfirmed-to-calibrationchecked', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-04T09:00:00Z', 'system', 'MechanismConfirmed → CalibrationChecked.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-g-05-calibrationchecked-to-transportchecked', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'CalibrationChecked', 'TransportChecked', '2026-06-05T09:00:00Z', 'system', 'CalibrationChecked → TransportChecked.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-g-06-transportchecked-to-actionable', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'TransportChecked', 'Actionable', '2026-06-06T09:00:00Z', 'system', 'transport passes — actionable despite holdout.', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (state_transition_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- SubjectStateInstances: Per-subject state occupancy records; current state has blank ExitedAt.
+-- ----------------------------------------------------------------------------
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-a-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'Intake', '2026-06-01T09:00:00Z', '2026-06-02T09:00:00Z', 1, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-a-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'EvidenceAssessed', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 2, 'ssi-pred-a-intake-1', 'st-a-02-intake-to-evidenceassessed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-a-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'MechanismConfirmed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 3, 'ssi-pred-a-evidenceassessed-2', 'st-a-03-evidenceassessed-to-mechanismconfirmed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-a-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'CalibrationChecked', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 4, 'ssi-pred-a-mechanismconfirmed-3', 'st-a-04-mechanismconfirmed-to-calibrationchecked', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-a-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'TransportChecked', '2026-06-05T09:00:00Z', '2026-06-06T09:00:00Z', 5, 'ssi-pred-a-calibrationchecked-4', 'st-a-05-calibrationchecked-to-transportchecked', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-a-actionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-a', 'Actionable', '2026-06-06T09:00:00Z', NULL, 6, 'ssi-pred-a-transportchecked-5', 'st-a-06-transportchecked-to-actionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-b-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'Intake', '2026-06-01T09:00:00Z', '2026-06-02T09:00:00Z', 1, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-b-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'EvidenceAssessed', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 2, 'ssi-pred-b-intake-1', 'st-b-02-intake-to-evidenceassessed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-b-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'MechanismConfirmed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 3, 'ssi-pred-b-evidenceassessed-2', 'st-b-03-evidenceassessed-to-mechanismconfirmed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-b-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'CalibrationChecked', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 4, 'ssi-pred-b-mechanismconfirmed-3', 'st-b-04-mechanismconfirmed-to-calibrationchecked', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-b-notactionable-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-b', 'NotActionable', '2026-06-05T09:00:00Z', NULL, 5, 'ssi-pred-b-calibrationchecked-4', 'st-b-05-calibrationchecked-to-notactionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-c-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-c', 'Intake', '2026-06-01T09:00:00Z', '2026-06-02T09:00:00Z', 1, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-c-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-c', 'EvidenceAssessed', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 2, 'ssi-pred-c-intake-1', 'st-c-02-intake-to-evidenceassessed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-c-notactionable-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-c', 'NotActionable', '2026-06-03T09:00:00Z', NULL, 3, 'ssi-pred-c-evidenceassessed-2', 'st-c-03-evidenceassessed-to-notactionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-d-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-d', 'Intake', '2026-06-01T09:00:00Z', '2026-06-02T09:00:00Z', 1, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-d-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-d', 'EvidenceAssessed', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 2, 'ssi-pred-d-intake-1', 'st-d-02-intake-to-evidenceassessed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-d-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-d', 'MechanismConfirmed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 3, 'ssi-pred-d-evidenceassessed-2', 'st-d-03-evidenceassessed-to-mechanismconfirmed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-d-notactionable-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-d', 'NotActionable', '2026-06-04T09:00:00Z', NULL, 4, 'ssi-pred-d-mechanismconfirmed-3', 'st-d-04-mechanismconfirmed-to-notactionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-e-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-e', 'Intake', '2026-06-01T09:00:00Z', '2026-06-02T09:00:00Z', 1, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-e-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-e', 'EvidenceAssessed', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 2, 'ssi-pred-e-intake-1', 'st-e-02-intake-to-evidenceassessed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-e-notactionable-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-e', 'NotActionable', '2026-06-03T09:00:00Z', NULL, 3, 'ssi-pred-e-evidenceassessed-2', 'st-e-03-evidenceassessed-to-notactionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-f-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'Intake', '2026-06-01T09:00:00Z', '2026-06-02T09:00:00Z', 1, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-f-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'EvidenceAssessed', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 2, 'ssi-pred-f-intake-1', 'st-f-02-intake-to-evidenceassessed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-f-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'MechanismConfirmed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 3, 'ssi-pred-f-evidenceassessed-2', 'st-f-03-evidenceassessed-to-mechanismconfirmed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-f-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'CalibrationChecked', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 4, 'ssi-pred-f-mechanismconfirmed-3', 'st-f-04-mechanismconfirmed-to-calibrationchecked', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-f-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'TransportChecked', '2026-06-05T09:00:00Z', '2026-06-06T09:00:00Z', 5, 'ssi-pred-f-calibrationchecked-4', 'st-f-05-calibrationchecked-to-transportchecked', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-f-notactionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-f', 'NotActionable', '2026-06-06T09:00:00Z', NULL, 6, 'ssi-pred-f-transportchecked-5', 'st-f-06-transportchecked-to-notactionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-g-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'Intake', '2026-06-01T09:00:00Z', '2026-06-02T09:00:00Z', 1, NULL, NULL, NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-g-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'EvidenceAssessed', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 2, 'ssi-pred-g-intake-1', 'st-g-02-intake-to-evidenceassessed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-g-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'MechanismConfirmed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 3, 'ssi-pred-g-evidenceassessed-2', 'st-g-03-evidenceassessed-to-mechanismconfirmed', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-g-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'CalibrationChecked', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 4, 'ssi-pred-g-mechanismconfirmed-3', 'st-g-04-mechanismconfirmed-to-calibrationchecked', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-g-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'TransportChecked', '2026-06-05T09:00:00Z', '2026-06-06T09:00:00Z', 5, 'ssi-pred-g-calibrationchecked-4', 'st-g-05-calibrationchecked-to-transportchecked', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('ssi-pred-g-actionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'Actionable', '2026-06-06T09:00:00Z', NULL, 6, 'ssi-pred-g-transportchecked-5', 'st-g-06-transportchecked-to-actionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+

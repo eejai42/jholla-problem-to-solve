@@ -3480,6 +3480,14 @@
         "formula": "=IF(AND({{IsHighConfidencePrediction}}, {{IsFalsifiabilityBacked}}, {{IsAncestryTransportSafe}}, {{PredictedValue}} > 0), TRUE(), FALSE())"
       },
       {
+        "name": "LifecycleStateKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "DERIVED current lifecycle state (never entered): the single deciding gate determines whether the case lands on Actionable or NotActionable. Subject-state column of the diagnosis-lifecycle machine.",
+        "formula": "=IF(AND({{IsHighConfidencePrediction}},{{IsFalsifiabilityBacked}},{{IsAncestryTransportSafe}},{{PredictedValue}}>0),\"Actionable\",IF(OR(NOT({{RestsOnConfirmedMechanism}}),NOT({{IsFalsifiabilityBacked}})),\"NotActionable\",IF({{IndividualHasCrypticRelatedness}},\"NotActionable\",IF({{CalibratedUncertainty}}<0.7,\"NotActionable\",IF(NOT({{IsAncestryTransportSafe}}),\"NotActionable\",\"Actionable\")))))"
+      },
+      {
         "name": "CalibrationBins",
         "datatype": "string",
         "type": "relationship",
@@ -5595,6 +5603,1702 @@
         "PrimaryTable": "IndividualPredictions",
         "PrimaryView": "vw_individual_predictions",
         "IconHint": "users"
+      }
+    ]
+  },
+  "StateMachines": {
+    "Description": "State-machine definitions.",
+    "schema": [
+      {
+        "name": "StateMachineId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK, e.g. diagnosis-lifecycle."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes StateMachineId.",
+        "formula": "={{StateMachineId}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this machine's page.",
+        "formula": "=\"/admin/state-machine/\" & {{StateMachineId}}"
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable machine title."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What this machine governs and its high-level flow."
+      },
+      {
+        "name": "SubjectTableName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Entity table this machine governs (convention string, NOT a FK)."
+      },
+      {
+        "name": "SubjectStateColumn",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Raw/derived column on the subject holding its current state."
+      },
+      {
+        "name": "MachineStates",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse: legal states of this machine.",
+        "RelatedTo": "MachineStates",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "StateTransitionRules",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse: legal edges of this machine.",
+        "RelatedTo": "StateTransitionRules",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "StateTransitions",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse: instance transition log rows.",
+        "RelatedTo": "StateTransitions",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "StateCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of MachineStates in this machine.",
+        "formula": "=COUNTIFS(MachineStates!{{StateMachine}}, {{StateMachineId}})"
+      },
+      {
+        "name": "TransitionRuleCount",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of StateTransitionRules in this machine.",
+        "formula": "=COUNTIFS(StateTransitionRules!{{StateMachine}}, {{StateMachineId}})"
+      },
+      {
+        "name": "CreatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when first inserted."
+      },
+      {
+        "name": "CreatedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: owner who created it."
+      },
+      {
+        "name": "ModifiedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when last written."
+      },
+      {
+        "name": "ModifiedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: who last wrote it."
+      },
+      {
+        "name": "ModifiedByModel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: AI model credited on last save, if any."
+      }
+    ],
+    "data": [
+      {
+        "StateMachineId": "diagnosis-lifecycle",
+        "Title": "Diagnosis Lifecycle",
+        "Description": "Walks each case from Intake through the four gates to a terminal Actionable / NotActionable verdict. Each patient branches at its single deciding gate. Current state is DERIVED (IndividualPredictions.LifecycleStateKey); the transition log is the witnessed history.",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectStateColumn": "LifecycleStateKey",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      }
+    ]
+  },
+  "MachineStates": {
+    "Description": "Legal states of each machine.",
+    "schema": [
+      {
+        "name": "MachineStateId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK, e.g. diagnosis-lifecycle--intake."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes MachineStateId.",
+        "formula": "={{MachineStateId}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this state's page.",
+        "formula": "=\"/admin/state-machine/states/\" & {{MachineStateId}}"
+      },
+      {
+        "name": "StateMachine",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -> StateMachines.StateMachineId.",
+        "RelatedTo": "StateMachines",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "StateKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Bare value as stored/derived in the subject's current-state column."
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Human-readable state title."
+      },
+      {
+        "name": "OrderIndex",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Sort order of this state within the machine."
+      },
+      {
+        "name": "IsInitial",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "TRUE if this is the machine's entry state."
+      },
+      {
+        "name": "IsTerminal",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "TRUE if this is a terminal/end state."
+      },
+      {
+        "name": "FromTransitionRules",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse: rules whose FromState is this state.",
+        "RelatedTo": "StateTransitionRules",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "ToTransitionRules",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Reverse: rules whose ToState is this state.",
+        "RelatedTo": "StateTransitionRules",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "CreatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when first inserted."
+      },
+      {
+        "name": "CreatedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: owner who created it."
+      },
+      {
+        "name": "ModifiedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when last written."
+      },
+      {
+        "name": "ModifiedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: who last wrote it."
+      },
+      {
+        "name": "ModifiedByModel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: AI model credited on last save, if any."
+      }
+    ],
+    "data": [
+      {
+        "MachineStateId": "diagnosis-lifecycle--intake",
+        "StateMachine": "diagnosis-lifecycle",
+        "StateKey": "Intake",
+        "Title": "Intake",
+        "OrderIndex": 1,
+        "IsInitial": true,
+        "IsTerminal": false,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "MachineStateId": "diagnosis-lifecycle--evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "StateKey": "EvidenceAssessed",
+        "Title": "EvidenceAssessed",
+        "OrderIndex": 2,
+        "IsInitial": false,
+        "IsTerminal": false,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "MachineStateId": "diagnosis-lifecycle--mechanismconfirmed",
+        "StateMachine": "diagnosis-lifecycle",
+        "StateKey": "MechanismConfirmed",
+        "Title": "MechanismConfirmed",
+        "OrderIndex": 3,
+        "IsInitial": false,
+        "IsTerminal": false,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "MachineStateId": "diagnosis-lifecycle--calibrationchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "StateKey": "CalibrationChecked",
+        "Title": "CalibrationChecked",
+        "OrderIndex": 4,
+        "IsInitial": false,
+        "IsTerminal": false,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "MachineStateId": "diagnosis-lifecycle--transportchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "StateKey": "TransportChecked",
+        "Title": "TransportChecked",
+        "OrderIndex": 5,
+        "IsInitial": false,
+        "IsTerminal": false,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "MachineStateId": "diagnosis-lifecycle--actionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "StateKey": "Actionable",
+        "Title": "Actionable",
+        "OrderIndex": 6,
+        "IsInitial": false,
+        "IsTerminal": true,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "MachineStateId": "diagnosis-lifecycle--notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "StateKey": "NotActionable",
+        "Title": "NotActionable",
+        "OrderIndex": 7,
+        "IsInitial": false,
+        "IsTerminal": true,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      }
+    ]
+  },
+  "StateTransitionRules": {
+    "Description": "Legal edges (guards) of each machine.",
+    "schema": [
+      {
+        "name": "StateTransitionRuleId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes StateTransitionRuleId.",
+        "formula": "={{StateTransitionRuleId}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this rule's page.",
+        "formula": "=\"/admin/state-machine/rules/\" & {{StateTransitionRuleId}}"
+      },
+      {
+        "name": "StateMachine",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -> StateMachines.StateMachineId.",
+        "RelatedTo": "StateMachines",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "FromState",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -> MachineStates.MachineStateId.",
+        "RelatedTo": "MachineStates",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "ToState",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -> MachineStates.MachineStateId.",
+        "RelatedTo": "MachineStates",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "GuardDescription",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Prose guard citing the DAG conditions. Does NOT reimplement rule logic."
+      },
+      {
+        "name": "RuleRefs",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "CSV of business-rule / gate codes the guard enforces."
+      },
+      {
+        "name": "TriggerEndpoint",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "API endpoint whose action fires this transition."
+      },
+      {
+        "name": "TriggeredByRole",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Role that fires this edge. Enum: system / intake-clinician / diagnosing-doctor / external-llm."
+      },
+      {
+        "name": "FromStateKey",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: FromState.StateKey.",
+        "RelatedTo": "MachineStates",
+        "LookupField": "StateKey",
+        "ViaField": "FromState",
+        "formula": "=INDEX(MachineStates!{{StateKey}}, MATCH({{FromState}}, MachineStates!{{MachineStateId}}, 0))"
+      },
+      {
+        "name": "ToStateKey",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Lookup: ToState.StateKey.",
+        "RelatedTo": "MachineStates",
+        "LookupField": "StateKey",
+        "ViaField": "ToState",
+        "formula": "=INDEX(MachineStates!{{StateKey}}, MATCH({{ToState}}, MachineStates!{{MachineStateId}}, 0))"
+      },
+      {
+        "name": "IsForwardEdge",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the edge advances to a different state (all edges here).",
+        "formula": "=NOT({{ToStateKey}}={{FromStateKey}})"
+      },
+      {
+        "name": "CreatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when first inserted."
+      },
+      {
+        "name": "CreatedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: owner who created it."
+      },
+      {
+        "name": "ModifiedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when last written."
+      },
+      {
+        "name": "ModifiedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: who last wrote it."
+      },
+      {
+        "name": "ModifiedByModel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: AI model credited on last save, if any."
+      }
+    ],
+    "data": [
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--intake->evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--intake",
+        "ToState": "diagnosis-lifecycle--evidenceassessed",
+        "GuardDescription": "Intake facts transcribed; evidence atoms computed.",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--evidenceassessed->mechanismconfirmed",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--evidenceassessed",
+        "ToState": "diagnosis-lifecycle--mechanismconfirmed",
+        "GuardDescription": "IsCausalArchitectureNode TRUE (replicated, controls survive, >=2 modalities).",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--evidenceassessed->notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--evidenceassessed",
+        "ToState": "diagnosis-lifecycle--notactionable",
+        "GuardDescription": "Spurious mechanism OR no falsifiability (0 intervention targets).",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--mechanismconfirmed->calibrationchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--mechanismconfirmed",
+        "ToState": "diagnosis-lifecycle--calibrationchecked",
+        "GuardDescription": "RestsOnConfirmedMechanism and no cryptic leakage.",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--mechanismconfirmed->notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--mechanismconfirmed",
+        "ToState": "diagnosis-lifecycle--notactionable",
+        "GuardDescription": "Cryptic-relatedness leakage ⇒ HasSpuriousCorrelationFlag.",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--calibrationchecked->transportchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--calibrationchecked",
+        "ToState": "diagnosis-lifecycle--transportchecked",
+        "GuardDescription": "CalibratedUncertainty >= 0.7.",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--calibrationchecked->notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--calibrationchecked",
+        "ToState": "diagnosis-lifecycle--notactionable",
+        "GuardDescription": "CalibratedUncertainty < 0.7 (calibration gate fails).",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--transportchecked->actionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--transportchecked",
+        "ToState": "diagnosis-lifecycle--actionable",
+        "GuardDescription": "IsAncestryTransportSafe AND keystone holds.",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionRuleId": "diagnosis-lifecycle--transportchecked->notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "FromState": "diagnosis-lifecycle--transportchecked",
+        "ToState": "diagnosis-lifecycle--notactionable",
+        "GuardDescription": "NOT IsAncestryTransportSafe (ancestry-transport gate fails).",
+        "TriggeredByRole": "system",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      }
+    ]
+  },
+  "StateTransitions": {
+    "Description": "Instance-level transition log (the witnessed history).",
+    "schema": [
+      {
+        "name": "StateTransitionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes StateTransitionId.",
+        "formula": "={{StateTransitionId}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this transition's page.",
+        "formula": "=\"/admin/state-machine/transitions/\" & {{StateTransitionId}}"
+      },
+      {
+        "name": "StateMachine",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -> StateMachines.StateMachineId.",
+        "RelatedTo": "StateMachines",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "SubjectTableName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Polymorphic: name of the subject's table (raw string, NOT a FK)."
+      },
+      {
+        "name": "SubjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Polymorphic: id of the subject row (raw string, NOT a FK)."
+      },
+      {
+        "name": "FromStateKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Bare from-state value. Null on the initial creation transition."
+      },
+      {
+        "name": "ToStateKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Bare to-state value."
+      },
+      {
+        "name": "TransitionAt",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "When the transition occurred."
+      },
+      {
+        "name": "TriggeredByRole",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Role that fired this transition."
+      },
+      {
+        "name": "Reason",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Why the transition happened (free text)."
+      },
+      {
+        "name": "IsForward",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when ToStateKey is not the machine's initial state.",
+        "formula": "=NOT({{ToStateKey}}=\"Intake\")"
+      },
+      {
+        "name": "CreatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when first inserted."
+      },
+      {
+        "name": "CreatedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: owner who created it."
+      },
+      {
+        "name": "ModifiedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when last written."
+      },
+      {
+        "name": "ModifiedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: who last wrote it."
+      },
+      {
+        "name": "ModifiedByModel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: AI model credited on last save, if any."
+      }
+    ],
+    "data": [
+      {
+        "StateTransitionId": "st-a-02-intake-to-evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Intake → EvidenceAssessed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-a-03-evidenceassessed-to-mechanismconfirmed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-a-04-mechanismconfirmed-to-calibrationchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "CalibrationChecked",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-a-05-calibrationchecked-to-transportchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "FromStateKey": "CalibrationChecked",
+        "ToStateKey": "TransportChecked",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "CalibrationChecked → TransportChecked.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-a-06-transportchecked-to-actionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "FromStateKey": "TransportChecked",
+        "ToStateKey": "Actionable",
+        "TransitionAt": "2026-06-06T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "all gates pass.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-b-02-intake-to-evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Intake → EvidenceAssessed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-b-03-evidenceassessed-to-mechanismconfirmed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-b-04-mechanismconfirmed-to-calibrationchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "CalibrationChecked",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-b-05-calibrationchecked-to-notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "FromStateKey": "CalibrationChecked",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "calibration gate fails.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-c-02-intake-to-evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-c",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Intake → EvidenceAssessed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-c-03-evidenceassessed-to-notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-c",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "spurious mechanism.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-d-02-intake-to-evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-d",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Intake → EvidenceAssessed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-d-03-evidenceassessed-to-mechanismconfirmed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-d",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-d-04-mechanismconfirmed-to-notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-d",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "cryptic relatedness.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-e-02-intake-to-evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-e",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Intake → EvidenceAssessed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-e-03-evidenceassessed-to-notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-e",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "falsifiability gate fails.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-f-02-intake-to-evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Intake → EvidenceAssessed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-f-03-evidenceassessed-to-mechanismconfirmed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-f-04-mechanismconfirmed-to-calibrationchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "CalibrationChecked",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-f-05-calibrationchecked-to-transportchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "FromStateKey": "CalibrationChecked",
+        "ToStateKey": "TransportChecked",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "CalibrationChecked → TransportChecked.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-f-06-transportchecked-to-notactionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "FromStateKey": "TransportChecked",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-06T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "ancestry-transport gate fails.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-g-02-intake-to-evidenceassessed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Intake → EvidenceAssessed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-g-03-evidenceassessed-to-mechanismconfirmed",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-g-04-mechanismconfirmed-to-calibrationchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "CalibrationChecked",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-g-05-calibrationchecked-to-transportchecked",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "FromStateKey": "CalibrationChecked",
+        "ToStateKey": "TransportChecked",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "CalibrationChecked → TransportChecked.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "StateTransitionId": "st-g-06-transportchecked-to-actionable",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "FromStateKey": "TransportChecked",
+        "ToStateKey": "Actionable",
+        "TransitionAt": "2026-06-06T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "transport passes — actionable despite holdout.",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      }
+    ]
+  },
+  "SubjectStateInstances": {
+    "Description": "Per-subject state occupancy records; current state has blank ExitedAt.",
+    "schema": [
+      {
+        "name": "SubjectStateInstanceId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "PK: ssi-{subject-id}-{state-key}-{seq}."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes SubjectStateInstanceId.",
+        "formula": "={{SubjectStateInstanceId}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this occupancy record.",
+        "formula": "=\"/admin/state-machine/instances/\" & {{SubjectStateInstanceId}}"
+      },
+      {
+        "name": "StateMachine",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -> StateMachines.StateMachineId.",
+        "RelatedTo": "StateMachines",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "SubjectTableName",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Polymorphic table name."
+      },
+      {
+        "name": "SubjectId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Polymorphic PK of the subject row."
+      },
+      {
+        "name": "StateKey",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "The machine state entered by this occupancy record."
+      },
+      {
+        "name": "EnteredAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Timestamp when this state was entered."
+      },
+      {
+        "name": "ExitedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Timestamp when the subject left this state. NULL while current."
+      },
+      {
+        "name": "SequenceIndex",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "1-based position on this subject's path through the machine."
+      },
+      {
+        "name": "PriorInstance",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Self-FK: previous occupancy in this subject's chain. NULL for initial.",
+        "RelatedTo": "SubjectStateInstances",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "EnteredViaTransition",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "FK -> StateTransitions: the edge event that created this occupancy.",
+        "RelatedTo": "StateTransitions",
+        "isReversed": false,
+        "prefersSingleRecordLink": true,
+        "InverseField": ""
+      },
+      {
+        "name": "IsCurrent",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when ExitedAt IS NULL — the subject's active state.",
+        "formula": "=ISBLANK({{ExitedAt}})"
+      },
+      {
+        "name": "HasCompleteLineage",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when lineage walks back to SequenceIndex 1.",
+        "formula": "={{SequenceIndex}}>=1"
+      },
+      {
+        "name": "CreatedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when first inserted."
+      },
+      {
+        "name": "CreatedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: owner who created it."
+      },
+      {
+        "name": "ModifiedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: when last written."
+      },
+      {
+        "name": "ModifiedBy",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: who last wrote it."
+      },
+      {
+        "name": "ModifiedByModel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Audit: AI model credited on last save, if any."
+      }
+    ],
+    "data": [
+      {
+        "SubjectStateInstanceId": "ssi-pred-a-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-01T09:00:00Z",
+        "ExitedAt": "2026-06-02T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": null,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-a-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-a-intake-1",
+        "EnteredViaTransition": "st-a-02-intake-to-evidenceassessed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-a-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "StateKey": "MechanismConfirmed",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": "2026-06-04T09:00:00Z",
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-a-evidenceassessed-2",
+        "EnteredViaTransition": "st-a-03-evidenceassessed-to-mechanismconfirmed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-a-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "StateKey": "CalibrationChecked",
+        "EnteredAt": "2026-06-04T09:00:00Z",
+        "ExitedAt": "2026-06-05T09:00:00Z",
+        "SequenceIndex": 4,
+        "PriorInstance": "ssi-pred-a-mechanismconfirmed-3",
+        "EnteredViaTransition": "st-a-04-mechanismconfirmed-to-calibrationchecked",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-a-transportchecked-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "StateKey": "TransportChecked",
+        "EnteredAt": "2026-06-05T09:00:00Z",
+        "ExitedAt": "2026-06-06T09:00:00Z",
+        "SequenceIndex": 5,
+        "PriorInstance": "ssi-pred-a-calibrationchecked-4",
+        "EnteredViaTransition": "st-a-05-calibrationchecked-to-transportchecked",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-a-actionable-6",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-a",
+        "StateKey": "Actionable",
+        "EnteredAt": "2026-06-06T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 6,
+        "PriorInstance": "ssi-pred-a-transportchecked-5",
+        "EnteredViaTransition": "st-a-06-transportchecked-to-actionable",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-b-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-01T09:00:00Z",
+        "ExitedAt": "2026-06-02T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": null,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-b-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-b-intake-1",
+        "EnteredViaTransition": "st-b-02-intake-to-evidenceassessed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-b-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "StateKey": "MechanismConfirmed",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": "2026-06-04T09:00:00Z",
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-b-evidenceassessed-2",
+        "EnteredViaTransition": "st-b-03-evidenceassessed-to-mechanismconfirmed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-b-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "StateKey": "CalibrationChecked",
+        "EnteredAt": "2026-06-04T09:00:00Z",
+        "ExitedAt": "2026-06-05T09:00:00Z",
+        "SequenceIndex": 4,
+        "PriorInstance": "ssi-pred-b-mechanismconfirmed-3",
+        "EnteredViaTransition": "st-b-04-mechanismconfirmed-to-calibrationchecked",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-b-notactionable-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-b",
+        "StateKey": "NotActionable",
+        "EnteredAt": "2026-06-05T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 5,
+        "PriorInstance": "ssi-pred-b-calibrationchecked-4",
+        "EnteredViaTransition": "st-b-05-calibrationchecked-to-notactionable",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-c-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-c",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-01T09:00:00Z",
+        "ExitedAt": "2026-06-02T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": null,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-c-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-c",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-c-intake-1",
+        "EnteredViaTransition": "st-c-02-intake-to-evidenceassessed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-c-notactionable-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-c",
+        "StateKey": "NotActionable",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-c-evidenceassessed-2",
+        "EnteredViaTransition": "st-c-03-evidenceassessed-to-notactionable",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-d-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-d",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-01T09:00:00Z",
+        "ExitedAt": "2026-06-02T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": null,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-d-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-d",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-d-intake-1",
+        "EnteredViaTransition": "st-d-02-intake-to-evidenceassessed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-d-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-d",
+        "StateKey": "MechanismConfirmed",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": "2026-06-04T09:00:00Z",
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-d-evidenceassessed-2",
+        "EnteredViaTransition": "st-d-03-evidenceassessed-to-mechanismconfirmed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-d-notactionable-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-d",
+        "StateKey": "NotActionable",
+        "EnteredAt": "2026-06-04T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 4,
+        "PriorInstance": "ssi-pred-d-mechanismconfirmed-3",
+        "EnteredViaTransition": "st-d-04-mechanismconfirmed-to-notactionable",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-e-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-e",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-01T09:00:00Z",
+        "ExitedAt": "2026-06-02T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": null,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-e-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-e",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-e-intake-1",
+        "EnteredViaTransition": "st-e-02-intake-to-evidenceassessed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-e-notactionable-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-e",
+        "StateKey": "NotActionable",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-e-evidenceassessed-2",
+        "EnteredViaTransition": "st-e-03-evidenceassessed-to-notactionable",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-f-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-01T09:00:00Z",
+        "ExitedAt": "2026-06-02T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": null,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-f-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-f-intake-1",
+        "EnteredViaTransition": "st-f-02-intake-to-evidenceassessed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-f-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "StateKey": "MechanismConfirmed",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": "2026-06-04T09:00:00Z",
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-f-evidenceassessed-2",
+        "EnteredViaTransition": "st-f-03-evidenceassessed-to-mechanismconfirmed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-f-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "StateKey": "CalibrationChecked",
+        "EnteredAt": "2026-06-04T09:00:00Z",
+        "ExitedAt": "2026-06-05T09:00:00Z",
+        "SequenceIndex": 4,
+        "PriorInstance": "ssi-pred-f-mechanismconfirmed-3",
+        "EnteredViaTransition": "st-f-04-mechanismconfirmed-to-calibrationchecked",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-f-transportchecked-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "StateKey": "TransportChecked",
+        "EnteredAt": "2026-06-05T09:00:00Z",
+        "ExitedAt": "2026-06-06T09:00:00Z",
+        "SequenceIndex": 5,
+        "PriorInstance": "ssi-pred-f-calibrationchecked-4",
+        "EnteredViaTransition": "st-f-05-calibrationchecked-to-transportchecked",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-f-notactionable-6",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-f",
+        "StateKey": "NotActionable",
+        "EnteredAt": "2026-06-06T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 6,
+        "PriorInstance": "ssi-pred-f-transportchecked-5",
+        "EnteredViaTransition": "st-f-06-transportchecked-to-notactionable",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-g-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-01T09:00:00Z",
+        "ExitedAt": "2026-06-02T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": null,
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-g-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-g-intake-1",
+        "EnteredViaTransition": "st-g-02-intake-to-evidenceassessed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-g-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "StateKey": "MechanismConfirmed",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": "2026-06-04T09:00:00Z",
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-g-evidenceassessed-2",
+        "EnteredViaTransition": "st-g-03-evidenceassessed-to-mechanismconfirmed",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-g-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "StateKey": "CalibrationChecked",
+        "EnteredAt": "2026-06-04T09:00:00Z",
+        "ExitedAt": "2026-06-05T09:00:00Z",
+        "SequenceIndex": 4,
+        "PriorInstance": "ssi-pred-g-mechanismconfirmed-3",
+        "EnteredViaTransition": "st-g-04-mechanismconfirmed-to-calibrationchecked",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-g-transportchecked-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "StateKey": "TransportChecked",
+        "EnteredAt": "2026-06-05T09:00:00Z",
+        "ExitedAt": "2026-06-06T09:00:00Z",
+        "SequenceIndex": 5,
+        "PriorInstance": "ssi-pred-g-calibrationchecked-4",
+        "EnteredViaTransition": "st-g-05-calibrationchecked-to-transportchecked",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-g-actionable-6",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-g",
+        "StateKey": "Actionable",
+        "EnteredAt": "2026-06-06T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 6,
+        "PriorInstance": "ssi-pred-g-transportchecked-5",
+        "EnteredViaTransition": "st-g-06-transportchecked-to-actionable",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed"
       }
     ]
   }
