@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-19 21:40:37 UTC
+**Timestamp:** 2026-06-19 22:01:40 UTC
 
 ## Parsing Rulebook
 
@@ -33,7 +33,7 @@ Found **34** tables in rulebook
   - **Axioms** (6 fields, 15 records)
   - **TestsForSuccess** (7 fields, 10 records)
   - **Features** (6 fields, 10 records)
-  - **OpenQuestions** (7 fields, 3 records)
+  - **OpenQuestions** (7 fields, 4 records)
   - **NonGoals** (5 fields, 5 records)
   - **GlossaryTerms** (5 fields, 6 records)
   - **LeopoldLoops** (14 fields, 10 records)
@@ -48,7 +48,7 @@ Generated **34** table definitions with **240** raw fields (mode=check-add)
 Generated **353** calculation functions
 Generated **34** views
 Enabled RLS on **34** tables
-Generated insert statements for **340** records
+Generated insert statements for **341** records
 ## Script Generation Complete
 
 Generated files:

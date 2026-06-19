@@ -4525,6 +4525,13 @@
         "Context": "Anonymity / no verbatim leakage before publishing.",
         "Resolution": "",
         "IsResolved": false
+      },
+      {
+        "OpenQuestionId": "oq-fragment-fields-where",
+        "Question": "On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report — section order, headers, grouping?",
+        "Context": "Decision is 'pure derived fields': sentence wording is per-row calculated fields (cell-simple, predicate-gated), reusable atoms in __meta__. Still open: do fragments hang off the patient/IndividualPredictions row and reference sibling facts, or off each evidence/gate row and roll up as text? And the renderer owns only ordering/concatenation — confirm it never composes wording. This is the next loop's design.",
+        "Resolution": "",
+        "IsResolved": false
       }
     ]
   },
@@ -7624,10 +7631,10 @@
     ]
   },
   "_meta": {
-    "_CMCC_Summary": "Loop 0: solve-by-inference rulebook for the Causal Autoimmune Architecture Platform. The keystone IndividualPredictions.IsClinicallyActionable is derived through a calculated-field DAG bottoming out only in raw observations.",
+    "_CMCC_Summary": "Loop 0: solve-by-inference rulebook for the Causal Autoimmune Architecture Platform. The keystone IndividualPredictions.IsClinicallyActionable is derived through a calculated-field DAG bottoming out only in raw observations. The per-patient diagnosis report is a derived, total-coverage projection: every patient word and every linked DAG node down to ground truth renders as predicate-gated structured natural language assembled from per-row narrative fragment fields (each one spreadsheet-cell simple), drawing reusable phrases and band thresholds from the __meta__ settings table.",
     "_conversion_metadata": {
       "source": "shadle-bootstrap",
-      "table_count": 21,
+      "table_count": 22,
       "tool_version": "loop-0-solve-by-inference-2026-06-19",
       "export_mode": "rulebook_first",
       "vocabulary_coverage": "all domain terms in descriptions, field names, and data values"

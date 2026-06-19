@@ -92,18 +92,19 @@ export default function App() {
           <small style={{ color: C.sub }}><HealthPill /></small>
           <div style={{ color: C.fail, fontWeight: 600, fontSize: 12 }}>Demonstration of inference structure, not validated clinical decision support.</div>
         </div>
-        <label style={{ fontSize: 13, color: C.sub }}>
-          Role:{' '}
-          <select value={role} onChange={(e) => setRole(e.target.value)} style={{ fontSize: 13, padding: '3px 6px' }}>
-            {ROLES.map((r) => <option key={r.key} value={r.key}>{r.label}</option>)}
-          </select>
-        </label>
       </header>
 
       <div style={{ display: 'flex', alignItems: 'stretch' }}>
         {/* LEFT NAV — a flex column so the provenance (ƒ) toggle pins to the bottom. */}
         <nav style={{ width: 250, borderRight: `1px solid ${C.border}`, background: '#fafafa', minHeight: 'calc(100vh - 58px)', display: 'flex', flexDirection: 'column' }}>
           <div style={{ flex: 1, padding: '12px 8px', overflowY: 'auto' }}>
+            <label style={{ display: 'block', fontSize: 12, color: C.sub, padding: '0 2px 10px' }}>
+              Role
+              <select value={role} onChange={(e) => setRole(e.target.value)}
+                style={{ display: 'block', width: '100%', marginTop: 4, fontSize: 13, padding: '5px 6px', borderRadius: 6, border: `1px solid ${C.border}`, background: '#fff' }}>
+                {ROLES.map((r) => <option key={r.key} value={r.key}>{r.label}</option>)}
+              </select>
+            </label>
             {loading ? <p style={{ color: C.sub, fontSize: 13 }}>Loading nav…</p> : rows.map((n) => {
               const active = n.route_key === activeKey;
               const isTop = n.depth === 0;
@@ -122,10 +123,10 @@ export default function App() {
               );
             })}
           </div>
-          {/* Pinned bottom-left: the Explainer DAG (ƒ) provenance toggle mounts here. */}
-          <div style={{ borderTop: `1px solid ${C.border}`, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: C.sub }}>
+          {/* Pinned bottom-left: the Explainer DAG (ƒ) provenance toggle mounts here.
+              The toggle renders its own "PROVENANCE · ON/OFF" label — no extra text. */}
+          <div style={{ borderTop: `1px solid ${C.border}`, padding: '10px 12px', display: 'flex', alignItems: 'center' }}>
             <span id="explainer-toggle-mount" />
-            <span>Provenance</span>
           </div>
         </nav>
 

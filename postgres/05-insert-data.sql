@@ -741,6 +741,9 @@ VALUES ('oq-extract-vs-invent', 'Does the LLM extract facts present in the case,
 INSERT INTO open_questions (open_question_id, question, context, resolution, is_resolved)
 VALUES ('oq-reworded-prompt', 'Confirm the reworded README prompt shares no distinctive phrasing with the prospect''s original.', 'Anonymity / no verbatim leakage before publishing.', '', FALSE) ON CONFLICT (open_question_id) DO NOTHING;
 
+INSERT INTO open_questions (open_question_id, question, context, resolution, is_resolved)
+VALUES ('oq-fragment-fields-where', 'On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report — section order, headers, grouping?', 'Decision is ''pure derived fields'': sentence wording is per-row calculated fields (cell-simple, predicate-gated), reusable atoms in __meta__. Still open: do fragments hang off the patient/IndividualPredictions row and reference sibling facts, or off each evidence/gate row and roll up as text? And the renderer owns only ordering/concatenation — confirm it never composes wording. This is the next loop''s design.', '', FALSE) ON CONFLICT (open_question_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- NonGoals: Explicit out-of-scope statements — the positive twin of the anti-hallucination ledger. Stops scope creep.
 -- ----------------------------------------------------------------------------

@@ -79,18 +79,29 @@ export function HarnessView() {
 }
 
 // ===========================================================================
-//  DIAGNOSIS
+//  DIAGNOSIS — host with two tabs:
+//    "Full chain"  the interactive inference graph (every value → ground truth)
+//    "Summary"     the doctor-style Markdown writeup (the PDF-able artifact)
+//  The patient selector is shared; both tabs render the SAME selected patient.
 // ===========================================================================
 export function DiagnosisView() {
   const { data: patients } = useFetch('/api/patients');
   const [sel, setSel] = useState(null);
+  const [tab, setTab] = useState('chain');
   const list = Array.isArray(patients) ? patients : [];
   useEffect(() => { if (!sel && list.length) setSel(list[0].individual_prediction_id); }, [list, sel]);
-  const { loading, data: md, error } = useFetch(sel ? `/api/diagnosis/${sel}` : '/api/health', [sel]);
+  const patient = list.find((p) => p.individual_prediction_id === sel);
+  const TABS = [
+    ['chain', 'Full chain'],
+    ['summary', 'Summary writeup'],
+  ];
   return (
     <div>
       <h2 style={{ marginTop: 0 }}>Patient Diagnosis</h2>
-      <p style={{ color: C.sub, fontSize: 13 }}>The payoff: a doctor-style writeup derived from raw facts alone. The conclusion is computed, never entered.</p>
+      <p style={{ color: C.sub, fontSize: 13 }}>
+        Every value below is <strong>derived</strong> from raw observations through the inference DAG — none of the
+        conclusions are entered by hand. The full chain lets you drill any value down to ground truth.
+      </p>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
         {list.map((p) => (
           <button key={p.individual_prediction_id} onClick={() => setSel(p.individual_prediction_id)}
@@ -100,12 +111,167 @@ export function DiagnosisView() {
           </button>
         ))}
       </div>
-      {sel ? <div style={{ marginBottom: 8 }}><a href={`/api/diagnosis/${sel}`} target="_blank" rel="noreferrer" style={{ fontSize: 13 }}>open raw markdown ↗</a></div> : null}
+      {/* tab strip */}
+      <div style={{ display: 'flex', gap: 4, borderBottom: `1px solid ${C.border}`, marginBottom: 14 }}>
+        {TABS.map(([k, lbl]) => (
+          <button key={k} onClick={() => setTab(k)}
+            style={{ padding: '7px 14px', cursor: 'pointer', border: 'none', borderBottom: `2px solid ${tab === k ? C.accent : 'transparent'}`, background: 'none', color: tab === k ? C.ink : C.sub, fontWeight: tab === k ? 700 : 500, fontSize: 14 }}>
+            {lbl}
+          </button>
+        ))}
+      </div>
+      {!sel ? <p style={{ color: C.sub }}>Loading patients…</p>
+        : tab === 'chain' ? <DiagnosisChain predId={sel} patient={patient} />
+        : <DiagnosisSummary predId={sel} />}
+    </div>
+  );
+}
+
+// --- the doctor-style Markdown writeup (the original payoff, kept as a tab) ---
+function DiagnosisSummary({ predId }) {
+  const { loading, data: md, error } = useFetch(`/api/diagnosis/${predId}`, [predId]);
+  return (
+    <div>
+      <div style={{ marginBottom: 8 }}>
+        <a href={`/api/diagnosis/${predId}`} target="_blank" rel="noreferrer" style={{ fontSize: 13 }}>open raw markdown ↗</a>
+      </div>
       {loading ? <p>Deriving diagnosis…</p> : error ? <p style={{ color: C.fail }}>{error}</p> : (
         <div style={{ background: '#fbfbfb', border: `1px solid ${C.border}`, borderRadius: 8, padding: '4px 20px 16px' }}>
           {typeof md === 'string' ? <Markdown source={md} /> : <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(md, null, 2)}</pre>}
         </div>
       )}
+    </div>
+  );
+}
+
+// ===========================================================================
+//  DIAGNOSIS — FULL CHAIN (interactive)
+//  Consumes the SAME witnessed checks the harness runs (GET /api/harness),
+//  filtered to one patient, laid out top-down by DAG level: conclusion first,
+//  then gates → prediction scalars → individual → mechanism → atoms → variant.
+//  Each node is an expandable card exposing the derivation (witness), the
+//  derived value (expected/actual), and the endpoint it was read from — so
+//  every value is drillable down to ground truth. No Markdown/Handlebars/HTML
+//  generation: it renders the live inference graph directly.
+// ===========================================================================
+
+// DAG levels, conclusion-first. Each maps a harness `level` number to a heading
+// + one-line "what this layer means" blurb.
+const CHAIN_LEVELS = [
+  { level: 7, key: 'keystone', title: 'Conclusion — IsClinicallyActionable', blurb: 'The keystone. Everything below resolves into this one derived boolean.', match: (c) => c.level === 7 },
+  { level: 6, key: 'gates', title: 'The four gates', blurb: 'The keystone ANDs these four. Exactly one is the deciding gate for a non-actionable case.' },
+  { level: 5, key: 'prediction', title: 'Prediction scalars', blurb: 'Per-prediction derivations: causal mass, predicted value, calibration, leakage/transport flags.' },
+  { level: 4, key: 'individual', title: 'Individual rollups', blurb: 'Counts over this patient’s mechanisms: confirmed nodes, cross-ancestry nodes, observation flags.' },
+  { level: 3, key: 'mechanism', title: 'Mechanism — aggregations & node verdict', blurb: 'Aggregations over the mechanism’s atoms up to IsCausalArchitectureNode and transportability.' },
+  { level: 1, key: 'atoms', title: 'Atoms — evidence / replication / control / calibration', blurb: 'Per-row leaf derivations: ZStat qualification, concordance, control survival, bin calibration.' },
+  { level: 0, key: 'variant', title: 'Variant — IsCausalCandidate', blurb: 'The bottom of the chain: raw allele frequency + ASE ⇒ candidate causal variant. Ground truth.' },
+];
+
+// Which patient does a check belong to? The endpoint always carries one of the
+// patient's ids (pred-X / cm-X / ind-X-…). Routing nav-tree checks (by role) are
+// not per-patient inference and are excluded.
+function checkBelongsToPatient(c, p) {
+  if (!p) return false;
+  const letter = p.individual_prediction_id.split('-')[1]; // pred-a -> a
+  // every entity id for this patient carries the letter: pred-a / cm-a / var-a-… / ind-a-…
+  const ids = [p.individual_prediction_id, `cm-${letter}`, `var-${letter}-`, p.individual];
+  const hay = `${c.endpoint || ''} ${c.label || ''}`;
+  return ids.some((id) => hay.includes(id));
+}
+
+function statusDot(status) {
+  const color = status === 'pass' ? C.pass : status === 'fail' ? C.fail : C.not_surfaced;
+  return <span style={{ display: 'inline-block', width: 9, height: 9, borderRadius: 5, background: color, marginRight: 8, flex: '0 0 auto' }} />;
+}
+
+const fmtVal = (v) => (v === true ? 'true' : v === false ? 'false' : v == null ? '—' : Array.isArray(v) ? `[${v.join(', ')}]` : String(v));
+
+// One node card: collapsed shows field = value + status; expanded reveals the
+// derivation (witness), expected vs actual, and the source endpoint (provenance).
+function ChainNode({ c }) {
+  const [open, setOpen] = useState(false);
+  const mismatch = c.status === 'fail';
+  return (
+    <div style={{ border: `1px solid ${C.border}`, borderRadius: 7, marginBottom: 6, background: '#fff', overflow: 'hidden' }}>
+      <button onClick={() => setOpen((o) => !o)}
+        style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 4, padding: '8px 12px', cursor: 'pointer', border: 'none', background: 'none', textAlign: 'left' }}>
+        {statusDot(c.status)}
+        <code style={{ fontSize: 12.5, color: C.ink, fontFamily: 'ui-monospace, monospace' }}>{c.field}</code>
+        <span style={{ color: C.sub, margin: '0 6px' }}>=</span>
+        <strong style={{ fontSize: 13, color: mismatch ? C.fail : C.ink }}>{fmtVal(c.actual != null || c.status === 'pass' ? c.actual : c.expected)}</strong>
+        <span style={{ flex: 1 }} />
+        <span style={{ color: C.sub, fontSize: 12 }}>{c.label}</span>
+        <span style={{ color: C.sub, fontSize: 11, marginLeft: 8 }}>{open ? '▾' : '▸'}</span>
+      </button>
+      {open ? (
+        <div style={{ padding: '0 14px 12px 29px', fontSize: 13 }}>
+          <div style={{ color: C.ink, lineHeight: 1.5, marginBottom: 8 }}>
+            <span style={{ color: C.sub, fontWeight: 700, fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.4 }}>How it’s derived</span>
+            <div style={{ marginTop: 2 }}>{c.witness || '(no witness recorded)'}</div>
+          </div>
+          <table style={{ borderCollapse: 'collapse', fontSize: 12.5 }}>
+            <tbody>
+              <tr><td style={{ color: C.sub, padding: '2px 12px 2px 0' }}>derived value</td><td><strong>{fmtVal(c.actual)}</strong></td></tr>
+              <tr><td style={{ color: C.sub, padding: '2px 12px 2px 0' }}>oracle expects</td><td>{fmtVal(c.expected)}</td></tr>
+              <tr><td style={{ color: C.sub, padding: '2px 12px 2px 0', verticalAlign: 'top' }}>read from</td>
+                <td><a href={c.endpoint} target="_blank" rel="noreferrer" style={{ color: C.accent, fontFamily: 'ui-monospace, monospace' }}>{c.endpoint} ↗</a>
+                  <span style={{ color: C.sub }}> · field <code>{c.field}</code></span></td></tr>
+              {c.detail ? <tr><td style={{ color: C.fail, padding: '2px 12px 2px 0' }}>note</td><td style={{ color: C.fail }}>{c.detail}</td></tr> : null}
+            </tbody>
+          </table>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+function ChainLevel({ def, items }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const pass = items.filter((i) => i.status === 'pass').length;
+  return (
+    <section style={{ marginBottom: 18 }}>
+      <button onClick={() => setCollapsed((v) => !v)}
+        style={{ width: '100%', display: 'flex', alignItems: 'baseline', gap: 10, cursor: 'pointer', border: 'none', background: 'none', padding: 0, textAlign: 'left', marginBottom: 6 }}>
+        <span style={{ color: C.sub, fontSize: 12 }}>{collapsed ? '▸' : '▾'}</span>
+        <h3 style={{ margin: 0, fontSize: 16 }}>{def.title}</h3>
+        <span style={{ fontSize: 12, color: pass === items.length ? C.pass : C.fail, fontWeight: 700 }}>{pass}/{items.length}</span>
+        <span style={{ flex: 1 }} />
+      </button>
+      <div style={{ color: C.sub, fontSize: 12.5, marginBottom: 8, paddingLeft: 22 }}>{def.blurb}</div>
+      {!collapsed ? <div style={{ paddingLeft: 22 }}>{items.map((c, i) => <ChainNode key={`${c.endpoint}:${c.field}:${i}`} c={c} />)}</div> : null}
+    </section>
+  );
+}
+
+function DiagnosisChain({ predId, patient }) {
+  const { loading, data, error } = useFetch('/api/harness');
+  if (loading) return <p style={{ color: C.sub }}>Loading the inference chain…</p>;
+  if (error) return <p style={{ color: C.fail }}>{error}</p>;
+  const all = Array.isArray(data?.categories) ? data.categories.flatMap((cat) => cat.items) : [];
+  const mine = all.filter((c) => checkBelongsToPatient(c, patient));
+
+  // bucket by DAG level using CHAIN_LEVELS (conclusion-first)
+  const byLevel = CHAIN_LEVELS.map((def) => ({ def, items: mine.filter((c) => c.level === def.level) })).filter((b) => b.items.length);
+  const keystone = mine.find((c) => c.field === 'is_clinically_actionable');
+  const actionable = keystone?.actual === true;
+
+  return (
+    <div>
+      {/* the conclusion banner — the same derived boolean, front and center */}
+      {keystone ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 8, marginBottom: 16, background: actionable ? C.bgPass : C.bgFail, border: `1px solid ${actionable ? C.pass : C.fail}` }}>
+          <div style={{ fontWeight: 800, fontSize: 18, color: actionable ? C.pass : C.fail }}>
+            {actionable ? '✅ Clinically actionable' : '⛔ Not clinically actionable'}
+          </div>
+          <div style={{ color: C.sub, fontSize: 12.5, flex: 1 }}>{keystone.witness}</div>
+        </div>
+      ) : null}
+      <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>
+        {mine.length} derived nodes for this patient, from the keystone down to ground-truth observations.
+        Click any node to see its derivation and the endpoint it was read from.
+      </p>
+      {byLevel.map(({ def, items }) => <ChainLevel key={def.key} def={def} items={items} />)}
+      {!byLevel.length ? <p style={{ color: C.sub }}>No chain nodes matched this patient.</p> : null}
     </div>
   );
 }

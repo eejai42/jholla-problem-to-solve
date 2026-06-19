@@ -79,11 +79,27 @@ app.get('/api/health', async (_req, res) => {
 // Self-hosted: we run the engine against our own listening origin so the tree
 // reflects exactly what the app surfaces right now (red where 501, green where
 // wired). Result: { summary, categories:[{category, level, pass, total, items}] }.
+//
+// The engine serially self-fetches ~300 endpoints, so a cold run is ~15s. The
+// underlying vw_* data only changes on `effortless build`, so we memoize the
+// result with a short TTL: the home screen + the Full-chain diagnosis tab both
+// become instant after the first load. Bust it with `?fresh=1`.
+let _harnessCache = null; // { at: epochMs, payload }
+const HARNESS_TTL_MS = 60_000;
+async function getHarness(base, fresh) {
+  if (!fresh && _harnessCache && Date.now() - _harnessCache.at < HARNESS_TTL_MS) {
+    return _harnessCache.payload;
+  }
+  const { checks, summary } = await runHarness(base);
+  const payload = { summary, categories: groupByCategory(checks) };
+  _harnessCache = { at: Date.now(), payload };
+  return payload;
+}
+
 app.get('/api/harness', async (req, res) => {
   try {
     const base = `http://127.0.0.1:${req.socket.localPort}`;
-    const { checks, summary } = await runHarness(base);
-    res.json({ summary, categories: groupByCategory(checks) });
+    res.json(await getHarness(base, req.query.fresh === '1'));
   } catch (err) {
     res.status(500).json({ error: String(err) });
   }
