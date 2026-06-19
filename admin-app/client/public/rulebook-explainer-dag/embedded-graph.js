@@ -1552,6 +1552,27 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Description": "OBSERVATION: TRUE if the analysis adjusted for batch."
       },
       {
+        "name": "IsSyntheticLeaf",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": false,
+        "Description": "TRUST BOUNDARY (raw leaf, read by nothing downstream): TRUE marks this row as an LLM-produced synthetic-but-transparent test result rather than a real measured observation. Surfaces in the writeup so legible-reasoning-over-synthetic-evidence is never misread as solved science. The case is invented; this flag says so out loud at the cell level."
+      },
+      {
+        "name": "RepresentsAssayModality",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PROVENANCE STUB (raw leaf, read by nothing downstream): which real assay/modality this synthetic leaf stands in for (e.g. 'cis-eQTL, whole-blood RNA-seq'). Documents where real evidence would attach if this case were instrumented."
+      },
+      {
+        "name": "IdentificationAssumption",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PROVENANCE STUB (raw leaf, read by nothing downstream): the identification assumption under which this leaf would be valid evidence (e.g. 'no horizontal pleiotropy; instrument relevance F>10'). Turns 'synthetic test result' into 'documentation of where real evidence attaches and under what condition it is trustworthy'."
+      },
+      {
         "name": "Name",
         "datatype": "string",
         "type": "calculated",
@@ -1622,7 +1643,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument"
       },
       {
         "EvidenceItemId": "ev-a-2",
@@ -1634,7 +1658,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted"
       },
       {
         "EvidenceItemId": "ev-a-3",
@@ -1646,7 +1673,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded"
       },
       {
         "EvidenceItemId": "ev-b-1",
@@ -1658,7 +1688,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument"
       },
       {
         "EvidenceItemId": "ev-b-2",
@@ -1670,7 +1703,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted"
       },
       {
         "EvidenceItemId": "ev-b-3",
@@ -1682,7 +1718,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded"
       },
       {
         "EvidenceItemId": "ev-c-1",
@@ -1694,7 +1733,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument"
       },
       {
         "EvidenceItemId": "ev-c-2",
@@ -1706,7 +1748,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted"
       },
       {
         "EvidenceItemId": "ev-c-3",
@@ -1718,7 +1763,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded"
       },
       {
         "EvidenceItemId": "ev-d-1",
@@ -1730,7 +1778,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument"
       },
       {
         "EvidenceItemId": "ev-d-2",
@@ -1742,7 +1793,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted"
       },
       {
         "EvidenceItemId": "ev-d-3",
@@ -1754,7 +1808,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded"
       },
       {
         "EvidenceItemId": "ev-e-1",
@@ -1766,7 +1823,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument"
       },
       {
         "EvidenceItemId": "ev-e-2",
@@ -1778,7 +1838,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted"
       },
       {
         "EvidenceItemId": "ev-e-3",
@@ -1790,7 +1853,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded"
       },
       {
         "EvidenceItemId": "ev-f-1",
@@ -1802,7 +1868,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument"
       },
       {
         "EvidenceItemId": "ev-f-2",
@@ -1814,7 +1883,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted"
       },
       {
         "EvidenceItemId": "ev-f-3",
@@ -1826,7 +1898,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded"
       },
       {
         "EvidenceItemId": "ev-g-1",
@@ -1838,7 +1913,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument"
       },
       {
         "EvidenceItemId": "ev-g-2",
@@ -1850,7 +1928,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted"
       },
       {
         "EvidenceItemId": "ev-g-3",
@@ -1862,7 +1943,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
         "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded"
       }
     ]
   },
@@ -3455,6 +3539,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Derived: holdout requires measured transport; in-training is vacuously safe.",
         "formula": "=IF({{IsAncestryHoldout}}, {{IsTransportableToAbsentAncestry}}, TRUE())"
+      },
+      {
+        "name": "TransportGateStatus",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "RENDER ONLY (does NOT feed the keystone): honest three-state view of the transport gate so a vacuous in-training pass is never shown as evidentiary. NotApplicable = in-training ancestry (gate did not bite); PASS-tested = holdout with a confirmed cross-ancestry transport; FAIL = holdout without one. Sits beside IsAncestryTransportSafe (which the keystone still reads) purely to keep the writeup from implying transport evidence it never used.",
+        "formula": "=IF(NOT({{IsAncestryHoldout}}), \"NotApplicable\", IF({{IsTransportableToAbsentAncestry}}, \"PASS-tested\", \"FAIL\"))"
       },
       {
         "name": "IsHighConfidencePrediction",
@@ -11412,6 +11504,50 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "children": null
     }
   },
+  "IndividualPredictions.TransportGateStatus": {
+    "table": "IndividualPredictions",
+    "field": "TransportGateStatus",
+    "kind": "formula",
+    "rule": "The individual prediction\u0027s transport gate status is determined by the following priority:\n1. the literal \u201CNotApplicable\u201D, if it is not the case that the is ancestry holdout flag is set;\n2. the literal \u201CPASS-tested\u201D, if the is transportable to absent ancestry flag is set;\n3. otherwise the literal \u201CFAIL\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "IsAncestryHoldout",
+        "label": "is ancestry holdout"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsTransportableToAbsentAncestry",
+        "label": "is transportable to absent ancestry"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s transport gate status is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CNotApplicable\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "it is not the case that the is ancestry holdout flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CPASS-tested\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the is transportable to absent ancestry flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CFAIL\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
   "IndividualPredictions.IsHighConfidencePrediction": {
     "table": "IndividualPredictions",
     "field": "IsHighConfidencePrediction",
@@ -13099,7 +13235,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "An omics assay **must** have an assay label, an individual, an omics modality, and a measurement error score, and record whether it has a cell state specific effect."
   ],
   "EvidenceItems": [
-    "An evidence item **must** have an evidence label, a causal mechanism, an omics assay, an effect size, and a standard error, and record whether it is a cross modality, whether it is a negative control arm, whether it is an adjusted for ancestry p cs, and whether it is an adjusted for batch."
+    "An evidence item **must** have an evidence label, a causal mechanism, an omics assay, an effect size, and a standard error, and record whether it is a cross modality, whether it is a negative control arm, whether it is an adjusted for ancestry p cs, whether it is an adjusted for batch, and whether it is a synthetic leaf."
   ],
   "CohortReplications": [
     "A cohort replication **must** have a replication label, a causal mechanism, a federated dataset, a replication effect sign, a replication p value, and a replication ancestry label."

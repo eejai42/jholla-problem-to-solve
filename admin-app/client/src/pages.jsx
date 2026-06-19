@@ -245,7 +245,20 @@ function ChainLevel({ def, items }) {
 
 function DiagnosisChain({ predId, patient }) {
   const { loading, data, error } = useFetch('/api/harness');
-  if (loading) return <p style={{ color: C.sub }}>Loading the inference chain…</p>;
+  // elapsed counter so a cold harness run (first load, ~15s) reads as "working", not "hung".
+  const [elapsed, setElapsed] = useState(0);
+  useEffect(() => {
+    if (!loading) return undefined;
+    setElapsed(0);
+    const t = setInterval(() => setElapsed((s) => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [loading]);
+  if (loading) return (
+    <div style={{ color: C.sub }}>
+      <p style={{ margin: '4px 0' }}>Running the witnessed inference harness — deriving every node from ground truth…</p>
+      <p style={{ fontSize: 12.5, margin: 0 }}>First load runs all 303 checks (~15s); subsequent loads are cached and instant. Elapsed: {elapsed}s</p>
+    </div>
+  );
   if (error) return <p style={{ color: C.fail }}>{error}</p>;
   const all = Array.isArray(data?.categories) ? data.categories.flatMap((cat) => cat.items) : [];
   const mine = all.filter((c) => checkBelongsToPatient(c, patient));

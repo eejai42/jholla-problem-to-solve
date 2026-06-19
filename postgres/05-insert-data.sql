@@ -234,68 +234,68 @@ VALUES ('assay-g-prot', 'assay-g-prot', 'ind-g-lin', 'proteomics', 'blood', '', 
 -- ----------------------------------------------------------------------------
 -- EvidenceItems: One observed support signal for a causal mechanism, measured by one omics assay. Mechanism confidence is an aggregation over these rows.
 -- ----------------------------------------------------------------------------
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-a-1', 'ev-a-1', 'cm-a', 'assay-a-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-a-1', 'ev-a-1', 'cm-a', 'assay-a-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-a-2', 'ev-a-2', 'cm-a', 'assay-a-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-a-2', 'ev-a-2', 'cm-a', 'assay-a-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-a-3', 'ev-a-3', 'cm-a', 'assay-a-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-a-3', 'ev-a-3', 'cm-a', 'assay-a-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-b-1', 'ev-b-1', 'cm-b', 'assay-b-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-b-1', 'ev-b-1', 'cm-b', 'assay-b-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-b-2', 'ev-b-2', 'cm-b', 'assay-b-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-b-2', 'ev-b-2', 'cm-b', 'assay-b-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-b-3', 'ev-b-3', 'cm-b', 'assay-b-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-b-3', 'ev-b-3', 'cm-b', 'assay-b-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-c-1', 'ev-c-1', 'cm-c', 'assay-c-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-c-1', 'ev-c-1', 'cm-c', 'assay-c-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-c-2', 'ev-c-2', 'cm-c', 'assay-c-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-c-2', 'ev-c-2', 'cm-c', 'assay-c-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-c-3', 'ev-c-3', 'cm-c', 'assay-c-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-c-3', 'ev-c-3', 'cm-c', 'assay-c-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-d-1', 'ev-d-1', 'cm-d', 'assay-d-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-d-1', 'ev-d-1', 'cm-d', 'assay-d-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-d-2', 'ev-d-2', 'cm-d', 'assay-d-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-d-2', 'ev-d-2', 'cm-d', 'assay-d-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-d-3', 'ev-d-3', 'cm-d', 'assay-d-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-d-3', 'ev-d-3', 'cm-d', 'assay-d-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-e-1', 'ev-e-1', 'cm-e', 'assay-e-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-e-1', 'ev-e-1', 'cm-e', 'assay-e-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-e-2', 'ev-e-2', 'cm-e', 'assay-e-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-e-2', 'ev-e-2', 'cm-e', 'assay-e-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-e-3', 'ev-e-3', 'cm-e', 'assay-e-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-e-3', 'ev-e-3', 'cm-e', 'assay-e-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-f-1', 'ev-f-1', 'cm-f', 'assay-f-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-f-1', 'ev-f-1', 'cm-f', 'assay-f-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-f-2', 'ev-f-2', 'cm-f', 'assay-f-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-f-2', 'ev-f-2', 'cm-f', 'assay-f-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-f-3', 'ev-f-3', 'cm-f', 'assay-f-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-f-3', 'ev-f-3', 'cm-f', 'assay-f-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-g-1', 'ev-g-1', 'cm-g', 'assay-g-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-g-1', 'ev-g-1', 'cm-g', 'assay-g-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-g-2', 'ev-g-2', 'cm-g', 'assay-g-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-g-2', 'ev-g-2', 'cm-g', 'assay-g-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch)
-VALUES ('ev-g-3', 'ev-g-3', 'cm-g', 'assay-g-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE) ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
+VALUES ('ev-g-3', 'ev-g-3', 'cm-g', 'assay-g-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CohortReplications: One re-test of a causal mechanism in another federated cohort. Replication and cross-ancestry transport are aggregations over these rows.

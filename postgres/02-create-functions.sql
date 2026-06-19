@@ -1289,6 +1289,33 @@ RETURNS BOOLEAN AS $$
   SELECT (SELECT is_adjusted_for_batch FROM evidence_items WHERE evidence_item_id = p_evidence_item_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_evidence_items_is_synthetic_leaf
+-- Helper function: Get IsSyntheticLeaf from EvidenceItems by EvidenceItemId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evidence_items_is_synthetic_leaf(p_evidence_item_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_synthetic_leaf FROM evidence_items WHERE evidence_item_id = p_evidence_item_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evidence_items_represents_assay_modality
+-- Helper function: Get RepresentsAssayModality from EvidenceItems by EvidenceItemId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evidence_items_represents_assay_modality(p_evidence_item_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT represents_assay_modality FROM evidence_items WHERE evidence_item_id = p_evidence_item_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_evidence_items_identification_assumption
+-- Helper function: Get IdentificationAssumption from EvidenceItems by EvidenceItemId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evidence_items_identification_assumption(p_evidence_item_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT identification_assumption FROM evidence_items WHERE evidence_item_id = p_evidence_item_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_omics_assays_name
 -- Field: OmicsAssays.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2291,6 +2318,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN calc_individual_predictions_is_ancestry_holdout(p_individual_prediction_id) THEN (calc_individual_predictions_is_transportable_to_absent_ancestry(p_individual_prediction_id))::text ELSE (TRUE)::text END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_transport_gate_status
+-- Field: IndividualPredictions.TransportGateStatus
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_transport_gate_status(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN NOT (calc_individual_predictions_is_ancestry_holdout(p_individual_prediction_id)) THEN ('NotApplicable')::text ELSE (CASE WHEN calc_individual_predictions_is_transportable_to_absent_ancestry(p_individual_prediction_id) THEN ('PASS-tested')::text ELSE ('FAIL')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_high_confidence_prediction

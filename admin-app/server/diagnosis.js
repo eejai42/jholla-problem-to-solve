@@ -20,6 +20,14 @@ import { query } from './db.js';
 const yn = (b) => (b === true ? 'YES' : b === false ? 'no' : '—');
 const passfail = (b) => (b === true ? 'PASS' : b === false ? 'FAIL' : 'unknown');
 const num = (n, d = 2) => (n == null ? '—' : Number(n).toFixed(d));
+// Honest three-state render of the transport gate (consumes the derived
+// TransportGateStatus). A vacuous in-training pass is shown as n/a, never PASS,
+// so the writeup never implies transport evidence the keystone never used.
+const transportStatus = (s) =>
+  s === 'NotApplicable' ? 'n/a — in-training ancestry (gate did not bite)'
+  : s === 'PASS-tested' ? 'PASS (tested) — measured cross-ancestry transport'
+  : s === 'FAIL' ? 'FAIL — holdout ancestry with no cross-ancestry transport'
+  : 'unknown';
 
 // Map the four gates to a plain-English deciding reason.
 function decidingReason(p) {
@@ -80,6 +88,7 @@ export function renderMarkdown(d) {
   L.push('');
   L.push('> **Demonstration of inference structure, not validated clinical decision support.**');
   L.push(`> Generated from the derived inference chain (\`vw_*\`). Conclusion is computed, never entered.`);
+  L.push('> 🧪-marked rows are **synthetic leaves** (LLM-produced transparent test results for this invented case); every other value is **derived** by formula. The trust boundary is a line in the DAG — see each leaf\'s _represents / valid-under_ provenance below.');
   L.push('');
   L.push(`**Prediction:** ${p.individual_prediction_id} · **Disease:** ${p.autoimmune_disease || '—'} · **Type:** ${p.prediction_type || '—'}`);
   L.push(`**Ancestry:** ${p.individual_ancestry_label} ${p.is_ancestry_holdout ? '(held out of training)' : '(in training)'}`);
@@ -107,9 +116,13 @@ export function renderMarkdown(d) {
     L.push('**Evidence assays:**');
     if (evidence.length) {
       for (const e of evidence) {
-        L.push(`- ${e.evidence_item_id}: ZStat ${num(e.z_stat)} ` +
+        const leaf = e.is_synthetic_leaf ? ' 🧪_synthetic_' : '';
+        L.push(`- ${e.evidence_item_id}:${leaf} ZStat ${num(e.z_stat)} ` +
           `(high-quality assay ${yn(e.assay_is_high_quality)}, confound-controlled ${yn(e.is_confound_controlled)}, ` +
           `cross-modality ${yn(e.is_cross_modality)}) ⇒ qualified: **${yn(e.is_qualified_evidence)}**.`);
+        if (e.represents_assay_modality)
+          L.push(`  - _represents:_ ${e.represents_assay_modality}` +
+            `${e.identification_assumption ? ` — _valid under:_ ${e.identification_assumption}` : ''}`);
       }
       L.push(`- ⇒ ${m.count_qualified_evidence} qualified evidence rows across ${m.count_modalities_supporting} modalities.`);
     } else L.push('- (none)');
@@ -150,7 +163,7 @@ export function renderMarkdown(d) {
   L.push(`| Causally grounded (mechanism-derived magnitude) | **${passfail(Number(p.predicted_value) > 0)}** (PredictedValue ${num(p.predicted_value)}) |`);
   L.push(`| Well calibrated ∧ not spurious | **${passfail(p.is_high_confidence_prediction)}** |`);
   L.push(`| Falsifiability-backed | **${passfail(p.is_falsifiability_backed)}** |`);
-  L.push(`| Ancestry-transport-safe | **${passfail(p.is_ancestry_transport_safe)}** |`);
+  L.push(`| Ancestry-transport-safe | **${transportStatus(p.transport_gate_status)}** |`);
   L.push('');
 
   // ---- CONCLUSION (keystone) ----
