@@ -834,6 +834,9 @@ VALUES ('nav-admin-explainer', 'Explainer DAG', '/admin/explainer', 'Click any d
 INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
 VALUES ('nav-admin-cohort', 'Cohort', '/admin/cohort', 'All 7 cases and their keystone verdicts.', 95, 'admin', 'admin.cohort', 'sub', 'admin', 'IndividualPredictions', 'vw_individual_predictions', 'users', FALSE, FALSE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
 
+INSERT INTO routing_and_navigation (routing_and_navigation_id, display_name, route, description, sort_order, parent_route_key, route_key, nav_level, role_visibility, primary_table, primary_view, icon_hint, is_dynamic, pin_to_top, admin_crud, intake_clinician_crud, diagnosing_doctor_crud, external_llm_crud, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('nav-admin-leopold', 'Leopold Loops', '/admin/leopold', 'Edit the Leopold loop plan rows and regenerate LEOPOLD_LOOPING_PLAN.md.', 96, 'admin', 'admin.leopold', 'sub', 'admin', 'LeopoldLoops', 'vw_leopold_loops', 'repeat', FALSE, FALSE, 'CRUD', '', '', '', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (routing_and_navigation_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- StateMachines: State-machine definitions.
 -- ----------------------------------------------------------------------------

@@ -4806,16 +4806,6 @@
       }
     ]
   },
-  "_meta": {
-    "_CMCC_Summary": "Loop 0: solve-by-inference rulebook for the Causal Autoimmune Architecture Platform. The keystone IndividualPredictions.IsClinicallyActionable is derived through a calculated-field DAG bottoming out only in raw observations.",
-    "_conversion_metadata": {
-      "source": "shadle-bootstrap",
-      "table_count": 21,
-      "tool_version": "loop-0-solve-by-inference-2026-06-19",
-      "export_mode": "rulebook_first",
-      "vocabulary_coverage": "all domain terms in descriptions, field names, and data values"
-    }
-  },
   "RoutingAndNavigation": {
     "Description": "Role-based navigation: open-ended parent->child->leaf routes with computed paths. Each route has a template (/intake/case/:caseId); entities carry RelativePath that substitutes their own id/slug. Roles: admin, intake-clinician, diagnosing-doctor, external-llm.",
     "schema": [
@@ -5603,6 +5593,28 @@
         "PrimaryTable": "IndividualPredictions",
         "PrimaryView": "vw_individual_predictions",
         "IconHint": "users"
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin-leopold",
+        "DisplayName": "Leopold Loops",
+        "Route": "/admin/leopold",
+        "Description": "Edit the Leopold loop plan rows and regenerate LEOPOLD_LOOPING_PLAN.md.",
+        "SortOrder": 96,
+        "ParentRouteKey": "admin",
+        "RouteKey": "admin.leopold",
+        "NavLevel": "sub",
+        "RoleVisibility": "admin",
+        "IsDynamic": false,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "CreatedBy": "build-seed",
+        "ModifiedBy": "build-seed",
+        "PrimaryTable": "LeopoldLoops",
+        "PrimaryView": "vw_leopold_loops",
+        "IconHint": "repeat"
       }
     ]
   },
@@ -7301,5 +7313,15 @@
         "ModifiedBy": "build-seed"
       }
     ]
+  },
+  "_meta": {
+    "_CMCC_Summary": "Loop 0: solve-by-inference rulebook for the Causal Autoimmune Architecture Platform. The keystone IndividualPredictions.IsClinicallyActionable is derived through a calculated-field DAG bottoming out only in raw observations.",
+    "_conversion_metadata": {
+      "source": "shadle-bootstrap",
+      "table_count": 21,
+      "tool_version": "loop-0-solve-by-inference-2026-06-19",
+      "export_mode": "rulebook_first",
+      "vocabulary_coverage": "all domain terms in descriptions, field names, and data values"
+    }
   }
 }

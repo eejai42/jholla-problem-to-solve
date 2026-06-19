@@ -202,3 +202,71 @@ export const VARIANT_WITNESS =
 
 // Numeric tolerance for the few non-integer derived scalars.
 export const TOL = 1e-3;
+
+// ===========================================================================
+//  L8 — LIFECYCLE PATHS (the case-by-case walk through the diagnosis machine).
+// ===========================================================================
+//  Each patient walks its OWN branch from Intake down to a terminal, stopping
+//  at its single deciding gate. The path is DERIVED from the frozen decidingGate
+//  above — NOT hand-typed independently — so this section can never drift from
+//  the keystone oracle. The app must surface the same ordered StateKeys via
+//  GET /api/predictions/:id/lifecycle (states[]), ending at `terminal`.
+//
+//  Machine spine: Intake → EvidenceAssessed → MechanismConfirmed →
+//                 CalibrationChecked → TransportChecked → Actionable.
+//  A failing gate diverts to NotActionable at the step that gate is checked.
+// ---------------------------------------------------------------------------
+const SPINE = ['Intake', 'EvidenceAssessed', 'MechanismConfirmed', 'CalibrationChecked', 'TransportChecked', 'Actionable'];
+
+// decidingGate -> the spine state AFTER which the case diverts to NotActionable.
+// (all-pass / transport-passes ride the full spine to Actionable.)
+const DIVERT_AFTER = {
+  'spurious-mechanism': 'EvidenceAssessed',   // C: not a node ⇒ stop after evidence
+  'falsifiability': 'EvidenceAssessed',       // E: 0 intervention targets ⇒ stop after evidence
+  'cryptic-relatedness': 'MechanismConfirmed', // D: leakage ⇒ stop after mechanism
+  'calibration': 'CalibrationChecked',        // B: uncertainty<0.7 ⇒ stop after calibration
+  'ancestry-transport': 'TransportChecked',   // F: not transport-safe ⇒ stop after transport
+};
+
+// Build the ordered lifecycle path for one patient from its decidingGate.
+function pathFor(p) {
+  if (p.actionable) return [...SPINE]; // A, G ride to Actionable
+  const after = DIVERT_AFTER[p.decidingGate];
+  const upto = SPINE.slice(0, SPINE.indexOf(after) + 1);
+  return [...upto, 'NotActionable'];
+}
+
+export const LIFECYCLE_PATHS = Object.fromEntries(
+  PATIENTS.map((p) => {
+    const states = pathFor(p);
+    return [p.prediction, {
+      states,
+      terminal: states[states.length - 1],
+      is_clinically_actionable: p.actionable,
+      witness: `${p.key} · ${p.name}: walks ${states.join(' → ')} — diverges at the ${p.decidingGate} gate; the IsCurrent occupancy's StateKey must equal the derived LifecycleStateKey.`,
+    }];
+  }),
+);
+
+// ===========================================================================
+//  L9 — ROUTING: per-entity RelativePath + the role nav trees.
+// ===========================================================================
+//  RelativePath is a computed field assembling each entity's own page path,
+//  chaining its parent's path where hierarchical. We assert one representative
+//  row per depth so the chain (case → prediction → bins) is witnessed. The app
+//  surfaces relative_path on every vw_* row (e.g. /api/predictions/:id).
+export const ROUTING = {
+  // entity endpoint + id field -> expected relative_path
+  relativePaths: [
+    { endpoint: '/api/individuals/ind-a-reyes', field: 'relative_path', expected: '/intake/new-patient/reyes-ana' },
+    { endpoint: '/api/predictions/pred-a', field: 'relative_path', expected: '/intake/new-patient/reyes-ana/predictions/pred-a' },
+    { endpoint: '/api/mechanisms/cm-a', field: 'relative_path', expected: '/intake/new-patient/reyes-ana/mechanisms/cm-a' },
+    { endpoint: '/api/variants/var-a-irf5', field: 'relative_path', expected: '/intake/new-patient/reyes-ana/variants/var-a-irf5' },
+  ],
+  // role -> the set of TOP-LEVEL route_keys that role can see (admin sees all 3 trees).
+  navTrees: {
+    'intake-clinician': ['intake'],
+    'diagnosing-doctor': ['diagnosis'],
+    'admin': ['intake', 'diagnosis', 'admin'],
+  },
+};

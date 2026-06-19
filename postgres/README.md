@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-19 21:18:05 UTC
+**Timestamp:** 2026-06-19 21:21:07 UTC
 
 ## Parsing Rulebook
 
@@ -37,7 +37,7 @@ Found **34** tables in rulebook
   - **NonGoals** (5 fields, 5 records)
   - **GlossaryTerms** (5 fields, 6 records)
   - **LeopoldLoops** (14 fields, 10 records)
-  - **RoutingAndNavigation** (44 fields, 21 records)
+  - **RoutingAndNavigation** (44 fields, 22 records)
   - **StateMachines** (17 fields, 1 records)
   - **MachineStates** (16 fields, 7 records)
   - **StateTransitionRules** (18 fields, 9 records)
@@ -48,7 +48,7 @@ Generated **34** table definitions with **240** raw fields (mode=check-add)
 Generated **353** calculation functions
 Generated **34** views
 Enabled RLS on **34** tables
-Generated insert statements for **323** records
+Generated insert statements for **324** records
 ## Script Generation Complete
 
 Generated files:

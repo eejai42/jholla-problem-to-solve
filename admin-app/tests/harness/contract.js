@@ -67,4 +67,20 @@ export const CONTRACT = {
     endpoint: () => `/api/cohort`,
     plannedLoop: 'Loop 1',
   },
+  // ---- NEW: case lifecycle + routing surfaces ----
+  lifecycle: {
+    surfaces: 'L8 the case walk through the diagnosis state machine',
+    endpoint: (p) => `/api/predictions/${p.prediction}/lifecycle`,
+    plannedLoop: 'Loop 2',
+  },
+  routingEntity: {
+    surfaces: 'L9 per-entity RelativePath',
+    endpoint: (e) => e.endpoint,
+    plannedLoop: 'Loop 2',
+  },
+  routingTree: {
+    surfaces: 'L9 role-based nav tree',
+    endpoint: (role) => `/api/routing/tree?role=${role}`,
+    plannedLoop: 'Loop 2',
+  },
 };

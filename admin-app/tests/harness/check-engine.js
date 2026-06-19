@@ -34,6 +34,8 @@ import {
   CALIBRATION_ATOMS,
   VARIANT_LEVEL,
   VARIANT_WITNESS,
+  LIFECYCLE_PATHS,
+  ROUTING,
   TOL,
 } from '../oracle/dag-oracle.js';
 import { CONTRACT } from './contract.js';
@@ -223,6 +225,51 @@ export async function runHarness(base) {
     for (const f of VAR_FIELDS) {
       checks.push(mk('L0/L1 · Variant — IsCausalCandidate', 0, `${p.key} · ${p.variant} · ${f} = ${row[f]}`, VARIANT_WITNESS, ep, f, row[f], judgeScalar(r, f, row[f])));
     }
+  }
+
+  // ---- L8 LIFECYCLE — each case's walk through the diagnosis state machine ----
+  for (const p of PATIENTS) {
+    const o = LIFECYCLE_PATHS[p.prediction];
+    const ep = CONTRACT.lifecycle.endpoint(p);
+    const r = await fetchJson(base, ep);
+    let judged;
+    if (r.status === 501) judged = { status: 'not_surfaced', actual: null, detail: 'endpoint returns 501 (not wired yet)' };
+    else if (r.status !== 200) judged = { status: 'fail', actual: null, detail: `HTTP ${r.status}` };
+    else {
+      const states = Array.isArray(r.body?.states) ? r.body.states : null;
+      const okPath = states && JSON.stringify(states) === JSON.stringify(o.states);
+      const okTerminal = r.body?.terminal === o.terminal;
+      const okKeystone = r.body?.is_clinically_actionable === o.is_clinically_actionable;
+      const ok = okPath && okTerminal && okKeystone;
+      judged = {
+        status: ok ? 'pass' : 'fail',
+        actual: states,
+        detail: ok ? '' : `expected path ${JSON.stringify(o.states)} (terminal ${o.terminal}, actionable ${o.is_clinically_actionable}), got ${JSON.stringify(states)} (terminal ${r.body?.terminal}, actionable ${r.body?.is_clinically_actionable})`,
+      };
+    }
+    checks.push(mk('L8 · Case lifecycle — walk to the diagnosis', 8, `${p.key} · ${p.name} · ${o.states.join(' → ')}`, o.witness, ep, 'states', o.states, judged));
+  }
+
+  // ---- L9 ROUTING — per-entity RelativePath ------------------------------
+  for (const e of ROUTING.relativePaths) {
+    const r = await fetchJson(base, e.endpoint);
+    checks.push(mk('L9 · Routing — per-entity RelativePath', 9, `${e.endpoint} · ${e.field} = ${e.expected}`, 'RelativePath is a computed field that chains the parent entity\'s path; every entity is linkable by its own id.', e.endpoint, e.field, e.expected, judgeScalar(r, e.field, e.expected)));
+  }
+
+  // ---- L9 ROUTING — role-based nav trees ---------------------------------
+  for (const [role, expectedTops] of Object.entries(ROUTING.navTrees)) {
+    const ep = CONTRACT.routingTree.endpoint(role);
+    const r = await fetchJson(base, ep);
+    let judged;
+    if (r.status === 501) judged = { status: 'not_surfaced', actual: null, detail: 'endpoint returns 501 (not wired yet)' };
+    else if (r.status !== 200) judged = { status: 'fail', actual: null, detail: `HTTP ${r.status}` };
+    else {
+      const tops = (r.body?.tree || []).map((n) => n.route_key).sort();
+      const exp = [...expectedTops].sort();
+      const ok = JSON.stringify(tops) === JSON.stringify(exp);
+      judged = { status: ok ? 'pass' : 'fail', actual: tops, detail: ok ? '' : `expected top-level routes ${JSON.stringify(exp)}, got ${JSON.stringify(tops)}` };
+    }
+    checks.push(mk('L9 · Routing — role-based nav trees', 9, `role ${role} sees top-level: ${expectedTops.join(', ')}`, 'RoleVisibility filters the nav tree; admin sees all trees, each clinician role sees its own workflow.', ep, 'tree-tops', expectedTops, judged));
   }
 
   const summary = {
