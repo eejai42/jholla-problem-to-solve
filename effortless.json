@@ -55,6 +55,16 @@
       "RelativePath": "/plan",
       "CommandLine": "-exec ./publish-plan.sh",
       "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoexplainerdag",
+      "RelativePath": "/admin-app/client/public",
+      "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/effortless-rulebook.json -o explainer-dag",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.06.17.2023",
+      "LastVersionUsed": "v2026.06.17.2023",
+      "LastUrl": "https://effortless-rulebook-to-explainer-v2026-06-17-2023-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }

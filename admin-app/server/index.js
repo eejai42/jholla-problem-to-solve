@@ -43,6 +43,7 @@ import { buildDiagnosis, renderMarkdown } from './diagnosis.js';
 import { router as routingRouter } from './routes/routing.js';
 import { router as stateMachineRouter } from './routes/state-machines.js';
 import { router as leopoldRouter } from './routes/leopold.js';
+import { router as exportRouter } from './routes/export.js';
 
 export const app = express();
 app.use(express.json());
@@ -182,6 +183,7 @@ app.get('/api/variants/:id', one('vw_genomic_variants', 'genomic_variant_id'));
 app.use('/api/routing', routingRouter);
 app.use('/api/state-machines', stateMachineRouter);
 app.use('/api/leopold-loops', leopoldRouter);
+app.use('/api', exportRouter); // GET /api/export.xlsx
 
 // ---- start only when run directly (not when imported by the harness) -------
 const PORT = process.env.PORT || 4173;

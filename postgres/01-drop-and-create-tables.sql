@@ -476,12 +476,12 @@ CREATE TABLE IF NOT EXISTS axioms (
 );
 ALTER TABLE axioms ADD COLUMN IF NOT EXISTS statement TEXT;                                         -- The invariant, stated as a rule.
 ALTER TABLE axioms ADD COLUMN IF NOT EXISTS rationale TEXT;                                         -- Why this must hold / what it defends against.
-ALTER TABLE axioms ADD COLUMN IF NOT EXISTS category TEXT;                                          -- Grouping: trust-boundary | solve-by-inference | knob | witness | scope.
+ALTER TABLE axioms ADD COLUMN IF NOT EXISTS category TEXT;                                          -- Grouping: trust-boundary | solve-by-inference | knob | witness | scope | report-derivation.
 COMMENT ON TABLE axioms IS 'Non-negotiable invariants the platform must obey. Load-bearing constraints, not per-loop work. Captured from the gauntlet conversation.';
 COMMENT ON COLUMN axioms.axiom_id IS 'Stable identifier for the axiom.';
 COMMENT ON COLUMN axioms.statement IS 'The invariant, stated as a rule.';
 COMMENT ON COLUMN axioms.rationale IS 'Why this must hold / what it defends against.';
-COMMENT ON COLUMN axioms.category IS 'Grouping: trust-boundary | solve-by-inference | knob | witness | scope.';
+COMMENT ON COLUMN axioms.category IS 'Grouping: trust-boundary | solve-by-inference | knob | witness | scope | report-derivation.';
 
 -- ----------------------------------------------------------------------------
 -- TestsForSuccess: Falsifiable conditions that prove the axioms hold. The human-readable index of what each demonstration shows; many are realized in the witnessed harness.

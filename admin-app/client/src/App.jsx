@@ -8,7 +8,7 @@
 import React, { useEffect, useState } from 'react';
 import { C, useFetch } from './ui.jsx';
 import {
-  HarnessView, DiagnosisView, CaseWalk, StateMachineView, RoutingEditor, LeopoldEditor,
+  HarnessView, DiagnosisView, CaseWalk, StateMachineView, RoutingEditor, LeopoldEditor, ExplainerView,
 } from './pages.jsx';
 
 const ROLES = [
@@ -29,6 +29,7 @@ const PAGES = {
   'admin.cohort': () => <CaseWalk />,
   'admin.routing': (role) => <RoutingEditor role={role} />,
   'admin.state-machine': () => <StateMachineView />,
+  'admin.explainer': () => <ExplainerView />,
   'admin.leopold': () => <LeopoldEditor />,
   'diagnosis': () => <CaseWalk />,
   'diagnosis.case': () => <CaseWalk />,
@@ -55,7 +56,7 @@ function flatten(tree, depth = 0, out = []) {
 }
 
 export default function App() {
-  const [role, setRole] = useState('diagnosing-doctor');
+  const [role, setRole] = useState('admin');
   const { data, loading } = useFetch(`/api/routing/tree?role=${role}`, [role]);
   const rows = data?.tree ? flatten(data.tree) : [];
   const [activeKey, setActiveKey] = useState(null);
@@ -69,6 +70,16 @@ export default function App() {
         : (has('diagnosis.case') ? 'diagnosis.case' : rows[0].route_key);
     setActiveKey((cur) => (cur && rows.some((r) => r.route_key === cur) ? cur : def));
   }, [role, rows.length]); // eslint-disable-line
+
+  // Mount the explainer's ƒ provenance toggle into the pinned bottom-left nav
+  // slot, once that DOM node exists. (index.html init runs on DOMContentLoaded,
+  // before React renders the nav, so the toggle is mounted here instead.)
+  useEffect(() => {
+    const mount = document.getElementById('explainer-toggle-mount');
+    const ex = window.EffortlessExplainer;
+    if (!mount || !ex?.mountToggle || mount.childElementCount > 0) return;
+    ex.mountToggle(mount);
+  }, [loading]);
 
   const activeNode = rows.find((r) => r.route_key === activeKey);
   const PageFn = activeKey && PAGES[activeKey];
@@ -90,25 +101,32 @@ export default function App() {
       </header>
 
       <div style={{ display: 'flex', alignItems: 'stretch' }}>
-        {/* LEFT NAV */}
-        <nav style={{ width: 250, borderRight: `1px solid ${C.border}`, padding: '12px 8px', background: '#fafafa', minHeight: 'calc(100vh - 58px)' }}>
-          {loading ? <p style={{ color: C.sub, fontSize: 13 }}>Loading nav…</p> : rows.map((n) => {
-            const active = n.route_key === activeKey;
-            const isTop = n.depth === 0;
-            return (
-              <div key={n.routing_and_navigation_id}
-                onClick={() => setActiveKey(n.route_key)}
-                style={{
-                  padding: '6px 10px', marginLeft: n.depth * 12, borderRadius: 6, cursor: 'pointer',
-                  fontWeight: isTop ? 700 : 500, fontSize: isTop ? 14 : 13,
-                  color: active ? '#fff' : isTop ? C.ink : C.sub,
-                  background: active ? C.accent : 'transparent', margin: '1px 0',
-                }}
-                title={n.route}>
-                {n.display_name}
-              </div>
-            );
-          })}
+        {/* LEFT NAV — a flex column so the provenance (ƒ) toggle pins to the bottom. */}
+        <nav style={{ width: 250, borderRight: `1px solid ${C.border}`, background: '#fafafa', minHeight: 'calc(100vh - 58px)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ flex: 1, padding: '12px 8px', overflowY: 'auto' }}>
+            {loading ? <p style={{ color: C.sub, fontSize: 13 }}>Loading nav…</p> : rows.map((n) => {
+              const active = n.route_key === activeKey;
+              const isTop = n.depth === 0;
+              return (
+                <div key={n.routing_and_navigation_id}
+                  onClick={() => setActiveKey(n.route_key)}
+                  style={{
+                    padding: '6px 10px', marginLeft: n.depth * 12, borderRadius: 6, cursor: 'pointer',
+                    fontWeight: isTop ? 700 : 500, fontSize: isTop ? 14 : 13,
+                    color: active ? '#fff' : isTop ? C.ink : C.sub,
+                    background: active ? C.accent : 'transparent', margin: '1px 0',
+                  }}
+                  title={n.route}>
+                  {n.display_name}
+                </div>
+              );
+            })}
+          </div>
+          {/* Pinned bottom-left: the Explainer DAG (ƒ) provenance toggle mounts here. */}
+          <div style={{ borderTop: `1px solid ${C.border}`, padding: '10px 12px', display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: C.sub }}>
+            <span id="explainer-toggle-mount" />
+            <span>Provenance</span>
+          </div>
         </nav>
 
         {/* CONTENT */}

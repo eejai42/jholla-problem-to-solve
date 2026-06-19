@@ -174,6 +174,8 @@ export function CaseWalk() {
   const patient = list.find((p) => p.individual_prediction_id === predId);
   // enrich with the oracle ids the walk endpoints need (mechanism / variant / individual).
   const { data: pred } = useFetch(predId ? `/api/predictions/${predId}` : '/api/health', [predId]);
+  // the payoff writeup, rendered inline (not a link to the raw endpoint).
+  const { data: dx, loading: dxLoading, error: dxError } = useFetch(predId ? `/api/diagnosis/${predId}` : '/api/health', [predId]);
   if (!patient || !pred) return <div><h2 style={{ marginTop: 0 }}>Case Walk</h2><p>Loading cases…</p></div>;
 
   const ctx = {
@@ -222,9 +224,21 @@ export function CaseWalk() {
               IsClinicallyActionable = {String(actionable)} · lifecycle terminal = {terminal}
             </div>
           </div>
-          <div style={{ marginTop: 10 }}>
-            <a href={`/api/diagnosis/${predId}`} target="_blank" rel="noreferrer" style={{ fontSize: 13 }}>read the full diagnosis writeup ↗</a>
+        </div>
+
+        {/* the payoff: the full diagnosis writeup, rendered inline as pretty markdown */}
+        <div style={{ marginTop: 18 }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 6 }}>
+            <h3 style={{ margin: 0, fontSize: 16 }}>Diagnosis writeup</h3>
+            <a href={`/api/diagnosis/${predId}`} target="_blank" rel="noreferrer" style={{ fontSize: 12, color: C.sub }}>open raw markdown ↗</a>
           </div>
+          {dxLoading ? <p style={{ color: C.sub }}>Deriving diagnosis…</p>
+            : dxError ? <p style={{ color: C.fail }}>{dxError}</p>
+            : (
+              <div style={{ background: '#fbfbfb', border: `1px solid ${C.border}`, borderRadius: 8, padding: '4px 20px 16px' }}>
+                {typeof dx === 'string' ? <Markdown source={dx} /> : <pre style={{ whiteSpace: 'pre-wrap' }}>{JSON.stringify(dx, null, 2)}</pre>}
+              </div>
+            )}
         </div>
       </div>
     </div>
@@ -413,6 +427,65 @@ export function LeopoldEditor() {
           </tbody>
         </table>
       )}
+    </div>
+  );
+}
+
+// ===========================================================================
+//  EXPLAINER DAG + EXCEL EXPORT — the two "central" Effortless tools.
+//  The explainer-dag bundle (generated to /public/rulebook-explainer-dag) makes
+//  every derived field clickable to show its provenance. Excel export streams
+//  one sheet per table via the rulebook-to-xlsx transpiler.
+// ===========================================================================
+export function ExplainerView() {
+  const [exporting, setExporting] = React.useState(false);
+  async function exportXlsx() {
+    setExporting(true);
+    try {
+      const r = await fetch('/api/export.xlsx');
+      if (!r.ok) throw new Error('export failed: ' + r.status);
+      const blob = await r.blob();
+      const a = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      a.href = url; a.download = 'causal-autoimmune-export.xlsx'; a.click();
+      URL.revokeObjectURL(url);
+    } catch (e) { alert(String(e)); }
+    setExporting(false);
+  }
+  return (
+    <div>
+      <h2 style={{ marginTop: 0 }}>Explainer DAG &amp; Export</h2>
+      <p style={{ color: C.sub, fontSize: 13 }}>
+        Two Effortless tools central to this model. The <strong>Explainer DAG</strong> lets you click any derived value to see
+        exactly how it was computed (raw inputs → lookups → calcs → aggregations). <strong>Excel export</strong> dumps every
+        table — including all calculated columns — as one workbook.
+      </p>
+
+      <div style={{ display: 'flex', gap: 12, alignItems: 'center', marginBottom: 18 }}>
+        <button onClick={exportXlsx} disabled={exporting}
+          style={{ padding: '8px 16px', borderRadius: 6, border: 'none', background: C.accent, color: '#fff', cursor: 'pointer' }}>
+          {exporting ? 'Exporting…' : '⬇ Export model to Excel'}
+        </button>
+        <a href="/rulebook-explainer-dag/pages/index.html" target="_blank" rel="noreferrer" style={{ fontSize: 13 }}>
+          open the full Explainer DAG ↗
+        </a>
+        {/* the ƒ provenance toggle is pinned to the bottom-left of the nav (see App.jsx + client/index.html init) */}
+      </div>
+
+      <div style={{ border: `1px solid ${C.border}`, borderRadius: 8, padding: 16 }}>
+        <h3 style={{ marginTop: 0 }}>Try it — click a derived value</h3>
+        <p style={{ color: C.sub, fontSize: 13 }}>
+          These cells are tagged <code>data-er-dag="Table.Field"</code>. With the explainer enabled (the ƒ toggle above),
+          clicking one opens its derivation.
+        </p>
+        <ul style={{ fontSize: 14, lineHeight: 1.9 }}>
+          <li>Keystone: <span data-er-dag="IndividualPredictions.IsClinicallyActionable"><strong>IsClinicallyActionable</strong></span></li>
+          <li>Lifecycle: <span data-er-dag="IndividualPredictions.LifecycleStateKey"><strong>LifecycleStateKey</strong></span></li>
+          <li>Gate: <span data-er-dag="IndividualPredictions.IsHighConfidencePrediction"><strong>IsHighConfidencePrediction</strong></span></li>
+          <li>Mechanism: <span data-er-dag="CausalMechanisms.IsCausalArchitectureNode"><strong>IsCausalArchitectureNode</strong></span></li>
+          <li>Path: <span data-er-dag="CalibrationBins.RelativePath"><strong>CalibrationBins.RelativePath</strong></span></li>
+        </ul>
+      </div>
     </div>
   );
 }

@@ -548,7 +548,7 @@ SELECT
   t.axiom_id,                                                                   -- Stable identifier for the axiom.
   t.statement,                                                                  -- The invariant, stated as a rule.
   t.rationale,                                                                  -- Why this must hold / what it defends against.
-  t.category,                                                                   -- Grouping: trust-boundary | solve-by-inference | knob | witness | scope.
+  t.category,                                                                   -- Grouping: trust-boundary | solve-by-inference | knob | witness | scope | report-derivation.
   calc_axioms_name(t.axiom_id) AS name,                                         -- Display label.
   calc_axioms_relative_path(t.axiom_id) AS relative_path                        -- Path to this Axioms entry: /admin/axioms/<id>.
 FROM axioms t;
