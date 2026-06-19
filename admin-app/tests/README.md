@@ -2,6 +2,25 @@
 
 > **Demonstration of inference structure, not validated clinical decision support.**
 
+## The north star (what this app actually IS — keep refining)
+
+This is **not a CRUD UI**. It is a **diagnostic inference engine validated by a witnessed test
+harness**, whose payoff is a **doctor-style writeup per patient, derived from raw facts alone**.
+
+- **The harness is the home screen.** Running the app shows this suite in the browser: categories
+  (DAG levels / the four gates) → specific tests, mostly **red** today, going **green** as the model
+  is built out. (Served by `GET /api/harness`, rendered by the React app.)
+- **Build the model until it "just works."** Only raw facts go in per patient; the model derives the
+  whole chain to the keystone and reaches the correct conclusion for all 7 — no hand-entered answers.
+- **The real output is a diagnosis, not a screen.** A passing run *produces* a per-patient writeup
+  (Markdown now → `diagnosis.pdf` once green): *"presented with… tests xyz confirmed abc… therefore
+  C."* Served by `GET /api/diagnosis/:predictionId`. It needs no UI to be valuable.
+- **End state:** 7 patients' raw facts → correct keystone → a clean witnessed writeup for each.
+
+See the project `CLAUDE.md` ("What this app actually IS") for the canonical framing.
+
+---
+
 This is the **red-green contract for the whole admin app** (Loop 0.5, run *before* Loop 1).
 It asserts the **entire** `IsClinicallyActionable` inference DAG — every derived node, from raw
 observations up to the keystone — for all **seven** oracle patients (A–G), **by hitting the app's

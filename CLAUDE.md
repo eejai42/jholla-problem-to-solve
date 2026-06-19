@@ -15,6 +15,31 @@ This is an Effortless Rulebook (ERB) project. All development follows the effort
 ## Domain
 Platform for inferring the complete causal architecture of heterogeneous autoimmune disease from multi-omic cohort data — producing falsifiable mechanisms and ancestry-equitable predictions with calibrated uncertainty.
 
+## What this app actually IS (the north star — keep refining this)
+> This section is the running definition of the goal. Update it whenever our understanding sharpens.
+
+This is **not a CRUD UI**. It is a **diagnostic inference engine validated by a witnessed test
+harness**, whose payoff is a **doctor-style writeup per patient, derived from raw facts alone**.
+
+1. **The harness is the primary screen.** When you run the app, the browser shows the witnessed
+   inference harness itself: every *category* of inference (the DAG levels / the four gates), then the
+   *specific tests* under each, mostly/all **red** today. As we build the model out, tests turn
+   **green**. The app's home page IS the red/green tree — not a form.
+2. **Build the model until it "just works."** Feed in **only raw facts** about each patient (allele
+   freqs, effect sizes/SEs, replication signs/p-values/ancestry, permutation effect sizes,
+   calibration coverage, cryptic-relatedness flag) and the model derives the entire chain up to the
+   keystone — reaching the **correct conclusion for each of the 7 patients** with no hand-entered
+   answers anywhere.
+3. **The real output is a diagnosis, not a screen.** A passing run should *produce* a per-patient
+   **diagnosis writeup** (Markdown now → `diagnosis.pdf` once green) — everything a doctor would
+   expect: *"The patient presented with… tests xyz confirmed abc… therefore C (actionable / not,
+   and the single deciding reason)."* It needs no UI to be valuable; the writeup is an artifact of
+   the tests passing.
+4. **End state:** all 7 patients' raw facts → correct keystone conclusion → a clean, witnessed
+   writeup for each, with the full chain of supporting tests/diagnostics shown.
+
+See `admin-app/tests/README.md` for the harness contract and `LEOPOLD_LOOPING_PLAN.md` Loop 0.5+.
+
 ## Bootstrap Artifacts
 - `bootstrap/problem-to-solve.md` — raw requirements
 - `bootstrap/words.txt`, `vocabulary.txt`, `glossary.md`, `narrative.md`
