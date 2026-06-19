@@ -37,6 +37,26 @@ harness**, whose payoff is a **doctor-style writeup per patient, derived from ra
    the tests passing.
 4. **End state:** all 7 patients' raw facts → correct keystone conclusion → a clean, witnessed
    writeup for each, with the full chain of supporting tests/diagnostics shown.
+5. **The LLM is the intake clerk + the lab — never the diagnostician.** It does **exactly two
+   things, both at the leaf/observation layer only:** (a) **interpret the intake facts** the way a
+   doctor/nurse does (history → raw observation rows: ancestry, allele freqs, the case's presenting
+   facts), and (b) **produce the case's synthetic-but-transparent test results** (measured effect
+   sizes/SEs, replication signs/p-values, permutation effect sizes, calibration-bin coverage). That
+   is the *entire* LLM surface. It never computes a higher-order inference — no ZStat, no
+   `IsQualifiedEvidence`, no `CausalConfidence`, no gate, no keystone, no diagnosis. **Everything
+   above the leaves is the deterministic, fully-witnessed inference graph.** The trust boundary is a
+   *line in the DAG*: any field with a formula belongs to the model; any raw-input field is the LLM's
+   (or a human's). Every value the LLM emits surfaces as an **editable knob** in the admin UI, and
+   every formula is inspectable/correctable in place — **like a spreadsheet cell** — so a wrong input
+   is *nudged*, not re-prompted. This is what defeats *"a hallucination laundered through a
+   deterministic function"*: the model's judgment is externalized into the two bottom rows of the
+   spreadsheet, and all reasoning lives in the open DAG. The test results are *fake* (the case is
+   invented) but **transparent** — every number is visible, sourced to the case, and editable; nothing
+   is hidden. Witness it with three panels: (a) the input case text, (b) the extracted leaf
+   observations **with per-fact provenance back into the text** (human-checkable independently of the
+   verdict), (c) the derived diagnosis + four-gate trace (deterministic).
+   *(Bound: editing a field's value or formula body is local; changing its type or its place in the
+   dependency graph can ripple.)*
 
 See `admin-app/tests/README.md` for the harness contract and `LEOPOLD_LOOPING_PLAN.md` Loop 0.5+.
 

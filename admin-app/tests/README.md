@@ -16,6 +16,19 @@ harness**, whose payoff is a **doctor-style writeup per patient, derived from ra
   (Markdown now → `diagnosis.pdf` once green): *"presented with… tests xyz confirmed abc… therefore
   C."* Served by `GET /api/diagnosis/:predictionId`. It needs no UI to be valuable.
 - **End state:** 7 patients' raw facts → correct keystone → a clean witnessed writeup for each.
+- **The LLM is the intake clerk + the lab — never the diagnostician.** It does exactly two things,
+  both at the **leaf/observation layer only:** (1) interpret the intake facts (history → raw rows:
+  ancestry, allele freqs, presenting facts), and (2) produce the case's *synthetic-but-transparent*
+  test results (effect sizes/SEs, replication signs/p-values, permutation effect sizes,
+  calibration-bin coverage). It never computes a higher-order inference — no ZStat, no gate, no
+  keystone, no diagnosis. **Everything above the leaves is the deterministic, fully-witnessed
+  inference graph.** The trust boundary is a *line in the DAG*: any field with a formula is the
+  model's; any raw-input field is the LLM's (or a human's). Every value it emits is an **editable
+  knob** and every formula is correctable in place (like a spreadsheet cell), so a wrong fact is
+  *nudged*, not re-prompted. Witness it as three panels: input case text → extracted leaf
+  observations **with per-fact provenance back into the text** → deterministic diagnosis + four-gate
+  trace. The two halves (extraction vs. derivation) are independently checkable — which is what
+  defeats *"a hallucination laundered through a deterministic function."*
 
 See the project `CLAUDE.md` ("What this app actually IS") for the canonical framing.
 
