@@ -80,8 +80,10 @@ RUN chmod +x /usr/local/bin/app-entrypoint.sh
 # user so both can write where they expect.
 RUN chown -R postgres:postgres /app
 
-# The app serves UI + API here. PORT is read by server/index.js.
-ENV PORT=6347
+# The app serves UI + API here. PORT is read by server/index.js. We use 6348 to
+# MATCH the dev UI port (start.sh's Vite client), so the URL is identical whether
+# you run via ./start.sh (dev) or ./run-docker.sh (single-origin prod).
+ENV PORT=6348
 ENV NODE_ENV=production
 # Inside the container the app talks to the bundled Postgres over the unix
 # socket as the local `postgres` superuser — no password needed.
@@ -89,7 +91,7 @@ ENV DATABASE_URL=postgresql://postgres@localhost:5432/causal_autoimmune
 # Don't let the container's seed write back into the (read-only) rulebook.
 ENV SNAPSHOT_RULEBOOK=false
 
-EXPOSE 6347
+EXPOSE 6348
 
 # The postgres image's own entrypoint expects to run as root then drops to the
 # `postgres` user; our entrypoint does the same dance explicitly, so run as

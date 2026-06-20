@@ -84,9 +84,9 @@ as_pg env \
 # 5. Run the app in the foreground (PID 1-ish so signals/stop work).
 #    DATABASE_URL + PORT come from the Dockerfile ENV.
 # ----------------------------------------------------------------------------
-log "starting Express app on :${PORT:-6347} (UI + API)…"
+log "starting Express app on :${PORT:-6348} (UI + API)…"
 cd "$APP_DIR"
 exec gosu "$PGUSER_LOCAL" env \
   DATABASE_URL="postgresql://${PGUSER_LOCAL}@127.0.0.1:5432/${DB_NAME}" \
-  PORT="${PORT:-6347}" \
+  PORT="${PORT:-6348}" \
   node server/index.js

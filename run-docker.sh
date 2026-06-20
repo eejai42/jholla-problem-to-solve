@@ -8,7 +8,7 @@
 #
 #      git clone <repo> && cd <repo>
 #      ./run-docker.sh
-#      # → open http://localhost:6347
+#      # → open http://localhost:6348   (same UI port as dev / ./start.sh)
 #
 #  Flags:
 #      ./run-docker.sh              rebuild a fresh image + run, foreground logs
@@ -31,8 +31,8 @@ cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 IMAGE="causal-autoimmune"
 NAME="causal-autoimmune"
-HOST_PORT="${PORT:-6347}"   # host port to publish; container always serves :6347
-CONTAINER_PORT=6347
+HOST_PORT="${PORT:-6348}"   # host port to publish; container serves UI+API on :6348 (matches dev)
+CONTAINER_PORT=6348
 
 # Rebuild by default: the image bakes in app + seed at build time, so reusing a
 # stale image silently runs old code. --no-rebuild opts out for a fast re-run.
