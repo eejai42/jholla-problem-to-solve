@@ -72,7 +72,9 @@
       "RelativePath": "/xlsx",
       "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
-      "PinnedVersion": "v2026.05.25.2316"
+      "PinnedVersion": "v2026.05.25.2316",
+      "LastVersionUsed": "v2026.05.25.2316",
+      "LastUrl": "https://effortless-rulebook-to-xlsx-v2026-05-25-2316-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     }
   ]
 }

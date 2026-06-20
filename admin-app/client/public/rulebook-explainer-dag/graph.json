@@ -6981,6 +6981,55 @@
         "Definition": "The skeptic's claim that a deterministic function over LLM-chosen inputs just launders a hallucination; defeated by externalized knobs + independent witness.",
         "Name": "laundering objection",
         "RelativePath": "/admin/glossary/gt-laundering-objection"
+      },
+      {
+        "GlossaryTermId": "gt-disease-state-simulator",
+        "Term": "disease state simulator",
+        "Definition": "The v2 layer the audit asked for: disease modeled as a WITNESSED state machine whose transitions fire only on raw longitudinal observations (rising anti-dsDNA, falling C3/C4, proteinuria). Current state and dwell-time are derived & bitemporal — the contrast the audit drew with an 'evidence gate'.",
+        "Name": "disease state simulator",
+        "RelativePath": "/admin/glossary/gt-disease-state-simulator"
+      },
+      {
+        "GlossaryTermId": "gt-evidence-gate",
+        "Term": "evidence gate",
+        "Definition": "The v1 layer: per-patient adjudication of whether a prediction is trustworthy enough to act on (the four gates + IsClinicallyActionable). v2 keeps this and adds the disease-state simulator above it on the same hub.",
+        "Name": "evidence gate",
+        "RelativePath": "/admin/glossary/gt-evidence-gate"
+      },
+      {
+        "GlossaryTermId": "gt-disease-progression-machine",
+        "Term": "disease progression machine",
+        "Definition": "A state machine on the polymorphic StateMachines substrate whose subject is a patient's disease course (presymptomatic -> serologic-active -> early-nephritis -> renal-flare-risk -> biopsy-indicated). Transitions are raw-leaf-triggered; current state is the derived IsCurrent occupancy.",
+        "Name": "disease progression machine",
+        "RelativePath": "/admin/glossary/gt-disease-progression-machine"
+      },
+      {
+        "GlossaryTermId": "gt-dwell-time",
+        "Term": "dwell time",
+        "Definition": "Bitemporal derivation: how long a subject has been in a disease state (now - EnteredAt while current; ExitedAt - EnteredAt once left). The audit asked for 'how long has the patient/disease been in a state' — this is that, as a formula.",
+        "Name": "dwell time",
+        "RelativePath": "/admin/glossary/gt-dwell-time"
+      },
+      {
+        "GlossaryTermId": "gt-serology-trajectory",
+        "Term": "serology trajectory",
+        "Definition": "The raw longitudinal leaves driving progression: anti-dsDNA titre trend (rising/stable/falling), complement C3/C4 trend, proteinuria. The LLM/lab may emit these; everything above them is derived.",
+        "Name": "serology trajectory",
+        "RelativePath": "/admin/glossary/gt-serology-trajectory"
+      },
+      {
+        "GlossaryTermId": "gt-treatment-line-recommendation",
+        "Term": "treatment line recommendation",
+        "Definition": "Derived field: given the patient's confirmed causal mechanism + current disease state, the recommended therapy (MMF vs belimumab vs anifrolumab) and the single deciding reason. The audit's second worked example.",
+        "Name": "treatment line recommendation",
+        "RelativePath": "/admin/glossary/gt-treatment-line-recommendation"
+      },
+      {
+        "GlossaryTermId": "gt-corpus-discovery",
+        "Term": "corpus discovery",
+        "Definition": "The cohort-level surface where causal-hypothesis patterns EMERGE across many patients (vs v1's per-patient verdicts). Discovery is inherently corpus-level; this is the v2 reframe of the audit's 'you don't do discovery' critique.",
+        "Name": "corpus discovery",
+        "RelativePath": "/admin/glossary/gt-corpus-discovery"
       }
     ]
   },
@@ -11081,5 +11130,398 @@
       "export_mode": "rulebook_first",
       "vocabulary_coverage": "all domain terms in descriptions, field names, and data values"
     }
+  },
+  "DiseaseDomainConcepts": {
+    "Description": "v2 vocabulary completeness: every disease-domain concept the v1 audit named, with its modeling status and the challenge-stressor TYPE it instantiates. Makes the coverage claim checkable by grep, not by trust.",
+    "schema": [
+      {
+        "name": "DiseaseDomainConceptId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK."
+      },
+      {
+        "name": "ConceptLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Human-readable concept name (the audit's missing word)."
+      },
+      {
+        "name": "RelatedDisease",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Disease this concept belongs to (SLE/RA/PsA/* for cross-cutting). Convention string, not a FK."
+      },
+      {
+        "name": "ModelingStatus",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "deep-dag | schema | vocabulary — how deeply v2 models this concept."
+      },
+      {
+        "name": "Definition",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "What the concept is and how v2 represents it."
+      },
+      {
+        "name": "ChallengeStressorType",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Which TYPE of original-challenge stressor this concept instantiates (for the reconcile map)."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes ConceptLabel.",
+        "formula": "={{ConceptLabel}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this concept's page.",
+        "formula": "=\"/admin/disease-concepts/\" & {{DiseaseDomainConceptId}}"
+      },
+      {
+        "name": "IsDeeplyModeled",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when this concept carries a witnessed inference DAG (status = deep-dag).",
+        "formula": "=IF({{ModelingStatus}}=\"deep-dag\", TRUE(), FALSE())"
+      },
+      {
+        "name": "IsSchemaModeled",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when first-class schema/data (deep-dag or schema).",
+        "formula": "=IF(OR({{ModelingStatus}}=\"deep-dag\",{{ModelingStatus}}=\"schema\"), TRUE(), FALSE())"
+      }
+    ],
+    "data": [
+      {
+        "DiseaseDomainConceptId": "lupus-nephritis",
+        "ConceptLabel": "Lupus Nephritis",
+        "RelatedDisease": "SLE",
+        "ModelingStatus": "deep-dag",
+        "Definition": "Renal involvement of SLE; immune-complex glomerulonephritis. v2 models its PROGRESSION as a witnessed state machine driven by rising anti-dsDNA + falling complement + proteinuria.",
+        "ChallengeStressorType": "disease-progression / organ-specific subtype",
+        "Name": "Lupus Nephritis",
+        "RelativePath": "/admin/disease-concepts/lupus-nephritis",
+        "IsDeeplyModeled": true,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "treatment-line-selection",
+        "ConceptLabel": "Treatment-Line Selection",
+        "RelatedDisease": "SLE",
+        "ModelingStatus": "deep-dag",
+        "Definition": "Which therapy to choose given the patient's causal mechanism + disease state: mycophenolate (MMF) vs belimumab vs anifrolumab. v2 derives a recommended line + single deciding reason.",
+        "ChallengeStressorType": "treatment response / patient stratification",
+        "Name": "Treatment-Line Selection",
+        "RelativePath": "/admin/disease-concepts/treatment-line-selection",
+        "IsDeeplyModeled": true,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "neuropsychiatric-lupus",
+        "ConceptLabel": "Neuropsychiatric Lupus (NPSLE)",
+        "RelatedDisease": "SLE",
+        "ModelingStatus": "schema",
+        "Definition": "CNS/PNS manifestations of SLE (seizure, psychosis, cognitive). Modeled as a phenotype subtype carrying a SeverityScore and organ-domain tag.",
+        "ChallengeStressorType": "tissue-specific / cell-state-specific effects",
+        "Name": "Neuropsychiatric Lupus (NPSLE)",
+        "RelativePath": "/admin/disease-concepts/neuropsychiatric-lupus",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "cutaneous-lupus",
+        "ConceptLabel": "Cutaneous Lupus",
+        "RelatedDisease": "SLE",
+        "ModelingStatus": "schema",
+        "Definition": "Skin-limited or skin-predominant lupus (acute/subacute/chronic discoid). Phenotype subtype with organ-domain = skin.",
+        "ChallengeStressorType": "tissue-specific effects",
+        "Name": "Cutaneous Lupus",
+        "RelativePath": "/admin/disease-concepts/cutaneous-lupus",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "organ-damage-slicc",
+        "ConceptLabel": "Organ Damage (SLICC/ACR Damage Index)",
+        "RelatedDisease": "SLE",
+        "ModelingStatus": "schema",
+        "Definition": "Irreversible accumulated damage, SLICC-style. Modeled as a monotonic damage-accrual score distinct from reversible disease activity.",
+        "ChallengeStressorType": "disease progression / feedback between progression and molecular state",
+        "Name": "Organ Damage (SLICC/ACR Damage Index)",
+        "RelativePath": "/admin/disease-concepts/organ-damage-slicc",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "seropositive-ra",
+        "ConceptLabel": "Seropositive RA (ACPA/RF+)",
+        "RelatedDisease": "RA",
+        "ModelingStatus": "schema",
+        "Definition": "RF/anti-CCP-positive RA; stronger HLA shared-epitope + PTPN22 association, more erosive. Phenotype subtype with a serostatus tag.",
+        "ChallengeStressorType": "coding/HLA variants; ancestry-specific risk alleles",
+        "Name": "Seropositive RA (ACPA/RF+)",
+        "RelativePath": "/admin/disease-concepts/seropositive-ra",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "seronegative-ra",
+        "ConceptLabel": "Seronegative RA (ACPA/RF-)",
+        "RelatedDisease": "RA",
+        "ModelingStatus": "schema",
+        "Definition": "Autoantibody-negative RA; distinct genetic architecture and trajectory. Phenotype subtype.",
+        "ChallengeStressorType": "heterogeneity within one disease",
+        "Name": "Seronegative RA (ACPA/RF-)",
+        "RelativePath": "/admin/disease-concepts/seronegative-ra",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "erosive-disease",
+        "ConceptLabel": "Erosive Disease",
+        "RelatedDisease": "RA",
+        "ModelingStatus": "schema",
+        "Definition": "Radiographic bone erosion; a structural-damage progression axis for RA, distinct from disease activity.",
+        "ChallengeStressorType": "disease progression / organ damage",
+        "Name": "Erosive Disease",
+        "RelativePath": "/admin/disease-concepts/erosive-disease",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "axial-psa",
+        "ConceptLabel": "Axial Psoriatic Arthritis",
+        "RelatedDisease": "PsA",
+        "ModelingStatus": "schema",
+        "Definition": "Spinal/sacroiliac involvement of PsA. Phenotype subtype with axial domain tag.",
+        "ChallengeStressorType": "tissue-specific effects",
+        "Name": "Axial Psoriatic Arthritis",
+        "RelativePath": "/admin/disease-concepts/axial-psa",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "enthesitis",
+        "ConceptLabel": "Enthesitis",
+        "RelatedDisease": "PsA",
+        "ModelingStatus": "schema",
+        "Definition": "Inflammation at tendon/ligament insertions; hallmark of PsA/SpA. Phenotype subtype.",
+        "ChallengeStressorType": "tissue-specific effects",
+        "Name": "Enthesitis",
+        "RelativePath": "/admin/disease-concepts/enthesitis",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "dactylitis",
+        "ConceptLabel": "Dactylitis",
+        "RelatedDisease": "PsA",
+        "ModelingStatus": "schema",
+        "Definition": "'Sausage digit' — whole-digit swelling. PsA phenotype subtype.",
+        "ChallengeStressorType": "tissue-specific effects",
+        "Name": "Dactylitis",
+        "RelativePath": "/admin/disease-concepts/dactylitis",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "uveitis",
+        "ConceptLabel": "Uveitis",
+        "RelatedDisease": "PsA",
+        "ModelingStatus": "schema",
+        "Definition": "Inflammatory eye disease overlapping spondyloarthritis. Phenotype subtype / extra-articular domain.",
+        "ChallengeStressorType": "pleiotropy / shared mechanism across tissues",
+        "Name": "Uveitis",
+        "RelativePath": "/admin/disease-concepts/uveitis",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "ibd-overlap",
+        "ConceptLabel": "Inflammatory Bowel Disease Overlap",
+        "RelatedDisease": "PsA",
+        "ModelingStatus": "schema",
+        "Definition": "Gut inflammation overlapping spondyloarthritis (IL-23/IL-17 axis shared). Phenotype subtype representing cross-disease pleiotropy.",
+        "ChallengeStressorType": "pleiotropy / gene-environment-microbiome interaction",
+        "Name": "Inflammatory Bowel Disease Overlap",
+        "RelativePath": "/admin/disease-concepts/ibd-overlap",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "flare-pattern",
+        "ConceptLabel": "Flare Pattern",
+        "RelatedDisease": "*",
+        "ModelingStatus": "schema",
+        "Definition": "Episodic relapse of disease activity. v2 models flare-risk as a derived state on the progression machine, driven by serology trajectory.",
+        "ChallengeStressorType": "feedback between disease progression and molecular state",
+        "Name": "Flare Pattern",
+        "RelativePath": "/admin/disease-concepts/flare-pattern",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "disease-activity-score",
+        "ConceptLabel": "Disease-Activity Score (SLEDAI / DAS28)",
+        "RelatedDisease": "*",
+        "ModelingStatus": "deep-dag",
+        "Definition": "Composite activity indices (SLEDAI-2K for SLE, DAS28 for RA). v2 DERIVES an activity tier from raw component observations rather than hand-entering it.",
+        "ChallengeStressorType": "calibrated severity / disease stage",
+        "Name": "Disease-Activity Score (SLEDAI / DAS28)",
+        "RelativePath": "/admin/disease-concepts/disease-activity-score",
+        "IsDeeplyModeled": true,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "treatment-line",
+        "ConceptLabel": "Treatment Line",
+        "RelatedDisease": "*",
+        "ModelingStatus": "schema",
+        "Definition": "First-line / second-line / advanced-therapy sequencing. Modeled as an ordinal on therapies feeding treatment-line selection.",
+        "ChallengeStressorType": "treatment histories / treatment-induced changes",
+        "Name": "Treatment Line",
+        "RelativePath": "/admin/disease-concepts/treatment-line",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": true
+      },
+      {
+        "DiseaseDomainConceptId": "adverse-event-surveillance",
+        "ConceptLabel": "Adverse-Event Surveillance",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Monitoring for therapy harms. Present as a concept/stressor type; the keystone already carries HasAdverseEffect at the leaf. Deep AE modeling is out-of-scope for the POC.",
+        "ChallengeStressorType": "adverse effects",
+        "Name": "Adverse-Event Surveillance",
+        "RelativePath": "/admin/disease-concepts/adverse-event-surveillance",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-referral",
+        "ConceptLabel": "Workflow: Referral",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Entry into specialist care. Represented as the initial state of the clinical-workflow machine.",
+        "ChallengeStressorType": "clinical workflow",
+        "Name": "Workflow: Referral",
+        "RelativePath": "/admin/disease-concepts/workflow-referral",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-differential",
+        "ConceptLabel": "Workflow: Differential Diagnosis",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Weighing competing diagnoses. Workflow state.",
+        "ChallengeStressorType": "clinical workflow",
+        "Name": "Workflow: Differential Diagnosis",
+        "RelativePath": "/admin/disease-concepts/workflow-differential",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-workup",
+        "ConceptLabel": "Workflow: Workup",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Ordering the labs/imaging that BECOME the raw leaves. Workflow state.",
+        "ChallengeStressorType": "clinical workflow",
+        "Name": "Workflow: Workup",
+        "RelativePath": "/admin/disease-concepts/workflow-workup",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-classification",
+        "ConceptLabel": "Workflow: Classification",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Applying classification criteria (e.g. EULAR/ACR). Workflow state.",
+        "ChallengeStressorType": "clinical workflow",
+        "Name": "Workflow: Classification",
+        "RelativePath": "/admin/disease-concepts/workflow-classification",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-baseline-severity",
+        "ConceptLabel": "Workflow: Baseline Severity Assessment",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Establishing baseline activity/damage. Workflow state; consumes the derived activity score.",
+        "ChallengeStressorType": "clinical workflow / baseline severity",
+        "Name": "Workflow: Baseline Severity Assessment",
+        "RelativePath": "/admin/disease-concepts/workflow-baseline-severity",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-treatment-choice",
+        "ConceptLabel": "Workflow: Treatment Choice",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Selecting therapy; consumes the treatment-line-selection DAG. Workflow state.",
+        "ChallengeStressorType": "clinical workflow / treatment",
+        "Name": "Workflow: Treatment Choice",
+        "RelativePath": "/admin/disease-concepts/workflow-treatment-choice",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-monitoring",
+        "ConceptLabel": "Workflow: Monitoring",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Longitudinal follow-up; produces the serology trajectory leaves. Workflow state.",
+        "ChallengeStressorType": "clinical workflow / monitoring",
+        "Name": "Workflow: Monitoring",
+        "RelativePath": "/admin/disease-concepts/workflow-monitoring",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-flare-management",
+        "ConceptLabel": "Workflow: Flare Management",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Responding to a flare. Workflow state tied to the flare-risk progression state.",
+        "ChallengeStressorType": "clinical workflow / flare",
+        "Name": "Workflow: Flare Management",
+        "RelativePath": "/admin/disease-concepts/workflow-flare-management",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      },
+      {
+        "DiseaseDomainConceptId": "workflow-outcomes",
+        "ConceptLabel": "Workflow: Long-Term Outcomes",
+        "RelatedDisease": "*",
+        "ModelingStatus": "vocabulary",
+        "Definition": "Damage accrual, remission, outcomes over time. Workflow terminal state.",
+        "ChallengeStressorType": "clinical workflow / outcomes",
+        "Name": "Workflow: Long-Term Outcomes",
+        "RelativePath": "/admin/disease-concepts/workflow-outcomes",
+        "IsDeeplyModeled": false,
+        "IsSchemaModeled": false
+      }
+    ]
   }
 }

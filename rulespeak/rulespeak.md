@@ -264,6 +264,11 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Relative Path | Computed as the literal “/admin/state-machine/instances/”, followed by the subject state instance ID. | _Path to this occupancy record._ |
 | Is Current | True when the exited at is blank. | _TRUE when ExitedAt IS NULL — the subject's active state._ |
 | Has Complete Lineage | True when the sequence index is at least 1. | _TRUE when lineage walks back to SequenceIndex 1._ |
+| **Disease Domain Concept** | v2 vocabulary completeness: every disease-domain concept the v1 audit named, with its modeling status and the challenge-stressor TYPE it instantiates. Makes the coverage claim checkable by grep, not by trust. | — |
+| Name | Computed as the concept label. | _Echoes ConceptLabel._ |
+| Relative Path | Computed as the literal “/admin/disease-concepts/”, followed by the disease domain concept ID. | _Path to this concept's page._ |
+| Is Deeply Modeled | True when the modeling status is the literal “deep-dag”. | _TRUE when this concept carries a witnessed inference DAG (status = deep-dag)._ |
+| Is Schema Modeled | True when at least one of the following holds: the modeling status is the literal “deep-dag” or the modeling status is the literal “schema”. | _TRUE when first-class schema/data (deep-dag or schema)._ |
 
 ## 2 Fact Types
 
@@ -323,6 +328,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - A state transition **must** have a subject table name and a to state key.
 - A subject state instance **must** reference exactly one state machine.
 - A subject state instance **must** have a subject table name, a state key, and a sequence index.
+- A disease domain concept **must** have a concept label and a modeling status.
 
 ## 4 Definitional Rules
 
@@ -553,6 +559,10 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-217 Relative Path** | A subject state instance's relative path is computed as the literal “/admin/state-machine/instances/”, followed by the subject state instance ID. |
 | **DR-218 Is Current** | A subject state instance is considered a current if the exited at is blank. |
 | **DR-219 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
+| **DR-220 Name** | A disease domain concept's name is computed as the concept label. |
+| **DR-221 Relative Path** | A disease domain concept's relative path is computed as the literal “/admin/disease-concepts/”, followed by the disease domain concept ID. |
+| **DR-222 Is Deeply Modeled** | A disease domain concept is considered deeply modeled if the modeling status is the literal “deep-dag”. |
+| **DR-223 Is Schema Modeled** | A disease domain concept is considered schema modeled if at least one of the following holds: the modeling status is the literal “deep-dag” or the modeling status is the literal “schema”. |
 
 ## 5 Traceability to Schema
 
@@ -780,6 +790,10 @@ the same logic the rulebook stores, written for a business reader._
 | **SubjectStateInstances.RelativePath** | formula | `"/admin/state-machine/instances/" & SubjectStateInstanceId` |
 | **SubjectStateInstances.IsCurrent** | formula | `Isblank(ExitedAt)` |
 | **SubjectStateInstances.HasCompleteLineage** | formula | `SequenceIndex >= 1` |
+| **DiseaseDomainConcepts.Name** | formula | `ConceptLabel` |
+| **DiseaseDomainConcepts.RelativePath** | formula | `"/admin/disease-concepts/" & DiseaseDomainConceptId` |
+| **DiseaseDomainConcepts.IsDeeplyModeled** | formula | `If(ModelingStatus = "deep-dag", True(), False())` |
+| **DiseaseDomainConcepts.IsSchemaModeled** | formula | `If(Or(ModelingStatus = "deep-dag", ModelingStatus = "schema"), True(), False())` |
 
 ---
 

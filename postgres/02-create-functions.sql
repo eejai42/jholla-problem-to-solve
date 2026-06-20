@@ -3723,6 +3723,46 @@ RETURNS BOOLEAN AS $$
   SELECT (((SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC >= 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_disease_domain_concepts_name
+-- Field: DiseaseDomainConcepts.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_disease_domain_concepts_name(p_disease_domain_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(concept_label, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_disease_domain_concepts_relative_path
+-- Field: DiseaseDomainConcepts.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_disease_domain_concepts_relative_path(p_disease_domain_concept_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/disease-concepts/', (SELECT NULLIF(disease_domain_concept_id, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_disease_domain_concepts_is_deeply_modeled
+-- Field: DiseaseDomainConcepts.IsDeeplyModeled
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_disease_domain_concepts_is_deeply_modeled(p_disease_domain_concept_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'deep-dag' THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_disease_domain_concepts_is_schema_modeled
+-- Field: DiseaseDomainConcepts.IsSchemaModeled
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_disease_domain_concepts_is_schema_modeled(p_disease_domain_concept_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN ((SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'deep-dag' OR (SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'schema') THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- ============================================================================
 -- MANY-SIDE RELATIONSHIP FUNCTIONS
 -- These functions aggregate child records for many-side relationships

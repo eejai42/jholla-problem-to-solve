@@ -282,6 +282,7 @@ html.show-consumers .elem-consumers{display:block}
     <li><a href="#t-statetransitionrules">State Transition Rule</a> <span class="toc-meta">4 rules · 3 links</span></li>
     <li><a href="#t-statetransitions">State Transition</a> <span class="toc-meta">2 rules · 1 links</span></li>
     <li><a href="#t-subjectstateinstances">Subject State Instance</a> <span class="toc-meta">3 rules · 3 links</span></li>
+    <li><a href="#t-diseasedomainconcepts">Disease Domain Concept</a> <span class="toc-meta">4 rules · 0 links</span></li>
   </ul>
 </nav>
 <section class="entity" id="t-autoimmunediseases" data-entity="Autoimmune Diseas">
@@ -16161,6 +16162,232 @@ html.show-consumers .elem-consumers{display:block}
       <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
     </div>
     <p class="field-note elem elem-desc">Audit: AI model credited on last save, if any.</p>
+    </article>
+</section>
+<section class="entity" id="t-diseasedomainconcepts" data-entity="Disease Domain Concept">
+  <header class="entity-head">
+    <h2 class="entity-title">Disease Domain Concept</h2>
+    <p class="entity-synopsis">v2 vocabulary completeness: every disease-domain concept the v1 audit named, with its modeling status and the challenge-stressor TYPE it instantiates. Makes the coverage claim checkable by grep, not by trust.</p>
+  </header>
+  <article class="field tone-raw" id="f-diseasedomainconcepts-conceptlabel" data-entity="Disease Domain Concept" data-field="Concept Label">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Concept Label</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Human-readable concept name (the audit's missing word).</p>
+    </article>
+  <article class="field tone-raw" id="f-diseasedomainconcepts-relateddisease" data-entity="Disease Domain Concept" data-field="Related Disease">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Related Disease</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Disease this concept belongs to (SLE/RA/PsA/* for cross-cutting). Convention string, not a FK.</p>
+    </article>
+  <article class="field tone-raw" id="f-diseasedomainconcepts-modelingstatus" data-entity="Disease Domain Concept" data-field="Modeling Status">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Modeling Status</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">deep-dag | schema | vocabulary — how deeply v2 models this concept.</p>
+    </article>
+  <article class="field tone-raw" id="f-diseasedomainconcepts-definition" data-entity="Disease Domain Concept" data-field="Definition">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Definition</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">What the concept is and how v2 represents it.</p>
+    </article>
+  <article class="field tone-raw" id="f-diseasedomainconcepts-challengestressortype" data-entity="Disease Domain Concept" data-field="Challenge Stressor Type">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Challenge Stressor Type</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">Which TYPE of original-challenge stressor this concept instantiates (for the reconcile map).</p>
+    </article>
+  <article class="field tone-calc" id="f-diseasedomainconcepts-name" data-entity="Disease Domain Concept" data-field="Name">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Name</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-220</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A disease domain concept's name is computed as the <a class="ref" href="#f-diseasedomainconcepts-conceptlabel">concept label</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body"><a class="ref" href="#f-diseasedomainconcepts-conceptlabel">Concept label</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span><a class="fx-chip" href="#f-diseasedomainconcepts-conceptlabel">Concept Label</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-diseasedomainconcepts-conceptlabel">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Concept Label</span><span class="input-table">DiseaseDomainConcepts</span></span>
+          <span class="input-en muted">Human-readable concept name (the audit's missing word).</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-diseasedomainconcepts-conceptlabel">● Concept Label <span class="ref-pill-tbl">DiseaseDomainConcepts</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Echoes ConceptLabel.</p>
+    </article>
+  <article class="field tone-calc" id="f-diseasedomainconcepts-relativepath" data-entity="Disease Domain Concept" data-field="Relative Path">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Relative Path</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">string</span>
+      <span class="pill pill-dr">DR-221</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <p class="view-body">A disease domain concept's relative path is computed as the literal “/admin/disease-concepts/”, followed by the <a class="ref" href="#f-diseasedomainconcepts-diseasedomainconceptid">disease domain concept ID</a>.</p>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">&quot;/admin/disease-concepts/&quot; joined with <a class="ref" href="#f-diseasedomainconcepts-diseasedomainconceptid">disease domain concept id</a>.</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>&quot;/admin/disease-concepts/&quot; &amp; <a class="fx-chip" href="#f-diseasedomainconcepts-diseasedomainconceptid">Disease Domain Concept ID</a></div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-diseasedomainconcepts-diseasedomainconceptid">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Disease Domain Concept ID</span><span class="input-table">DiseaseDomainConcepts</span></span>
+          <span class="input-en muted">Slug PK.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-diseasedomainconcepts-diseasedomainconceptid">● Disease Domain Concept ID <span class="ref-pill-tbl">DiseaseDomainConcepts</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">Path to this concept's page.</p>
+    </article>
+  <article class="field tone-calc" id="f-diseasedomainconcepts-isdeeplymodeled" data-entity="Disease Domain Concept" data-field="Is Deeply Modeled">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Deeply Modeled</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-222</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The disease domain concept's is deeply modeled is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">true</span> <span class="rt-when">if the modeling status is the literal “deep-dag”</span></li><li><span class="rt-value">false</span> <span class="rt-otherwise">otherwise</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-diseasedomainconcepts-modelingstatus">modeling status</a> is &quot;deep-dag&quot; then true(), otherwise false().</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(<a class="fx-chip" href="#f-diseasedomainconcepts-modelingstatus">Modeling Status</a>=&quot;deep-dag&quot;, TRUE(), FALSE())</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-diseasedomainconcepts-modelingstatus">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Modeling Status</span><span class="input-table">DiseaseDomainConcepts</span></span>
+          <span class="input-en muted">deep-dag | schema | vocabulary — how deeply v2 models this concept.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-diseasedomainconcepts-modelingstatus">● Modeling Status <span class="ref-pill-tbl">DiseaseDomainConcepts</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE when this concept carries a witnessed inference DAG (status = deep-dag).</p>
+    </article>
+  <article class="field tone-calc" id="f-diseasedomainconcepts-isschemamodeled" data-entity="Disease Domain Concept" data-field="Is Schema Modeled">
+    <div class="field-head">
+      <span class="field-glyph" title="Calculated">ƒ</span>
+      <span class="field-name">Is Schema Modeled</span>
+      <span class="pill pill-type">Calculated</span>
+      <span class="pill pill-depth">1 hop from ground truth</span>
+      <span class="pill pill-muted">boolean</span>
+      <span class="pill pill-dr">DR-223</span>
+    </div>
+    <div class="narr-views">
+      <div class="view elem elem-rulespeak">
+        <span class="view-label">In RuleSpeak</span>
+        <div class="view-body"><p class="rt-headline">The disease domain concept's is schema modeled is determined by the following priority:</p><ol class="rt-priority"><li><span class="rt-value">true</span> <span class="rt-when">if <span class="rt-group-label">any of these hold:</span><ul class="rt-group"><li>the modeling status is the literal “deep-dag”</li><li>the modeling status is the literal “schema”</li></ul></span></li><li><span class="rt-value">false</span> <span class="rt-otherwise">otherwise</span></li></ol></div>
+      </div>
+      <div class="view elem elem-english">
+        <span class="view-label">In English</span>
+        <p class="view-body">If <a class="ref" href="#f-diseasedomainconcepts-modelingstatus">modeling status</a> is &quot;deep-dag&quot; or modeling status is &quot;schema&quot; then true(), otherwise false().</p>
+      </div>
+      <div class="view elem elem-formula">
+        <span class="view-label">As a formula</span>
+        <div class="view-body fx"><span class="fx-eq">= </span>IF(OR(<a class="fx-chip" href="#f-diseasedomainconcepts-modelingstatus">Modeling Status</a>=&quot;deep-dag&quot;,<a class="fx-chip" href="#f-diseasedomainconcepts-modelingstatus">Modeling Status</a>=&quot;schema&quot;), TRUE(), FALSE())</div>
+      </div>
+    </div>
+    <details class="prov prov-inputs elem elem-inputs" open>
+      <summary>Inputs <span class="count">1</span> <span class="prov-hint">fields this rule reads</span></summary>
+      <div class="prov-grid">
+        <a class="input tone-raw" href="#f-diseasedomainconcepts-modelingstatus">
+          <span class="input-head"><span class="input-glyph">●</span><span class="input-name">Modeling Status</span><span class="input-table">DiseaseDomainConcepts</span></span>
+          <span class="input-en muted">deep-dag | schema | vocabulary — how deeply v2 models this concept.</span>
+        </a>
+      </div>
+    </details>
+    <details class="prov prov-leaves elem elem-inputs">
+      <summary>Ground truth at the leaves <span class="count">1</span> <span class="prov-hint">the raw values this ultimately depends on</span></summary>
+      <div class="prov-pills">
+        <a class="ref-pill tone-raw" href="#f-diseasedomainconcepts-modelingstatus">● Modeling Status <span class="ref-pill-tbl">DiseaseDomainConcepts</span></a>
+      </div>
+    </details>
+    <p class="field-note elem elem-desc">TRUE when first-class schema/data (deep-dag or schema).</p>
     </article>
 </section>
 <footer class="doc-footer">

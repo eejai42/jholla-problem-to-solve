@@ -819,6 +819,27 @@ VALUES ('gt-fake-but-transparent', 'fake-but-transparent', 'Test results are syn
 INSERT INTO glossary_terms (glossary_term_id, term, definition)
 VALUES ('gt-laundering-objection', 'laundering objection', 'The skeptic''s claim that a deterministic function over LLM-chosen inputs just launders a hallucination; defeated by externalized knobs + independent witness.') ON CONFLICT (glossary_term_id) DO NOTHING;
 
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-disease-state-simulator', 'disease state simulator', 'The v2 layer the audit asked for: disease modeled as a WITNESSED state machine whose transitions fire only on raw longitudinal observations (rising anti-dsDNA, falling C3/C4, proteinuria). Current state and dwell-time are derived & bitemporal — the contrast the audit drew with an ''evidence gate''.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-evidence-gate', 'evidence gate', 'The v1 layer: per-patient adjudication of whether a prediction is trustworthy enough to act on (the four gates + IsClinicallyActionable). v2 keeps this and adds the disease-state simulator above it on the same hub.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-disease-progression-machine', 'disease progression machine', 'A state machine on the polymorphic StateMachines substrate whose subject is a patient''s disease course (presymptomatic -> serologic-active -> early-nephritis -> renal-flare-risk -> biopsy-indicated). Transitions are raw-leaf-triggered; current state is the derived IsCurrent occupancy.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-dwell-time', 'dwell time', 'Bitemporal derivation: how long a subject has been in a disease state (now - EnteredAt while current; ExitedAt - EnteredAt once left). The audit asked for ''how long has the patient/disease been in a state'' — this is that, as a formula.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-serology-trajectory', 'serology trajectory', 'The raw longitudinal leaves driving progression: anti-dsDNA titre trend (rising/stable/falling), complement C3/C4 trend, proteinuria. The LLM/lab may emit these; everything above them is derived.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-treatment-line-recommendation', 'treatment line recommendation', 'Derived field: given the patient''s confirmed causal mechanism + current disease state, the recommended therapy (MMF vs belimumab vs anifrolumab) and the single deciding reason. The audit''s second worked example.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
+INSERT INTO glossary_terms (glossary_term_id, term, definition)
+VALUES ('gt-corpus-discovery', 'corpus discovery', 'The cohort-level surface where causal-hypothesis patterns EMERGE across many patients (vs v1''s per-patient verdicts). Discovery is inherently corpus-level; this is the v2 reframe of the audit''s ''you don''t do discovery'' critique.') ON CONFLICT (glossary_term_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- LeopoldLoops: The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.
 -- ----------------------------------------------------------------------------
@@ -841,10 +862,10 @@ INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, ru
 VALUES ('loop-4', '4', 'Second prediction type (severity)', 'Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.', 'done', 'rule: derive a severity prediction (IsSeverityActionable) chained to the onset gates', 'state: Loop 4 - severity prediction (second prediction type) green', 5, '[DONE]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
 INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
-VALUES ('loop-5', '5', 'Treatment-response prediction', 'Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.', 'next', 'rule: treatment-response prediction', 'state: Loop 5 - treatment-response prediction', 6, '[NEXT]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
+VALUES ('loop-5', '5', 'Treatment-response prediction', 'Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.', 'done', 'rule: derive a treatment-response prediction (IsTreatmentResponseActionable) via mechanism match', 'state: Loop 5 - treatment-response prediction (third prediction type) green', 6, '[DONE]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
 INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
-VALUES ('loop-llm-intake', '6', 'LLM intake clerk + synthetic lab', 'Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.', 'backlog', 'rule (if any) for provenance fields', 'state: Loop 6 - LLM intake clerk, everything-is-a-knob', 7, '[BACKLOG]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
+VALUES ('loop-llm-intake', '6', 'LLM intake clerk + synthetic lab', 'Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.', 'next', 'rule (if any) for provenance fields', 'state: Loop 6 - LLM intake clerk, everything-is-a-knob', 7, '[NEXT]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
 INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
 VALUES ('loop-adverse', '7', 'Adverse-effect prediction', 'Wire adverse-effect prediction to observed treatment adverse-event rows.', 'backlog', '', '', 8, '[BACKLOG]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
@@ -1166,4 +1187,85 @@ VALUES ('ssi-pred-g-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredi
 
 INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model)
 VALUES ('ssi-pred-g-actionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-g', 'Actionable', '2026-06-06T09:00:00Z', NULL, 6, 'ssi-pred-g-transportchecked-5', 'st-g-06-transportchecked-to-actionable', NULL, 'build-seed', NULL, 'build-seed', NULL) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+-- ----------------------------------------------------------------------------
+-- DiseaseDomainConcepts: v2 vocabulary completeness: every disease-domain concept the v1 audit named, with its modeling status and the challenge-stressor TYPE it instantiates. Makes the coverage claim checkable by grep, not by trust.
+-- ----------------------------------------------------------------------------
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('lupus-nephritis', 'Lupus Nephritis', 'SLE', 'deep-dag', 'Renal involvement of SLE; immune-complex glomerulonephritis. v2 models its PROGRESSION as a witnessed state machine driven by rising anti-dsDNA + falling complement + proteinuria.', 'disease-progression / organ-specific subtype') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('treatment-line-selection', 'Treatment-Line Selection', 'SLE', 'deep-dag', 'Which therapy to choose given the patient''s causal mechanism + disease state: mycophenolate (MMF) vs belimumab vs anifrolumab. v2 derives a recommended line + single deciding reason.', 'treatment response / patient stratification') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('neuropsychiatric-lupus', 'Neuropsychiatric Lupus (NPSLE)', 'SLE', 'schema', 'CNS/PNS manifestations of SLE (seizure, psychosis, cognitive). Modeled as a phenotype subtype carrying a SeverityScore and organ-domain tag.', 'tissue-specific / cell-state-specific effects') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('cutaneous-lupus', 'Cutaneous Lupus', 'SLE', 'schema', 'Skin-limited or skin-predominant lupus (acute/subacute/chronic discoid). Phenotype subtype with organ-domain = skin.', 'tissue-specific effects') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('organ-damage-slicc', 'Organ Damage (SLICC/ACR Damage Index)', 'SLE', 'schema', 'Irreversible accumulated damage, SLICC-style. Modeled as a monotonic damage-accrual score distinct from reversible disease activity.', 'disease progression / feedback between progression and molecular state') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('seropositive-ra', 'Seropositive RA (ACPA/RF+)', 'RA', 'schema', 'RF/anti-CCP-positive RA; stronger HLA shared-epitope + PTPN22 association, more erosive. Phenotype subtype with a serostatus tag.', 'coding/HLA variants; ancestry-specific risk alleles') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('seronegative-ra', 'Seronegative RA (ACPA/RF-)', 'RA', 'schema', 'Autoantibody-negative RA; distinct genetic architecture and trajectory. Phenotype subtype.', 'heterogeneity within one disease') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('erosive-disease', 'Erosive Disease', 'RA', 'schema', 'Radiographic bone erosion; a structural-damage progression axis for RA, distinct from disease activity.', 'disease progression / organ damage') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('axial-psa', 'Axial Psoriatic Arthritis', 'PsA', 'schema', 'Spinal/sacroiliac involvement of PsA. Phenotype subtype with axial domain tag.', 'tissue-specific effects') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('enthesitis', 'Enthesitis', 'PsA', 'schema', 'Inflammation at tendon/ligament insertions; hallmark of PsA/SpA. Phenotype subtype.', 'tissue-specific effects') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('dactylitis', 'Dactylitis', 'PsA', 'schema', '''Sausage digit'' — whole-digit swelling. PsA phenotype subtype.', 'tissue-specific effects') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('uveitis', 'Uveitis', 'PsA', 'schema', 'Inflammatory eye disease overlapping spondyloarthritis. Phenotype subtype / extra-articular domain.', 'pleiotropy / shared mechanism across tissues') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('ibd-overlap', 'Inflammatory Bowel Disease Overlap', 'PsA', 'schema', 'Gut inflammation overlapping spondyloarthritis (IL-23/IL-17 axis shared). Phenotype subtype representing cross-disease pleiotropy.', 'pleiotropy / gene-environment-microbiome interaction') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('flare-pattern', 'Flare Pattern', '*', 'schema', 'Episodic relapse of disease activity. v2 models flare-risk as a derived state on the progression machine, driven by serology trajectory.', 'feedback between disease progression and molecular state') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('disease-activity-score', 'Disease-Activity Score (SLEDAI / DAS28)', '*', 'deep-dag', 'Composite activity indices (SLEDAI-2K for SLE, DAS28 for RA). v2 DERIVES an activity tier from raw component observations rather than hand-entering it.', 'calibrated severity / disease stage') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('treatment-line', 'Treatment Line', '*', 'schema', 'First-line / second-line / advanced-therapy sequencing. Modeled as an ordinal on therapies feeding treatment-line selection.', 'treatment histories / treatment-induced changes') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('adverse-event-surveillance', 'Adverse-Event Surveillance', '*', 'vocabulary', 'Monitoring for therapy harms. Present as a concept/stressor type; the keystone already carries HasAdverseEffect at the leaf. Deep AE modeling is out-of-scope for the POC.', 'adverse effects') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-referral', 'Workflow: Referral', '*', 'vocabulary', 'Entry into specialist care. Represented as the initial state of the clinical-workflow machine.', 'clinical workflow') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-differential', 'Workflow: Differential Diagnosis', '*', 'vocabulary', 'Weighing competing diagnoses. Workflow state.', 'clinical workflow') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-workup', 'Workflow: Workup', '*', 'vocabulary', 'Ordering the labs/imaging that BECOME the raw leaves. Workflow state.', 'clinical workflow') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-classification', 'Workflow: Classification', '*', 'vocabulary', 'Applying classification criteria (e.g. EULAR/ACR). Workflow state.', 'clinical workflow') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-baseline-severity', 'Workflow: Baseline Severity Assessment', '*', 'vocabulary', 'Establishing baseline activity/damage. Workflow state; consumes the derived activity score.', 'clinical workflow / baseline severity') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-treatment-choice', 'Workflow: Treatment Choice', '*', 'vocabulary', 'Selecting therapy; consumes the treatment-line-selection DAG. Workflow state.', 'clinical workflow / treatment') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-monitoring', 'Workflow: Monitoring', '*', 'vocabulary', 'Longitudinal follow-up; produces the serology trajectory leaves. Workflow state.', 'clinical workflow / monitoring') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-flare-management', 'Workflow: Flare Management', '*', 'vocabulary', 'Responding to a flare. Workflow state tied to the flare-risk progression state.', 'clinical workflow / flare') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
+
+INSERT INTO disease_domain_concepts (disease_domain_concept_id, concept_label, related_disease, modeling_status, definition, challenge_stressor_type)
+VALUES ('workflow-outcomes', 'Workflow: Long-Term Outcomes', '*', 'vocabulary', 'Damage accrual, remission, outcomes over time. Workflow terminal state.', 'clinical workflow / outcomes') ON CONFLICT (disease_domain_concept_id) DO NOTHING;
 

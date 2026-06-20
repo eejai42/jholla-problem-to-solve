@@ -41,6 +41,7 @@ ALTER TABLE machine_states ENABLE ROW LEVEL SECURITY;
 ALTER TABLE state_transition_rules ENABLE ROW LEVEL SECURITY;
 ALTER TABLE state_transitions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subject_state_instances ENABLE ROW LEVEL SECURITY;
+ALTER TABLE disease_domain_concepts ENABLE ROW LEVEL SECURITY;
 
 -- TODO: Add specific RLS policies based on your security requirements
 -- Example:
