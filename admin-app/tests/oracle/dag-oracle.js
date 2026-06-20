@@ -425,11 +425,14 @@ export const ROUTING = {
     { endpoint: '/api/mechanisms/cm-a', field: 'relative_path', expected: '/intake/new-patient/reyes-ana/mechanisms/cm-a' },
     { endpoint: '/api/variants/var-a-irf5', field: 'relative_path', expected: '/intake/new-patient/reyes-ana/variants/var-a-irf5' },
   ],
-  // role -> the set of TOP-LEVEL route_keys that role can see (admin sees all 3 trees).
+  // role -> the set of TOP-LEVEL route_keys that role can see. Cohort discovery
+  // (admin.cohort) is promoted to a top-level item EVERY role sees — the corpus-
+  // level punchline sits at the top of the nav for everyone. admin still also sees
+  // the intake + admin trees.
   navTrees: {
-    'intake-clinician': ['intake'],
-    'diagnosing-doctor': ['diagnosis'],
-    'admin': ['intake', 'diagnosis', 'admin'],
+    'intake-clinician': ['admin.cohort', 'intake'],
+    'diagnosing-doctor': ['admin.cohort', 'diagnosis'],
+    'admin': ['admin.cohort', 'intake', 'diagnosis', 'admin'],
   },
 };
 

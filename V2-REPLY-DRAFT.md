@@ -60,11 +60,13 @@ Two honest notes, because they matter:
   that precedes nephritis shows up as an emergent cluster across the whole population. The model
   already derives every field that view needs; it's a rendering job, and it's planned.
 
-Everything's in the repo: the home screen is still the red→green harness (now 431 checks, all green,
+Everything's in the repo: the home screen is still the red→green harness (now 716 checks, all green,
 with the disease-state layer sorted to the top), there's a clause-by-clause coverage map against the
-original challenge, and an honest scorecard. If the doctor has a few minutes, the one thing worth
-clicking is that disagreement case — it's the clearest test of whether the *shape* is right for the
-hard part they named.
+original challenge, and an honest scorecard. The corpus-level **Cohort discovery** board is now the
+top nav item for every role — the disease-state map, the emergent serology-signature scatter, the
+disagreement board, and the treatment-line distribution, all reading derived fields. If the doctor
+has a few minutes, the one thing worth clicking is that disagreement case — it's the clearest test of
+whether the *shape* is right for the hard part they named.
 
 Curious what they make of it.
 

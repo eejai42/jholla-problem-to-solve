@@ -99,8 +99,10 @@ patients* does. The v2 reframe:
   renal involvement" would be **discovered** — surfaced corpus-wide, not patient-by-patient.
 - **Honest bound:** we are **not** claiming to have discovered new biology from real data. We are
   claiming the **auditable corpus-level surface where such discovery is expressed and checked** now
-  exists, on the same hub, with the same trust boundary. The corpus visualizers that make this a UX
-  are specified in `V2-UI-PLAN.md` (Step 8).
+  exists, on the same hub, with the same trust boundary. The corpus visualizers that render this —
+  the disease-state map, the emergent serology-signature scatter, the disagreement board, and the
+  treatment-line distribution — are the **Cohort discovery** board, the top-level nav item for every
+  role.
 
 ## The minimum counter-example that proves the two layers are real and independent
 
