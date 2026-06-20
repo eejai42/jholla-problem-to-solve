@@ -8790,10 +8790,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "RoutingAndNavigationId": "nav-admin-cohort",
-        "DisplayName": "Cohort",
+        "DisplayName": "Cohort discovery",
         "Route": "/admin/cohort",
         "Description": "All 7 cases and their keystone verdicts.",
-        "SortOrder": 95,
+        "SortOrder": 91.5,
         "ParentRouteKey": "admin",
         "RouteKey": "admin.cohort",
         "NavLevel": "sub",

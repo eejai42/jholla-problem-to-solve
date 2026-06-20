@@ -28,3 +28,14 @@ UPDATE causal_mechanisms SET target_pathway = CASE causal_mechanism_id
   WHEN 'cm-e' THEN 'T-cell-costim'        WHEN 'cm-f' THEN 'IL-17/23'
   WHEN 'cm-g' THEN 'IL-17/23' END
 WHERE causal_mechanism_id IN ('cm-a','cm-b','cm-c','cm-d','cm-e','cm-f','cm-g');
+
+-- ============================================================================
+-- v2 UI: promote the Cohort Discovery board up the left nav + rename it.
+-- SortOrder/DisplayName are raw columns on a PRE-EXISTING routing row, so the
+-- main 05-insert (ON CONFLICT DO NOTHING) keeps the old values on reseed. Force
+-- them here (the preserved post-insert seam). Hub is the SSoT (91.5 / 'Cohort
+-- discovery'); this just makes a reseeded DB match it.
+-- ============================================================================
+UPDATE routing_and_navigation
+   SET sort_order = 91.5, display_name = 'Cohort discovery'
+ WHERE route_key = 'admin.cohort';
