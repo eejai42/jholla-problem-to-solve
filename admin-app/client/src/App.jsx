@@ -88,6 +88,22 @@ function navHref(node, captured, defaults) {
   return '/' + out.join('/');
 }
 
+// The left-nav target for a node: { to (path), query, tab }.
+// Special case: the diagnosis.case.* rows are TABS of one case, not separate
+// pages. They link to the current case's path (predictionId from the active
+// match or default) and tweak ONLY ?tab — so clicking a tab in the left nav
+// keeps you on the same case, exactly like the in-page tab strip. Every other
+// node clears ?tab (it's meaningless outside a case) and links to its own path.
+function navTarget(node, captured, defaults, role) {
+  const m = /^diagnosis\.case\.(.+)$/.exec(node.route_key);
+  if (m) {
+    const tab = m[1];
+    const predictionId = captured.predictionId ?? defaults.predictionId;
+    return { to: predictionId ? `/diagnosis/case/${predictionId}` : navHref(node, captured, defaults), query: { role, tab }, tab };
+  }
+  return { to: navHref(node, captured, defaults), query: { role }, tab: null };
+}
+
 // "Save to rulebook" — the reverse-sync trigger, pinned in the left nav.
 function SaveToRulebook() {
   const [busy, setBusy] = useState(false);
@@ -173,6 +189,8 @@ export default function App() {
   const matched = matchNavRoute(rows, path);
   const captured = matched ? (matchTemplateSafe(matched.route, path) || {}) : {};
   const activeNode = matched;
+  // The active tab lives in ?tab (only meaningful on a case). '' = Case-walk.
+  const [activeTab] = useQueryParam('tab', '');
 
   // Land somewhere real for "/" (and whenever the path matches no route yet).
   useEffect(() => {
@@ -216,12 +234,20 @@ export default function App() {
               </select>
             </label>
             {loading ? <p style={{ color: C.sub, fontSize: 13 }}>Loading nav…</p> : rows.map((n) => {
-              const active = activeNode && n.route_key === activeNode.route_key;
+              const tgt = navTarget(n, captured, defaults, role);
+              // active highlight: a case-tab row is active when its ?tab matches;
+              // every other row is active when it's the matched node AND no tab is
+              // overriding it (so the bare Case node de-highlights once a tab is on).
+              const onCase = activeNode && activeNode.route_key.startsWith('diagnosis.case');
+              const active = tgt.tab != null
+                ? (onCase && activeTab === tgt.tab)
+                : (activeNode && n.route_key === activeNode.route_key
+                  && !(n.route_key === 'diagnosis.case' && activeTab));
               const onActiveBranch = activeNode && (activeNode.route_key === n.route_key || activeNode.route_key.startsWith(n.route_key + '.'));
               const isTop = n.depth === 0;
               return (
                 <Link key={n.routing_and_navigation_id}
-                  to={navHref(n, active ? captured : {}, defaults)} query={{ role }}
+                  to={tgt.to} query={tgt.query}
                   style={{ display: 'block' }} title={n.route}>
                   <div style={{
                     padding: '6px 10px', marginLeft: n.depth * 12, borderRadius: 6, cursor: 'pointer',

@@ -5898,8 +5898,8 @@
         "TestForSuccessId": "tfs-one-gate-each",
         "Claim": "Five of seven patients fail, each on exactly one gate.",
         "HowWitnessed": "Coverage matrix in scenarios.md; L6/L7 harness assert the deciding gate per patient.",
-        "RelatedHarnessFile": "admin-app/tests/harness/L6-gates.test.js",
-        "Status": "green",
+        "RelatedHarnessFile": "admin-app/tests/L6-gates.test.js",
+        "Status": "red",
         "Name": "Five of seven patients fail, each on exactly one gate.",
         "RelativePath": "/admin/tests-for-success/tfs-one-gate-each"
       },
