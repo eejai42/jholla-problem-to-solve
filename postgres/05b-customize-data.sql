@@ -36,8 +36,11 @@ WHERE causal_mechanism_id IN ('cm-a','cm-b','cm-c','cm-d','cm-e','cm-f','cm-g');
 -- them here (the preserved post-insert seam). Hub is the SSoT (91.5 / 'Cohort
 -- discovery'); this just makes a reseeded DB match it.
 -- ============================================================================
+-- (relative_path is a CALCULATED column — derived from route — so it is not set here.)
 UPDATE routing_and_navigation
-   SET sort_order = 90.5, display_name = 'Cohort discovery'
+   SET sort_order = 5, display_name = 'Cohort discovery', parent_route_key = '',
+       nav_level = 'top', route = '/cohort',
+       role_visibility = 'admin,diagnosing-doctor,intake-clinician'
  WHERE route_key = 'admin.cohort';
 
 -- ============================================================================

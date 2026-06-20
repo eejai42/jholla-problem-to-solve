@@ -280,7 +280,7 @@ export function DiagnosisView() {
 
       {/* Corpus-level entry point — the v2 surface where disease-state patterns emerge
           ACROSS the cohort (vs the per-patient cases below). */}
-      <Link to="/admin/cohort" query={{ panel: 'map' }}
+      <Link to="/cohort" query={{ panel: 'map' }}
         style={{ display: 'block', border: `1px solid ${C.accent}`, borderRadius: 10, padding: '14px 18px',
           background: C.bgAccent, marginBottom: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
