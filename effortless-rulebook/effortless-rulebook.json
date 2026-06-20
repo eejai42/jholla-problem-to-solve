@@ -1009,6 +1009,13 @@
         "nullable": true,
         "Description": "Individual predictions.",
         "RelatedTo": "IndividualPredictions"
+      },
+      {
+        "name": "CaseNarrative",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 1 of the witness (raw leaf, read by nothing downstream): the natural-language intake case the LLM was handed. Every raw observation below is extracted from THIS text; each leaf's SourceQuote points back into it so the extraction is human-checkable independently of the verdict. Synthetic but transparent — invented case, literature-aligned loci/thresholds."
       }
     ],
     "data": [
@@ -1044,7 +1051,8 @@
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.01) and in an African cohort (p=0.02), while a European replication is directionally consistent but not significant (p=0.2). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.01 and 0.02, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 30 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.08 observed at the 0.1 band, 0.92 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged."
       },
       {
         "IndividualId": "ind-b-okafor",
@@ -1078,7 +1086,8 @@
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.01) and an African cohort (p=0.02), with a non-significant European replication (p=0.2). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 8 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged."
       },
       {
         "IndividualId": "ind-c-chen",
@@ -1112,7 +1121,8 @@
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.01) but the SIGN FLIPS to negative in an African cohort (p=0.02), and the European replication is non-significant (p=0.3) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.01), a second negative control does NOT collapse: its permutation effect is 0.5, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 30 per bin. No cryptic-relatedness leakage was flagged."
       },
       {
         "IndividualId": "ind-d-santos",
@@ -1146,7 +1156,8 @@
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": "Diego Santos, a 29-year-old man of European ancestry (in the training set), presents with nephritis and a malar rash concerning for SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is fully supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.01) and an African cohort (p=0.02), with a non-significant European replication (p=0.2). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1). The interferon target is druggable, and reliability bins carry coverage of 30 per bin. However, sample QC raised a cryptic-relatedness / assortative-mating flag for this participant: kinship estimates indicate undeclared relatives inside the cohort, so the prediction may be confounded by leakage rather than the mechanism alone."
       },
       {
         "IndividualId": "ind-e-mensah",
@@ -1180,7 +1191,8 @@
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.01) and a European cohort (p=0.02), with a non-significant African replication (p=0.2). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1), and reliability bins carry coverage of 30 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated."
       },
       {
         "IndividualId": "ind-f-haidar",
@@ -1214,7 +1226,8 @@
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1), and reliability bins carry coverage of 30 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.01, p=0.02, and p=0.03, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged."
       },
       {
         "IndividualId": "ind-g-lin",
@@ -1248,7 +1261,8 @@
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1), and reliability bins carry coverage of 30 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.01), positive in an East Asian cohort (p=0.02), and positive in an Indigenous American cohort (p=0.03). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged."
       }
     ]
   },
@@ -1363,6 +1377,13 @@
         "nullable": true,
         "Description": "Derived: rare (by frequency or class) AND shows allele-specific expression.",
         "formula": "=IF(AND(OR({{IsRareVariant}}, {{VariantClassIsRare}}), {{HasAlleleSpecificExpression}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this variant's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -1380,7 +1401,8 @@
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "European",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present"
       },
       {
         "GenomicVariantId": "var-b-irf5",
@@ -1396,7 +1418,8 @@
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "European",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-c-stat4",
@@ -1412,7 +1435,8 @@
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "East Asian",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": "STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-d-irf5",
@@ -1428,7 +1452,8 @@
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "European",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-e-ctla4",
@@ -1444,7 +1469,8 @@
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "African",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": "CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-f-il23r",
@@ -1460,7 +1486,8 @@
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "Indigenous American",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": "IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-g-il23r",
@@ -1476,7 +1503,8 @@
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "Indigenous American",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": "IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present"
       }
     ]
   },
@@ -2170,6 +2198,13 @@
         "nullable": true,
         "Description": "Derived: clean assay, real support arm, signal-to-noise >= 2, confound-controlled.",
         "formula": "=IF(AND({{AssayIsHighQuality}}, NOT({{IsNegativeControlArm}}), {{ZStat}} >= 2, {{IsConfoundControlled}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this evidence assay's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -2193,7 +2228,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-a-2",
@@ -2215,7 +2251,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-a-3",
@@ -2237,7 +2274,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.6 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-b-1",
@@ -2259,7 +2297,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-b-2",
@@ -2281,7 +2320,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-b-3",
@@ -2303,7 +2343,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.6 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-c-1",
@@ -2325,7 +2366,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-c-2",
@@ -2347,7 +2389,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-c-3",
@@ -2369,7 +2412,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.6 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-d-1",
@@ -2391,7 +2435,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-d-2",
@@ -2413,7 +2458,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-d-3",
@@ -2435,7 +2481,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.6 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-e-1",
@@ -2457,7 +2504,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-e-2",
@@ -2479,7 +2527,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-e-3",
@@ -2501,7 +2550,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.6 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-f-1",
@@ -2523,7 +2573,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-f-2",
@@ -2545,7 +2596,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-f-3",
@@ -2567,7 +2619,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.6 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-g-1",
@@ -2589,7 +2642,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-g-2",
@@ -2611,7 +2665,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)"
       },
       {
         "EvidenceItemId": "ev-g-3",
@@ -2633,7 +2688,8 @@
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.6 (SE 0.2)"
       }
     ]
   },
@@ -2749,6 +2805,13 @@
         "nullable": true,
         "Description": "Derived: replicated at significance AND in a different ancestry (the transportability atom).",
         "formula": "=IF(AND({{ReplicatedAtNominalSig}}, {{IsDifferentAncestryReplication}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this replication's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -2766,7 +2829,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "positive effect sign in an East Asian cohort (p=0.01)"
       },
       {
         "CohortReplicationId": "rep-a-2",
@@ -2782,7 +2846,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "in an African cohort (p=0.02)"
       },
       {
         "CohortReplicationId": "rep-a-3",
@@ -2798,7 +2863,8 @@
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "European replication is directionally consistent but not significant (p=0.2)"
       },
       {
         "CohortReplicationId": "rep-b-1",
@@ -2814,7 +2880,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "replicates positive in an East Asian cohort (p=0.01)"
       },
       {
         "CohortReplicationId": "rep-b-2",
@@ -2830,7 +2897,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "an African cohort (p=0.02)"
       },
       {
         "CohortReplicationId": "rep-b-3",
@@ -2846,7 +2914,8 @@
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "non-significant European replication (p=0.2)"
       },
       {
         "CohortReplicationId": "rep-c-1",
@@ -2862,7 +2931,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "East Asian",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "positive in an East Asian cohort (p=0.01)"
       },
       {
         "CohortReplicationId": "rep-c-2",
@@ -2878,7 +2948,8 @@
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "East Asian",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "SIGN FLIPS to negative in an African cohort (p=0.02)"
       },
       {
         "CohortReplicationId": "rep-c-3",
@@ -2894,7 +2965,8 @@
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "East Asian",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "European replication is non-significant (p=0.3)"
       },
       {
         "CohortReplicationId": "rep-d-1",
@@ -2910,7 +2982,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "replicates positive in an East Asian cohort (p=0.01)"
       },
       {
         "CohortReplicationId": "rep-d-2",
@@ -2926,7 +2999,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "an African cohort (p=0.02)"
       },
       {
         "CohortReplicationId": "rep-d-3",
@@ -2942,7 +3016,8 @@
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "non-significant European replication (p=0.2)"
       },
       {
         "CohortReplicationId": "rep-e-1",
@@ -2958,7 +3033,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "African",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "replicates positive in an East Asian cohort (p=0.01)"
       },
       {
         "CohortReplicationId": "rep-e-2",
@@ -2974,7 +3050,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "African",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "a European cohort (p=0.02)"
       },
       {
         "CohortReplicationId": "rep-e-3",
@@ -2990,7 +3067,8 @@
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "African",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "non-significant African replication (p=0.2)"
       },
       {
         "CohortReplicationId": "rep-f-1",
@@ -3006,7 +3084,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "run in an Indigenous American cohort: p=0.01"
       },
       {
         "CohortReplicationId": "rep-f-2",
@@ -3022,7 +3101,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "p=0.02"
       },
       {
         "CohortReplicationId": "rep-f-3",
@@ -3038,7 +3118,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "p=0.03, all positive, all in the SAME ancestry"
       },
       {
         "CohortReplicationId": "rep-g-1",
@@ -3054,7 +3135,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "positive in a European cohort (p=0.01)"
       },
       {
         "CohortReplicationId": "rep-g-2",
@@ -3070,7 +3152,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "positive in an East Asian cohort (p=0.02)"
       },
       {
         "CohortReplicationId": "rep-g-3",
@@ -3086,7 +3169,8 @@
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "positive in an Indigenous American cohort (p=0.03)"
       }
     ]
   },
@@ -3170,6 +3254,13 @@
         "nullable": true,
         "Description": "Derived: signal collapses under the control (within the null band), as a true causal effect should.",
         "formula": "=IF({{PermutationEffectSize}} <= {{NullThreshold}}, TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this negative control's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -3183,7 +3274,8 @@
         "Name": "nct-a-1",
         "ParentPath": "/intake/new-patient/reyes-ana/mechanisms/cm-a",
         "RelativePath": "/intake/new-patient/reyes-ana/mechanisms/cm-a/neg-controls/nct-a-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02, well inside the +/-0.1 null band"
       },
       {
         "NegativeControlTestId": "nct-a-2",
@@ -3195,7 +3287,8 @@
         "Name": "nct-a-2",
         "ParentPath": "/intake/new-patient/reyes-ana/mechanisms/cm-a",
         "RelativePath": "/intake/new-patient/reyes-ana/mechanisms/cm-a/neg-controls/nct-a-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02, well inside the +/-0.1 null band"
       },
       {
         "NegativeControlTestId": "nct-b-1",
@@ -3207,7 +3300,8 @@
         "Name": "nct-b-1",
         "ParentPath": "/intake/new-patient/okafor-bili/mechanisms/cm-b",
         "RelativePath": "/intake/new-patient/okafor-bili/mechanisms/cm-b/neg-controls/nct-b-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-b-2",
@@ -3219,7 +3313,8 @@
         "Name": "nct-b-2",
         "ParentPath": "/intake/new-patient/okafor-bili/mechanisms/cm-b",
         "RelativePath": "/intake/new-patient/okafor-bili/mechanisms/cm-b/neg-controls/nct-b-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-d-1",
@@ -3231,7 +3326,8 @@
         "Name": "nct-d-1",
         "ParentPath": "/intake/new-patient/santos-diego/mechanisms/cm-d",
         "RelativePath": "/intake/new-patient/santos-diego/mechanisms/cm-d/neg-controls/nct-d-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-d-2",
@@ -3243,7 +3339,8 @@
         "Name": "nct-d-2",
         "ParentPath": "/intake/new-patient/santos-diego/mechanisms/cm-d",
         "RelativePath": "/intake/new-patient/santos-diego/mechanisms/cm-d/neg-controls/nct-d-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-e-1",
@@ -3255,7 +3352,8 @@
         "Name": "nct-e-1",
         "ParentPath": "/intake/new-patient/mensah-esi/mechanisms/cm-e",
         "RelativePath": "/intake/new-patient/mensah-esi/mechanisms/cm-e/neg-controls/nct-e-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-e-2",
@@ -3267,7 +3365,8 @@
         "Name": "nct-e-2",
         "ParentPath": "/intake/new-patient/mensah-esi/mechanisms/cm-e",
         "RelativePath": "/intake/new-patient/mensah-esi/mechanisms/cm-e/neg-controls/nct-e-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-f-1",
@@ -3279,7 +3378,8 @@
         "Name": "nct-f-1",
         "ParentPath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f/neg-controls/nct-f-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-f-2",
@@ -3291,7 +3391,8 @@
         "Name": "nct-f-2",
         "ParentPath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f/neg-controls/nct-f-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-g-1",
@@ -3303,7 +3404,8 @@
         "Name": "nct-g-1",
         "ParentPath": "/intake/new-patient/lin-grace/mechanisms/cm-g",
         "RelativePath": "/intake/new-patient/lin-grace/mechanisms/cm-g/neg-controls/nct-g-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-g-2",
@@ -3315,7 +3417,8 @@
         "Name": "nct-g-2",
         "ParentPath": "/intake/new-patient/lin-grace/mechanisms/cm-g",
         "RelativePath": "/intake/new-patient/lin-grace/mechanisms/cm-g/neg-controls/nct-g-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.01 and 0.02 inside +/-0.1"
       },
       {
         "NegativeControlTestId": "nct-c-1",
@@ -3327,7 +3430,8 @@
         "Name": "nct-c-1",
         "ParentPath": "/intake/new-patient/wei-chen/mechanisms/cm-c",
         "RelativePath": "/intake/new-patient/wei-chen/mechanisms/cm-c/neg-controls/nct-c-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": "one ancestry-permutation control collapses (permutation effect 0.01)"
       },
       {
         "NegativeControlTestId": "nct-c-2",
@@ -3339,7 +3443,8 @@
         "Name": "nct-c-2",
         "ParentPath": "/intake/new-patient/wei-chen/mechanisms/cm-c",
         "RelativePath": "/intake/new-patient/wei-chen/mechanisms/cm-c/neg-controls/nct-c-2",
-        "IsSurvived": false
+        "IsSurvived": false,
+        "SourceQuote": "its permutation effect is 0.5, far outside the +/-0.1 null band"
       }
     ]
   },
@@ -5023,6 +5128,13 @@
         "nullable": true,
         "Description": "Derived: enough held-out coverage AND small reliability gap.",
         "formula": "=IF(AND({{CoverageCount}} >= 20, {{BinAbsError}} <= 0.1), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this calibration bin's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -5037,7 +5149,8 @@
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins each carry coverage of 30 held-out individuals"
       },
       {
         "CalibrationBinId": "cb-a-1",
@@ -5050,7 +5163,8 @@
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins each carry coverage of 30 held-out individuals"
       },
       {
         "CalibrationBinId": "cb-a-2",
@@ -5063,7 +5177,8 @@
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins each carry coverage of 30 held-out individuals"
       },
       {
         "CalibrationBinId": "cb-a-3",
@@ -5076,7 +5191,8 @@
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins each carry coverage of 30 held-out individuals"
       },
       {
         "CalibrationBinId": "cb-a-4",
@@ -5089,7 +5205,8 @@
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins each carry coverage of 30 held-out individuals"
       },
       {
         "CalibrationBinId": "cb-c-0",
@@ -5102,7 +5219,8 @@
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "Reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-c-1",
@@ -5115,7 +5233,8 @@
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "Reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-c-2",
@@ -5128,7 +5247,8 @@
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "Reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-c-3",
@@ -5141,7 +5261,8 @@
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "Reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-c-4",
@@ -5154,7 +5275,8 @@
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "Reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-d-0",
@@ -5167,7 +5289,8 @@
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-d-1",
@@ -5180,7 +5303,8 @@
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-d-2",
@@ -5193,7 +5317,8 @@
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-d-3",
@@ -5206,7 +5331,8 @@
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-d-4",
@@ -5219,7 +5345,8 @@
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-e-0",
@@ -5232,7 +5359,8 @@
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-e-1",
@@ -5245,7 +5373,8 @@
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-e-2",
@@ -5258,7 +5387,8 @@
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-e-3",
@@ -5271,7 +5401,8 @@
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-e-4",
@@ -5284,7 +5415,8 @@
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-f-0",
@@ -5297,7 +5429,8 @@
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-f-1",
@@ -5310,7 +5443,8 @@
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-f-2",
@@ -5323,7 +5457,8 @@
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-f-3",
@@ -5336,7 +5471,8 @@
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-f-4",
@@ -5349,7 +5485,8 @@
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-g-0",
@@ -5362,7 +5499,8 @@
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-g-1",
@@ -5375,7 +5513,8 @@
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-g-2",
@@ -5388,7 +5527,8 @@
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-g-3",
@@ -5401,7 +5541,8 @@
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-g-4",
@@ -5414,7 +5555,8 @@
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "reliability bins carry coverage of 30 per bin"
       },
       {
         "CalibrationBinId": "cb-b-0",
@@ -5427,7 +5569,8 @@
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 8 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-b-1",
@@ -5440,7 +5583,8 @@
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 8 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-b-2",
@@ -5453,7 +5597,8 @@
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 8 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-b-3",
@@ -5466,7 +5611,8 @@
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 8 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-b-4",
@@ -5479,7 +5625,8 @@
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 8 held-out individuals per reliability bin"
       }
     ]
   },

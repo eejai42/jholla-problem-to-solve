@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-20 00:06:57 UTC
+**Timestamp:** 2026-06-20 00:47:38 UTC
 
 ## Parsing Rulebook
 
@@ -15,12 +15,12 @@ Found **34** tables in rulebook
   - **OmicsModalities** (7 fields, 8 records)
   - **FederatedDatasets** (10 fields, 4 records)
   - **VariantTypes** (7 fields, 5 records)
-  - **Individuals** (32 fields, 7 records)
-  - **GenomicVariants** (14 fields, 7 records)
+  - **Individuals** (33 fields, 7 records)
+  - **GenomicVariants** (15 fields, 7 records)
   - **OmicsAssays** (17 fields, 21 records)
-  - **EvidenceItems** (20 fields, 21 records)
-  - **CohortReplications** (14 fields, 21 records)
-  - **NegativeControlTests** (10 fields, 14 records)
+  - **EvidenceItems** (21 fields, 21 records)
+  - **CohortReplications** (15 fields, 21 records)
+  - **NegativeControlTests** (11 fields, 14 records)
   - **EnvironmentalExposures** (11 fields, 1 records)
   - **Treatments** (13 fields, 1 records)
   - **ClinicalPhenotypes** (15 fields, 1 records)
@@ -28,7 +28,7 @@ Found **34** tables in rulebook
   - **EpistaticInteractions** (11 fields, 1 records)
   - **CounterfactualTrajectories** (12 fields, 1 records)
   - **IndividualPredictions** (33 fields, 7 records)
-  - **CalibrationBins** (11 fields, 35 records)
+  - **CalibrationBins** (12 fields, 35 records)
   - **InterventionTargets** (12 fields, 6 records)
   - **Axioms** (6 fields, 15 records)
   - **TestsForSuccess** (7 fields, 10 records)
@@ -44,8 +44,8 @@ Found **34** tables in rulebook
   - **StateTransitions** (17 fields, 26 records)
   - **SubjectStateInstances** (19 fields, 33 records)
 
-Generated **34** table definitions with **243** raw fields (mode=check-add)
-Generated **358** calculation functions
+Generated **34** table definitions with **249** raw fields (mode=check-add)
+Generated **364** calculation functions
 Generated **34** views
 Enabled RLS on **34** tables
 Generated insert statements for **341** records

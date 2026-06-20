@@ -2611,6 +2611,18 @@ html.show-consumers .elem-consumers{display:block}
     </div>
     <p class="field-note elem elem-desc">Individual predictions.</p>
     </article>
+  <article class="field tone-raw" id="f-individuals-casenarrative" data-entity="Individual" data-field="Case Narrative">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Case Narrative</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PANEL 1 of the witness (raw leaf, read by nothing downstream): the natural-language intake case the LLM was handed. Every raw observation below is extracted from THIS text; each leaf's SourceQuote points back into it so the extraction is human-checkable independently of the verdict. Synthetic but transparent — invented case, literature-aligned loci/thresholds.</p>
+    </article>
 </section>
 <section class="entity" id="t-genomicvariants" data-entity="Genomic Variant">
   <header class="entity-head">
@@ -3143,6 +3155,18 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Derived: rare (by frequency or class) AND shows allele-specific expression.</p>
+    </article>
+  <article class="field tone-raw" id="f-genomicvariants-sourcequote" data-entity="Genomic Variant" data-field="Source Quote">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Quote</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PANEL 2-&gt;1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this variant's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.</p>
     </article>
 </section>
 <section class="entity" id="t-omicsassays" data-entity="Omics Assay">
@@ -4261,6 +4285,18 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Derived: clean assay, real support arm, signal-to-noise &gt;= 2, confound-controlled.</p>
     </article>
+  <article class="field tone-raw" id="f-evidenceitems-sourcequote" data-entity="Evidence Item" data-field="Source Quote">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Quote</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PANEL 2-&gt;1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this evidence assay's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.</p>
+    </article>
 </section>
 <section class="entity" id="t-cohortreplications" data-entity="Cohort Replication">
   <header class="entity-head">
@@ -4765,6 +4801,18 @@ html.show-consumers .elem-consumers{display:block}
     </details>
     <p class="field-note elem elem-desc">Derived: replicated at significance AND in a different ancestry (the transportability atom).</p>
     </article>
+  <article class="field tone-raw" id="f-cohortreplications-sourcequote" data-entity="Cohort Replication" data-field="Source Quote">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Quote</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PANEL 2-&gt;1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this replication's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.</p>
+    </article>
 </section>
 <section class="entity" id="t-negativecontroltests" data-entity="Negative Control Test">
   <header class="entity-head">
@@ -5053,6 +5101,18 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Derived: signal collapses under the control (within the null band), as a true causal effect should.</p>
+    </article>
+  <article class="field tone-raw" id="f-negativecontroltests-sourcequote" data-entity="Negative Control Test" data-field="Source Quote">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Quote</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PANEL 2-&gt;1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this negative control's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.</p>
     </article>
 </section>
 <section class="entity" id="t-environmentalexposures" data-entity="Environmental Exposure">
@@ -10762,6 +10822,18 @@ html.show-consumers .elem-consumers{display:block}
       </div>
     </details>
     <p class="field-note elem elem-desc">Derived: enough held-out coverage AND small reliability gap.</p>
+    </article>
+  <article class="field tone-raw" id="f-calibrationbins-sourcequote" data-entity="Calibration Bin" data-field="Source Quote">
+    <div class="field-head">
+      <span class="field-glyph" title="Ground truth">●</span>
+      <span class="field-name">Source Quote</span>
+      <span class="pill pill-type">Ground truth</span>
+      <span class="pill pill-muted">string</span>
+    </div>
+    <div class="gt">
+      <p class="gt-body">Ground truth. Written directly to the database (datatype <code>string</code>); not computed from anything else. Everything derived ultimately traces back to values like this one.</p>
+    </div>
+    <p class="field-note elem elem-desc">PANEL 2-&gt;1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this calibration bin's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.</p>
     </article>
 </section>
 <section class="entity" id="t-interventiontargets" data-entity="Intervention Target">

@@ -189,7 +189,8 @@ SELECT
   t.causal_mechanisms,                                                          -- Inferred causal mechanisms.
   t.epistatic_interactions,                                                     -- Epistatic interactions.
   t.counterfactual_trajectories,                                                -- Counterfactual trajectories.
-  t.individual_predictions                                                      -- Individual predictions.
+  t.individual_predictions,                                                     -- Individual predictions.
+  t.case_narrative                                                              -- PANEL 1 of the witness (raw leaf, read by nothing downstream): the natural-language intake case the LLM was handed. Every raw observation below is extracted from THIS text; each leaf's SourceQuote points back into it so the extraction is human-checkable independently of the verdict. Synthetic but transparent — invented case, literature-aligned loci/thresholds.
 FROM individuals t;
 
 -- ----------------------------------------------------------------------------
@@ -212,7 +213,8 @@ SELECT
   calc_genomic_variants_variant_class_is_rare(t.genomic_variant_id) AS variant_class_is_rare,-- Whether this variant's class is a rare-variant class (observed type property).
   calc_genomic_variants_individual_ancestry_label(t.genomic_variant_id) AS individual_ancestry_label,-- Lookup of individual ancestry for stratification checks.
   calc_genomic_variants_is_rare_variant(t.genomic_variant_id) AS is_rare_variant,-- True when allele frequency below 0.01.
-  calc_genomic_variants_is_causal_candidate(t.genomic_variant_id) AS is_causal_candidate-- Derived: rare (by frequency or class) AND shows allele-specific expression.
+  calc_genomic_variants_is_causal_candidate(t.genomic_variant_id) AS is_causal_candidate,-- Derived: rare (by frequency or class) AND shows allele-specific expression.
+  t.source_quote                                                                -- PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this variant's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.
 FROM genomic_variants t;
 
 -- ----------------------------------------------------------------------------
@@ -267,7 +269,8 @@ SELECT
   calc_evidence_items_assay_is_high_quality(t.evidence_item_id) AS assay_is_high_quality,-- Whether the supporting assay passed quality control.
   calc_evidence_items_z_stat(t.evidence_item_id) AS z_stat,                     -- Derived signal-to-noise ratio (effect / SE), 0 if SE non-positive.
   calc_evidence_items_is_confound_controlled(t.evidence_item_id) AS is_confound_controlled,-- Derived: both ancestry-PC and batch adjustment present.
-  calc_evidence_items_is_qualified_evidence(t.evidence_item_id) AS is_qualified_evidence-- Derived: clean assay, real support arm, signal-to-noise >= 2, confound-controlled.
+  calc_evidence_items_is_qualified_evidence(t.evidence_item_id) AS is_qualified_evidence,-- Derived: clean assay, real support arm, signal-to-noise >= 2, confound-controlled.
+  t.source_quote                                                                -- PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this evidence assay's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.
 FROM evidence_items t;
 
 -- ----------------------------------------------------------------------------
@@ -290,7 +293,8 @@ SELECT
   calc_cohort_replications_replicated_at_nominal_sig(t.cohort_replication_id) AS replicated_at_nominal_sig,-- Derived: reproduced the predicted (positive) sign at nominal significance.
   calc_cohort_replications_mechanism_primary_ancestry(t.cohort_replication_id) AS mechanism_primary_ancestry,-- Ancestry of the individual the mechanism was discovered in.
   calc_cohort_replications_is_different_ancestry_replication(t.cohort_replication_id) AS is_different_ancestry_replication,-- Derived: the re-test ran in a different ancestry than discovery.
-  calc_cohort_replications_is_cross_ancestry_concordant(t.cohort_replication_id) AS is_cross_ancestry_concordant-- Derived: replicated at significance AND in a different ancestry (the transportability atom).
+  calc_cohort_replications_is_cross_ancestry_concordant(t.cohort_replication_id) AS is_cross_ancestry_concordant,-- Derived: replicated at significance AND in a different ancestry (the transportability atom).
+  t.source_quote                                                                -- PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this replication's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.
 FROM cohort_replications t;
 
 -- ----------------------------------------------------------------------------
@@ -309,7 +313,8 @@ SELECT
   calc_negative_control_tests_name(t.negative_control_test_id) AS name,         -- Display name.
   calc_negative_control_tests_parent_path(t.negative_control_test_id) AS parent_path,-- Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.
   calc_negative_control_tests_relative_path(t.negative_control_test_id) AS relative_path,-- Path to this NegativeControlTest page, chained under its CausalMechanism parent.
-  calc_negative_control_tests_is_survived(t.negative_control_test_id) AS is_survived-- Derived: signal collapses under the control (within the null band), as a true causal effect should.
+  calc_negative_control_tests_is_survived(t.negative_control_test_id) AS is_survived,-- Derived: signal collapses under the control (within the null band), as a true causal effect should.
+  t.source_quote                                                                -- PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this negative control's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.
 FROM negative_control_tests t;
 
 -- ----------------------------------------------------------------------------
@@ -519,7 +524,8 @@ SELECT
   calc_calibration_bins_parent_path(t.calibration_bin_id) AS parent_path,       -- Lookup: IndividualPredictions.RelativePath via IndividualPrediction — used to chain this entity's path under its parent.
   calc_calibration_bins_relative_path(t.calibration_bin_id) AS relative_path,   -- Path to this CalibrationBin page, chained under its IndividualPrediction parent.
   calc_calibration_bins_bin_abs_error(t.calibration_bin_id) AS bin_abs_error,   -- Derived: absolute gap between predicted band and observed rate.
-  calc_calibration_bins_is_well_calibrated_bin(t.calibration_bin_id) AS is_well_calibrated_bin-- Derived: enough held-out coverage AND small reliability gap.
+  calc_calibration_bins_is_well_calibrated_bin(t.calibration_bin_id) AS is_well_calibrated_bin,-- Derived: enough held-out coverage AND small reliability gap.
+  t.source_quote                                                                -- PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this calibration bin's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'.
 FROM calibration_bins t;
 
 -- ----------------------------------------------------------------------------

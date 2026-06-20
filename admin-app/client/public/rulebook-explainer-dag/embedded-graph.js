@@ -1010,6 +1010,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Individual predictions.",
         "RelatedTo": "IndividualPredictions"
+      },
+      {
+        "name": "CaseNarrative",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 1 of the witness (raw leaf, read by nothing downstream): the natural-language intake case the LLM was handed. Every raw observation below is extracted from THIS text; each leaf's SourceQuote points back into it so the extraction is human-checkable independently of the verdict. Synthetic but transparent — invented case, literature-aligned loci/thresholds."
       }
     ],
     "data": [
@@ -1045,7 +1052,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": null
       },
       {
         "IndividualId": "ind-b-okafor",
@@ -1079,7 +1087,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": null
       },
       {
         "IndividualId": "ind-c-chen",
@@ -1113,7 +1122,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": null
       },
       {
         "IndividualId": "ind-d-santos",
@@ -1147,7 +1157,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": null
       },
       {
         "IndividualId": "ind-e-mensah",
@@ -1181,7 +1192,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": null
       },
       {
         "IndividualId": "ind-f-haidar",
@@ -1215,7 +1227,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": null
       },
       {
         "IndividualId": "ind-g-lin",
@@ -1249,7 +1262,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CausalMechanisms": null,
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
-        "IndividualPredictions": null
+        "IndividualPredictions": null,
+        "CaseNarrative": null
       }
     ]
   },
@@ -1364,6 +1378,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Derived: rare (by frequency or class) AND shows allele-specific expression.",
         "formula": "=IF(AND(OR({{IsRareVariant}}, {{VariantClassIsRare}}), {{HasAlleleSpecificExpression}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this variant's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -1381,7 +1402,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "European",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": null
       },
       {
         "GenomicVariantId": "var-b-irf5",
@@ -1397,7 +1419,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "European",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": null
       },
       {
         "GenomicVariantId": "var-c-stat4",
@@ -1413,7 +1436,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "East Asian",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": null
       },
       {
         "GenomicVariantId": "var-d-irf5",
@@ -1429,7 +1453,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "European",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": null
       },
       {
         "GenomicVariantId": "var-e-ctla4",
@@ -1445,7 +1470,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "African",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": null
       },
       {
         "GenomicVariantId": "var-f-il23r",
@@ -1461,7 +1487,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "Indigenous American",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": null
       },
       {
         "GenomicVariantId": "var-g-il23r",
@@ -1477,7 +1504,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "VariantClassIsRare": true,
         "IndividualAncestryLabel": "Indigenous American",
         "IsRareVariant": true,
-        "IsCausalCandidate": true
+        "IsCausalCandidate": true,
+        "SourceQuote": null
       }
     ]
   },
@@ -2171,6 +2199,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Derived: clean assay, real support arm, signal-to-noise >= 2, confound-controlled.",
         "formula": "=IF(AND({{AssayIsHighQuality}}, NOT({{IsNegativeControlArm}}), {{ZStat}} >= 2, {{IsConfoundControlled}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this evidence assay's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -2194,7 +2229,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-a-2",
@@ -2216,7 +2252,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-a-3",
@@ -2238,7 +2275,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-b-1",
@@ -2260,7 +2298,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-b-2",
@@ -2282,7 +2321,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-b-3",
@@ -2304,7 +2344,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-c-1",
@@ -2326,7 +2367,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-c-2",
@@ -2348,7 +2390,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-c-3",
@@ -2370,7 +2413,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-d-1",
@@ -2392,7 +2436,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-d-2",
@@ -2414,7 +2459,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-d-3",
@@ -2436,7 +2482,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-e-1",
@@ -2458,7 +2505,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-e-2",
@@ -2480,7 +2528,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-e-3",
@@ -2502,7 +2551,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-f-1",
@@ -2524,7 +2574,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-f-2",
@@ -2546,7 +2597,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-f-3",
@@ -2568,7 +2620,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-g-1",
@@ -2590,7 +2643,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 4,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-g-2",
@@ -2612,7 +2666,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3.5,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       },
       {
         "EvidenceItemId": "ev-g-3",
@@ -2634,7 +2689,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "AssayIsHighQuality": true,
         "ZStat": 3,
         "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true
+        "IsQualifiedEvidence": true,
+        "SourceQuote": null
       }
     ]
   },
@@ -2750,6 +2806,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Derived: replicated at significance AND in a different ancestry (the transportability atom).",
         "formula": "=IF(AND({{ReplicatedAtNominalSig}}, {{IsDifferentAncestryReplication}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this replication's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -2767,7 +2830,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-a-2",
@@ -2783,7 +2847,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-a-3",
@@ -2799,7 +2864,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-b-1",
@@ -2815,7 +2881,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-b-2",
@@ -2831,7 +2898,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-b-3",
@@ -2847,7 +2915,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-c-1",
@@ -2863,7 +2932,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "East Asian",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-c-2",
@@ -2879,7 +2949,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "East Asian",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-c-3",
@@ -2895,7 +2966,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "East Asian",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-d-1",
@@ -2911,7 +2983,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-d-2",
@@ -2927,7 +3000,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-d-3",
@@ -2943,7 +3017,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "European",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-e-1",
@@ -2959,7 +3034,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "African",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-e-2",
@@ -2975,7 +3051,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "African",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-e-3",
@@ -2991,7 +3068,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": false,
         "MechanismPrimaryAncestry": "African",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-f-1",
@@ -3007,7 +3085,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-f-2",
@@ -3023,7 +3102,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-f-3",
@@ -3039,7 +3119,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-g-1",
@@ -3055,7 +3136,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-g-2",
@@ -3071,7 +3153,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": null
       },
       {
         "CohortReplicationId": "rep-g-3",
@@ -3087,7 +3170,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ReplicatedAtNominalSig": true,
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": null
       }
     ]
   },
@@ -3171,6 +3255,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Derived: signal collapses under the control (within the null band), as a true causal effect should.",
         "formula": "=IF({{PermutationEffectSize}} <= {{NullThreshold}}, TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this negative control's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -3184,7 +3275,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-a-1",
         "ParentPath": "/intake/new-patient/reyes-ana/mechanisms/cm-a",
         "RelativePath": "/intake/new-patient/reyes-ana/mechanisms/cm-a/neg-controls/nct-a-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-a-2",
@@ -3196,7 +3288,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-a-2",
         "ParentPath": "/intake/new-patient/reyes-ana/mechanisms/cm-a",
         "RelativePath": "/intake/new-patient/reyes-ana/mechanisms/cm-a/neg-controls/nct-a-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-b-1",
@@ -3208,7 +3301,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-b-1",
         "ParentPath": "/intake/new-patient/okafor-bili/mechanisms/cm-b",
         "RelativePath": "/intake/new-patient/okafor-bili/mechanisms/cm-b/neg-controls/nct-b-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-b-2",
@@ -3220,7 +3314,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-b-2",
         "ParentPath": "/intake/new-patient/okafor-bili/mechanisms/cm-b",
         "RelativePath": "/intake/new-patient/okafor-bili/mechanisms/cm-b/neg-controls/nct-b-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-d-1",
@@ -3232,7 +3327,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-d-1",
         "ParentPath": "/intake/new-patient/santos-diego/mechanisms/cm-d",
         "RelativePath": "/intake/new-patient/santos-diego/mechanisms/cm-d/neg-controls/nct-d-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-d-2",
@@ -3244,7 +3340,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-d-2",
         "ParentPath": "/intake/new-patient/santos-diego/mechanisms/cm-d",
         "RelativePath": "/intake/new-patient/santos-diego/mechanisms/cm-d/neg-controls/nct-d-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-e-1",
@@ -3256,7 +3353,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-e-1",
         "ParentPath": "/intake/new-patient/mensah-esi/mechanisms/cm-e",
         "RelativePath": "/intake/new-patient/mensah-esi/mechanisms/cm-e/neg-controls/nct-e-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-e-2",
@@ -3268,7 +3366,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-e-2",
         "ParentPath": "/intake/new-patient/mensah-esi/mechanisms/cm-e",
         "RelativePath": "/intake/new-patient/mensah-esi/mechanisms/cm-e/neg-controls/nct-e-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-f-1",
@@ -3280,7 +3379,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-f-1",
         "ParentPath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f/neg-controls/nct-f-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-f-2",
@@ -3292,7 +3392,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-f-2",
         "ParentPath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/mechanisms/cm-f/neg-controls/nct-f-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-g-1",
@@ -3304,7 +3405,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-g-1",
         "ParentPath": "/intake/new-patient/lin-grace/mechanisms/cm-g",
         "RelativePath": "/intake/new-patient/lin-grace/mechanisms/cm-g/neg-controls/nct-g-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-g-2",
@@ -3316,7 +3418,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-g-2",
         "ParentPath": "/intake/new-patient/lin-grace/mechanisms/cm-g",
         "RelativePath": "/intake/new-patient/lin-grace/mechanisms/cm-g/neg-controls/nct-g-2",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-c-1",
@@ -3328,7 +3431,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-c-1",
         "ParentPath": "/intake/new-patient/wei-chen/mechanisms/cm-c",
         "RelativePath": "/intake/new-patient/wei-chen/mechanisms/cm-c/neg-controls/nct-c-1",
-        "IsSurvived": true
+        "IsSurvived": true,
+        "SourceQuote": null
       },
       {
         "NegativeControlTestId": "nct-c-2",
@@ -3340,7 +3444,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Name": "nct-c-2",
         "ParentPath": "/intake/new-patient/wei-chen/mechanisms/cm-c",
         "RelativePath": "/intake/new-patient/wei-chen/mechanisms/cm-c/neg-controls/nct-c-2",
-        "IsSurvived": false
+        "IsSurvived": false,
+        "SourceQuote": null
       }
     ]
   },
@@ -5024,6 +5129,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Derived: enough held-out coverage AND small reliability gap.",
         "formula": "=IF(AND({{CoverageCount}} >= 20, {{BinAbsError}} <= 0.1), TRUE(), FALSE())"
+      },
+      {
+        "name": "SourceQuote",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this calibration bin's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -5038,7 +5150,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-a-1",
@@ -5051,7 +5164,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-a-2",
@@ -5064,7 +5178,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-a-3",
@@ -5077,7 +5192,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-a-4",
@@ -5090,7 +5206,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/reyes-ana/predictions/pred-a",
         "RelativePath": "/intake/new-patient/reyes-ana/predictions/pred-a/bins/cb-a-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-c-0",
@@ -5103,7 +5220,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-c-1",
@@ -5116,7 +5234,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-c-2",
@@ -5129,7 +5248,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-c-3",
@@ -5142,7 +5262,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-c-4",
@@ -5155,7 +5276,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/wei-chen/predictions/pred-c",
         "RelativePath": "/intake/new-patient/wei-chen/predictions/pred-c/bins/cb-c-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-d-0",
@@ -5168,7 +5290,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-d-1",
@@ -5181,7 +5304,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-d-2",
@@ -5194,7 +5318,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-d-3",
@@ -5207,7 +5332,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-d-4",
@@ -5220,7 +5346,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/santos-diego/predictions/pred-d",
         "RelativePath": "/intake/new-patient/santos-diego/predictions/pred-d/bins/cb-d-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-e-0",
@@ -5233,7 +5360,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-e-1",
@@ -5246,7 +5374,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-e-2",
@@ -5259,7 +5388,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-e-3",
@@ -5272,7 +5402,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-e-4",
@@ -5285,7 +5416,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/mensah-esi/predictions/pred-e",
         "RelativePath": "/intake/new-patient/mensah-esi/predictions/pred-e/bins/cb-e-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-f-0",
@@ -5298,7 +5430,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-f-1",
@@ -5311,7 +5444,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-f-2",
@@ -5324,7 +5458,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-f-3",
@@ -5337,7 +5472,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-f-4",
@@ -5350,7 +5486,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/haidar-faisal/predictions/pred-f",
         "RelativePath": "/intake/new-patient/haidar-faisal/predictions/pred-f/bins/cb-f-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-g-0",
@@ -5363,7 +5500,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-g-1",
@@ -5376,7 +5514,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-g-2",
@@ -5389,7 +5528,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-g-3",
@@ -5402,7 +5542,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-g-4",
@@ -5415,7 +5556,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/lin-grace/predictions/pred-g",
         "RelativePath": "/intake/new-patient/lin-grace/predictions/pred-g/bins/cb-g-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true
+        "IsWellCalibratedBin": true,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-b-0",
@@ -5428,7 +5570,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-0",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-b-1",
@@ -5441,7 +5584,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-1",
         "BinAbsError": 0.01,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-b-2",
@@ -5454,7 +5598,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-2",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-b-3",
@@ -5467,7 +5612,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-3",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": null
       },
       {
         "CalibrationBinId": "cb-b-4",
@@ -5480,7 +5626,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ParentPath": "/intake/new-patient/okafor-bili/predictions/pred-b",
         "RelativePath": "/intake/new-patient/okafor-bili/predictions/pred-b/bins/cb-b-4",
         "BinAbsError": 0.02,
-        "IsWellCalibratedBin": false
+        "IsWellCalibratedBin": false,
+        "SourceQuote": null
       }
     ]
   },

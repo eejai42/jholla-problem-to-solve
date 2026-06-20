@@ -120,50 +120,50 @@ VALUES ('de-novo', 'De Novo Mutation', TRUE, NULL) ON CONFLICT (variant_type_id)
 -- ----------------------------------------------------------------------------
 -- Individuals: Ancestrally diverse cohort participants whose phased genomes, omics profiles, exposures, and clinical phenotypes feed causal architecture inference.
 -- ----------------------------------------------------------------------------
-INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions)
-VALUES ('ind-a-reyes', 'Ana', 'Reyes', 'European', 34, FALSE, 'fed-europe', '2023-04-10', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (individual_id) DO NOTHING;
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-a-reyes', 'Ana', 'Reyes', 'European', 34, FALSE, 'fed-europe', '2023-04-10', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.01) and in an African cohort (p=0.02), while a European replication is directionally consistent but not significant (p=0.2). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.01 and 0.02, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model''s reliability bins each carry coverage of 30 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.08 observed at the 0.1 band, 0.92 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged.') ON CONFLICT (individual_id) DO NOTHING;
 
-INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions)
-VALUES ('ind-b-okafor', 'Bili', 'Okafor', 'European', 41, FALSE, 'fed-europe', '2023-05-12', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (individual_id) DO NOTHING;
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-b-okafor', 'Bili', 'Okafor', 'European', 41, FALSE, 'fed-europe', '2023-05-12', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.01) and an African cohort (p=0.02), with a non-significant European replication (p=0.2). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana''s — but the calibration substrate is thin: this site only accrued coverage of 8 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged.') ON CONFLICT (individual_id) DO NOTHING;
 
-INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions)
-VALUES ('ind-c-chen', 'Chen', 'Wei', 'East Asian', 47, FALSE, 'fed-east-asia', '2022-09-01', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (individual_id) DO NOTHING;
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-c-chen', 'Chen', 'Wei', 'East Asian', 47, FALSE, 'fed-east-asia', '2022-09-01', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.01) but the SIGN FLIPS to negative in an African cohort (p=0.02), and the European replication is non-significant (p=0.3) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.01), a second negative control does NOT collapse: its permutation effect is 0.5, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 30 per bin. No cryptic-relatedness leakage was flagged.') ON CONFLICT (individual_id) DO NOTHING;
 
-INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions)
-VALUES ('ind-d-santos', 'Diego', 'Santos', 'European', 29, FALSE, 'fed-europe', '2024-01-20', TRUE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (individual_id) DO NOTHING;
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-d-santos', 'Diego', 'Santos', 'European', 29, FALSE, 'fed-europe', '2024-01-20', TRUE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Diego Santos, a 29-year-old man of European ancestry (in the training set), presents with nephritis and a malar rash concerning for SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is fully supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.01) and an African cohort (p=0.02), with a non-significant European replication (p=0.2). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1). The interferon target is druggable, and reliability bins carry coverage of 30 per bin. However, sample QC raised a cryptic-relatedness / assortative-mating flag for this participant: kinship estimates indicate undeclared relatives inside the cohort, so the prediction may be confounded by leakage rather than the mechanism alone.') ON CONFLICT (individual_id) DO NOTHING;
 
-INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions)
-VALUES ('ind-e-mensah', 'Esi', 'Mensah', 'African', 38, FALSE, 'fed-west-africa', '2023-07-15', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (individual_id) DO NOTHING;
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-e-mensah', 'Esi', 'Mensah', 'African', 38, FALSE, 'fed-west-africa', '2023-07-15', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.01) and a European cohort (p=0.02), with a non-significant African replication (p=0.2). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1), and reliability bins carry coverage of 30 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated.') ON CONFLICT (individual_id) DO NOTHING;
 
-INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions)
-VALUES ('ind-f-haidar', 'Faisal', 'Haidar', 'Indigenous American', 31, TRUE, 'fed-amazon', '2025-02-01', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (individual_id) DO NOTHING;
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-f-haidar', 'Faisal', 'Haidar', 'Indigenous American', 31, TRUE, 'fed-amazon', '2025-02-01', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1), and reliability bins carry coverage of 30 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.01, p=0.02, and p=0.03, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged.') ON CONFLICT (individual_id) DO NOTHING;
 
-INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions)
-VALUES ('ind-g-lin', 'Grace', 'Lin', 'Indigenous American', 36, TRUE, 'fed-amazon', '2025-02-03', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL) ON CONFLICT (individual_id) DO NOTHING;
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-g-lin', 'Grace', 'Lin', 'Indigenous American', 36, TRUE, 'fed-amazon', '2025-02-03', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2), a caQTL in blood ATAC-seq with effect 0.7 (SE 0.2), and a pQTL in blood proteomics with effect 0.6 (SE 0.2), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.01 and 0.02 inside +/-0.1), and reliability bins carry coverage of 30 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.01), positive in an East Asian cohort (p=0.02), and positive in an Indigenous American cohort (p=0.03). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.') ON CONFLICT (individual_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- GenomicVariants: Genomic variant calls per individual spanning regulatory, coding, structural, HLA haplotypes, de novo mutations, somatic mosaicism, and mitochondrial variation.
 -- ----------------------------------------------------------------------------
-INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression)
-VALUES ('var-a-irf5', 'IRF5 regulatory (rs2004640)', 'ind-a-reyes', 'regulatory', 0.006, TRUE) ON CONFLICT (genomic_variant_id) DO NOTHING;
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-a-irf5', 'IRF5 regulatory (rs2004640)', 'ind-a-reyes', 'regulatory', 0.006, TRUE, 'IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
-INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression)
-VALUES ('var-b-irf5', 'IRF5 regulatory (rs2004640)', 'ind-b-okafor', 'regulatory', 0.006, TRUE) ON CONFLICT (genomic_variant_id) DO NOTHING;
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-b-irf5', 'IRF5 regulatory (rs2004640)', 'ind-b-okafor', 'regulatory', 0.006, TRUE, 'IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
-INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression)
-VALUES ('var-c-stat4', 'STAT4 regulatory (rs7574865)', 'ind-c-chen', 'regulatory', 0.008, TRUE) ON CONFLICT (genomic_variant_id) DO NOTHING;
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-c-stat4', 'STAT4 regulatory (rs7574865)', 'ind-c-chen', 'regulatory', 0.008, TRUE, 'STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
-INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression)
-VALUES ('var-d-irf5', 'IRF5 regulatory (rs2004640)', 'ind-d-santos', 'regulatory', 0.006, TRUE) ON CONFLICT (genomic_variant_id) DO NOTHING;
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-d-irf5', 'IRF5 regulatory (rs2004640)', 'ind-d-santos', 'regulatory', 0.006, TRUE, 'IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
-INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression)
-VALUES ('var-e-ctla4', 'CTLA4 enhancer (rs3087243)', 'ind-e-mensah', 'regulatory', 0.007, TRUE) ON CONFLICT (genomic_variant_id) DO NOTHING;
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-e-ctla4', 'CTLA4 enhancer (rs3087243)', 'ind-e-mensah', 'regulatory', 0.007, TRUE, 'CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
-INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression)
-VALUES ('var-f-il23r', 'IL23R regulatory (rs11209026)', 'ind-f-haidar', 'regulatory', 0.009, TRUE) ON CONFLICT (genomic_variant_id) DO NOTHING;
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-f-il23r', 'IL23R regulatory (rs11209026)', 'ind-f-haidar', 'regulatory', 0.009, TRUE, 'IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
-INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression)
-VALUES ('var-g-il23r', 'IL23R regulatory (rs11209026)', 'ind-g-lin', 'regulatory', 0.009, TRUE) ON CONFLICT (genomic_variant_id) DO NOTHING;
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-g-il23r', 'IL23R regulatory (rs11209026)', 'ind-g-lin', 'regulatory', 0.009, TRUE, 'IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- OmicsAssays: Omics assay instances linking individuals to modalities and tissues; captures batch effects, measurement error, and missing tissues.
@@ -234,179 +234,179 @@ VALUES ('assay-g-prot', 'assay-g-prot', 'ind-g-lin', 'proteomics', 'blood', '', 
 -- ----------------------------------------------------------------------------
 -- EvidenceItems: One observed support signal for a causal mechanism, measured by one omics assay. Mechanism confidence is an aggregation over these rows.
 -- ----------------------------------------------------------------------------
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-a-1', 'ev-a-1', 'cm-a', 'assay-a-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-a-1', 'ev-a-1', 'cm-a', 'assay-a-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-a-2', 'ev-a-2', 'cm-a', 'assay-a-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-a-2', 'ev-a-2', 'cm-a', 'assay-a-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-a-3', 'ev-a-3', 'cm-a', 'assay-a-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-a-3', 'ev-a-3', 'cm-a', 'assay-a-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.6 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-b-1', 'ev-b-1', 'cm-b', 'assay-b-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-b-1', 'ev-b-1', 'cm-b', 'assay-b-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-b-2', 'ev-b-2', 'cm-b', 'assay-b-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-b-2', 'ev-b-2', 'cm-b', 'assay-b-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-b-3', 'ev-b-3', 'cm-b', 'assay-b-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-b-3', 'ev-b-3', 'cm-b', 'assay-b-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.6 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-c-1', 'ev-c-1', 'cm-c', 'assay-c-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-c-1', 'ev-c-1', 'cm-c', 'assay-c-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-c-2', 'ev-c-2', 'cm-c', 'assay-c-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-c-2', 'ev-c-2', 'cm-c', 'assay-c-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-c-3', 'ev-c-3', 'cm-c', 'assay-c-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-c-3', 'ev-c-3', 'cm-c', 'assay-c-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.6 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-d-1', 'ev-d-1', 'cm-d', 'assay-d-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-d-1', 'ev-d-1', 'cm-d', 'assay-d-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-d-2', 'ev-d-2', 'cm-d', 'assay-d-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-d-2', 'ev-d-2', 'cm-d', 'assay-d-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-d-3', 'ev-d-3', 'cm-d', 'assay-d-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-d-3', 'ev-d-3', 'cm-d', 'assay-d-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.6 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-e-1', 'ev-e-1', 'cm-e', 'assay-e-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-e-1', 'ev-e-1', 'cm-e', 'assay-e-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-e-2', 'ev-e-2', 'cm-e', 'assay-e-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-e-2', 'ev-e-2', 'cm-e', 'assay-e-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-e-3', 'ev-e-3', 'cm-e', 'assay-e-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-e-3', 'ev-e-3', 'cm-e', 'assay-e-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.6 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-f-1', 'ev-f-1', 'cm-f', 'assay-f-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-f-1', 'ev-f-1', 'cm-f', 'assay-f-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-f-2', 'ev-f-2', 'cm-f', 'assay-f-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-f-2', 'ev-f-2', 'cm-f', 'assay-f-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-f-3', 'ev-f-3', 'cm-f', 'assay-f-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-f-3', 'ev-f-3', 'cm-f', 'assay-f-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.6 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-g-1', 'ev-g-1', 'cm-g', 'assay-g-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-g-1', 'ev-g-1', 'cm-g', 'assay-g-rna', 0.8, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.8 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-g-2', 'ev-g-2', 'cm-g', 'assay-g-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-g-2', 'ev-g-2', 'cm-g', 'assay-g-atac', 0.7, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.7 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
-INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption)
-VALUES ('ev-g-3', 'ev-g-3', 'cm-g', 'assay-g-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded') ON CONFLICT (evidence_item_id) DO NOTHING;
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-g-3', 'ev-g-3', 'cm-g', 'assay-g-prot', 0.6, 0.2, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.6 (SE 0.2)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CohortReplications: One re-test of a causal mechanism in another federated cohort. Replication and cross-ancestry transport are aggregations over these rows.
 -- ----------------------------------------------------------------------------
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-a-1', 'rep-a-1', 'cm-a', 'fed-east-asia', 1, 0.01, 'East Asian') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-a-1', 'rep-a-1', 'cm-a', 'fed-east-asia', 1, 0.01, 'East Asian', 'positive effect sign in an East Asian cohort (p=0.01)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-a-2', 'rep-a-2', 'cm-a', 'fed-west-africa', 1, 0.02, 'African') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-a-2', 'rep-a-2', 'cm-a', 'fed-west-africa', 1, 0.02, 'African', 'in an African cohort (p=0.02)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-a-3', 'rep-a-3', 'cm-a', 'fed-europe', 1, 0.2, 'European') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-a-3', 'rep-a-3', 'cm-a', 'fed-europe', 1, 0.2, 'European', 'European replication is directionally consistent but not significant (p=0.2)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-b-1', 'rep-b-1', 'cm-b', 'fed-east-asia', 1, 0.01, 'East Asian') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-b-1', 'rep-b-1', 'cm-b', 'fed-east-asia', 1, 0.01, 'East Asian', 'replicates positive in an East Asian cohort (p=0.01)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-b-2', 'rep-b-2', 'cm-b', 'fed-west-africa', 1, 0.02, 'African') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-b-2', 'rep-b-2', 'cm-b', 'fed-west-africa', 1, 0.02, 'African', 'an African cohort (p=0.02)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-b-3', 'rep-b-3', 'cm-b', 'fed-europe', 1, 0.2, 'European') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-b-3', 'rep-b-3', 'cm-b', 'fed-europe', 1, 0.2, 'European', 'non-significant European replication (p=0.2)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-c-1', 'rep-c-1', 'cm-c', 'fed-east-asia', 1, 0.01, 'East Asian') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-c-1', 'rep-c-1', 'cm-c', 'fed-east-asia', 1, 0.01, 'East Asian', 'positive in an East Asian cohort (p=0.01)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-c-2', 'rep-c-2', 'cm-c', 'fed-west-africa', -1, 0.02, 'African') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-c-2', 'rep-c-2', 'cm-c', 'fed-west-africa', -1, 0.02, 'African', 'SIGN FLIPS to negative in an African cohort (p=0.02)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-c-3', 'rep-c-3', 'cm-c', 'fed-europe', 1, 0.3, 'European') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-c-3', 'rep-c-3', 'cm-c', 'fed-europe', 1, 0.3, 'European', 'European replication is non-significant (p=0.3)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-d-1', 'rep-d-1', 'cm-d', 'fed-east-asia', 1, 0.01, 'East Asian') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-d-1', 'rep-d-1', 'cm-d', 'fed-east-asia', 1, 0.01, 'East Asian', 'replicates positive in an East Asian cohort (p=0.01)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-d-2', 'rep-d-2', 'cm-d', 'fed-west-africa', 1, 0.02, 'African') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-d-2', 'rep-d-2', 'cm-d', 'fed-west-africa', 1, 0.02, 'African', 'an African cohort (p=0.02)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-d-3', 'rep-d-3', 'cm-d', 'fed-europe', 1, 0.2, 'European') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-d-3', 'rep-d-3', 'cm-d', 'fed-europe', 1, 0.2, 'European', 'non-significant European replication (p=0.2)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-e-1', 'rep-e-1', 'cm-e', 'fed-east-asia', 1, 0.01, 'East Asian') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-e-1', 'rep-e-1', 'cm-e', 'fed-east-asia', 1, 0.01, 'East Asian', 'replicates positive in an East Asian cohort (p=0.01)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-e-2', 'rep-e-2', 'cm-e', 'fed-europe', 1, 0.02, 'European') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-e-2', 'rep-e-2', 'cm-e', 'fed-europe', 1, 0.02, 'European', 'a European cohort (p=0.02)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-e-3', 'rep-e-3', 'cm-e', 'fed-west-africa', 1, 0.2, 'African') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-e-3', 'rep-e-3', 'cm-e', 'fed-west-africa', 1, 0.2, 'African', 'non-significant African replication (p=0.2)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-f-1', 'rep-f-1', 'cm-f', 'fed-amazon', 1, 0.01, 'Indigenous American') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-f-1', 'rep-f-1', 'cm-f', 'fed-amazon', 1, 0.01, 'Indigenous American', 'run in an Indigenous American cohort: p=0.01') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-f-2', 'rep-f-2', 'cm-f', 'fed-amazon', 1, 0.02, 'Indigenous American') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-f-2', 'rep-f-2', 'cm-f', 'fed-amazon', 1, 0.02, 'Indigenous American', 'p=0.02') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-f-3', 'rep-f-3', 'cm-f', 'fed-amazon', 1, 0.03, 'Indigenous American') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-f-3', 'rep-f-3', 'cm-f', 'fed-amazon', 1, 0.03, 'Indigenous American', 'p=0.03, all positive, all in the SAME ancestry') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-g-1', 'rep-g-1', 'cm-g', 'fed-europe', 1, 0.01, 'European') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-g-1', 'rep-g-1', 'cm-g', 'fed-europe', 1, 0.01, 'European', 'positive in a European cohort (p=0.01)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-g-2', 'rep-g-2', 'cm-g', 'fed-east-asia', 1, 0.02, 'East Asian') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-g-2', 'rep-g-2', 'cm-g', 'fed-east-asia', 1, 0.02, 'East Asian', 'positive in an East Asian cohort (p=0.02)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
-INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label)
-VALUES ('rep-g-3', 'rep-g-3', 'cm-g', 'fed-amazon', 1, 0.03, 'Indigenous American') ON CONFLICT (cohort_replication_id) DO NOTHING;
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-g-3', 'rep-g-3', 'cm-g', 'fed-amazon', 1, 0.03, 'Indigenous American', 'positive in an Indigenous American cohort (p=0.03)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- NegativeControlTests: One stratification / permutation control on a causal mechanism. A true causal signal collapses under the control.
 -- ----------------------------------------------------------------------------
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-a-1', 'nct-a-1', 'cm-a', 'ancestry-permutation', 0.01, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-a-1', 'nct-a-1', 'cm-a', 'ancestry-permutation', 0.01, 0.1, 'permutation effect 0.01 and 0.02, well inside the +/-0.1 null band') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-a-2', 'nct-a-2', 'cm-a', 'ancestry-permutation', 0.02, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-a-2', 'nct-a-2', 'cm-a', 'ancestry-permutation', 0.02, 0.1, 'permutation effect 0.01 and 0.02, well inside the +/-0.1 null band') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-b-1', 'nct-b-1', 'cm-b', 'ancestry-permutation', 0.01, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-b-1', 'nct-b-1', 'cm-b', 'ancestry-permutation', 0.01, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-b-2', 'nct-b-2', 'cm-b', 'ancestry-permutation', 0.02, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-b-2', 'nct-b-2', 'cm-b', 'ancestry-permutation', 0.02, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-d-1', 'nct-d-1', 'cm-d', 'ancestry-permutation', 0.01, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-d-1', 'nct-d-1', 'cm-d', 'ancestry-permutation', 0.01, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-d-2', 'nct-d-2', 'cm-d', 'ancestry-permutation', 0.02, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-d-2', 'nct-d-2', 'cm-d', 'ancestry-permutation', 0.02, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-e-1', 'nct-e-1', 'cm-e', 'ancestry-permutation', 0.01, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-e-1', 'nct-e-1', 'cm-e', 'ancestry-permutation', 0.01, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-e-2', 'nct-e-2', 'cm-e', 'ancestry-permutation', 0.02, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-e-2', 'nct-e-2', 'cm-e', 'ancestry-permutation', 0.02, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-f-1', 'nct-f-1', 'cm-f', 'ancestry-permutation', 0.01, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-f-1', 'nct-f-1', 'cm-f', 'ancestry-permutation', 0.01, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-f-2', 'nct-f-2', 'cm-f', 'ancestry-permutation', 0.02, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-f-2', 'nct-f-2', 'cm-f', 'ancestry-permutation', 0.02, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-g-1', 'nct-g-1', 'cm-g', 'ancestry-permutation', 0.01, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-g-1', 'nct-g-1', 'cm-g', 'ancestry-permutation', 0.01, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-g-2', 'nct-g-2', 'cm-g', 'ancestry-permutation', 0.02, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-g-2', 'nct-g-2', 'cm-g', 'ancestry-permutation', 0.02, 0.1, 'permutation effect 0.01 and 0.02 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-c-1', 'nct-c-1', 'cm-c', 'ancestry-permutation', 0.01, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-c-1', 'nct-c-1', 'cm-c', 'ancestry-permutation', 0.01, 0.1, 'one ancestry-permutation control collapses (permutation effect 0.01)') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
-INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold)
-VALUES ('nct-c-2', 'nct-c-2', 'cm-c', 'ancestry-permutation', 0.5, 0.1) ON CONFLICT (negative_control_test_id) DO NOTHING;
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-c-2', 'nct-c-2', 'cm-c', 'ancestry-permutation', 0.5, 0.1, 'its permutation effect is 0.5, far outside the +/-0.1 null band') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- EnvironmentalExposures: Longitudinal environmental exposures contributing to gene-environment-microbiome interactions and shifting environments.
@@ -489,110 +489,110 @@ VALUES ('pred-g', 'pred-g', 'ind-g-lin', 'psa', 'Onset', NULL) ON CONFLICT (indi
 -- ----------------------------------------------------------------------------
 -- CalibrationBins: Per-prediction reliability-curve bins, seeded from the held-out coverage of this individual's own ancestry x disease. Calibration is an aggregation over these rows.
 -- ----------------------------------------------------------------------------
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-a-0', 'cb-a-0', 'pred-a', 0.1, 0.08, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-a-0', 'cb-a-0', 'pred-a', 0.1, 0.08, 30, 'reliability bins each carry coverage of 30 held-out individuals') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-a-1', 'cb-a-1', 'pred-a', 0.3, 0.31, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-a-1', 'cb-a-1', 'pred-a', 0.3, 0.31, 30, 'reliability bins each carry coverage of 30 held-out individuals') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-a-2', 'cb-a-2', 'pred-a', 0.5, 0.52, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-a-2', 'cb-a-2', 'pred-a', 0.5, 0.52, 30, 'reliability bins each carry coverage of 30 held-out individuals') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-a-3', 'cb-a-3', 'pred-a', 0.7, 0.68, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-a-3', 'cb-a-3', 'pred-a', 0.7, 0.68, 30, 'reliability bins each carry coverage of 30 held-out individuals') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-a-4', 'cb-a-4', 'pred-a', 0.9, 0.92, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-a-4', 'cb-a-4', 'pred-a', 0.9, 0.92, 30, 'reliability bins each carry coverage of 30 held-out individuals') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-c-0', 'cb-c-0', 'pred-c', 0.1, 0.08, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-c-0', 'cb-c-0', 'pred-c', 0.1, 0.08, 30, 'Reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-c-1', 'cb-c-1', 'pred-c', 0.3, 0.31, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-c-1', 'cb-c-1', 'pred-c', 0.3, 0.31, 30, 'Reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-c-2', 'cb-c-2', 'pred-c', 0.5, 0.52, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-c-2', 'cb-c-2', 'pred-c', 0.5, 0.52, 30, 'Reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-c-3', 'cb-c-3', 'pred-c', 0.7, 0.68, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-c-3', 'cb-c-3', 'pred-c', 0.7, 0.68, 30, 'Reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-c-4', 'cb-c-4', 'pred-c', 0.9, 0.92, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-c-4', 'cb-c-4', 'pred-c', 0.9, 0.92, 30, 'Reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-d-0', 'cb-d-0', 'pred-d', 0.1, 0.08, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-d-0', 'cb-d-0', 'pred-d', 0.1, 0.08, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-d-1', 'cb-d-1', 'pred-d', 0.3, 0.31, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-d-1', 'cb-d-1', 'pred-d', 0.3, 0.31, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-d-2', 'cb-d-2', 'pred-d', 0.5, 0.52, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-d-2', 'cb-d-2', 'pred-d', 0.5, 0.52, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-d-3', 'cb-d-3', 'pred-d', 0.7, 0.68, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-d-3', 'cb-d-3', 'pred-d', 0.7, 0.68, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-d-4', 'cb-d-4', 'pred-d', 0.9, 0.92, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-d-4', 'cb-d-4', 'pred-d', 0.9, 0.92, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-e-0', 'cb-e-0', 'pred-e', 0.1, 0.08, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-e-0', 'cb-e-0', 'pred-e', 0.1, 0.08, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-e-1', 'cb-e-1', 'pred-e', 0.3, 0.31, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-e-1', 'cb-e-1', 'pred-e', 0.3, 0.31, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-e-2', 'cb-e-2', 'pred-e', 0.5, 0.52, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-e-2', 'cb-e-2', 'pred-e', 0.5, 0.52, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-e-3', 'cb-e-3', 'pred-e', 0.7, 0.68, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-e-3', 'cb-e-3', 'pred-e', 0.7, 0.68, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-e-4', 'cb-e-4', 'pred-e', 0.9, 0.92, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-e-4', 'cb-e-4', 'pred-e', 0.9, 0.92, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-f-0', 'cb-f-0', 'pred-f', 0.1, 0.08, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-f-0', 'cb-f-0', 'pred-f', 0.1, 0.08, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-f-1', 'cb-f-1', 'pred-f', 0.3, 0.31, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-f-1', 'cb-f-1', 'pred-f', 0.3, 0.31, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-f-2', 'cb-f-2', 'pred-f', 0.5, 0.52, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-f-2', 'cb-f-2', 'pred-f', 0.5, 0.52, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-f-3', 'cb-f-3', 'pred-f', 0.7, 0.68, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-f-3', 'cb-f-3', 'pred-f', 0.7, 0.68, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-f-4', 'cb-f-4', 'pred-f', 0.9, 0.92, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-f-4', 'cb-f-4', 'pred-f', 0.9, 0.92, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-g-0', 'cb-g-0', 'pred-g', 0.1, 0.08, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-g-0', 'cb-g-0', 'pred-g', 0.1, 0.08, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-g-1', 'cb-g-1', 'pred-g', 0.3, 0.31, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-g-1', 'cb-g-1', 'pred-g', 0.3, 0.31, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-g-2', 'cb-g-2', 'pred-g', 0.5, 0.52, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-g-2', 'cb-g-2', 'pred-g', 0.5, 0.52, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-g-3', 'cb-g-3', 'pred-g', 0.7, 0.68, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-g-3', 'cb-g-3', 'pred-g', 0.7, 0.68, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-g-4', 'cb-g-4', 'pred-g', 0.9, 0.92, 30) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-g-4', 'cb-g-4', 'pred-g', 0.9, 0.92, 30, 'reliability bins carry coverage of 30 per bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-b-0', 'cb-b-0', 'pred-b', 0.1, 0.08, 8) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-b-0', 'cb-b-0', 'pred-b', 0.1, 0.08, 8, 'coverage of 8 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-b-1', 'cb-b-1', 'pred-b', 0.3, 0.31, 8) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-b-1', 'cb-b-1', 'pred-b', 0.3, 0.31, 8, 'coverage of 8 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-b-2', 'cb-b-2', 'pred-b', 0.5, 0.52, 8) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-b-2', 'cb-b-2', 'pred-b', 0.5, 0.52, 8, 'coverage of 8 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-b-3', 'cb-b-3', 'pred-b', 0.7, 0.68, 8) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-b-3', 'cb-b-3', 'pred-b', 0.7, 0.68, 8, 'coverage of 8 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
-INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count)
-VALUES ('cb-b-4', 'cb-b-4', 'pred-b', 0.9, 0.92, 8) ON CONFLICT (calibration_bin_id) DO NOTHING;
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-b-4', 'cb-b-4', 'pred-b', 0.9, 0.92, 8, 'coverage of 8 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- InterventionTargets: Validated intervention targets for gene-based and cell-based therapies derived from falsifiable causal mechanisms.

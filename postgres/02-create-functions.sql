@@ -620,6 +620,15 @@ RETURNS BOOLEAN AS $$
   SELECT (SELECT has_cryptic_relatedness_flag FROM individuals WHERE individual_id = p_individual_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_individuals_case_narrative
+-- Helper function: Get CaseNarrative from Individuals by IndividualId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_individuals_case_narrative(p_individual_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT case_narrative FROM individuals WHERE individual_id = p_individual_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_cohort_replications_replication_label
 -- Helper function: Get ReplicationLabel from CohortReplications by CohortReplicationId
 -- Used for join-free cross-table references in aggregations
@@ -672,6 +681,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_cohort_replications_replication_ancestry_label(p_cohort_replication_id TEXT)
 RETURNS TEXT AS $$
   SELECT (SELECT replication_ancestry_label FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_cohort_replications_source_quote
+-- Helper function: Get SourceQuote from CohortReplications by CohortReplicationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_cohort_replications_source_quote(p_cohort_replication_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT source_quote FROM cohort_replications WHERE cohort_replication_id = p_cohort_replication_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_federated_datasets_name
@@ -747,6 +765,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_genomic_variants_has_allele_specific_expression(p_genomic_variant_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT has_allele_specific_expression FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_genomic_variants_source_quote
+-- Helper function: Get SourceQuote from GenomicVariants by GenomicVariantId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_genomic_variants_source_quote(p_genomic_variant_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT source_quote FROM genomic_variants WHERE genomic_variant_id = p_genomic_variant_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_variant_types_name
@@ -1316,6 +1343,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT identification_assumption FROM evidence_items WHERE evidence_item_id = p_evidence_item_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_evidence_items_source_quote
+-- Helper function: Get SourceQuote from EvidenceItems by EvidenceItemId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_evidence_items_source_quote(p_evidence_item_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT source_quote FROM evidence_items WHERE evidence_item_id = p_evidence_item_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_omics_assays_name
 -- Field: OmicsAssays.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1785,6 +1821,15 @@ RETURNS NUMERIC AS $$
   SELECT (SELECT null_threshold FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_negative_control_tests_source_quote
+-- Helper function: Get SourceQuote from NegativeControlTests by NegativeControlTestId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_negative_control_tests_source_quote(p_negative_control_test_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT source_quote FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_causal_mechanisms_name
 -- Field: CausalMechanisms.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2178,6 +2223,15 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_calibration_bins_coverage_count(p_calibration_bin_id TEXT)
 RETURNS INTEGER AS $$
   SELECT (SELECT coverage_count FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_calibration_bins_source_quote
+-- Helper function: Get SourceQuote from CalibrationBins by CalibrationBinId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_calibration_bins_source_quote(p_calibration_bin_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT source_quote FROM calibration_bins WHERE calibration_bin_id = p_calibration_bin_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_name
