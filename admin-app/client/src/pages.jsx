@@ -1731,15 +1731,35 @@ export function StateMachineView() {
               <p style={{ color: C.sub, fontSize: 12 }}>Subject: <code>{machine?.subject_table_name}.{machine?.subject_state_column}</code> — the current state is DERIVED, never entered.</p>
 
               <h3>States</h3>
-              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+              <p style={{ color: C.sub, fontSize: 12, marginTop: -6 }}>
+                Each state shows its <strong>live cohort occupancy</strong> — how many subjects are
+                <em> currently</em> in that state (DERIVED from the <code>IsCurrent</code> occupancy chain,
+                never entered). The number is the disease-state simulator's admin witness.
+              </p>
+              <div style={{ display: 'flex', alignItems: 'stretch', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
                 {states.map((s, i) => (
                   <React.Fragment key={s.state_key}>
-                    <span style={{ padding: '6px 12px', borderRadius: 8, border: `2px solid ${stateBorder(s)}`, background: s.is_initial ? C.bgAccent : '#fff', fontWeight: 600, fontSize: 13 }}>
-                      {s.title || s.state_key}
-                      {s.is_initial ? <span style={{ color: C.sub, fontSize: 10 }}> ▸start</span> : null}
-                      {s.is_terminal ? <span style={{ color: C.sub, fontSize: 10 }}> ◼end</span> : null}
+                    <span style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4, padding: '6px 12px', borderRadius: 8, border: `2px solid ${stateBorder(s)}`, background: s.is_initial ? C.bgAccent : '#fff', fontWeight: 600, fontSize: 13 }}>
+                      <span>
+                        {s.title || s.state_key}
+                        {s.is_initial ? <span style={{ color: C.sub, fontSize: 10 }}> ▸start</span> : null}
+                        {s.is_terminal ? <span style={{ color: C.sub, fontSize: 10 }}> ◼end</span> : null}
+                      </span>
+                      {/* per-state cohort-occupancy strip: current (filled) vs ever (faint) */}
+                      <span title={`${s.current_occupancy} currently here · ${s.ever_occupancy} ever passed through`}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, fontWeight: 700,
+                          color: s.current_occupancy > 0 ? stateBorder(s) : C.sub }}>
+                        <span style={{ display: 'inline-block', minWidth: 18, textAlign: 'center', padding: '1px 6px', borderRadius: 999,
+                          background: s.current_occupancy > 0 ? stateBorder(s) : '#eee', color: s.current_occupancy > 0 ? '#fff' : C.sub }}>
+                          {s.current_occupancy ?? 0}
+                        </span>
+                        <span style={{ color: C.sub, fontWeight: 400 }}>now</span>
+                        {s.ever_occupancy > s.current_occupancy ? (
+                          <span style={{ color: C.sub, fontWeight: 400 }}>· {s.ever_occupancy} ever</span>
+                        ) : null}
+                      </span>
                     </span>
-                    {i < states.length - 1 && !s.is_terminal ? <span style={{ color: C.sub }}>→</span> : null}
+                    {i < states.length - 1 && !s.is_terminal ? <span style={{ color: C.sub, alignSelf: 'center' }}>→</span> : null}
                   </React.Fragment>
                 ))}
               </div>

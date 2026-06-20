@@ -100,16 +100,16 @@ The audit's second worked example, computed: a derived RecommendedTreatmentLine 
 The doctor's deepest point: discovery is corpus-level - a single chart never discovers a mechanism, a pattern across many patients does. Build the top-level, all-roles Cohort discovery board over a 12-member claim-bearing cohort: the disease-state map, the emergent serology-signature scatter, the disease-vs-evidence disagreement board, and the treatment-line distribution - all reading derived fields. Per-patient progression + treatment-line tabs hang off the same model. The punchline, sorted to the top of the nav.
 
 - **Status:** done - rule `rule: 12-member cohort expansion; corpus-level derived fields for the discovery board`; state `state: v2 steps9-10 - Cohort discovery is the top-level all-roles nav item`
-### [NEXT] Loop 10 — Progression machine in the state-machine admin
+### [DONE] Loop 10 — Progression machine in the state-machine admin
 
 The one concrete unbuilt admin-witness item. StateMachineView is hardcoded to diagnosis-lifecycle; lupus-nephritis-progression already lives in vw_state_machines and is served by the same router. Make StateMachineView select the machine (a binding change, not a model change): render its states, the 5 raw-leaf-triggered transition rules, and a per-state cohort-occupancy strip. Closes the loop between the disease-state simulator and its admin witness.
 
-- **Status:** next - state `state: Loop 10 - progression machine bound into the state-machine admin`
-### [PLANNED] Loop 11 — Serology-signature discovery - emergent cluster, not a label
+- **Status:** done - rule `none - app-only loop; occupancy already derived (IsCurrent), admin-witness binding only`; state `state: Loop 10 - progression machine bound into the state-machine admin; per-state cohort occupancy is the simulator's admin witness`
+### [NEXT] Loop 11 — Serology-signature discovery - emergent cluster, not a label
 
 Make the discovery claim falsifiable at corpus scale. The serology signature that PRECEDES nephritis (the rising-anti-dsDNA / falling-complement trajectory) should surface as a DERIVED corpus-level cluster on the cohort scatter - emergent from the population's raw serology series, not a label anyone assigned. Derive the cluster membership / signature-strength field in the hub so the discovery is reproducible and witnessed, then surface it on the cohort board. This is the literal answer to 'discovery is corpus-level.'
 
-- **Status:** planned
+- **Status:** next
 ### [PLANNED] Loop 12 — Prune excess engineering - keep only what is load-bearing for the v1 audit response
 
 A deliberate trimming pass (NOT a delete spree). Walk the model, the app, and the docs and find anything that was UPGRADED or SUPERSEDED and now lingers as a duplicate, plus any engineering that is not actually load-bearing toward the clearest pedagogical answer to the v1 audit. Candidates to scrutinise: superseded prediction types that don't earn their keep (e.g. a 4th parallel adverse-effect prediction once severity + treatment-response + treatment-line exist), redundant ontology slots that no longer carry a claim, and any view/endpoint with no consumer. Promotion rule inverted: if a thing is neither traceable to problem-to-solve.md nor load-bearing toward the keystone or the audit response, retire it. Goal: the clearest, most complete, DUPLICATE-FREE representation of the problem - so the audit response is concise as well as complete.

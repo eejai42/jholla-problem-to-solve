@@ -17,6 +17,14 @@ const R_SELECT = `SELECT state_transition_rule_id, state_machine, from_state, to
 const T_SELECT = `SELECT state_transition_id, state_machine, subject_table_name, subject_id,
   from_state_key, to_state_key, transition_at, triggered_by_role, reason, is_forward, relative_path
   FROM vw_state_transitions`;
+// Per-state cohort occupancy — how many subjects CURRENTLY occupy each state, and
+// how many have ever passed through it. Both counts are DERIVED (IsCurrent on the
+// bitemporal occupancy chain), never entered. This is the disease-state simulator's
+// admin witness: the progression machine's states light up with their live cohort.
+const OCC_SELECT = `SELECT state_key,
+  count(*) FILTER (WHERE is_current)::int AS current_occupancy,
+  count(*)::int AS ever_occupancy
+  FROM vw_subject_state_instances`;
 
 const STATE_WRITABLE = new Set(['state_key', 'title', 'order_index', 'is_initial', 'is_terminal']);
 const RULE_WRITABLE = new Set(['from_state', 'to_state', 'guard_description', 'rule_refs', 'trigger_endpoint', 'triggered_by_role']);
@@ -34,12 +42,20 @@ router.get('/:id', async (req, res) => {
   try {
     const m = await query(`${M_SELECT} WHERE state_machine_id = $1`, [req.params.id]);
     if (!m.length) return res.status(404).json({ error: 'not_found', id: req.params.id });
-    const [states, rules, transitions] = await Promise.all([
+    const [states, rules, transitions, occupancy] = await Promise.all([
       query(`${S_SELECT} WHERE state_machine = $1 ORDER BY order_index`, [req.params.id]),
       query(`${R_SELECT} WHERE state_machine = $1`, [req.params.id]),
       query(`${T_SELECT} WHERE state_machine = $1 ORDER BY transition_at NULLS LAST LIMIT 200`, [req.params.id]),
+      query(`${OCC_SELECT} WHERE state_machine = $1 GROUP BY state_key`, [req.params.id]),
     ]);
-    res.json({ machine: m[0], states, rules, transitions });
+    // graft the derived occupancy onto each state so the client never recomputes it
+    const occByKey = Object.fromEntries(occupancy.map((o) => [o.state_key, o]));
+    const statesWithOccupancy = states.map((s) => ({
+      ...s,
+      current_occupancy: occByKey[s.state_key]?.current_occupancy ?? 0,
+      ever_occupancy: occByKey[s.state_key]?.ever_occupancy ?? 0,
+    }));
+    res.json({ machine: m[0], states: statesWithOccupancy, rules, transitions });
   } catch (err) { res.status(500).json({ error: String(err) }); }
 });
 

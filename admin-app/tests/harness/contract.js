@@ -109,4 +109,13 @@ export const CONTRACT = {
     endpoint: (p) => `/api/predictions/${p.prediction}`,
     plannedLoop: 'v2',
   },
+  // ---- Loop 10: the disease-state simulator's ADMIN WITNESS ----
+  // The progression machine bound into the state-machine admin: each state shows
+  // its live cohort occupancy (current_occupancy), DERIVED from the IsCurrent
+  // occupancy chain — the simulator and its admin view read the same model.
+  stateMachineOccupancy: {
+    surfaces: 'L12 per-state cohort occupancy on the state-machine admin (derived IsCurrent counts)',
+    endpoint: (machineId) => `/api/state-machines/${machineId}`,
+    plannedLoop: 'Loop 10',
+  },
 };
