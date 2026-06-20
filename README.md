@@ -63,6 +63,54 @@ patients fail, each on exactly one gate:
 Every gate is exercised by both a passing and a failing case. The build verifies against exactly this
 oracle; it is not asserted by hand.
 
+## v2 — answering the audit: from an *evidence gate* to a *disease-state simulator*
+
+A physician review of v1 made a sharp, correct point: v1 simulates *whether evidence is clinically
+actionable*, not *whether disease is actually progressing* — "an evidence gate, not a disease-state
+simulator." It gave a fair ~15% on the full vision and named the gap with two worked examples. v2
+takes those examples and makes the system **say them**, as derived, witnessed, raw-fact-grounded
+state — on the same hub, the same trust boundary, the same red→green harness. (Full clause-by-clause
+reconciliation in [`V2-COVERAGE-MAP.md`](V2-COVERAGE-MAP.md); the reply that frames it in
+[`V2-RESPONSE-PROPOSAL.md`](V2-RESPONSE-PROPOSAL.md).)
+
+The reframe: **v1 was per-patient adjudication; v2 adds the disease-state layer** — and a disease
+*progressing* is just a **state machine** whose transitions fire on raw longitudinal observations.
+
+1. **Disease progresses as a witnessed state machine** (`lupus-nephritis-progression`):
+   `PresymptomaticAutoimmunity → SerologicActive → EarlyNephritis → RenalFlareRisk → BiopsyIndicated`.
+   The **current state is DERIVED purely from raw serology leaves** — rising anti-dsDNA + falling
+   complement + proteinuria + urinary sediment — never hand-set. Same line in the DAG: the labs are
+   the LLM's/clinician's, the state is the model's. **Bitemporal dwell-time** (`DwellDays`,
+   EnteredAt/ExitedAt occupancy) answers the audit's "how long has the patient been in this state."
+2. **The audit's first worked example, computed.** Diego Santos: *"transitioning toward early lupus
+   nephritis, rising anti-dsDNA, falling complement, at renal-flare risk, biopsy-indicated"* — every
+   clause is a derived field off his serology series, with a derived `SledaiScore` (12, High/flare).
+3. **The audit's second worked example, computed.** A derived `RecommendedTreatmentLine` +
+   single `TreatmentLineDecidingFactor`: **mycophenolate** (active nephritis → induction),
+   **anifrolumab** (type-I-IFN pathway), **belimumab** (autoantibody-driven), **secukinumab**
+   (IL-17/23) — differentiated by the confirmed-mechanism pathway and the disease state, not by a label.
+4. **The minimum counter-example (the proof the two layers are independent).** Diego is
+   `progression_vs_actionability_disagree = TRUE`: the disease-state simulator says he **is
+   progressing** (BiopsyIndicated, high activity) while the actionability gate says the prediction
+   is **NOT actionable** (cryptic-relatedness leakage). A pure evidence gate could never produce the
+   sentence *"clearly progressing and needs attention, but the causal-mechanism prediction isn't
+   trustworthy enough for targeted therapy."* That it can is the proof v2 ≠ v1 relabeled.
+
+Every concept the audit listed as absent — lupus nephritis, NPSLE, cutaneous lupus, sero±RA, erosive
+disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns,
+treatment lines, SLEDAI/DAS28 — is now in the hub (`DiseaseDomainConcepts`), each with an honest
+`ModelingStatus` (deep-DAG / schema / vocabulary). Coverage is checkable by grep, not by trust. The
+home harness now leads with these new categories (L11 disease-state, L11b progression, L5d
+treatment-line) — **431/431 green**, and the v1 keystone verdicts are unchanged.
+
+> **The honest bound stays loud.** This is still **synthetic, transparent** data — a proof of
+> *shape*, not validated biology. v2 does not claim to have discovered or validated real causal
+> autoimmune mechanisms. It claims that the *auditable structure* such biology would slot into —
+> disease-state progression, treatment-line reasoning, and the corpus-level surface where discovery
+> is expressed — now demonstrably exists on one model, and that adding it was **additive into the
+> same DAG** rather than a second system. Discovery is inherently corpus-level; the cohort-level UX
+> that surfaces emergent patterns is specified in [`V2-UI-PLAN.md`](V2-UI-PLAN.md).
+
 ## The architecture — and why the LLM never gets a vote
 
 ```
