@@ -175,6 +175,8 @@ app.get('/api/cohort-individuals', async (_req, res) => {
              i.given_name, i.family_name, i.ancestry_label, i.is_ancestry_absent_from_training,
              i.nephritis_progression_state_key, i.latest_sledai_score, i.activity_tier,
              i.is_disease_progressing, i.target_pathway,
+             i.count_pre_nephritic_signature_panels, i.is_in_pre_nephritic_signature_cluster,
+             i.signature_strength,
              s.anti_ds_dna_trend, s.complement_trend,
              p.individual_prediction_id, p.is_clinically_actionable, p.deciding_gate,
              p.recommended_treatment_line, p.treatment_line_deciding_factor,

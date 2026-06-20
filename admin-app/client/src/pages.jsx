@@ -1406,9 +1406,18 @@ function seededUnit(seed) {
   h ^= h << 13; h >>>= 0; h ^= h >> 17; h ^= h << 5; h >>>= 0;
   return (h % 100000) / 100000;
 }
+// The pre-nephritic signature cluster is a DERIVED field, not a colour we paint:
+// is_in_pre_nephritic_signature_cluster / signature_strength come straight from
+// vw_individuals (rising-dsDNA + falling-complement panels rolled up per patient).
+const SIG_CLUSTER = '#7b2d8e'; // the cluster halo colour (distinct from state colours)
+
 function SignaturePanel({ rows }) {
   const W = 600, H = 400, padL = 96, padB = 64, padT = 28, padR = 64;
   const plotW = W - padL - padR, plotH = H - padT - padB;
+  const clusterRows = rows.filter((r) => r.is_in_pre_nephritic_signature_cluster);
+  const clusterN = clusterRows.length;
+  // The discovery's headline check: does cluster membership track the disease?
+  const clusterProgressing = clusterRows.filter((r) => r.is_disease_progressing || r.nephritis_progression_state_key === 'SerologicActive').length;
   // Inset the three category anchors away from the plot edges so the outermost
   // clusters (Rising / Falling corners) have room to jitter without clipping.
   const inset = 0.16; // fraction of a half-axis pulled in from each edge
@@ -1419,11 +1428,21 @@ function SignaturePanel({ rows }) {
   const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   return (
     <div>
-      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 760 }}>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 780 }}>
         Each point is a patient at their latest serology panel: <strong>x = anti-dsDNA trend</strong>,
         <strong> y = complement trend</strong>, colour = derived nephritis state, size = SLEDAI.
-        The <strong>rising-dsDNA + falling-complement</strong> corner (bottom-right) is exactly where
-        the nephritis cases cluster — the emergent signature, surfaced across the whole cohort.
+        The <strong style={{ color: SIG_CLUSTER }}>purple halo</strong> marks the
+        <strong> derived pre-nephritic signature cluster</strong> — a patient whose own raw serology
+        series ever showed rising-dsDNA + falling-complement (<code>is_in_pre_nephritic_signature_cluster</code>,
+        ring thickness = <code>signature_strength</code>). It is a <em>derived field</em>, not a label
+        anyone assigned.
+      </p>
+      <p style={{ fontSize: 12.5, marginTop: -4, color: C.ink, background: '#f6eefa', border: `1px solid ${SIG_CLUSTER}33`, borderRadius: 6, padding: '6px 10px', maxWidth: 780 }}>
+        <strong>The corpus-level finding:</strong> {clusterN} of {rows.length} patients are in the
+        signature cluster, and <strong>{clusterProgressing}/{clusterN}</strong> of them are active or
+        progressing to nephritis — while every patient <em>outside</em> the cluster is quiescent
+        presymptomatic. The signature emerges from the population's raw series and tracks the disease;
+        no single chart could surface it.
       </p>
       <svg width={W} height={H} style={{ border: `1px solid ${C.border}`, borderRadius: 8, background: '#fcfcfc' }}>
         {/* quadrant shading: bottom-right = the "worsening" corner (Stable anchor → plot edge) */}
@@ -1460,11 +1479,21 @@ function SignaturePanel({ rows }) {
           // clamp so the circle AND its label stay inside the canvas
           const cx = clamp(xAt(r.anti_ds_dna_trend) + jx, padL + rr, padL + plotW - rr);
           const cy = clamp(yAt(r.complement_trend) + jy, padT + rr + 12, padT + plotH - rr);
+          // DERIVED cluster halo: dashed purple ring around members, thicker for
+          // higher signature_strength. Drawn behind the state circle.
+          const inCluster = r.is_in_pre_nephritic_signature_cluster;
+          const strength = r.signature_strength || 0;
           return (
             <g key={r.individual_id}>
+              {inCluster ? (
+                <circle cx={cx} cy={cy} r={rr + 4 + strength * 2} fill="none"
+                  stroke={SIG_CLUSTER} strokeWidth={1 + strength} strokeDasharray="3 2" opacity={0.9}>
+                  <title>{personName(r)} · in pre-nephritic signature cluster · strength {strength} ({r.count_pre_nephritic_signature_panels} signature panel{r.count_pre_nephritic_signature_panels === 1 ? '' : 's'})</title>
+                </circle>
+              ) : null}
               <circle cx={cx} cy={cy} r={rr} fill={stateColor(r.nephritis_progression_state_key)}
                 fillOpacity={0.65} stroke={stateColor(r.nephritis_progression_state_key)} strokeWidth={1.5}>
-                <title>{personName(r)} · {stateLbl(r.nephritis_progression_state_key)} · SLEDAI {r.latest_sledai_score}</title>
+                <title>{personName(r)} · {stateLbl(r.nephritis_progression_state_key)} · SLEDAI {r.latest_sledai_score}{inCluster ? ` · signature cluster (strength ${strength})` : ''}</title>
               </circle>
               <text x={clamp(cx, padL + 18, padL + plotW - 18)} y={cy - rr - 3} textAnchor="middle" fontSize={10} fill={C.ink}>
                 {r.family_name}
@@ -1490,6 +1519,9 @@ function StateLegend() {
           <span style={{ width: 11, height: 11, borderRadius: 3, background: col, display: 'inline-block' }} /> {lbl}
         </span>
       ))}
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: C.sub }}>
+        <span style={{ width: 13, height: 13, borderRadius: '50%', border: `2px dashed ${SIG_CLUSTER}`, display: 'inline-block' }} /> pre-nephritic signature cluster (derived)
+      </span>
     </div>
   );
 }

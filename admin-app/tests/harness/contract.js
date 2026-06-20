@@ -118,4 +118,13 @@ export const CONTRACT = {
     endpoint: (machineId) => `/api/state-machines/${machineId}`,
     plannedLoop: 'Loop 10',
   },
+  // ---- Loop 11: the emergent SEROLOGY-SIGNATURE CLUSTER (corpus-level discovery) ----
+  // is_in_pre_nephritic_signature_cluster / signature_strength are DERIVED per
+  // individual from the raw serology series — the rising-dsDNA/falling-complement
+  // signature, rolled up. Surfaced on the cohort board (/api/cohort-individuals).
+  signatureCluster: {
+    surfaces: 'L13 emergent pre-nephritic serology-signature cluster (derived corpus-level membership)',
+    endpoint: () => `/api/cohort-individuals`,
+    plannedLoop: 'Loop 11',
+  },
 };

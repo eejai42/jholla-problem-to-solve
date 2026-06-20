@@ -105,16 +105,16 @@ The doctor's deepest point: discovery is corpus-level - a single chart never dis
 The one concrete unbuilt admin-witness item. StateMachineView is hardcoded to diagnosis-lifecycle; lupus-nephritis-progression already lives in vw_state_machines and is served by the same router. Make StateMachineView select the machine (a binding change, not a model change): render its states, the 5 raw-leaf-triggered transition rules, and a per-state cohort-occupancy strip. Closes the loop between the disease-state simulator and its admin witness.
 
 - **Status:** done - rule `none - app-only loop; occupancy already derived (IsCurrent), admin-witness binding only`; state `state: Loop 10 - progression machine bound into the state-machine admin; per-state cohort occupancy is the simulator's admin witness`
-### [NEXT] Loop 11 — Serology-signature discovery - emergent cluster, not a label
+### [DONE] Loop 11 — Serology-signature discovery - emergent cluster, not a label
 
 Make the discovery claim falsifiable at corpus scale. The serology signature that PRECEDES nephritis (the rising-anti-dsDNA / falling-complement trajectory) should surface as a DERIVED corpus-level cluster on the cohort scatter - emergent from the population's raw serology series, not a label anyone assigned. Derive the cluster membership / signature-strength field in the hub so the discovery is reproducible and witnessed, then surface it on the cohort board. This is the literal answer to 'discovery is corpus-level.'
 
-- **Status:** next
-### [PLANNED] Loop 12 — Prune excess engineering - keep only what is load-bearing for the v1 audit response
+- **Status:** done - rule `rule: derive emergent pre-nephritic serology-signature cluster (IsPreNephriticSignaturePanel -&gt; CountPreNephriticSignaturePanels -&gt; IsInPreNephriticSignatureCluster + SignatureStrength)`; state `state: Loop 11 - emergent serology-signature cluster; 6/12 in cluster, perfectly separating active/progressing from quiescent; surfaced as derived halo on the cohort scatter`
+### [NEXT] Loop 12 — Prune excess engineering - keep only what is load-bearing for the v1 audit response
 
 A deliberate trimming pass (NOT a delete spree). Walk the model, the app, and the docs and find anything that was UPGRADED or SUPERSEDED and now lingers as a duplicate, plus any engineering that is not actually load-bearing toward the clearest pedagogical answer to the v1 audit. Candidates to scrutinise: superseded prediction types that don't earn their keep (e.g. a 4th parallel adverse-effect prediction once severity + treatment-response + treatment-line exist), redundant ontology slots that no longer carry a claim, and any view/endpoint with no consumer. Promotion rule inverted: if a thing is neither traceable to problem-to-solve.md nor load-bearing toward the keystone or the audit response, retire it. Goal: the clearest, most complete, DUPLICATE-FREE representation of the problem - so the audit response is concise as well as complete.
 
-- **Status:** planned
+- **Status:** next
 ### [ROADMAP] Loop 13 — LLM intake clerk + synthetic lab
 
 FUTURE ROADMAP (not part of the v1-audit response - this is the framework-thesis deliverable, the next conversation). The trust-boundary payoff: wire the LLM to read a natural-language case and write ONLY leaf observations - intake facts + synthetic-but-transparent test results - with the three-panel witness (case text / extracted facts with per-fact provenance / derived diagnosis + gate trace). The LLM never computes a higher-order inference; every value it emits is an editable knob. Demotes the model to a replaceable, fully-overridable transcriber - the structural defeat of 'a hallucination laundered through a deterministic function.'

@@ -20,8 +20,14 @@ describe('L7 · COHORT · the keystone list (intake home screen)', () => {
         `App does not yet surface the cohort screen (HTTP ${status}). Wire /api/cohort to read vw_individual_predictions.`,
       );
     }
-    const rows = Array.isArray(body) ? body : body.rows;
-    if (!Array.isArray(rows)) throw new Error('Expected /api/cohort to return a list of predictions.');
+    const allRows = Array.isArray(body) ? body : body.rows;
+    if (!Array.isArray(allRows)) throw new Error('Expected /api/cohort to return a list of predictions.');
+
+    // The intake-write-path suite (L10) creates and then deletes transient
+    // `*-harness` patients; because node:test runs test FILES concurrently, one of
+    // those rows can briefly appear in this cohort query. The oracle is about the
+    // real 12-patient cohort, so filter those transient rows out before asserting.
+    const rows = allRows.filter((r) => !String(r.individual_prediction_id || r.individual || '').endsWith('-harness'));
 
     if (rows.length !== PATIENTS.length) {
       throw new Error(`Expected ${PATIENTS.length} patients in the cohort, app served ${rows.length}.`);

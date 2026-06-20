@@ -1067,6 +1067,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=COUNTIFS(SerologyObservations!{{Individual}}, {{IndividualId}})"
       },
       {
+        "name": "CountPreNephriticSignaturePanels",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "How many of this individual's panels exhibit the pre-nephritic serology signature (rising anti-dsDNA + falling complement before overt nephritis). The corpus-level roll-up of the per-panel signal; emergent from the raw series.",
+        "formula": "=COUNTIFS(SerologyObservations!{{Individual}}, {{IndividualId}}, SerologyObservations!{{IsPreNephriticSignaturePanel}}, TRUE())"
+      },
+      {
+        "name": "IsInPreNephriticSignatureCluster",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "DERIVED cluster membership: TRUE when this individual's own raw serology series ever showed the pre-nephritic signature. The discovery 'this serology signature precedes nephritis' becomes a reproducible, witnessed corpus-level cluster — not a label anyone assigned.",
+        "formula": "=IF({{CountPreNephriticSignaturePanels}}>=1,TRUE(),FALSE())"
+      },
+      {
+        "name": "SignatureStrength",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "DERIVED 0/1/2 strength of the pre-nephritic signature: 2 when it appears on >=2 panels (persistent), 1 on exactly one panel, 0 when absent. Drives the emphasis of cluster members on the cohort scatter.",
+        "formula": "=IF({{CountPreNephriticSignaturePanels}}>=2,2,IF({{CountPreNephriticSignaturePanels}}>=1,1,0))"
+      },
+      {
         "name": "MaxProgressionStateOrder",
         "datatype": "number",
         "type": "aggregation",
@@ -1179,7 +1203,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 1,
-        "TargetPathway": "type-I-IFN"
+        "TargetPathway": "type-I-IFN",
+        "CountPreNephriticSignaturePanels": 1,
+        "IsInPreNephriticSignatureCluster": true,
+        "SignatureStrength": 1
       },
       {
         "IndividualId": "ind-b-okafor",
@@ -1228,7 +1255,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 1,
-        "TargetPathway": "type-I-IFN"
+        "TargetPathway": "type-I-IFN",
+        "CountPreNephriticSignaturePanels": 0,
+        "IsInPreNephriticSignatureCluster": false,
+        "SignatureStrength": 0
       },
       {
         "IndividualId": "ind-c-chen",
@@ -1277,7 +1307,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 2,
-        "TargetPathway": "B-cell/autoantibody"
+        "TargetPathway": "B-cell/autoantibody",
+        "CountPreNephriticSignaturePanels": 1,
+        "IsInPreNephriticSignatureCluster": true,
+        "SignatureStrength": 1
       },
       {
         "IndividualId": "ind-d-santos",
@@ -1326,7 +1359,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": true,
         "IsDiseaseProgressing": true,
         "TargetPathwayCode": 2,
-        "TargetPathway": "B-cell/autoantibody"
+        "TargetPathway": "B-cell/autoantibody",
+        "CountPreNephriticSignaturePanels": 2,
+        "IsInPreNephriticSignatureCluster": true,
+        "SignatureStrength": 2
       },
       {
         "IndividualId": "ind-e-mensah",
@@ -1375,7 +1411,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 3,
-        "TargetPathway": "T-cell-costim"
+        "TargetPathway": "T-cell-costim",
+        "CountPreNephriticSignaturePanels": 0,
+        "IsInPreNephriticSignatureCluster": false,
+        "SignatureStrength": 0
       },
       {
         "IndividualId": "ind-f-haidar",
@@ -1424,7 +1463,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 4,
-        "TargetPathway": "IL-17/23"
+        "TargetPathway": "IL-17/23",
+        "CountPreNephriticSignaturePanels": 0,
+        "IsInPreNephriticSignatureCluster": false,
+        "SignatureStrength": 0
       },
       {
         "IndividualId": "ind-g-lin",
@@ -1473,7 +1515,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 4,
-        "TargetPathway": "IL-17/23"
+        "TargetPathway": "IL-17/23",
+        "CountPreNephriticSignaturePanels": 0,
+        "IsInPreNephriticSignatureCluster": false,
+        "SignatureStrength": 0
       },
       {
         "IndividualId": "ind-h-yamamoto",
@@ -1527,7 +1572,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": true,
         "TargetPathwayCode": 1,
-        "TargetPathway": "type-I-IFN"
+        "TargetPathway": "type-I-IFN",
+        "CountPreNephriticSignaturePanels": 1,
+        "IsInPreNephriticSignatureCluster": true,
+        "SignatureStrength": 1
       },
       {
         "IndividualId": "ind-i-conteh",
@@ -1581,7 +1629,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": true,
         "TargetPathwayCode": 2,
-        "TargetPathway": "B-cell/autoantibody"
+        "TargetPathway": "B-cell/autoantibody",
+        "CountPreNephriticSignaturePanels": 1,
+        "IsInPreNephriticSignatureCluster": true,
+        "SignatureStrength": 1
       },
       {
         "IndividualId": "ind-j-brooks",
@@ -1635,7 +1686,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 1,
-        "TargetPathway": "type-I-IFN"
+        "TargetPathway": "type-I-IFN",
+        "CountPreNephriticSignaturePanels": 1,
+        "IsInPreNephriticSignatureCluster": true,
+        "SignatureStrength": 1
       },
       {
         "IndividualId": "ind-k-nair",
@@ -1689,7 +1743,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 4,
-        "TargetPathway": "IL-17/23"
+        "TargetPathway": "IL-17/23",
+        "CountPreNephriticSignaturePanels": 0,
+        "IsInPreNephriticSignatureCluster": false,
+        "SignatureStrength": 0
       },
       {
         "IndividualId": "ind-l-brandt",
@@ -1743,7 +1800,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsHighDiseaseActivity": false,
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 4,
-        "TargetPathway": "IL-17/23"
+        "TargetPathway": "IL-17/23",
+        "CountPreNephriticSignaturePanels": 0,
+        "IsInPreNephriticSignatureCluster": false,
+        "SignatureStrength": 0
       }
     ]
   },
@@ -10547,31 +10607,31 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "LoopNumber": "11",
         "Title": "Serology-signature discovery - emergent cluster, not a label",
         "Goal": "Make the discovery claim falsifiable at corpus scale. The serology signature that PRECEDES nephritis (the rising-anti-dsDNA / falling-complement trajectory) should surface as a DERIVED corpus-level cluster on the cohort scatter - emergent from the population's raw serology series, not a label anyone assigned. Derive the cluster membership / signature-strength field in the hub so the discovery is reproducible and witnessed, then surface it on the cohort board. This is the literal answer to 'discovery is corpus-level.'",
-        "Status": "next",
-        "RuleCommitMsg": "",
-        "StateCommitMsg": "",
+        "Status": "done",
+        "RuleCommitMsg": "rule: derive emergent pre-nephritic serology-signature cluster (IsPreNephriticSignaturePanel -> CountPreNephriticSignaturePanels -> IsInPreNephriticSignatureCluster + SignatureStrength)",
+        "StateCommitMsg": "state: Loop 11 - emergent serology-signature cluster; 6/12 in cluster, perfectly separating active/progressing from quiescent; surfaced as derived halo on the cohort scatter",
         "SortOrder": 12,
-        "StatusBadge": "[NEXT]",
-        "StatusLine": "",
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `rule: derive emergent pre-nephritic serology-signature cluster (IsPreNephriticSignaturePanel -> CountPreNephriticSignaturePanels -> IsInPreNephriticSignatureCluster + SignatureStrength)`; state `state: Loop 11 - emergent serology-signature cluster; 6/12 in cluster, perfectly separating active/progressing from quiescent; surfaced as derived halo on the cohort scatter`",
         "Name": "Loop 11 — Serology-signature discovery - emergent cluster, not a label",
         "RelativePath": "/admin/leopold-loops/loop-serology-discovery",
-        "Completedness": "next",
-        "IsInCurrentPlan": true
+        "Completedness": "done",
+        "IsInCurrentPlan": false
       },
       {
         "LeopoldLoopId": "loop-prune-nonloadbearing",
         "LoopNumber": "12",
         "Title": "Prune excess engineering - keep only what is load-bearing for the v1 audit response",
         "Goal": "A deliberate trimming pass (NOT a delete spree). Walk the model, the app, and the docs and find anything that was UPGRADED or SUPERSEDED and now lingers as a duplicate, plus any engineering that is not actually load-bearing toward the clearest pedagogical answer to the v1 audit. Candidates to scrutinise: superseded prediction types that don't earn their keep (e.g. a 4th parallel adverse-effect prediction once severity + treatment-response + treatment-line exist), redundant ontology slots that no longer carry a claim, and any view/endpoint with no consumer. Promotion rule inverted: if a thing is neither traceable to problem-to-solve.md nor load-bearing toward the keystone or the audit response, retire it. Goal: the clearest, most complete, DUPLICATE-FREE representation of the problem - so the audit response is concise as well as complete.",
-        "Status": "planned",
+        "Status": "next",
         "RuleCommitMsg": "",
         "StateCommitMsg": "",
         "SortOrder": 13,
-        "StatusBadge": "[PLANNED]",
+        "StatusBadge": "[NEXT]",
         "StatusLine": "",
         "Name": "Loop 12 — Prune excess engineering - keep only what is load-bearing for the v1 audit response",
         "RelativePath": "/admin/leopold-loops/loop-prune-nonloadbearing",
-        "Completedness": "planned",
+        "Completedness": "next",
         "IsInCurrentPlan": true
       },
       {
@@ -17208,6 +17268,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=IF(ISBLANK({{PriorC3}}),\"Stable\",IF(({{ComplementC3}}+{{ComplementC4}})<({{PriorC3}}+{{PriorC4}})*0.85,\"Falling\",IF(({{ComplementC3}}+{{ComplementC4}})>({{PriorC3}}+{{PriorC4}})*1.15,\"Rising\",\"Stable\")))"
       },
       {
+        "name": "IsPreNephriticSignaturePanel",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The pre-nephritic serology signature at THIS panel: rising anti-dsDNA + falling complement (the serological trajectory that precedes/tracks overt renal involvement). Emergent from the raw series, not a label anyone assigned. (Proteinuria is the OUTCOME the signature precedes, so it is deliberately NOT part of the signal.)",
+        "formula": "=IF(AND({{AntiDsDnaTrend}}=\"Rising\",{{ComplementTrend}}=\"Falling\"),TRUE(),FALSE())"
+      },
+      {
         "name": "IsSignificantProteinuria",
         "datatype": "boolean",
         "type": "calculated",
@@ -17311,7 +17379,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-a-reyes-2",
@@ -17343,7 +17412,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 4,
         "ProgressionStateKey": "SerologicActive",
-        "ProgressionStateOrder": 2
+        "ProgressionStateOrder": 2,
+        "IsPreNephriticSignaturePanel": true
       },
       {
         "SerologyObservationId": "sero-ind-b-okafor-1",
@@ -17375,7 +17445,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-b-okafor-2",
@@ -17407,7 +17478,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-c-chen-1",
@@ -17439,7 +17511,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-c-chen-2",
@@ -17471,7 +17544,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 4,
         "ProgressionStateKey": "SerologicActive",
-        "ProgressionStateOrder": 2
+        "ProgressionStateOrder": 2,
+        "IsPreNephriticSignaturePanel": true
       },
       {
         "SerologyObservationId": "sero-ind-d-santos-1",
@@ -17503,7 +17577,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-d-santos-2",
@@ -17535,7 +17610,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 8,
         "ProgressionStateKey": "RenalFlareRisk",
-        "ProgressionStateOrder": 4
+        "ProgressionStateOrder": 4,
+        "IsPreNephriticSignaturePanel": true
       },
       {
         "SerologyObservationId": "sero-ind-d-santos-3",
@@ -17567,7 +17643,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 12,
         "ProgressionStateKey": "BiopsyIndicated",
-        "ProgressionStateOrder": 5
+        "ProgressionStateOrder": 5,
+        "IsPreNephriticSignaturePanel": true
       },
       {
         "SerologyObservationId": "sero-ind-e-mensah-1",
@@ -17599,7 +17676,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-e-mensah-2",
@@ -17631,7 +17709,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-f-haidar-1",
@@ -17663,7 +17742,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-f-haidar-2",
@@ -17695,7 +17775,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-g-lin-1",
@@ -17727,7 +17808,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-g-lin-2",
@@ -17759,7 +17841,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-h-yamamoto-1",
@@ -17791,7 +17874,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-h-yamamoto-2",
@@ -17823,7 +17907,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 8,
         "ProgressionStateKey": "EarlyNephritis",
-        "ProgressionStateOrder": 3
+        "ProgressionStateOrder": 3,
+        "IsPreNephriticSignaturePanel": true
       },
       {
         "SerologyObservationId": "sero-ind-i-conteh-1",
@@ -17855,7 +17940,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 4,
         "ProgressionStateKey": "EarlyNephritis",
-        "ProgressionStateOrder": 3
+        "ProgressionStateOrder": 3,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-i-conteh-2",
@@ -17887,7 +17973,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 8,
         "ProgressionStateKey": "RenalFlareRisk",
-        "ProgressionStateOrder": 4
+        "ProgressionStateOrder": 4,
+        "IsPreNephriticSignaturePanel": true
       },
       {
         "SerologyObservationId": "sero-ind-j-brooks-1",
@@ -17919,7 +18006,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-j-brooks-2",
@@ -17951,7 +18039,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 4,
         "ProgressionStateKey": "SerologicActive",
-        "ProgressionStateOrder": 2
+        "ProgressionStateOrder": 2,
+        "IsPreNephriticSignaturePanel": true
       },
       {
         "SerologyObservationId": "sero-ind-k-nair-1",
@@ -17983,7 +18072,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-k-nair-2",
@@ -18015,7 +18105,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-l-brandt-1",
@@ -18047,7 +18138,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       },
       {
         "SerologyObservationId": "sero-ind-l-brandt-2",
@@ -18079,7 +18171,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "IsPreNephriticSignaturePanel": false
       }
     ]
   },
@@ -19111,6 +19204,102 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       }
     ],
     "structure": null
+  },
+  "Individuals.CountPreNephriticSignaturePanels": {
+    "table": "Individuals",
+    "field": "CountPreNephriticSignaturePanels",
+    "kind": "rollup",
+    "rule": "An individual\u0027s count pre nephritic signature panels is the number of the individual\u0027s serology observations that are pre nephritic signature panels.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "IsPreNephriticSignaturePanel",
+        "label": "is pre nephritic signature panel"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.IsInPreNephriticSignatureCluster": {
+    "table": "Individuals",
+    "field": "IsInPreNephriticSignatureCluster",
+    "kind": "formula",
+    "rule": "An individual is considered in pre nephritic signature cluster if the count pre nephritic signature panels is at least 1.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "CountPreNephriticSignaturePanels",
+        "label": "count pre nephritic signature panels"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s is in pre nephritic signature cluster is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the count pre nephritic signature panels is at least 1"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Individuals.SignatureStrength": {
+    "table": "Individuals",
+    "field": "SignatureStrength",
+    "kind": "formula",
+    "rule": "The individual\u0027s signature strength is determined by the following priority:\n1. 2, if the count pre nephritic signature panels is at least 2;\n2. 1, if the count pre nephritic signature panels is at least 1;\n3. otherwise 0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "CountPreNephriticSignaturePanels",
+        "label": "count pre nephritic signature panels"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s signature strength is determined by the following priority:",
+      "cases": [
+        {
+          "value": "2",
+          "when": {
+            "kind": "leaf",
+            "text": "the count pre nephritic signature panels is at least 2"
+          }
+        },
+        {
+          "value": "1",
+          "when": {
+            "kind": "leaf",
+            "text": "the count pre nephritic signature panels is at least 1"
+          }
+        },
+        {
+          "value": "0",
+          "when": null
+        }
+      ],
+      "children": null
+    }
   },
   "Individuals.MaxProgressionStateOrder": {
     "table": "Individuals",
@@ -25405,6 +25594,52 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         },
         {
           "value": "the literal \u201CStable\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.IsPreNephriticSignaturePanel": {
+    "table": "SerologyObservations",
+    "field": "IsPreNephriticSignaturePanel",
+    "kind": "formula",
+    "rule": "A serology observation is considered a pre nephritic signature panel if all of the following hold: the anti ds dna trend is the literal \u201CRising\u201D and the complement trend is the literal \u201CFalling\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "AntiDsDnaTrend",
+        "label": "anti ds dna trend"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementTrend",
+        "label": "complement trend"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s is pre nephritic signature panel is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "all",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the anti ds dna trend is the literal \u201CRising\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the complement trend is the literal \u201CFalling\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "false",
           "when": null
         }
       ],

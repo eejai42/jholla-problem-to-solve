@@ -1178,6 +1178,36 @@ RETURNS NUMERIC AS $$
   SELECT ((SELECT COUNT(*) FROM serology_observations WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id)))::numeric;
 $$ LANGUAGE sql STABLE;
 
+-- calc_individuals_count_pre_nephritic_signature_panels
+-- Field: Individuals.CountPreNephriticSignaturePanels
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_count_pre_nephritic_signature_panels(p_individual_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM serology_observations WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_serology_observations_is_pre_nephritic_signature_panel(serology_observation_id) = TRUE))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_is_in_pre_nephritic_signature_cluster
+-- Field: Individuals.IsInPreNephriticSignatureCluster
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_is_in_pre_nephritic_signature_cluster(p_individual_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_individuals_count_pre_nephritic_signature_panels(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_signature_strength
+-- Field: Individuals.SignatureStrength
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_signature_strength(p_individual_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_individuals_count_pre_nephritic_signature_panels(p_individual_id))::NUMERIC >= 2 THEN (2)::text ELSE (CASE WHEN (calc_individuals_count_pre_nephritic_signature_panels(p_individual_id))::NUMERIC >= 1 THEN (1)::text ELSE (0)::text END)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_individuals_max_progression_state_order
 -- Field: Individuals.MaxProgressionStateOrder
 -- Type: aggregation | DataType: number | Returns: NUMERIC
@@ -4077,6 +4107,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_serology_observations_complement_trend(p_serology_observation_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN ((calc_serology_observations_prior_c3(p_serology_observation_id)) IS NULL OR (calc_serology_observations_prior_c3(p_serology_observation_id))::text = '') THEN ('Stable')::text ELSE (CASE WHEN (COALESCE(CASE WHEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0)) < (COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) * COALESCE(0.85, 0)) THEN ('Falling')::text ELSE (CASE WHEN (COALESCE(CASE WHEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0)) > (COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) * COALESCE(1.15, 0)) THEN ('Rising')::text ELSE ('Stable')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_is_pre_nephritic_signature_panel
+-- Field: SerologyObservations.IsPreNephriticSignaturePanel
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_is_pre_nephritic_signature_panel(p_serology_observation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) = 'Rising' AND calc_serology_observations_complement_trend(p_serology_observation_id) = 'Falling') THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_serology_observations_is_significant_proteinuria

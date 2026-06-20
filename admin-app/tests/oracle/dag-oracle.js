@@ -497,6 +497,31 @@ export const PROGRESSION_PATHS = {
   'ind-l-brandt':   { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
 };
 
+// L13 — the EMERGENT PRE-NEPHRITIC SEROLOGY-SIGNATURE CLUSTER (served on
+// /api/cohort-individuals). DERIVED per individual: the count of panels showing
+// rising-anti-dsDNA + falling-complement, rolled up to a cluster-membership
+// boolean + a 0/1/2 strength. The discovery claim made falsifiable at corpus
+// scale: cluster membership EMERGES from the population's raw serology series and
+// tracks the nephritis trajectory — no label is assigned anywhere.
+//
+// The separation invariant the test enforces (the actual "finding"):
+//   every cluster MEMBER is active or progressing (SerologicActive or a nephritis
+//   state); every NON-member is quiescent PresymptomaticAutoimmunity.
+export const SIGNATURE_CLUSTER = {
+  'ind-a-reyes':    { is_in_pre_nephritic_signature_cluster: true,  signature_strength: 1 },
+  'ind-b-okafor':   { is_in_pre_nephritic_signature_cluster: false, signature_strength: 0 },
+  'ind-c-chen':     { is_in_pre_nephritic_signature_cluster: true,  signature_strength: 1 },
+  'ind-d-santos':   { is_in_pre_nephritic_signature_cluster: true,  signature_strength: 2 }, // persistent — most progressed
+  'ind-e-mensah':   { is_in_pre_nephritic_signature_cluster: false, signature_strength: 0 },
+  'ind-f-haidar':   { is_in_pre_nephritic_signature_cluster: false, signature_strength: 0 },
+  'ind-g-lin':      { is_in_pre_nephritic_signature_cluster: false, signature_strength: 0 },
+  'ind-h-yamamoto': { is_in_pre_nephritic_signature_cluster: true,  signature_strength: 1 },
+  'ind-i-conteh':   { is_in_pre_nephritic_signature_cluster: true,  signature_strength: 1 },
+  'ind-j-brooks':   { is_in_pre_nephritic_signature_cluster: true,  signature_strength: 1 },
+  'ind-k-nair':     { is_in_pre_nephritic_signature_cluster: false, signature_strength: 0 },
+  'ind-l-brandt':   { is_in_pre_nephritic_signature_cluster: false, signature_strength: 0 },
+};
+
 // L5d — TREATMENT-LINE selection (served by /api/predictions/:id). The audit's
 // second worked example: MMF vs belimumab vs anifrolumab, with a single deciding
 // reason, derived from the confirmed-mechanism pathway + the disease state.
