@@ -65,6 +65,14 @@
       "PinnedVersion": "v2026.06.17.2023",
       "LastVersionUsed": "v2026.06.17.2023",
       "LastUrl": "https://effortless-rulebook-to-explainer-v2026-06-17-2023-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktoxlsx",
+      "RelativePath": "/xlsx",
+      "CommandLine": "rulebook-to-xlsx -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.05.25.2316"
     }
   ]
 }
