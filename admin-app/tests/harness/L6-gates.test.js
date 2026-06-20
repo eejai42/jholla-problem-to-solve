@@ -9,7 +9,7 @@
 // RED today: served by /api/predictions/:id (501). Loop 1 turns these green.
 
 import { test, before, after, describe } from 'node:test';
-import { PATIENTS, GATES, KEYSTONE } from '../oracle/dag-oracle.js';
+import { PATIENTS, GATES, KEYSTONE, DECIDING_GATE } from '../oracle/dag-oracle.js';
 import { CONTRACT } from './contract.js';
 import { startServer, stopServer, assertAppSurfaces, getJson } from './server-fixture.js';
 
@@ -72,4 +72,49 @@ describe('L6 · GATES · each of the four keystone gates, per patient', () => {
       }
     });
   }
+
+  // The single deciding gate (derived `deciding_gate`): each patient names
+  // exactly one place where the keystone AND breaks (or AllGatesPass). This is
+  // the witnessed form of the "five fail, each on one named gate" success claim.
+  for (const p of PATIENTS) {
+    test(`${p.key} · ${p.name} · deciding_gate = ${DECIDING_GATE[p.prediction]}`, async () => {
+      const { status, body } = await getJson(CONTRACT.keystone.endpoint(p));
+      if (status !== 200) {
+        throw new Error(
+          `App does not yet surface deciding_gate (HTTP ${status}). Wire /api/predictions/:id to read vw_individual_predictions.`,
+        );
+      }
+      const expected = DECIDING_GATE[p.prediction];
+      if (body.deciding_gate !== expected) {
+        throw new Error(
+          `Expected deciding_gate '${expected}' but app served '${body.deciding_gate}'. Witness: ${KEYSTONE[p.prediction].witness}`,
+        );
+      }
+      // Invariant: deciding_gate === 'AllGatesPass'  ⇔  keystone actionable.
+      const agrees = (body.deciding_gate === 'AllGatesPass') === (body.is_clinically_actionable === true);
+      if (!agrees) {
+        throw new Error(
+          `deciding_gate '${body.deciding_gate}' disagrees with keystone (${body.is_clinically_actionable}); they must be equivalent.`,
+        );
+      }
+    });
+  }
+
+  // Cohort-level: across the seven, every distinct failure mode is exercised.
+  test('COHORT · all four failure modes appear, and {A,G} alone pass', async () => {
+    const seen = new Set();
+    const passers = [];
+    for (const p of PATIENTS) {
+      const { status, body } = await getJson(CONTRACT.keystone.endpoint(p));
+      if (status !== 200) throw new Error(`App does not yet surface the prediction panel (HTTP ${status}).`);
+      if (body.deciding_gate === 'AllGatesPass') passers.push(p.key);
+      else seen.add(body.deciding_gate);
+    }
+    for (const mode of ['Calibration', 'CrypticRelatedness', 'AncestryTransport', 'NoValidatedMechanism']) {
+      if (!seen.has(mode)) throw new Error(`Failure mode '${mode}' is never exercised across the cohort.`);
+    }
+    if (passers.sort().join(',') !== 'A,G') {
+      throw new Error(`Expected exactly {A,G} to pass all gates; got {${passers.join(',')}}.`);
+    }
+  });
 });

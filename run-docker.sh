@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# ============================================================================
+#  run-docker.sh — clone, then run the whole platform as ONE container.
+# ============================================================================
+#  Builds a self-contained image (bundled Postgres + seeded schema/data + the
+#  Node app that serves the React UI and the /api inference surface on a single
+#  port) and runs it. After this finishes, open the printed URL.
+#
+#      git clone <repo> && cd <repo>
+#      ./run-docker.sh
+#      # → open http://localhost:6347
+#
+#  Flags:
+#      ./run-docker.sh            build (if needed) + run, foreground logs
+#      ./run-docker.sh --rebuild  force a fresh image build first
+#      ./run-docker.sh --persist  keep DB data across runs (named volume)
+#      ./run-docker.sh --detach   run in the background, print the URL, exit
+#      PORT=8080 ./run-docker.sh  publish on a different host port
+#
+#  Stop a detached run:  docker rm -f causal-autoimmune
+# ============================================================================
+set -euo pipefail
+
+cd "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+IMAGE="causal-autoimmune"
+NAME="causal-autoimmune"
+HOST_PORT="${PORT:-6347}"   # host port to publish; container always serves :6347
+CONTAINER_PORT=6347
+
+REBUILD=false
+PERSIST=false
+DETACH=false
+for arg in "$@"; do
+  case "$arg" in
+    --rebuild) REBUILD=true ;;
+    --persist) PERSIST=true ;;
+    --detach|-d) DETACH=true ;;
+    -h|--help)
+      sed -n '2,30p' "$0"; exit 0 ;;
+    *) echo "unknown flag: $arg (try --help)" >&2; exit 2 ;;
+  esac
+done
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "docker is not installed or not on PATH. Install Docker Desktop / Engine first." >&2
+  exit 1
+fi
+
+# --- Build the image (skip if it already exists and --rebuild not given). ----
+if $REBUILD || [ -z "$(docker images -q "$IMAGE" 2>/dev/null)" ]; then
+  echo "[run-docker] building image '$IMAGE' (first build pulls Postgres + Node; a few minutes)…"
+  docker build -t "$IMAGE" .
+else
+  echo "[run-docker] reusing existing image '$IMAGE' (pass --rebuild to force a rebuild)."
+fi
+
+# --- Replace any previous container with the same name. ----------------------
+if [ -n "$(docker ps -aq -f name="^${NAME}$")" ]; then
+  echo "[run-docker] removing previous container '$NAME'…"
+  docker rm -f "$NAME" >/dev/null
+fi
+
+# --- Optional persistence: keep Postgres data in a named volume. -------------
+VOLUME_ARGS=()
+if $PERSIST; then
+  echo "[run-docker] --persist: DB data kept in volume 'causal-autoimmune-pgdata'."
+  VOLUME_ARGS=(-v causal-autoimmune-pgdata:/var/lib/postgresql/data)
+fi
+
+echo "[run-docker] open  ->  http://localhost:${HOST_PORT}"
+
+# NB: "${VOLUME_ARGS[@]+...}" guards against macOS's stock Bash 3.2, where
+# expanding an EMPTY array under `set -u` errors as "unbound variable". This
+# form expands to nothing when the array is empty and to the flags otherwise.
+if $DETACH; then
+  docker run -d --name "$NAME" \
+    -p "${HOST_PORT}:${CONTAINER_PORT}" \
+    "${VOLUME_ARGS[@]+"${VOLUME_ARGS[@]}"}" \
+    "$IMAGE"
+  echo "[run-docker] running in background as container '$NAME'."
+  echo "[run-docker] logs:  docker logs -f $NAME"
+  echo "[run-docker] stop:  docker rm -f $NAME"
+else
+  # Foreground: Ctrl-C stops & removes the container.
+  exec docker run --rm --name "$NAME" \
+    -p "${HOST_PORT}:${CONTAINER_PORT}" \
+    "${VOLUME_ARGS[@]+"${VOLUME_ARGS[@]}"}" \
+    "$IMAGE"
+fi

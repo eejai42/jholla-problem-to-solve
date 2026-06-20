@@ -16,7 +16,11 @@ const fmtVal = (v) => (v === true ? 'true' : v === false ? 'false' : v == null ?
 
 // A patient chip rendered as a real Link to that case's route. Used wherever a
 // cohort is shown so every patient is reachable by URL (no click-to-select).
-function PatientChips({ list, predId }) {
+// THE ONE VARIABLE THIS CONTROLS IS THE CASE: each chip rewrites ONLY the path
+// (the predictionId) and preserves the rest of the URL — including ?tab — so
+// switching patients keeps you on the same tab. `keepQuery` is the current
+// query (URLSearchParams) to carry across.
+function PatientChips({ list, predId, keepQuery }) {
   return (
     <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
       {list.map((p) => {
@@ -24,6 +28,7 @@ function PatientChips({ list, predId }) {
         return (
           <Link key={p.individual_prediction_id}
             to={`/diagnosis/case/${p.individual_prediction_id}`}
+            query={keepQuery}
             title={`${p.individual_ancestry_label}${p.is_ancestry_holdout ? ', holdout' : ''}`}
             style={{
               padding: '6px 10px', borderRadius: 6, border: `1px solid ${active ? C.ink : C.border}`,
@@ -141,8 +146,10 @@ export function DiagnosisView() {
   );
 }
 
-// The /diagnosis/case/:predictionId tabs. Each tab is a SUB-ROUTE, so selecting
-// one changes the URL — F5 (and a shared link) reopens the exact same tab.
+// The /diagnosis/case/:predictionId tabs. The tab is the ?tab query param — NOT
+// a path segment — so the case (path) and the tab (query) are independent
+// variables: switching cases keeps the tab, switching tabs keeps the case.
+// '' is the default "Case walk" tab (no ?tab in the URL).
 const CASE_TABS = [
   ['', 'Case walk'],
   ['report', 'Summary writeup'],
@@ -155,16 +162,29 @@ const CASE_TABS = [
   ['keystone', 'Full chain'],
 ];
 
-// CaseDetail — the canonical URL-driven case page. `routeKey` tells it which
-// pane to show (diagnosis.case = walk; diagnosis.case.<sub> = that sub-pane).
-// `predId` is the captured :predictionId. A patient picker links across cases;
-// a tab strip links across panes. Nothing here is local selection state.
+// CaseDetail — the canonical URL-driven case page.
+//   PATH  decides the CASE      (/diagnosis/case/:predictionId)  ← case number IS the route
+//   ?tab  decides the SUB-PANE  (?tab=evidence)                  ← one variable per click
+// `routeKey` is only a fallback: a deep link to the legacy path form
+// (/diagnosis/case/pred-a/evidence) still opens, seeding ?tab from the route_key.
 export function CaseDetail({ predId, routeKey }) {
   const { data: patients } = useFetch('/api/patients');
+  const { query } = useLocation();
   const list = Array.isArray(patients) ? patients : [];
   const patient = list.find((p) => p.individual_prediction_id === predId);
-  const sub = (routeKey || 'diagnosis.case').replace(/^diagnosis\.case\.?/, ''); // '' | 'evidence' | …
-  const base = `/diagnosis/case/${predId}`;
+
+  // tab comes from ?tab; fall back to a legacy path sub-route (routeKey) so old
+  // bookmarks keep working. '' means the default Case-walk tab.
+  const fromRouteKey = (routeKey || 'diagnosis.case').replace(/^diagnosis\.case\.?/, '');
+  const sub = query.has('tab') ? query.get('tab') : fromRouteKey;
+
+  // A tab link tweaks ONLY ?tab — the path (the case) is left untouched. Default
+  // tab ('') drops the param entirely so the URL stays clean.
+  const tabQuery = (k) => {
+    const next = new URLSearchParams(query);
+    if (k) next.set('tab', k); else next.delete('tab');
+    return next;
+  };
 
   return (
     <div>
@@ -172,14 +192,15 @@ export function CaseDetail({ predId, routeKey }) {
         Case — {patient ? patient.individual : predId}
         {patient ? <span style={{ color: C.sub, fontWeight: 400, fontSize: 14 }}> · {patient.individual_ancestry_label}{patient.is_ancestry_holdout ? ', holdout' : ''}</span> : null}
       </h2>
-      <PatientChips list={list} predId={predId} />
+      {/* patient picker — each chip tweaks ONLY the case (path), keeping ?tab */}
+      <PatientChips list={list} predId={predId} keepQuery={query} />
 
-      {/* tab strip — each tab is a Link to its sub-route */}
+      {/* tab strip — each tab tweaks ONLY ?tab (path/case preserved) */}
       <div style={{ display: 'flex', gap: 4, borderBottom: `1px solid ${C.border}`, marginBottom: 14, flexWrap: 'wrap' }}>
         {CASE_TABS.map(([k, lbl]) => {
           const active = sub === k;
           return (
-            <Link key={k || 'walk'} to={k ? `${base}/${k}` : base}
+            <Link key={k || 'walk'} to={`/diagnosis/case/${predId}`} query={tabQuery(k)}
               style={{ padding: '7px 14px', borderBottom: `2px solid ${active ? C.accent : 'transparent'}`, color: active ? C.ink : C.sub, fontWeight: active ? 700 : 500, fontSize: 14 }}>
               {lbl}
             </Link>
@@ -226,22 +247,22 @@ const LEAF_CONFIG = {
   evidence: {
     title: 'Qualified evidence', noun: 'evidence item', idField: 'evidence_item_id',
     endpoint: (p) => `/api/mechanisms/${mechOf(p)}/evidence`,
-    cols: [['evidence_item_id', 'ID'], ['measured_effect_size', 'Effect'], ['standard_error', 'SE'], ['z_stat', 'Z'], ['is_qualified_evidence', 'Qualified']],
+    cols: [['evidence_item_id', 'ID'], ['effect_size', 'Effect'], ['standard_error', 'SE'], ['z_stat', 'Z'], ['is_qualified_evidence', 'Qualified']],
   },
   replication: {
     title: 'Cross-cohort replication', noun: 'replication', idField: 'cohort_replication_id',
     endpoint: (p) => `/api/mechanisms/${mechOf(p)}/replications`,
-    cols: [['cohort_replication_id', 'ID'], ['replication_ancestry_label', 'Ancestry'], ['replication_effect_sign', 'Sign'], ['replication_p_value', 'p'], ['is_concordant_replication', 'Concordant']],
+    cols: [['cohort_replication_id', 'ID'], ['replication_ancestry_label', 'Ancestry'], ['replication_effect_sign', 'Sign'], ['replication_p_value', 'p'], ['is_cross_ancestry_concordant', 'Concordant']],
   },
   controls: {
     title: 'Negative controls', noun: 'control test', idField: 'negative_control_test_id',
     endpoint: (p) => `/api/mechanisms/${mechOf(p)}/controls`,
-    cols: [['negative_control_test_id', 'ID'], ['permuted_effect_size', 'Permuted effect'], ['survives_negative_control', 'Survives']],
+    cols: [['negative_control_test_id', 'ID'], ['test_kind', 'Kind'], ['permutation_effect_size', 'Permuted effect'], ['null_threshold', 'Null thresh'], ['is_survived', 'Survives']],
   },
   calibration: {
     title: 'Calibration bins', noun: 'calibration bin', idField: 'calibration_bin_id',
     endpoint: (p) => `/api/predictions/${p}/calibration`,
-    cols: [['calibration_bin_id', 'ID'], ['nominal_coverage', 'Nominal'], ['empirical_coverage', 'Empirical'], ['is_well_calibrated_bin', 'Well-calibrated']],
+    cols: [['calibration_bin_id', 'ID'], ['predicted_probability_band', 'Band'], ['observed_event_rate', 'Observed'], ['coverage_count', 'Coverage'], ['is_well_calibrated_bin', 'Well-calibrated']],
   },
 };
 
@@ -251,7 +272,7 @@ function GatesPane({ predId }) {
   if (loading) return <p style={{ color: C.sub }}>Loading gates…</p>;
   if (error) return <p style={{ color: C.fail }}>{error}</p>;
   const GATES = [
-    ['is_causal_mechanism_confirmed', 'Mechanism confirmed'],
+    ['rests_on_confirmed_mechanism', 'Mechanism confirmed'],
     ['is_high_confidence_prediction', 'High-confidence prediction'],
     ['is_ancestry_transport_safe', 'Ancestry transport safe'],
     ['is_clinically_actionable', 'Keystone — clinically actionable'],
@@ -348,16 +369,16 @@ function MechanismPane({ predId }) {
     ['causal_mechanism_id', 'Mechanism'], ['count_qualified_evidence', 'Qualified evidence'],
     ['replicates_across_cohorts', 'Replicates'], ['survives_negative_controls', 'Survives controls'],
     ['is_spurious_derived', 'Spurious'], ['is_causal_architecture_node', 'Confirmed node'],
-    ['is_transportable_to_absent_ancestry', 'Transportable'],
+    ['is_ancestry_transportable', 'Transportable'],
   ];
   return (
     <div>
       <h3 style={{ marginTop: 0 }}>Mechanism node</h3>
       <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>
         Aggregations over this mechanism's atoms decide whether it is a real causal-architecture node.
-        Drill into <Link to={`/diagnosis/case/${predId}/evidence`} style={{ color: C.accent }}>evidence</Link>,{' '}
-        <Link to={`/diagnosis/case/${predId}/replication`} style={{ color: C.accent }}>replication</Link>, or{' '}
-        <Link to={`/diagnosis/case/${predId}/controls`} style={{ color: C.accent }}>controls</Link>.
+        Drill into <Link to={`/diagnosis/case/${predId}`} query={{ tab: 'evidence' }} style={{ color: C.accent }}>evidence</Link>,{' '}
+        <Link to={`/diagnosis/case/${predId}`} query={{ tab: 'replication' }} style={{ color: C.accent }}>replication</Link>, or{' '}
+        <Link to={`/diagnosis/case/${predId}`} query={{ tab: 'controls' }} style={{ color: C.accent }}>controls</Link>.
       </p>
       <div>{SHOW.map(([k, lbl]) => <GateChip key={k} label={lbl} value={row[k]} />)}</div>
     </div>
@@ -560,7 +581,7 @@ function GateChip({ label, value }) {
   );
 }
 
-function WalkStep({ level, patient, reached, isDeciding, drillTo }) {
+function WalkStep({ level, patient, reached, isDeciding, drillTo, drillTab }) {
   const { data } = useFetch(level.endpoint(patient), [patient.prediction, patient.individual]);
   const row = data && !data.error ? data : {};
   const dim = !reached;
@@ -575,7 +596,7 @@ function WalkStep({ level, patient, reached, isDeciding, drillTo }) {
       {/* connector line */}
       <div style={{ position: 'absolute', left: 6, top: 16, bottom: -14, width: 2, background: C.border }} />
       <div style={{ fontWeight: 700, fontSize: 14 }}>
-        {drillTo ? <Link to={drillTo} style={{ color: C.ink, borderBottom: `1px dotted ${C.sub}` }}>{Title}</Link> : Title}
+        {drillTo ? <Link to={drillTo} query={drillTab ? { tab: drillTab } : undefined} style={{ color: C.ink, borderBottom: `1px dotted ${C.sub}` }}>{Title}</Link> : Title}
         {isDeciding ? <span style={{ marginLeft: 8, color: C.accent, fontSize: 12, fontWeight: 700 }}>◀ deciding step</span> : null}
         {drillTo ? <span style={{ marginLeft: 8, color: C.accent, fontSize: 12 }}>drill in ›</span> : null}
       </div>
@@ -636,7 +657,7 @@ export function CaseWalkBody({ predId }) {
           const isDeciding = reached && (terminal === 'NotActionable') && (!visited.has(nextState) && nextState !== undefined ? !visited.has(nextState) : false) && lc?.states?.[lc.states.length - 2] === lvl.state;
           const sub = LEVEL_SUBROUTE[lvl.state];
           return <WalkStep key={lvl.state} level={lvl} patient={ctx} reached={reached} isDeciding={isDeciding}
-            drillTo={sub ? `/diagnosis/case/${predId}/${sub}` : null} />;
+            drillTo={sub ? `/diagnosis/case/${predId}` : null} drillTab={sub} />;
         })}
         {/* terminal verdict */}
         <div style={{ paddingLeft: 26, position: 'relative', marginTop: 4 }}>

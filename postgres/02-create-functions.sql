@@ -2370,6 +2370,16 @@ RETURNS TEXT AS $$
   SELECT (CASE WHEN (calc_individual_predictions_is_high_confidence_prediction(p_individual_prediction_id) AND calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id) AND calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id) AND (calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC > 0) THEN ('Actionable')::text ELSE (CASE WHEN (NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) OR NOT (calc_individual_predictions_is_falsifiability_backed(p_individual_prediction_id))) THEN ('NotActionable')::text ELSE (CASE WHEN calc_individual_predictions_individual_has_cryptic_relatedness(p_individual_prediction_id) THEN ('NotActionable')::text ELSE (CASE WHEN (calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC < 0.7 THEN ('NotActionable')::text ELSE (CASE WHEN NOT (calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id)) THEN ('NotActionable')::text ELSE ('Actionable')::text END)::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_individual_predictions_deciding_gate
+-- Field: IndividualPredictions.DecidingGate
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_deciding_gate(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id) THEN ('AllGatesPass')::text ELSE (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN calc_individual_predictions_individual_has_cryptic_relatedness(p_individual_prediction_id) THEN ('CrypticRelatedness')::text ELSE (CASE WHEN (calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC < 0.7 THEN ('Calibration')::text ELSE (CASE WHEN NOT (calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id)) THEN ('AncestryTransport')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_calibration_bins_parent_path
 -- Field: CalibrationBins.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT

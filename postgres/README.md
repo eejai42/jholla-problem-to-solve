@@ -2,7 +2,7 @@
 
 **Schema:** `public`
 **Database:** `demo`
-**Timestamp:** 2026-06-19 23:00:25 UTC
+**Timestamp:** 2026-06-20 00:00:21 UTC
 
 ## Parsing Rulebook
 
@@ -27,7 +27,7 @@ Found **34** tables in rulebook
   - **CausalMechanisms** (32 fields, 7 records)
   - **EpistaticInteractions** (11 fields, 1 records)
   - **CounterfactualTrajectories** (12 fields, 1 records)
-  - **IndividualPredictions** (32 fields, 7 records)
+  - **IndividualPredictions** (33 fields, 7 records)
   - **CalibrationBins** (11 fields, 35 records)
   - **InterventionTargets** (12 fields, 6 records)
   - **Axioms** (6 fields, 15 records)
@@ -45,7 +45,7 @@ Found **34** tables in rulebook
   - **SubjectStateInstances** (19 fields, 33 records)
 
 Generated **34** table definitions with **243** raw fields (mode=check-add)
-Generated **357** calculation functions
+Generated **358** calculation functions
 Generated **34** views
 Enabled RLS on **34** tables
 Generated insert statements for **341** records

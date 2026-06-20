@@ -33,8 +33,8 @@ export async function stopServer() {
 }
 
 // Fetch JSON from the app. Returns { status, body }.
-export async function getJson(path) {
-  const res = await fetch(`${baseUrl}${path}`);
+export async function getJson(path, options) {
+  const res = await fetch(`${baseUrl}${path}`, options);
   let body = null;
   try {
     body = await res.json();

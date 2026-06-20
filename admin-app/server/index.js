@@ -37,9 +37,13 @@
 // ============================================================================
 
 import express from 'express';
-import { query } from './db.js';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
+import { query, pool } from './db.js';
 import { runHarness, groupByCategory } from '../tests/harness/check-engine.js';
 import { buildDiagnosis, renderMarkdown } from './diagnosis.js';
+import { ingestIntake, IntakeError } from './intake.js';
 import { router as routingRouter } from './routes/routing.js';
 import { router as stateMachineRouter } from './routes/state-machines.js';
 import { router as leopoldRouter } from './routes/leopold.js';
@@ -195,6 +199,55 @@ app.get('/api/individuals/:id', one('vw_individuals', 'individual_id'));
 app.get('/api/variants/:id', one('vw_genomic_variants', 'genomic_variant_id'));
 
 // ---------------------------------------------------------------------------
+//  WRITE PATH (Loop 3) — raw facts in -> derived diagnosis out.
+//  POST /api/intake accepts ONLY raw leaf observations, writes them to the
+//  base tables in one transaction, then re-reads the DERIVED panel from vw_*.
+//  The conclusion (keystone/gates/DecidingGate/diagnosis) is never entered —
+//  the response computes it downstream of the leaves. This is the knob payoff.
+// ---------------------------------------------------------------------------
+app.post('/api/intake', async (req, res) => {
+  try {
+    const result = await ingestIntake(req.body);
+    res.status(201).json(result);
+  } catch (err) {
+    if (err instanceof IntakeError) return res.status(400).json({ error: 'invalid_intake', detail: err.message });
+    res.status(500).json({ error: String(err) });
+  }
+});
+
+// Cleanup counterpart — intake is create-only, so demo patients are removed via
+// this. Deletes the individual and every child row keyed off its id namespace
+// (slug == individual_id minus the 'ind-' prefix). Base-table writes only.
+app.delete('/api/individuals/:id', async (req, res) => {
+  const indId = req.params.id;
+  const slug = indId.replace(/^ind-/, '');
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+    const found = await client.query('SELECT 1 FROM individuals WHERE individual_id = $1', [indId]);
+    if (!found.rows.length) { await client.query('ROLLBACK'); return res.status(404).json({ error: 'not_found', id: indId }); }
+    // children first (no FK constraints enforced in demo, but order is honest)
+    await client.query('DELETE FROM calibration_bins WHERE calibration_bin_id LIKE $1', [`cb-${slug}-%`]);
+    await client.query('DELETE FROM individual_predictions WHERE individual = $1', [indId]);
+    await client.query('DELETE FROM evidence_items WHERE evidence_item_id LIKE $1', [`ev-${slug}-%`]);
+    await client.query('DELETE FROM cohort_replications WHERE cohort_replication_id LIKE $1', [`rep-${slug}-%`]);
+    await client.query('DELETE FROM negative_control_tests WHERE negative_control_test_id LIKE $1', [`nct-${slug}-%`]);
+    await client.query('DELETE FROM intervention_targets WHERE intervention_target_id LIKE $1', [`it-${slug}-%`]);
+    await client.query('DELETE FROM causal_mechanisms WHERE individual = $1', [indId]);
+    await client.query('DELETE FROM omics_assays WHERE individual = $1', [indId]);
+    await client.query('DELETE FROM genomic_variants WHERE individual = $1', [indId]);
+    await client.query('DELETE FROM individuals WHERE individual_id = $1', [indId]);
+    await client.query('COMMIT');
+    res.json({ deleted: indId });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ error: String(err) });
+  } finally {
+    client.release();
+  }
+});
+
+// ---------------------------------------------------------------------------
 //  ROUTING & NAVIGATION + STATE MACHINE surfaces (the new admin tooling).
 // ---------------------------------------------------------------------------
 app.use('/api/routing', routingRouter);
@@ -202,6 +255,24 @@ app.use('/api/state-machines', stateMachineRouter);
 app.use('/api/leopold-loops', leopoldRouter);
 app.use('/api', exportRouter); // GET /api/export.xlsx
 app.use('/api', snapshotRouter); // POST /api/snapshot-to-rulebook[?mode=replace]
+
+// ---------------------------------------------------------------------------
+//  STATIC SPA (production / container) — serve the built React client.
+//  In local dev, Vite (:6348) serves the SPA and proxies /api here, so this
+//  block is inert (dist/ usually absent / unused). In the Docker image the
+//  client is pre-built to admin-app/dist and THIS server is the only origin:
+//  it serves the SPA + the explainer-dag assets + the /api surface on one
+//  port. Registered AFTER every /api route so the API always wins; the
+//  catch-all only handles non-/api GETs (client-side routing → index.html).
+// ---------------------------------------------------------------------------
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DIST_DIR = path.resolve(__dirname, '../dist');
+if (existsSync(path.join(DIST_DIR, 'index.html'))) {
+  app.use(express.static(DIST_DIR));
+  app.get(/^\/(?!api\/).*/, (_req, res) => {
+    res.sendFile(path.join(DIST_DIR, 'index.html'));
+  });
+}
 
 // ---- start only when run directly (not when imported by the harness) -------
 const PORT = process.env.PORT || 4173;

@@ -498,6 +498,7 @@ SELECT
   calc_individual_predictions_patient_stratification_tier(t.individual_prediction_id) AS patient_stratification_tier,-- Derived risk tier from the derived PredictedValue.
   calc_individual_predictions_is_clinically_actionable(t.individual_prediction_id) AS is_clinically_actionable,-- KEYSTONE: TRUE only when the prediction is high-confidence (calibrated + not spurious), falsifiability-backed, ancestry-transport-safe, and rests on a non-null derived magnitude.
   calc_individual_predictions_lifecycle_state_key(t.individual_prediction_id) AS lifecycle_state_key,-- DERIVED current lifecycle state (never entered): the single deciding gate determines whether the case lands on Actionable or NotActionable. Subject-state column of the diagnosis-lifecycle machine.
+  calc_individual_predictions_deciding_gate(t.individual_prediction_id) AS deciding_gate,-- DERIVED single primary deciding gate (never entered), named in keystone-AND priority order. 'AllGatesPass' when actionable. When the case rests on no validated mechanism (no confirmed causal node), Falsifiability, Confidence, and Magnitude are one and the same finding, reported as 'NoValidatedMechanism' rather than split across three gates. Otherwise the lone failing gate is named: CrypticRelatedness, Calibration, AncestryTransport.
   t.calibration_bins                                                            -- Reliability bins for this prediction.
 FROM individual_predictions t;
 

@@ -102,6 +102,25 @@ export const GATES = {
 };
 
 // ---------------------------------------------------------------------------
+//  L6b — THE SINGLE DECIDING GATE (derived `deciding_gate`, keystone altitude).
+//  This is the witnessed answer to "five fail, each on one named gate": the
+//  keystone is an AND, and deciding_gate names where the AND actually breaks
+//  (in keystone priority order), or 'AllGatesPass' when it holds. C and E both
+//  read 'NoValidatedMechanism' on purpose: with no confirmed causal node,
+//  Falsifiability/Confidence/Magnitude are one finding, not three split gates.
+//  Invariant the app must satisfy: deciding_gate === 'AllGatesPass'  ⇔  keystone.
+// ---------------------------------------------------------------------------
+export const DECIDING_GATE = {
+  'pred-a': 'AllGatesPass',
+  'pred-b': 'Calibration',
+  'pred-c': 'NoValidatedMechanism',
+  'pred-d': 'CrypticRelatedness',
+  'pred-e': 'NoValidatedMechanism',
+  'pred-f': 'AncestryTransport',
+  'pred-g': 'AllGatesPass',
+};
+
+// ---------------------------------------------------------------------------
 //  L5 — PREDICTION-LEVEL derived scalars (lookups + PredictedValue + calibration).
 // ---------------------------------------------------------------------------
 export const PREDICTION_LEVEL = {
