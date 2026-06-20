@@ -1396,12 +1396,27 @@ function DiseaseStateMap({ rows }) {
 // be discovered across a cohort. (Synthetic data — a demonstration, not a finding.)
 const TREND_X = { Falling: 0, Stable: 1, Rising: 2 };
 const TREND_Y = { Rising: 0, Stable: 1, Falling: 2 }; // falling complement = lower = "worse" = bottom
+// Stable, deterministic hash → [0,1). Seeds per-point jitter so the cloud looks
+// organic (not snapped to a 3×3 grid) yet never moves between renders.
+function seededUnit(seed) {
+  let h = 2166136261 >>> 0;
+  const s = String(seed);
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  // xorshift the hash a couple times so adjacent ids don't produce adjacent values
+  h ^= h << 13; h >>>= 0; h ^= h >> 17; h ^= h << 5; h >>>= 0;
+  return (h % 100000) / 100000;
+}
 function SignaturePanel({ rows }) {
-  const W = 520, H = 360, padL = 90, padB = 60, padT = 20, padR = 20;
+  const W = 600, H = 400, padL = 96, padB = 64, padT = 28, padR = 64;
   const plotW = W - padL - padR, plotH = H - padT - padB;
-  const xAt = (t) => padL + (TREND_X[t] ?? 1) / 2 * plotW;
-  const yAt = (t) => padT + (TREND_Y[t] ?? 1) / 2 * plotH;
+  // Inset the three category anchors away from the plot edges so the outermost
+  // clusters (Rising / Falling corners) have room to jitter without clipping.
+  const inset = 0.16; // fraction of a half-axis pulled in from each edge
+  const frac = (i) => inset + (i / 2) * (1 - 2 * inset); // 0→inset, 1→0.5, 2→1-inset
+  const xAt = (t) => padL + frac(TREND_X[t] ?? 1) * plotW;
+  const yAt = (t) => padT + frac(TREND_Y[t] ?? 1) * plotH;
   const rAt = (s) => 6 + Math.sqrt(s || 0) * 3;
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
   return (
     <div>
       <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 760 }}>
@@ -1411,8 +1426,8 @@ function SignaturePanel({ rows }) {
         the nephritis cases cluster — the emergent signature, surfaced across the whole cohort.
       </p>
       <svg width={W} height={H} style={{ border: `1px solid ${C.border}`, borderRadius: 8, background: '#fcfcfc' }}>
-        {/* quadrant shading: bottom-right = the "worsening" corner */}
-        <rect x={xAt('Stable')} y={yAt('Stable')} width={plotW / 2} height={plotH / 2} fill="#fdeaea" opacity={0.6} />
+        {/* quadrant shading: bottom-right = the "worsening" corner (Stable anchor → plot edge) */}
+        <rect x={xAt('Stable')} y={yAt('Stable')} width={padL + plotW - xAt('Stable')} height={padT + plotH - yAt('Stable')} fill="#fdeaea" opacity={0.6} />
         {/* axes */}
         <line x1={padL} y1={padT} x2={padL} y2={padT + plotH} stroke={C.border} />
         <line x1={padL} y1={padT + plotH} x2={padL + plotW} y2={padT + plotH} stroke={C.border} />
@@ -1425,24 +1440,33 @@ function SignaturePanel({ rows }) {
         ))}
         <text x={16} y={padT + plotH / 2} textAnchor="middle" fontSize={11} fill={C.ink}
           transform={`rotate(-90 16 ${padT + plotH / 2})`}>complement trend ↓</text>
-        {/* fan co-located points around their quadrant anchor so labels don't collide */}
+        {/* scatter co-located points with stable, seeded jitter so the cloud reads
+            organic (not snapped to a grid) while staying inside the plot. A faint
+            ring-fan keeps dense quadrants legible; jitter rides on top of it. */}
         {rows.map((r) => {
           const key = `${r.anti_ds_dna_trend}|${r.complement_trend}`;
           const peers = rows.filter((x) => `${x.anti_ds_dna_trend}|${x.complement_trend}` === key);
           const pos = peers.findIndex((x) => x.individual_id === r.individual_id);
           const n = peers.length;
-          // fan out on a ring (radius grows with crowd); single points stay centered
+          // base ring spreads a crowded quadrant; seeded jitter perturbs each point
+          // so co-located patients never land on a perfect circle.
           const ang = n > 1 ? (pos / n) * 2 * Math.PI : 0;
-          const ring = n > 1 ? 26 + n * 3 : 0;
-          const jx = Math.cos(ang) * ring, jy = Math.sin(ang) * ring;
-          const cx = xAt(r.anti_ds_dna_trend) + jx, cy = yAt(r.complement_trend) + jy;
+          const ring = n > 1 ? 22 + n * 2.5 : 0;
+          const u1 = seededUnit(r.individual_id), u2 = seededUnit(`${r.individual_id}#y`);
+          const jamp = 18; // jitter amplitude (px)
+          const jx = Math.cos(ang) * ring + (u1 - 0.5) * 2 * jamp;
+          const jy = Math.sin(ang) * ring + (u2 - 0.5) * 2 * jamp;
+          const rr = rAt(r.latest_sledai_score);
+          // clamp so the circle AND its label stay inside the canvas
+          const cx = clamp(xAt(r.anti_ds_dna_trend) + jx, padL + rr, padL + plotW - rr);
+          const cy = clamp(yAt(r.complement_trend) + jy, padT + rr + 12, padT + plotH - rr);
           return (
             <g key={r.individual_id}>
-              <circle cx={cx} cy={cy} r={rAt(r.latest_sledai_score)} fill={stateColor(r.nephritis_progression_state_key)}
+              <circle cx={cx} cy={cy} r={rr} fill={stateColor(r.nephritis_progression_state_key)}
                 fillOpacity={0.65} stroke={stateColor(r.nephritis_progression_state_key)} strokeWidth={1.5}>
                 <title>{personName(r)} · {stateLbl(r.nephritis_progression_state_key)} · SLEDAI {r.latest_sledai_score}</title>
               </circle>
-              <text x={cx} y={cy - rAt(r.latest_sledai_score) - 3} textAnchor="middle" fontSize={10} fill={C.ink}>
+              <text x={clamp(cx, padL + 18, padL + plotW - 18)} y={cy - rr - 3} textAnchor="middle" fontSize={10} fill={C.ink}>
                 {r.family_name}
               </text>
             </g>

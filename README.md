@@ -101,7 +101,7 @@ disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, 
 treatment lines, SLEDAI/DAS28 — is now in the hub (`DiseaseDomainConcepts`), each with an honest
 `ModelingStatus` (deep-DAG / schema / vocabulary). Coverage is checkable by grep, not by trust. The
 home harness now leads with these new categories (L11 disease-state, L11b progression, L5d
-treatment-line) — **431/431 green**, and the v1 keystone verdicts are unchanged.
+treatment-line) — **716/716 green**, and the v1 keystone verdicts are unchanged.
 
 > **The honest bound stays loud.** This is still **synthetic, transparent** data — a proof of
 > *shape*, not validated biology. v2 does not claim to have discovered or validated real causal
@@ -109,7 +109,8 @@ treatment-line) — **431/431 green**, and the v1 keystone verdicts are unchange
 > disease-state progression, treatment-line reasoning, and the corpus-level surface where discovery
 > is expressed — now demonstrably exists on one model, and that adding it was **additive into the
 > same DAG** rather than a second system. Discovery is inherently corpus-level; the cohort-level UX
-> that surfaces emergent patterns is specified in [`V2-UI-PLAN.md`](V2-UI-PLAN.md).
+> that surfaces emergent patterns ships as the **Cohort discovery** board (top nav item), and the
+> remaining derived-signature work is tracked in the [Leopold plan](LEOPOLD_LOOPING_PLAN.md).
 
 ## The architecture — and why the LLM never gets a vote
 

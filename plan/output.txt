@@ -16,7 +16,9 @@
 > **This file is generated.** Source of truth = the `LeopoldLoops` rows in
 > `effortless-rulebook/effortless-rulebook.json`. Change a loop's `Status` there (and its
 > `StatusBadge`/`StatusLine`) and rerun `effortless build`. Loops render in `SortOrder`: completed
-> loops first as a ledger, then the current (NEXT) loop, then planned, then backlog.
+> loops first as a ledger (`[DONE]`), then the current `[NEXT]` loop and the `[PLANNED]` loops that
+> are **load-bearing for the v1-audit response**, then `[ROADMAP]` — the next conversation's work,
+> deliberately *not* part of the audit response.
 
 ## The keystone (never lose sight of this)
 
@@ -39,7 +41,10 @@ surface the new rule. 6. **Update the rulebook** `LeopoldLoops` rows (tick done,
 
 ---
 
-## Loops (in order — `[DONE]` ledger first, then `[NEXT]`, `[PLANNED]`, `[BACKLOG]`)
+## Loops (in order — `[DONE]` ledger first, then `[NEXT]`, `[PLANNED]`, then `[ROADMAP]`)
+>
+> **`[NEXT]` + `[PLANNED]` = the v1-audit response** (load-bearing only). **`[ROADMAP]` = the next
+> conversation** — present so nothing is hidden, but explicitly out of scope for the audit reply.
 ### [DONE] Loop 0 — Solve-by-inference rulebook
 
 Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations to keystone.
@@ -123,5 +128,6 @@ A deliberate trimming pass (NOT a delete spree). Walk the model, the app, and th
 
 ---
 
-> Promotion rule: a `[BACKLOG]` item must be traceable to `problem-to-solve.md` **or** be load-bearing
-> toward the keystone. If neither, don't build it.
+> Promotion rule: a `[PLANNED]` item must be **load-bearing toward the v1-audit response** (the
+> keystone, the disease-state layer, or a promise the reply draft makes). Everything else that is
+> still traceable to `problem-to-solve.md` lives in `[ROADMAP]`; if it's neither, don't build it.
