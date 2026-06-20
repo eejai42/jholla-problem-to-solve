@@ -181,6 +181,9 @@ SELECT
   calc_individuals_count_confirmed_causal_nodes(t.individual_id) AS count_confirmed_causal_nodes,-- Count of this individual's confirmed causal-architecture nodes.
   calc_individuals_sum_confirmed_causal_confidence(t.individual_id) AS sum_confirmed_causal_confidence,-- Summed confidence of this individual's confirmed causal nodes (derived causal mass).
   calc_individuals_count_cross_ancestry_confirmed_nodes(t.individual_id) AS count_cross_ancestry_confirmed_nodes,-- Confirmed nodes that also showed cross-ancestry replication.
+  calc_individuals_max_severity_score(t.individual_id) AS max_severity_score,   -- Highest SeverityScore across this individual's clinical phenotypes (0 if none).
+  calc_individuals_count_high_severity_phenotypes(t.individual_id) AS count_high_severity_phenotypes,-- Count of this individual's high-severity phenotypes (SeverityScore > 7).
+  calc_individuals_has_high_severity_phenotype(t.individual_id) AS has_high_severity_phenotype,-- True when the individual has at least one high-severity phenotype.
   t.genomic_variants,                                                           -- Genomic variants for this individual.
   t.omics_assays,                                                               -- Omics assays for this individual.
   t.environmental_exposures,                                                    -- Longitudinal environmental exposures.
@@ -486,6 +489,8 @@ SELECT
   calc_individual_predictions_individual_confirmed_node_count(t.individual_prediction_id) AS individual_confirmed_node_count,-- Count of this individual's confirmed causal nodes (empty-guarded).
   calc_individual_predictions_individual_cross_ancestry_node_coun(t.individual_prediction_id) AS individual_cross_ancestry_node_count,-- Count of this individual's cross-ancestry-replicated confirmed nodes (empty-guarded).
   calc_individual_predictions_individual_has_cryptic_relatedness(t.individual_prediction_id) AS individual_has_cryptic_relatedness,-- Whether this individual carries a cryptic-relatedness leakage flag (empty-guarded).
+  calc_individual_predictions_individual_max_severity_score(t.individual_prediction_id) AS individual_max_severity_score,-- This individual's max clinical SeverityScore (empty-guarded).
+  calc_individual_predictions_individual_has_high_severity_phenot(t.individual_prediction_id) AS individual_has_high_severity_phenotype,-- Whether this individual has a high-severity phenotype (empty-guarded).
   calc_individual_predictions_predicted_value(t.individual_prediction_id) AS predicted_value,-- Derived risk magnitude (0-10), a monotone function of validated causal mass only - rides mechanism, not ancestry correlation.
   calc_individual_predictions_count_bins(t.individual_prediction_id) AS count_bins,-- Total reliability bins for this prediction.
   calc_individual_predictions_count_well_calibrated_bins(t.individual_prediction_id) AS count_well_calibrated_bins,-- Bins passing coverage and accuracy.
@@ -501,6 +506,10 @@ SELECT
   calc_individual_predictions_transport_gate_status(t.individual_prediction_id) AS transport_gate_status,-- RENDER ONLY (does NOT feed the keystone): honest three-state view of the transport gate so a vacuous in-training pass is never shown as evidentiary. NotApplicable = in-training ancestry (gate did not bite); PASS-tested = holdout with a confirmed cross-ancestry transport; FAIL = holdout without one. Sits beside IsAncestryTransportSafe (which the keystone still reads) purely to keep the writeup from implying transport evidence it never used.
   calc_individual_predictions_is_high_confidence_prediction(t.individual_prediction_id) AS is_high_confidence_prediction,-- Derived: calibrated AND not spurious.
   calc_individual_predictions_patient_stratification_tier(t.individual_prediction_id) AS patient_stratification_tier,-- Derived risk tier from the derived PredictedValue.
+  calc_individual_predictions_predicted_severity_value(t.individual_prediction_id) AS predicted_severity_value,-- Derived severity prediction grounded in the individual's max clinical SeverityScore.
+  calc_individual_predictions_severity_tier(t.individual_prediction_id) AS severity_tier,-- Derived severity band from the predicted severity value.
+  calc_individual_predictions_is_severity_actionable(t.individual_prediction_id) AS is_severity_actionable,-- Derived: a high-severity phenotype on a confirmed, non-spurious mechanism. Chained to the onset gates so severity can never be actionable on a debunked mechanism.
+  calc_individual_predictions_severity_deciding_factor(t.individual_prediction_id) AS severity_deciding_factor,-- Why severity is/ isn't actionable — the single deciding reason.
   calc_individual_predictions_is_clinically_actionable(t.individual_prediction_id) AS is_clinically_actionable,-- KEYSTONE: TRUE only when the prediction is high-confidence (calibrated + not spurious), falsifiability-backed, ancestry-transport-safe, and rests on a non-null derived magnitude.
   calc_individual_predictions_lifecycle_state_key(t.individual_prediction_id) AS lifecycle_state_key,-- DERIVED current lifecycle state (never entered): the single deciding gate determines whether the case lands on Actionable or NotActionable. Subject-state column of the diagnosis-lifecycle machine.
   calc_individual_predictions_deciding_gate(t.individual_prediction_id) AS deciding_gate,-- DERIVED single primary deciding gate (never entered), named in keystone-AND priority order. 'AllGatesPass' when actionable. When the case rests on no validated mechanism (no confirmed causal node), Falsifiability, Confidence, and Magnitude are one and the same finding, reported as 'NoValidatedMechanism' rather than split across three gates. Otherwise the lone failing gate is named: CrypticRelatedness, Calibration, AncestryTransport.

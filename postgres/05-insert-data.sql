@@ -424,7 +424,25 @@ VALUES ('tx-context', 'Anifrolumab (context only)', 'ind-a-reyes', 'sle', 'Parti
 -- ClinicalPhenotypes: Clinical phenotypes including severity, immune dysfunction markers, and feedback from disease progression.
 -- ----------------------------------------------------------------------------
 INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
-VALUES ('ph-context', 'ANA elevation (context only)', 'ind-a-reyes', 'sle', 'sle-presymptomatic', 'blood', 4, '2024-02-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+VALUES ('ph-sev-a', 'Active SLE — high disease-activity (SLEDAI-equiv) severity', 'ind-a-reyes', 'sle', 'sle-active', 'blood', 9, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-b', 'Active SLE — serositis + high disease activity', 'ind-b-okafor', 'sle', 'sle-active', 'blood', 8, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-c', 'Active SLE — arthritis + anti-dsDNA high activity', 'ind-c-chen', 'sle', 'sle-active', 'blood', 9, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-d', 'Active SLE — biopsy-confirmed nephritis (high severity)', 'ind-d-santos', 'sle', 'sle-active', 'kidney', 8, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-e', 'SLE — mild cytopenias, low disease activity', 'ind-e-mensah', 'sle', 'sle-active', 'blood', 3, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-f', 'PsA — minimal joint involvement, mild', 'ind-f-haidar', 'psa', 'psa-active', 'synovium', 2, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-g', 'PsA — moderate plaque + oligoarthritis', 'ind-g-lin', 'psa', 'psa-active', 'skin', 6, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CausalMechanisms: Inferred causal mechanisms linking variants, exposures, and molecular state to clinical phenotypes; must be experimentally falsifiable.

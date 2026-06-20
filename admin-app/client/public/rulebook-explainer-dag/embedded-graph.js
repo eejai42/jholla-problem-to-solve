@@ -940,6 +940,30 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=COUNTIFS(CausalMechanisms!{{Individual}}, {{IndividualId}}, CausalMechanisms!{{IsAncestryTransportable}}, TRUE())"
       },
       {
+        "name": "MaxSeverityScore",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Highest SeverityScore across this individual's clinical phenotypes (0 if none).",
+        "formula": "=MAXIFS(ClinicalPhenotypes!{{SeverityScore}}, ClinicalPhenotypes!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "CountHighSeverityPhenotypes",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of this individual's high-severity phenotypes (SeverityScore > 7).",
+        "formula": "=COUNTIFS(ClinicalPhenotypes!{{Individual}}, {{IndividualId}}, ClinicalPhenotypes!{{IsHighSeverity}}, TRUE())"
+      },
+      {
+        "name": "HasHighSeverityPhenotype",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when the individual has at least one high-severity phenotype.",
+        "formula": "=IF({{CountHighSeverityPhenotypes}} >= 1, TRUE(), FALSE())"
+      },
+      {
         "name": "GenomicVariants",
         "datatype": "string",
         "type": "relationship",
@@ -1053,7 +1077,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged."
+        "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged.",
+        "MaxSeverityScore": 9,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true
       },
       {
         "IndividualId": "ind-b-okafor",
@@ -1088,7 +1115,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged."
+        "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged.",
+        "MaxSeverityScore": 8,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true
       },
       {
         "IndividualId": "ind-c-chen",
@@ -1123,7 +1153,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged."
+        "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged.",
+        "MaxSeverityScore": 9,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true
       },
       {
         "IndividualId": "ind-d-santos",
@@ -1158,7 +1191,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Diego Santos, a 29-year-old man of European ancestry (in the training set), presents with nephritis and a malar rash concerning for SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is fully supported: a cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.95 (SE 0.21), and a pQTL in blood proteomics with effect 0.62 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.003) and an African cohort (p=0.019), with a non-significant European replication (p=0.16). Two ancestry-permutation controls collapse to the null (permutation effect 0.009 and 0.031 inside +/-0.1). The interferon target is druggable, and reliability bins carry coverage of 30-36 per bin. However, sample QC raised a cryptic-relatedness / assortative-mating flag for this participant: kinship estimates indicate undeclared relatives inside the cohort, so the prediction may be confounded by leakage rather than the mechanism alone."
+        "CaseNarrative": "Diego Santos, a 29-year-old man of European ancestry (in the training set), presents with nephritis and a malar rash concerning for SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is fully supported: a cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.95 (SE 0.21), and a pQTL in blood proteomics with effect 0.62 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.003) and an African cohort (p=0.019), with a non-significant European replication (p=0.16). Two ancestry-permutation controls collapse to the null (permutation effect 0.009 and 0.031 inside +/-0.1). The interferon target is druggable, and reliability bins carry coverage of 30-36 per bin. However, sample QC raised a cryptic-relatedness / assortative-mating flag for this participant: kinship estimates indicate undeclared relatives inside the cohort, so the prediction may be confounded by leakage rather than the mechanism alone.",
+        "MaxSeverityScore": 8,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true
       },
       {
         "IndividualId": "ind-e-mensah",
@@ -1193,7 +1229,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.71 (SE 0.20), and a pQTL in blood proteomics with effect 0.41 (SE 0.20), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.007) and a European cohort (p=0.021), with a non-significant African replication (p=0.19). Two ancestry-permutation controls collapse to the null (permutation effect 0.011 and 0.026 inside +/-0.1), and reliability bins carry coverage of 27-33 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated."
+        "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.71 (SE 0.20), and a pQTL in blood proteomics with effect 0.41 (SE 0.20), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.007) and a European cohort (p=0.021), with a non-significant African replication (p=0.19). Two ancestry-permutation controls collapse to the null (permutation effect 0.011 and 0.026 inside +/-0.1), and reliability bins carry coverage of 27-33 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated.",
+        "MaxSeverityScore": 3,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false
       },
       {
         "IndividualId": "ind-f-haidar",
@@ -1228,7 +1267,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.83 (SE 0.21), and a pQTL in blood proteomics with effect 0.74 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.008 and 0.022 inside +/-0.1), and reliability bins carry coverage of 30-35 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.005, p=0.015, and p=0.034, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged."
+        "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.83 (SE 0.21), and a pQTL in blood proteomics with effect 0.74 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.008 and 0.022 inside +/-0.1), and reliability bins carry coverage of 30-35 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.005, p=0.015, and p=0.034, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged.",
+        "MaxSeverityScore": 2,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false
       },
       {
         "IndividualId": "ind-g-lin",
@@ -1263,7 +1305,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged."
+        "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.",
+        "MaxSeverityScore": 6,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false
       }
     ]
   },
@@ -3795,21 +3840,123 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "data": [
       {
-        "ClinicalPhenotypeId": "ph-context",
-        "PhenotypeLabel": "ANA elevation (context only)",
+        "ClinicalPhenotypeId": "ph-sev-a",
+        "PhenotypeLabel": "Active SLE — high disease-activity (SLEDAI-equiv) severity",
         "Individual": "ind-a-reyes",
         "AutoimmuneDisease": "sle",
-        "DiseaseStage": "sle-presymptomatic",
+        "DiseaseStage": "sle-active",
         "Tissue": "blood",
-        "SeverityScore": 4,
-        "MeasurementDate": "2024-02-01",
+        "SeverityScore": 9,
+        "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "ANA elevation (context only)",
+        "Name": "Active SLE — high disease-activity (SLEDAI-equiv) severity",
         "ParentPath": "/intake/new-patient/reyes-ana",
-        "RelativePath": "/intake/new-patient/reyes-ana/phenotypes/ph-context",
-        "DiseaseStageLabel": "Presymptomatic",
+        "RelativePath": "/intake/new-patient/reyes-ana/phenotypes/ph-sev-a",
+        "DiseaseStageLabel": "Active",
+        "IsHighSeverity": true,
+        "IsPresymptomaticPhenotype": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-sev-b",
+        "PhenotypeLabel": "Active SLE — serositis + high disease activity",
+        "Individual": "ind-b-okafor",
+        "AutoimmuneDisease": "sle",
+        "DiseaseStage": "sle-active",
+        "Tissue": "blood",
+        "SeverityScore": 8,
+        "MeasurementDate": "2024-03-01",
+        "HasImmuneDysfunction": true,
+        "Name": "Active SLE — serositis + high disease activity",
+        "ParentPath": "/intake/new-patient/okafor-bili",
+        "RelativePath": "/intake/new-patient/okafor-bili/phenotypes/ph-sev-b",
+        "DiseaseStageLabel": "Active",
+        "IsHighSeverity": true,
+        "IsPresymptomaticPhenotype": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-sev-c",
+        "PhenotypeLabel": "Active SLE — arthritis + anti-dsDNA high activity",
+        "Individual": "ind-c-chen",
+        "AutoimmuneDisease": "sle",
+        "DiseaseStage": "sle-active",
+        "Tissue": "blood",
+        "SeverityScore": 9,
+        "MeasurementDate": "2024-03-01",
+        "HasImmuneDysfunction": true,
+        "Name": "Active SLE — arthritis + anti-dsDNA high activity",
+        "ParentPath": "/intake/new-patient/wei-chen",
+        "RelativePath": "/intake/new-patient/wei-chen/phenotypes/ph-sev-c",
+        "DiseaseStageLabel": "Active",
+        "IsHighSeverity": true,
+        "IsPresymptomaticPhenotype": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-sev-d",
+        "PhenotypeLabel": "Active SLE — biopsy-confirmed nephritis (high severity)",
+        "Individual": "ind-d-santos",
+        "AutoimmuneDisease": "sle",
+        "DiseaseStage": "sle-active",
+        "Tissue": "kidney",
+        "SeverityScore": 8,
+        "MeasurementDate": "2024-03-01",
+        "HasImmuneDysfunction": true,
+        "Name": "Active SLE — biopsy-confirmed nephritis (high severity)",
+        "ParentPath": "/intake/new-patient/santos-diego",
+        "RelativePath": "/intake/new-patient/santos-diego/phenotypes/ph-sev-d",
+        "DiseaseStageLabel": "Active",
+        "IsHighSeverity": true,
+        "IsPresymptomaticPhenotype": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-sev-e",
+        "PhenotypeLabel": "SLE — mild cytopenias, low disease activity",
+        "Individual": "ind-e-mensah",
+        "AutoimmuneDisease": "sle",
+        "DiseaseStage": "sle-active",
+        "Tissue": "blood",
+        "SeverityScore": 3,
+        "MeasurementDate": "2024-03-01",
+        "HasImmuneDysfunction": true,
+        "Name": "SLE — mild cytopenias, low disease activity",
+        "ParentPath": "/intake/new-patient/mensah-esi",
+        "RelativePath": "/intake/new-patient/mensah-esi/phenotypes/ph-sev-e",
+        "DiseaseStageLabel": "Active",
         "IsHighSeverity": false,
-        "IsPresymptomaticPhenotype": true
+        "IsPresymptomaticPhenotype": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-sev-f",
+        "PhenotypeLabel": "PsA — minimal joint involvement, mild",
+        "Individual": "ind-f-haidar",
+        "AutoimmuneDisease": "psa",
+        "DiseaseStage": "psa-active",
+        "Tissue": "synovium",
+        "SeverityScore": 2,
+        "MeasurementDate": "2024-03-01",
+        "HasImmuneDysfunction": true,
+        "Name": "PsA — minimal joint involvement, mild",
+        "ParentPath": "/intake/new-patient/haidar-faisal",
+        "RelativePath": "/intake/new-patient/haidar-faisal/phenotypes/ph-sev-f",
+        "DiseaseStageLabel": "Active",
+        "IsHighSeverity": false,
+        "IsPresymptomaticPhenotype": false
+      },
+      {
+        "ClinicalPhenotypeId": "ph-sev-g",
+        "PhenotypeLabel": "PsA — moderate plaque + oligoarthritis",
+        "Individual": "ind-g-lin",
+        "AutoimmuneDisease": "psa",
+        "DiseaseStage": "psa-active",
+        "Tissue": "skin",
+        "SeverityScore": 6,
+        "MeasurementDate": "2024-03-01",
+        "HasImmuneDysfunction": true,
+        "Name": "PsA — moderate plaque + oligoarthritis",
+        "ParentPath": "/intake/new-patient/lin-grace",
+        "RelativePath": "/intake/new-patient/lin-grace/phenotypes/ph-sev-g",
+        "DiseaseStageLabel": "Active",
+        "IsHighSeverity": false,
+        "IsPresymptomaticPhenotype": false
       }
     ]
   },
@@ -4641,6 +4788,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=IF({{Individual}} = \"\", FALSE(), INDEX(Individuals!{{HasCrypticRelatednessFlag}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
       },
       {
+        "name": "IndividualMaxSeverityScore",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "This individual's max clinical SeverityScore (empty-guarded).",
+        "formula": "=IF({{Individual}} = \"\", 0, INDEX(Individuals!{{MaxSeverityScore}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
+      },
+      {
+        "name": "IndividualHasHighSeverityPhenotype",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this individual has a high-severity phenotype (empty-guarded).",
+        "formula": "=IF({{Individual}} = \"\", FALSE(), INDEX(Individuals!{{HasHighSeverityPhenotype}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
+      },
+      {
         "name": "PredictedValue",
         "datatype": "number",
         "type": "calculated",
@@ -4761,6 +4924,38 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=IF({{PredictedValue}} >= 7, \"High-Risk Pathway\", IF({{PredictedValue}} >= 4, \"Moderate-Risk Pathway\", \"Low-Risk Pathway\"))"
       },
       {
+        "name": "PredictedSeverityValue",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived severity prediction grounded in the individual's max clinical SeverityScore.",
+        "formula": "={{IndividualMaxSeverityScore}}"
+      },
+      {
+        "name": "SeverityTier",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived severity band from the predicted severity value.",
+        "formula": "=IF({{PredictedSeverityValue}} > 7, \"Severe\", IF({{PredictedSeverityValue}} >= 4, \"Moderate\", \"Mild\"))"
+      },
+      {
+        "name": "IsSeverityActionable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: a high-severity phenotype on a confirmed, non-spurious mechanism. Chained to the onset gates so severity can never be actionable on a debunked mechanism.",
+        "formula": "=IF(AND({{IndividualHasHighSeverityPhenotype}}, {{RestsOnConfirmedMechanism}}, NOT({{HasSpuriousCorrelationFlag}})), TRUE(), FALSE())"
+      },
+      {
+        "name": "SeverityDecidingFactor",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Why severity is/ isn't actionable — the single deciding reason.",
+        "formula": "=IF({{IsSeverityActionable}}, \"HighSeverityOnConfirmedMechanism\", IF(NOT({{IndividualHasHighSeverityPhenotype}}), \"NotHighSeverity\", IF(NOT({{RestsOnConfirmedMechanism}}), \"NoValidatedMechanism\", IF({{HasSpuriousCorrelationFlag}}, \"SpuriousFlag\", \"Undetermined\"))))"
+      },
+      {
         "name": "IsClinicallyActionable",
         "datatype": "boolean",
         "type": "calculated",
@@ -4827,7 +5022,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsClinicallyActionable": true,
         "LifecycleStateKey": "Actionable",
         "CalibrationBins": null,
-        "DecidingGate": "AllGatesPass"
+        "DecidingGate": "AllGatesPass",
+        "IndividualMaxSeverityScore": 9,
+        "IndividualHasHighSeverityPhenotype": true,
+        "PredictedSeverityValue": 9,
+        "SeverityTier": "Severe",
+        "IsSeverityActionable": true,
+        "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism"
       },
       {
         "IndividualPredictionId": "pred-b",
@@ -4862,7 +5063,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsClinicallyActionable": false,
         "LifecycleStateKey": "NotActionable",
         "CalibrationBins": null,
-        "DecidingGate": "Calibration"
+        "DecidingGate": "Calibration",
+        "IndividualMaxSeverityScore": 8,
+        "IndividualHasHighSeverityPhenotype": true,
+        "PredictedSeverityValue": 8,
+        "SeverityTier": "Severe",
+        "IsSeverityActionable": true,
+        "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism"
       },
       {
         "IndividualPredictionId": "pred-c",
@@ -4897,7 +5104,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsClinicallyActionable": false,
         "LifecycleStateKey": "NotActionable",
         "CalibrationBins": null,
-        "DecidingGate": "NoValidatedMechanism"
+        "DecidingGate": "NoValidatedMechanism",
+        "IndividualMaxSeverityScore": 9,
+        "IndividualHasHighSeverityPhenotype": true,
+        "PredictedSeverityValue": 9,
+        "SeverityTier": "Severe",
+        "IsSeverityActionable": false,
+        "SeverityDecidingFactor": "NoValidatedMechanism"
       },
       {
         "IndividualPredictionId": "pred-d",
@@ -4932,7 +5145,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsClinicallyActionable": false,
         "LifecycleStateKey": "NotActionable",
         "CalibrationBins": null,
-        "DecidingGate": "CrypticRelatedness"
+        "DecidingGate": "CrypticRelatedness",
+        "IndividualMaxSeverityScore": 8,
+        "IndividualHasHighSeverityPhenotype": true,
+        "PredictedSeverityValue": 8,
+        "SeverityTier": "Severe",
+        "IsSeverityActionable": false,
+        "SeverityDecidingFactor": "SpuriousFlag"
       },
       {
         "IndividualPredictionId": "pred-e",
@@ -4967,7 +5186,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsClinicallyActionable": false,
         "LifecycleStateKey": "NotActionable",
         "CalibrationBins": null,
-        "DecidingGate": "NoValidatedMechanism"
+        "DecidingGate": "NoValidatedMechanism",
+        "IndividualMaxSeverityScore": 3,
+        "IndividualHasHighSeverityPhenotype": false,
+        "PredictedSeverityValue": 3,
+        "SeverityTier": "Mild",
+        "IsSeverityActionable": false,
+        "SeverityDecidingFactor": "NotHighSeverity"
       },
       {
         "IndividualPredictionId": "pred-f",
@@ -5002,7 +5227,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsClinicallyActionable": false,
         "LifecycleStateKey": "NotActionable",
         "CalibrationBins": null,
-        "DecidingGate": "AncestryTransport"
+        "DecidingGate": "AncestryTransport",
+        "IndividualMaxSeverityScore": 2,
+        "IndividualHasHighSeverityPhenotype": false,
+        "PredictedSeverityValue": 2,
+        "SeverityTier": "Mild",
+        "IsSeverityActionable": false,
+        "SeverityDecidingFactor": "NotHighSeverity"
       },
       {
         "IndividualPredictionId": "pred-g",
@@ -5037,7 +5268,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsClinicallyActionable": true,
         "LifecycleStateKey": "Actionable",
         "CalibrationBins": null,
-        "DecidingGate": "AllGatesPass"
+        "DecidingGate": "AllGatesPass",
+        "IndividualMaxSeverityScore": 6,
+        "IndividualHasHighSeverityPhenotype": false,
+        "PredictedSeverityValue": 6,
+        "SeverityTier": "Moderate",
+        "IsSeverityActionable": false,
+        "SeverityDecidingFactor": "NotHighSeverity"
       }
     ]
   },
@@ -11378,6 +11615,88 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": null
   },
+  "Individuals.MaxSeverityScore": {
+    "table": "Individuals",
+    "field": "MaxSeverityScore",
+    "kind": "rollup",
+    "rule": "An individual\u0027s max severity score is the largest severity score across the clinical phenotypes related to the individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ClinicalPhenotypes",
+        "field": "SeverityScore",
+        "label": "severity score"
+      },
+      {
+        "table": "ClinicalPhenotypes",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.CountHighSeverityPhenotypes": {
+    "table": "Individuals",
+    "field": "CountHighSeverityPhenotypes",
+    "kind": "rollup",
+    "rule": "An individual\u0027s count high severity phenotypes is the number of the individual\u0027s clinical phenotypes that are high severities.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "ClinicalPhenotypes",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      },
+      {
+        "table": "ClinicalPhenotypes",
+        "field": "IsHighSeverity",
+        "label": "is high severity"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.HasHighSeverityPhenotype": {
+    "table": "Individuals",
+    "field": "HasHighSeverityPhenotype",
+    "kind": "formula",
+    "rule": "An individual is considered to have a high severity phenotype if the count high severity phenotypes is at least 1.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "CountHighSeverityPhenotypes",
+        "label": "count high severity phenotypes"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s has high severity phenotype is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the count high severity phenotypes is at least 1"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
   "GenomicVariants.Name": {
     "table": "GenomicVariants",
     "field": "Name",
@@ -13990,6 +14309,90 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "children": null
     }
   },
+  "IndividualPredictions.IndividualMaxSeverityScore": {
+    "table": "IndividualPredictions",
+    "field": "IndividualMaxSeverityScore",
+    "kind": "lookup",
+    "rule": "An individual prediction\u0027s individual max severity score is 0 if the individual is blank, otherwise the max severity score of the individual prediction\u0027s individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "MaxSeverityScore",
+        "label": "max severity score"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s individual max severity score is determined by the following priority:",
+      "cases": [
+        {
+          "value": "0",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual is blank"
+          }
+        },
+        {
+          "value": "the max severity score of the individual prediction\u0027s individual",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.IndividualHasHighSeverityPhenotype": {
+    "table": "IndividualPredictions",
+    "field": "IndividualHasHighSeverityPhenotype",
+    "kind": "lookup",
+    "rule": "An individual prediction\u0027s individual has high severity phenotype is false if the individual is blank, otherwise the has high severity phenotype of the individual prediction\u0027s individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "HasHighSeverityPhenotype",
+        "label": "has high severity phenotype"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s individual has high severity phenotype is determined by the following priority:",
+      "cases": [
+        {
+          "value": "false",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual is blank"
+          }
+        },
+        {
+          "value": "the has high severity phenotype of the individual prediction\u0027s individual",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
   "IndividualPredictions.PredictedValue": {
     "table": "IndividualPredictions",
     "field": "PredictedValue",
@@ -14516,6 +14919,183 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         },
         {
           "value": "the literal \u201CLow-Risk Pathway\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.PredictedSeverityValue": {
+    "table": "IndividualPredictions",
+    "field": "PredictedSeverityValue",
+    "kind": "formula",
+    "rule": "An individual prediction\u0027s predicted severity value is computed as the individual max severity score.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualMaxSeverityScore",
+        "label": "individual max severity score"
+      }
+    ],
+    "structure": null
+  },
+  "IndividualPredictions.SeverityTier": {
+    "table": "IndividualPredictions",
+    "field": "SeverityTier",
+    "kind": "formula",
+    "rule": "The individual prediction\u0027s severity tier is determined by the following priority:\n1. the literal \u201CSevere\u201D, if the predicted severity value is greater than 7;\n2. the literal \u201CModerate\u201D, if the predicted severity value is at least 4;\n3. otherwise the literal \u201CMild\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "PredictedSeverityValue",
+        "label": "predicted severity value"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s severity tier is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CSevere\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the predicted severity value is greater than 7"
+          }
+        },
+        {
+          "value": "the literal \u201CModerate\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the predicted severity value is at least 4"
+          }
+        },
+        {
+          "value": "the literal \u201CMild\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.IsSeverityActionable": {
+    "table": "IndividualPredictions",
+    "field": "IsSeverityActionable",
+    "kind": "formula",
+    "rule": "An individual prediction is considered a severity actionable if all of the following hold: the individual has high severity phenotype flag is set; the rests on confirmed mechanism flag is set; and it is not the case that the has spurious correlation flag is set.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasHighSeverityPhenotype",
+        "label": "individual has high severity phenotype"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "RestsOnConfirmedMechanism",
+        "label": "rests on confirmed mechanism"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "HasSpuriousCorrelationFlag",
+        "label": "has spurious correlation flag"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s is severity actionable is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "all",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the individual has high severity phenotype flag is set"
+              },
+              {
+                "kind": "leaf",
+                "text": "the rests on confirmed mechanism flag is set"
+              },
+              {
+                "kind": "leaf",
+                "text": "it is not the case that the has spurious correlation flag is set"
+              }
+            ]
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.SeverityDecidingFactor": {
+    "table": "IndividualPredictions",
+    "field": "SeverityDecidingFactor",
+    "kind": "formula",
+    "rule": "The individual prediction\u0027s severity deciding factor is determined by the following priority:\n1. the literal \u201CHighSeverityOnConfirmedMechanism\u201D, if the is severity actionable flag is set;\n2. the literal \u201CNotHighSeverity\u201D, if it is not the case that the individual has high severity phenotype flag is set;\n3. the literal \u201CNoValidatedMechanism\u201D, if it is not the case that the rests on confirmed mechanism flag is set;\n4. the literal \u201CSpuriousFlag\u201D, if the has spurious correlation flag is set;\n5. otherwise the literal \u201CUndetermined\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "IsSeverityActionable",
+        "label": "is severity actionable"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasHighSeverityPhenotype",
+        "label": "individual has high severity phenotype"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "RestsOnConfirmedMechanism",
+        "label": "rests on confirmed mechanism"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "HasSpuriousCorrelationFlag",
+        "label": "has spurious correlation flag"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s severity deciding factor is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CHighSeverityOnConfirmedMechanism\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the is severity actionable flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CNotHighSeverity\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "it is not the case that the individual has high severity phenotype flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CNoValidatedMechanism\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "it is not the case that the rests on confirmed mechanism flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CSpuriousFlag\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the has spurious correlation flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CUndetermined\u201D",
           "when": null
         }
       ],

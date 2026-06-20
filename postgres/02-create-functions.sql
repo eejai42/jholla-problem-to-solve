@@ -1100,6 +1100,36 @@ RETURNS INTEGER AS $$
   SELECT ((SELECT COUNT(*) FROM causal_mechanisms WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_causal_mechanisms_is_ancestry_transportable(causal_mechanism_id) = TRUE))::integer;
 $$ LANGUAGE sql STABLE;
 
+-- calc_individuals_max_severity_score
+-- Field: Individuals.MaxSeverityScore
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_max_severity_score(p_individual_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((severity_score)::numeric), 0) FROM clinical_phenotypes WHERE individual = p_individual_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_count_high_severity_phenotypes
+-- Field: Individuals.CountHighSeverityPhenotypes
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_count_high_severity_phenotypes(p_individual_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM clinical_phenotypes WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_clinical_phenotypes_is_high_severity(clinical_phenotype_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_has_high_severity_phenotype
+-- Field: Individuals.HasHighSeverityPhenotype
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_has_high_severity_phenotype(p_individual_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_individuals_count_high_severity_phenotypes(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_genomic_variants_parent_path
 -- Field: GenomicVariants.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -2180,6 +2210,28 @@ RETURNS BOOLEAN AS $$
   SELECT (SELECT has_cryptic_relatedness_flag::boolean FROM individuals WHERE individual_id = (SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_individual_predictions_individual_max_severity_score
+-- Field: IndividualPredictions.IndividualMaxSeverityScore
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: MaxSeverityScore from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_max_severity_score(p_individual_prediction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT calc_individuals_max_severity_score((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_individual_has_high_severity_phenot
+-- Field: IndividualPredictions.IndividualHasHighSeverityPhenotype
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasHighSeverityPhenotype from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_has_high_severity_phenot(p_individual_prediction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_individuals_has_high_severity_phenotype((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_calibration_bins_bin_label
 -- Helper function: Get BinLabel from CalibrationBins by CalibrationBinId
 -- Used for join-free cross-table references in aggregations
@@ -2402,6 +2454,46 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_individual_predictions_patient_stratification_tier(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN (calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC >= 7 THEN ('High-Risk Pathway')::text ELSE (CASE WHEN (calc_individual_predictions_predicted_value(p_individual_prediction_id))::NUMERIC >= 4 THEN ('Moderate-Risk Pathway')::text ELSE ('Low-Risk Pathway')::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_predicted_severity_value
+-- Field: IndividualPredictions.PredictedSeverityValue
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_predicted_severity_value(p_individual_prediction_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (calc_individual_predictions_individual_max_severity_score(p_individual_prediction_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_severity_tier
+-- Field: IndividualPredictions.SeverityTier
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_severity_tier(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_individual_predictions_predicted_severity_value(p_individual_prediction_id))::NUMERIC > 7 THEN ('Severe')::text ELSE (CASE WHEN (calc_individual_predictions_predicted_severity_value(p_individual_prediction_id))::NUMERIC >= 4 THEN ('Moderate')::text ELSE ('Mild')::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_is_severity_actionable
+-- Field: IndividualPredictions.IsSeverityActionable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_is_severity_actionable(p_individual_prediction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN ((calc_individual_predictions_individual_has_high_severity_phenot(p_individual_prediction_id) = 'true') AND calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id) AND NOT (calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id))) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_severity_deciding_factor
+-- Field: IndividualPredictions.SeverityDecidingFactor
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_severity_deciding_factor(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_individual_predictions_is_severity_actionable(p_individual_prediction_id) THEN ('HighSeverityOnConfirmedMechanism')::text ELSE (CASE WHEN NOT ((calc_individual_predictions_individual_has_high_severity_phenot(p_individual_prediction_id) = 'true')) THEN ('NotHighSeverity')::text ELSE (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id) THEN ('SpuriousFlag')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_clinically_actionable
