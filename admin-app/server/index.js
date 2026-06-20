@@ -208,9 +208,43 @@ app.get('/api/mechanisms/:id/controls', many('vw_negative_control_tests', 'causa
 app.get('/api/predictions/:id/calibration', many('vw_calibration_bins', 'individual_prediction', 'calibration_bin_id'));
 
 // Per-person rollup + variant candidacy.
-app.get('/api/individuals/:id', one('vw_individuals', 'individual_id'));
-// All of an individual's candidate variants (the case walk reads the first).
-app.get('/api/individuals/:id/variants', many('vw_genomic_variants', 'individual', 'genomic_variant_id'));
+//
+// The intake workspace addresses a patient by its route :caseId, which is the
+// individual_id (e.g. 'ind-a-reyes') in the nav but the slug (e.g. 'reyes-ana')
+// in every entity row's own relative_path. So an individual is resolvable by
+// EITHER — resolveIndividualId() normalizes both to the canonical individual_id
+// before any child-list lookup, so a link from anywhere lands on the same case.
+async function resolveIndividualId(idOrSlug) {
+  if (!idOrSlug) return null;
+  const rows = await query(
+    'SELECT individual_id FROM vw_individuals WHERE individual_id = $1 OR slug = $1 LIMIT 1',
+    [idOrSlug],
+  );
+  return rows.length ? rows[0].individual_id : null;
+}
+
+app.get('/api/individuals/:id', async (req, res) => {
+  try {
+    const indId = await resolveIndividualId(req.params.id);
+    if (!indId) return res.status(404).json({ error: 'not_found', id: req.params.id });
+    const rows = await query('SELECT * FROM vw_individuals WHERE individual_id = $1', [indId]);
+    res.json(rows[0]);
+  } catch (err) { res.status(500).json({ error: String(err) }); }
+});
+
+// An individual's leaf observation tables, each id-or-slug addressable. These
+// back the intake workspace's Variants / Assays panes (raw facts only — the
+// derived candidacy/quality flags ride along from the view).
+const childList = (view, orderCol) => async (req, res) => {
+  try {
+    const indId = await resolveIndividualId(req.params.id);
+    if (!indId) return res.status(404).json({ error: 'not_found', id: req.params.id });
+    const order = orderCol ? ` ORDER BY ${orderCol}` : '';
+    res.json(await query(`SELECT * FROM ${view} WHERE individual = $1${order}`, [indId]));
+  } catch (err) { res.status(500).json({ error: String(err) }); }
+};
+app.get('/api/individuals/:id/variants', childList('vw_genomic_variants', 'genomic_variant_id'));
+app.get('/api/individuals/:id/assays', childList('vw_omics_assays', 'omics_assay_id'));
 app.get('/api/variants/:id', one('vw_genomic_variants', 'genomic_variant_id'));
 
 // ---------------------------------------------------------------------------

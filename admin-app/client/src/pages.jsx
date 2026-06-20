@@ -1409,3 +1409,490 @@ export function ExplainerView() {
     </div>
   );
 }
+
+// ===========================================================================
+//  INTAKE WORKSPACE — the /intake/new-patient/:caseId pages.
+//
+//  This is the LEAF/OBSERVATION end of the model (the project's "intake clerk +
+//  lab" surface). It surfaces EXACTLY the two things the LLM/human may produce —
+//  interpreted intake facts and synthetic-but-transparent test results — as
+//  editable rows, and nothing above them. The conclusion is never shown here;
+//  it lives in /diagnosis. The four tabs map 1:1 to the rulebook nav nodes:
+//    Observations   the individual's raw intake facts + case narrative (vw_individuals)
+//    Variants       the candidate genomic variants            (vw_genomic_variants)
+//    Assays         the omics assays / quality leaves          (vw_omics_assays)
+//    Submit Case    the raw-facts-in → derived-diagnosis-out form (POST /api/intake)
+//
+//  :caseId is resolved id-or-slug by the server, so a link from anywhere (nav
+//  uses individual_id; entity relative_paths use the slug) lands here.
+// ===========================================================================
+
+const INTAKE_TABS = [
+  ['observations', 'Observations'],
+  ['variants', 'Variants'],
+  ['assays', 'Assays'],
+  ['submit', 'Submit Case'],
+];
+
+// IntakeWorkspace — the shell. Path = which patient (:caseId). ?tab = which of
+// the four sub-panes. Submit-case is patient-independent (it CREATES one), so it
+// renders without needing a resolved patient.
+export function IntakeWorkspace({ caseId, routeKey }) {
+  const { query } = useLocation();
+  const { data: patients } = useFetch('/api/patients');
+  const list = Array.isArray(patients) ? patients : [];
+
+  // sub from ?tab; fall back to the route_key's trailing segment so the legacy
+  // path form (/intake/new-patient/:caseId/variants) still opens that pane.
+  const fromRouteKey = (routeKey || 'intake.new-patient').replace(/^intake\.new-patient\.?/, '');
+  const sub = query.has('tab') ? query.get('tab') : (fromRouteKey || 'observations');
+
+  const tabQuery = (k) => {
+    const next = new URLSearchParams(query);
+    if (k && k !== 'observations') next.set('tab', k); else next.delete('tab');
+    return next;
+  };
+
+  return (
+    <div>
+      <h2 style={{ marginTop: 0 }}>Intake — new patient</h2>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
+        The <strong>leaf layer</strong>: raw intake facts and synthetic-but-transparent test results — the only two
+        things the LLM/human produces. Everything above these (gates, keystone, the diagnosis) is{' '}
+        <strong>derived</strong> and lives under{' '}
+        <Link to="/diagnosis" query={{ role: 'diagnosing-doctor' }} style={{ color: C.accent }}>Diagnosis</Link>.
+      </p>
+
+      {/* Which case these leaves belong to. Each chip rewrites ONLY the path,
+          keeping ?tab — so switching patients keeps you on the same sub-pane.
+          (Submit Case ignores it — it creates a brand-new patient.) */}
+      {sub !== 'submit' && list.length ? (
+        <IntakePatientChips list={list} caseId={caseId} keepQuery={query} />
+      ) : null}
+
+      <div style={{ display: 'flex', gap: 4, borderBottom: `1px solid ${C.border}`, marginBottom: 14, flexWrap: 'wrap' }}>
+        {INTAKE_TABS.map(([k, lbl]) => {
+          const active = sub === k;
+          return (
+            <Link key={k} to={`/intake/new-patient/${caseId || ''}`} query={tabQuery(k)}
+              style={{ padding: '7px 14px', borderBottom: `2px solid ${active ? C.accent : 'transparent'}`, color: active ? C.ink : C.sub, fontWeight: active ? 700 : 500, fontSize: 14 }}>
+              {lbl}
+            </Link>
+          );
+        })}
+      </div>
+
+      <IntakePane sub={sub} caseId={caseId} />
+    </div>
+  );
+}
+
+// Patient chips that link to the INTAKE route (not the diagnosis route), keying
+// the path off caseId (individual id-or-slug). Active when this chip's id OR
+// slug matches the current :caseId.
+function IntakePatientChips({ list, caseId, keepQuery }) {
+  return (
+    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
+      {list.map((p) => {
+        const active = caseId === p.individual || caseId === p.slug;
+        return (
+          <Link key={p.individual}
+            to={`/intake/new-patient/${p.individual}`}
+            query={keepQuery}
+            title={`${p.individual_ancestry_label}${p.is_ancestry_holdout ? ', holdout' : ''}`}
+            style={{
+              padding: '6px 10px', borderRadius: 6, border: `1px solid ${active ? C.ink : C.border}`,
+              background: active ? '#222' : '#fff', color: active ? '#fff' : C.ink, fontSize: 13,
+            }}>
+            {p.individual}
+          </Link>
+        );
+      })}
+    </div>
+  );
+}
+
+function IntakePane({ sub, caseId }) {
+  switch (sub) {
+    case 'variants': return <IntakeLeafList caseId={caseId} cfg={INTAKE_LEAF_CONFIG.variants} sub="variants" />;
+    case 'assays': return <IntakeLeafList caseId={caseId} cfg={INTAKE_LEAF_CONFIG.assays} sub="assays" />;
+    case 'submit': return <SubmitCase />;
+    case 'observations':
+    default: return <ObservationsPane caseId={caseId} />;
+  }
+}
+
+// ---- Observations: the individual's raw intake facts + case narrative --------
+// The "history → raw observation rows" layer: who the patient is and the facts
+// a clinician records. The derived rollups (burden score, confirmed-node counts)
+// are shown muted, clearly marked as computed-downstream, not entered here.
+function ObservationsPane({ caseId }) {
+  const { data, loading, error } = useFetch(caseId ? `/api/individuals/${caseId}` : null, [caseId]);
+  if (!caseId) return <p style={{ color: C.sub }}>No patient selected.</p>;
+  if (loading) return <p style={{ color: C.sub }}>Loading observations…</p>;
+  if (error) return <p style={{ color: C.fail }}>{error}</p>;
+  const r = data && !data.error ? data : null;
+  if (!r) return <p style={{ color: C.sub }}>No individual found for “{caseId}”.</p>;
+
+  // Raw intake facts (the LLM/human leaf layer) vs derived rollups (computed by
+  // the views downstream — shown for context, never editable here).
+  const RAW = [
+    ['name', 'Patient'],
+    ['ancestry_label', 'Ancestry', (v) => <AncestryChip label={v} />],
+    ['age_years', 'Age (years)'],
+    ['enrollment_date', 'Enrolled', (v) => (v ? String(v).slice(0, 10) : '—')],
+    ['federated_dataset_node_label', 'Federated node'],
+    ['is_ancestry_absent_from_training', 'Ancestry absent from training', (v) => <BoolPill value={v} yes="absent (holdout)" no="in training" />],
+    ['has_cryptic_relatedness_flag', 'Cryptic-relatedness flag', (v) => <BoolPill value={v} yes="flagged" no="clean" />],
+  ];
+  const DERIVED = [
+    ['count_of_genomic_variants', 'Candidate variants'],
+    ['count_of_causal_mechanisms', 'Mechanisms'],
+    ['rare_variant_burden_score', 'Rare-variant burden', (v) => <MeterCell value={v} max={0.1} good digits={3} />],
+    ['count_confirmed_causal_nodes', 'Confirmed causal nodes'],
+    ['has_high_severity_phenotype', 'High-severity phenotype', (v) => <BoolPill value={v} yes="present" no="none" />],
+  ];
+
+  return (
+    <div>
+      <FactTable title="Raw intake facts" blurb="What the intake clerk records — the leaf layer. These are the editable knobs (interpreted by the LLM/human from the case)." rows={RAW} src={r} />
+      {r.case_narrative ? (
+        <section style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: '14px 16px', marginBottom: 14, background: '#fff' }}>
+          <h3 style={{ margin: '0 0 6px', fontSize: 15 }}>Case narrative</h3>
+          <p style={{ color: C.sub, fontSize: 12, margin: '0 0 8px' }}>The presenting story the leaf facts were read from — the provenance every extracted fact points back into.</p>
+          <p style={{ fontSize: 13.5, lineHeight: 1.6, margin: 0 }}>{r.case_narrative}</p>
+        </section>
+      ) : null}
+      <FactTable title="Derived rollups" muted blurb="Computed downstream by the views (not entered here) — shown for context only." rows={DERIVED} src={r} />
+      <div style={{ fontSize: 12.5, color: C.sub, marginTop: 4 }}>
+        Drill into this patient's leaves:{' '}
+        <Link to={`/intake/new-patient/${caseId}`} query={{ tab: 'variants' }} style={{ color: C.accent }}>variants</Link>
+        {' · '}
+        <Link to={`/intake/new-patient/${caseId}`} query={{ tab: 'assays' }} style={{ color: C.accent }}>assays</Link>
+        {' — or see the '}
+        <Link to={`/diagnosis/case/pred-${r.slug}`} query={{ role: 'diagnosing-doctor' }} style={{ color: C.accent }}>derived diagnosis ›</Link>
+      </div>
+    </div>
+  );
+}
+
+// A label/value fact table — the spreadsheet-row look used across the intake
+// panes. `rows` is [[key, label, render?]]; `render(value, row)` is optional.
+function FactTable({ title, blurb, rows, src, muted }) {
+  return (
+    <section style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: '14px 16px', marginBottom: 14, background: muted ? '#fafafa' : '#fff' }}>
+      <h3 style={{ margin: '0 0 2px', fontSize: 15, color: muted ? C.sub : C.ink }}>{title}</h3>
+      {blurb ? <p style={{ color: C.sub, fontSize: 12, margin: '0 0 10px' }}>{blurb}</p> : null}
+      <table style={{ borderCollapse: 'collapse', fontSize: 13, width: '100%' }}>
+        <tbody>
+          {rows.map(([k, lbl, render]) => (
+            <tr key={k}>
+              <td style={{ padding: '4px 14px 4px 0', color: C.sub, verticalAlign: 'top', whiteSpace: 'nowrap', width: 1 }}>{lbl}</td>
+              <td style={{ padding: '4px 0' }}>{render ? render(src[k], src) : fmtVal(src[k])}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+  );
+}
+
+// ---- Variants / Assays: the leaf lists (reuse the LeafDrawer pattern) --------
+// Same look as the diagnosis leaf tables, but scoped to the individual (caseId)
+// rather than a mechanism, and addressing rows by ?panel so a refresh / shared
+// link reopens the same leaf.
+const INTAKE_LEAF_CONFIG = {
+  variants: {
+    title: 'Candidate genomic variants', noun: 'variant', idField: 'genomic_variant_id',
+    endpoint: (c) => `/api/individuals/${c}/variants`,
+    cols: [
+      ['genomic_variant_id', 'ID'],
+      ['variant_label', 'Variant'],
+      ['variant_type_label', 'Type'],
+      ['allele_frequency', 'Allele freq', (r) => <MeterCell value={r.allele_frequency} max={0.5} digits={3} />],
+      ['is_rare_variant', 'Rare', (r) => <BoolPill value={r.is_rare_variant} yes="rare" no="common" />],
+      ['has_allele_specific_expression', 'ASE', (r) => <BoolPill value={r.has_allele_specific_expression} yes="present" no="absent" />],
+      ['is_causal_candidate', 'Candidate', (r) => <BoolPill value={r.is_causal_candidate} yes="candidate" no="no" />],
+    ],
+  },
+  assays: {
+    title: 'Omics assays', noun: 'assay', idField: 'omics_assay_id',
+    endpoint: (c) => `/api/individuals/${c}/assays`,
+    cols: [
+      ['omics_assay_id', 'ID'],
+      ['modality_label', 'Modality'],
+      ['tissue_label', 'Tissue'],
+      ['batch_id', 'Batch'],
+      ['measurement_error_score', 'Meas. error', (r) => <MeterCell value={r.measurement_error_score} max={0.3} digits={3} />],
+      ['has_batch_effect_risk', 'Batch risk', (r) => <BoolPill value={r.has_batch_effect_risk} yes="at risk" no="clean" />],
+      ['is_high_quality_assay', 'Quality', (r) => <BoolPill value={r.is_high_quality_assay} yes="high" no="low" />],
+    ],
+  },
+};
+
+function IntakeLeafList({ caseId, cfg, sub }) {
+  const [panel, setPanel] = useQueryParam('panel');
+  const { data, loading, error } = useFetch(caseId ? cfg.endpoint(caseId) : null, [caseId]);
+  const rows = Array.isArray(data) ? data : [];
+  const openId = panel && panel.startsWith(`${sub}:`) ? panel.slice(sub.length + 1) : null;
+  const openRow = rows.find((r) => String(r[cfg.idField]) === openId);
+  if (!caseId) return <p style={{ color: C.sub }}>No patient selected.</p>;
+  return (
+    <div>
+      <h3 style={{ marginTop: 0 }}>{cfg.title} <span style={{ color: C.sub, fontWeight: 400, fontSize: 13 }}>({rows.length})</span></h3>
+      <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>
+        Raw leaf rows for this patient. Click any {cfg.noun} to open its full detail — it stays in the URL, so a refresh
+        (or a shared link) reopens the same one. The bold columns are <strong>derived</strong> (computed by the views);
+        the rest are raw intake values.
+      </p>
+      {loading ? <p style={{ color: C.sub }}>Loading…</p> : error ? <p style={{ color: C.fail }}>{error}</p> : !rows.length ? <p style={{ color: C.sub }}>No rows.</p> : (
+        <table style={{ borderCollapse: 'collapse', fontSize: 13, width: '100%' }}>
+          <thead><tr>{cfg.cols.map(([, h]) => <th key={h} style={{ border: `1px solid ${C.border}`, padding: '4px 8px', background: '#f5f5f5', textAlign: 'left' }}>{h}</th>)}</tr></thead>
+          <tbody>
+            {rows.map((r) => {
+              const id = String(r[cfg.idField]);
+              const isOpen = id === openId;
+              return (
+                <tr key={id} onClick={() => setPanel(isOpen ? null : `${sub}:${id}`)}
+                  style={{ cursor: 'pointer', background: isOpen ? C.bgAccent : 'transparent' }}>
+                  {cfg.cols.map(([k, , render]) => <td key={k} style={{ border: `1px solid ${C.border}`, padding: '5px 8px', fontFamily: /id$/.test(k) ? 'ui-monospace, monospace' : 'inherit', whiteSpace: 'nowrap' }}>{render ? render(r) : fmtVal(r[k])}</td>)}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+      {openRow ? <LeafDrawer title={`${cfg.noun} · ${openId}`} row={openRow} onClose={() => setPanel(null)} /> : null}
+    </div>
+  );
+}
+
+// ===========================================================================
+//  SUBMIT CASE — the write path made interactive. The form collects ONLY raw
+//  leaf observations (the exact intake contract in server/intake.js), POSTs
+//  /api/intake, and shows the DERIVED panel + diagnosis the server computes
+//  downstream. The conclusion is never an input — that's the whole point.
+//  It is prefilled with a worked example so a single click demonstrates the
+//  raw-facts-in → diagnosis-out round trip; every field is editable.
+// ===========================================================================
+
+// A minimal, valid worked example (mirrors an oracle-style positive case). All
+// values here are RAW leaves — nothing derived. Editing any of them and
+// resubmitting is the "nudge a knob" demonstration.
+const SAMPLE_INTAKE = {
+  given_name: 'Jordan', family_name: 'Demo',
+  ancestry_label: 'European', federated_dataset: 'fed-europe',
+  age_years: '41', enrollment_date: '2024-02-01',
+  is_ancestry_absent_from_training: false, has_cryptic_relatedness_flag: false,
+  variant_type: 'regulatory', allele_frequency: '0.007', has_allele_specific_expression: true,
+  mechanism_type: 'cis-regulatory', has_pleiotropy: false,
+  autoimmune_disease: 'sle', prediction_type: 'onset-risk',
+  // child rows as compact editable JSON (raw leaves only)
+  assays: JSON.stringify([
+    { omics_modality: 'rna-seq', tissue: 'blood', batch_id: 'b1', measurement_error_score: 0.05, has_cell_state_specific_effect: true },
+    { omics_modality: 'atac-seq', tissue: 'blood', batch_id: 'b1', measurement_error_score: 0.06 },
+  ], null, 2),
+  evidence: JSON.stringify([
+    { omics_assay_ref: 'a0', effect_size: 0.91, standard_error: 0.20, is_adjusted_for_ancestry_pcs: true, is_adjusted_for_batch: true },
+    { omics_assay_ref: 'a1', effect_size: 0.73, standard_error: 0.19, is_cross_modality: true, is_adjusted_for_ancestry_pcs: true, is_adjusted_for_batch: true },
+  ], null, 2),
+  replications: JSON.stringify([
+    { replication_ancestry_label: 'East Asian', replication_effect_sign: 1, replication_p_value: 0.004 },
+    { replication_ancestry_label: 'African', replication_effect_sign: 1, replication_p_value: 0.013 },
+  ], null, 2),
+  controls: JSON.stringify([
+    { test_kind: 'permutation', permutation_effect_size: 0.012, null_threshold: 0.1 },
+    { test_kind: 'permutation', permutation_effect_size: 0.028, null_threshold: 0.1 },
+  ], null, 2),
+  interventionTargets: JSON.stringify([
+    { target_label: 'anti-IFNAR1', therapy_class: 'biologic', is_validated: true },
+  ], null, 2),
+  calibration: JSON.stringify([
+    { predicted_probability_band: 0.1, observed_event_rate: 0.09, coverage_count: 31 },
+    { predicted_probability_band: 0.9, observed_event_rate: 0.88, coverage_count: 29 },
+  ], null, 2),
+};
+
+function fieldStyle(extra = {}) {
+  return { width: '100%', boxSizing: 'border-box', padding: '6px 8px', borderRadius: 6, border: `1px solid ${C.border}`, fontSize: 13, fontFamily: 'inherit', ...extra };
+}
+
+function SubmitCase() {
+  const [f, setF] = useState(SAMPLE_INTAKE);
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState(null);
+  const [err, setErr] = useState(null);
+  const set = (k) => (e) => {
+    const v = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setF((p) => ({ ...p, [k]: v }));
+  };
+
+  async function submit(e) {
+    e.preventDefault();
+    setBusy(true); setErr(null); setResult(null);
+    // Build the intake payload from the raw fields. The JSON textareas are the
+    // child-row arrays; parse them here so a typo fails loudly before the POST.
+    let payload;
+    try {
+      const num0 = (v) => (v === '' || v == null ? undefined : Number(v));
+      payload = {
+        individual: {
+          given_name: f.given_name, family_name: f.family_name,
+          ancestry_label: f.ancestry_label, federated_dataset: f.federated_dataset,
+          age_years: num0(f.age_years), enrollment_date: f.enrollment_date || undefined,
+          is_ancestry_absent_from_training: !!f.is_ancestry_absent_from_training,
+          has_cryptic_relatedness_flag: !!f.has_cryptic_relatedness_flag,
+        },
+        variant: {
+          variant_type: f.variant_type, allele_frequency: num0(f.allele_frequency),
+          has_allele_specific_expression: !!f.has_allele_specific_expression,
+        },
+        mechanism: { mechanism_type: f.mechanism_type, has_pleiotropy: !!f.has_pleiotropy },
+        prediction: { autoimmune_disease: f.autoimmune_disease, prediction_type: f.prediction_type },
+        assays: JSON.parse(f.assays || '[]'),
+        evidence: JSON.parse(f.evidence || '[]'),
+        replications: JSON.parse(f.replications || '[]'),
+        controls: JSON.parse(f.controls || '[]'),
+        interventionTargets: JSON.parse(f.interventionTargets || '[]'),
+        calibration: JSON.parse(f.calibration || '[]'),
+      };
+    } catch (parseErr) {
+      setErr('One of the JSON sections is malformed: ' + parseErr.message);
+      setBusy(false);
+      return;
+    }
+    try {
+      const r = await send('/api/intake', 'POST', payload);
+      setResult(r);
+    } catch (e2) {
+      // server returns {error, detail} — surface the detail (it names the knob).
+      let msg = e2.message;
+      try { const j = JSON.parse(msg); msg = j.detail || j.error || msg; } catch { /* plain */ }
+      setErr(msg);
+    }
+    setBusy(false);
+  }
+
+  const txt = (k, label, ph) => (
+    <label style={{ display: 'block', fontSize: 12, color: C.sub }}>
+      {label}
+      <input value={f[k] ?? ''} onChange={set(k)} placeholder={ph} style={fieldStyle({ marginTop: 3 })} />
+    </label>
+  );
+  const chk = (k, label) => (
+    <label style={{ display: 'flex', alignItems: 'center', gap: 7, fontSize: 13, color: C.ink, padding: '4px 0' }}>
+      <input type="checkbox" checked={!!f[k]} onChange={set(k)} />
+      {label}
+    </label>
+  );
+  const jsonArea = (k, label, blurb) => (
+    <label style={{ display: 'block', fontSize: 12, color: C.sub, marginTop: 10 }}>
+      {label}{blurb ? <span style={{ fontWeight: 400 }}> — {blurb}</span> : null}
+      <textarea value={f[k] ?? ''} onChange={set(k)} rows={Math.min(12, (f[k] || '').split('\n').length + 1)}
+        spellCheck={false} style={fieldStyle({ marginTop: 3, fontFamily: 'ui-monospace, monospace', fontSize: 12, lineHeight: 1.4, resize: 'vertical' })} />
+    </label>
+  );
+
+  // After a successful submit, show the DERIVED result — the keystone, deciding
+  // gate, and the doctor-style writeup. None of it was an input.
+  if (result) {
+    const p = result.prediction || {};
+    return (
+      <div>
+        <div style={{ border: `1px solid ${C.pass}`, background: C.bgPass, borderRadius: 10, padding: '14px 16px', marginBottom: 14 }}>
+          <h3 style={{ margin: '0 0 6px', fontSize: 16, color: C.pass }}>Case ingested — diagnosis derived</h3>
+          <p style={{ fontSize: 13, margin: '0 0 8px' }}>
+            Only raw leaves were sent. The conclusion below was computed downstream by the views — never entered.
+          </p>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            <GateChip label="Clinically actionable" value={p.is_clinically_actionable} />
+            {p.deciding_gate != null ? <GateChip label="Deciding gate" value={p.deciding_gate} /> : null}
+            {p.lifecycle_state_key != null ? <GateChip label="Lifecycle state" value={p.lifecycle_state_key} /> : null}
+          </div>
+          <div style={{ marginTop: 10, display: 'flex', gap: 14, fontSize: 13 }}>
+            <Link to={`/diagnosis/case/${result.predictionId}`} query={{ role: 'diagnosing-doctor' }} style={{ color: C.accent, fontWeight: 600 }}>
+              open the full derived case ›
+            </Link>
+            <button onClick={() => { setResult(null); }} style={{ border: 'none', background: 'none', color: C.accent, cursor: 'pointer', fontSize: 13 }}>
+              ← submit another
+            </button>
+          </div>
+        </div>
+        {result.diagnosisMarkdown ? (
+          <section style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: '16px 20px', background: '#fff' }}>
+            <Markdown source={result.diagnosisMarkdown} />
+          </section>
+        ) : null}
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={submit}>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
+        Enter <strong>raw leaf observations only</strong> — the two things the LLM/human produces: interpreted intake
+        facts and synthetic-but-transparent test results. On submit, the server writes the leaves and re-reads the{' '}
+        <strong>derived</strong> keystone + diagnosis from the views. The conclusion is never an input. The form is
+        prefilled with a worked example; edit any knob and resubmit.
+      </p>
+
+      <section style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: '14px 16px', marginBottom: 14, background: '#fff' }}>
+        <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Individual — intake facts</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          {txt('given_name', 'Given name')}
+          {txt('family_name', 'Family name')}
+          {txt('ancestry_label', 'Ancestry label')}
+          {txt('federated_dataset', 'Federated dataset')}
+          {txt('age_years', 'Age (years)')}
+          {txt('enrollment_date', 'Enrollment date', 'YYYY-MM-DD')}
+        </div>
+        <div style={{ marginTop: 6 }}>
+          {chk('is_ancestry_absent_from_training', 'Ancestry absent from training (gates ancestry-transport)')}
+          {chk('has_cryptic_relatedness_flag', 'Cryptic-relatedness flag (gates the anti-spurious branch)')}
+        </div>
+      </section>
+
+      <section style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: '14px 16px', marginBottom: 14, background: '#fff' }}>
+        <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Variant · Mechanism · Prediction</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+          {txt('variant_type', 'Variant type')}
+          {txt('allele_frequency', 'Allele frequency')}
+          {txt('mechanism_type', 'Mechanism type')}
+          {txt('autoimmune_disease', 'Autoimmune disease')}
+          {txt('prediction_type', 'Prediction type')}
+        </div>
+        <div style={{ marginTop: 6 }}>
+          {chk('has_allele_specific_expression', 'Variant has allele-specific expression')}
+          {chk('has_pleiotropy', 'Mechanism has pleiotropy')}
+        </div>
+      </section>
+
+      <section style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: '14px 16px', marginBottom: 14, background: '#fff' }}>
+        <h3 style={{ margin: '0 0 4px', fontSize: 15 }}>Test-result leaves</h3>
+        <p style={{ color: C.sub, fontSize: 12, margin: '0 0 4px' }}>
+          The synthetic-but-transparent measurements, as raw-leaf JSON arrays. Evidence rows reference an assay by{' '}
+          <code>omics_assay_ref</code> (<code>"a0"</code>, <code>"a1"</code>, … or a modality). Replications, controls,
+          intervention targets, and calibration are optional — their absence has derived consequences (e.g. no target →
+          not falsifiable).
+        </p>
+        {jsonArea('assays', 'Assays', 'quality leaves: modality, tissue, measurement_error_score, batch')}
+        {jsonArea('evidence', 'Evidence', 'effect_size + standard_error → the Z-stat leaves')}
+        {jsonArea('replications', 'Replications', 'sign + p-value per ancestry cohort')}
+        {jsonArea('controls', 'Negative controls', 'permutation_effect_size vs null_threshold')}
+        {jsonArea('interventionTargets', 'Intervention targets', 'druggability → falsifiability')}
+        {jsonArea('calibration', 'Calibration bins', 'predicted band vs observed rate, coverage')}
+      </section>
+
+      {err ? (
+        <div style={{ border: `1px solid ${C.fail}`, background: C.bgFail, color: C.fail, borderRadius: 8, padding: '10px 12px', marginBottom: 12, fontSize: 13 }}>
+          {err}
+        </div>
+      ) : null}
+
+      <button type="submit" disabled={busy}
+        style={{ padding: '9px 20px', borderRadius: 6, border: 'none', background: C.accent, color: '#fff', cursor: busy ? 'default' : 'pointer', fontSize: 14, fontWeight: 600 }}>
+        {busy ? 'Ingesting…' : 'Submit case → derive diagnosis'}
+      </button>
+    </form>
+  );
+}

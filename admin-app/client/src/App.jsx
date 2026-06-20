@@ -14,6 +14,7 @@ import { useLocation, useQueryParam, Link } from './router.jsx';
 import { matchNavRoute, matchTemplate, segs, isParamSeg } from './routeMatch.js';
 import {
   HarnessView, DiagnosisView, CaseWalk, StateMachineView, RoutingEditor, LeopoldEditor, ExplainerView, CaseDetail,
+  IntakeWorkspace,
 } from './pages.jsx';
 
 const ROLES = [
@@ -40,12 +41,18 @@ const PAGES = {
   'admin.leopold': () => <LeopoldEditor />,
   'diagnosis': () => <DiagnosisView />,
   'diagnosis.case': ({ params, node }) => <CaseDetail predId={params.predictionId} routeKey={node.route_key} />,
-  'intake.new-patient': ({ params }) => <DiagnosisView caseId={params.caseId} />,
+  'intake': () => <DiagnosisView />,
+  'intake.new-patient': ({ params, node }) => <IntakeWorkspace caseId={params.caseId} routeKey={node.route_key} />,
 };
 // every diagnosis.case.* sub-route renders CaseDetail (it picks the pane from route_key)
 const CASE_SUB = ['evidence', 'mechanism', 'replication', 'controls', 'calibration', 'gates', 'keystone', 'report'];
 for (const s of CASE_SUB) {
   PAGES[`diagnosis.case.${s}`] = ({ params, node }) => <CaseDetail predId={params.predictionId} routeKey={node.route_key} />;
+}
+// every intake.new-patient.* sub-route renders IntakeWorkspace (it picks the pane from route_key/?tab)
+const INTAKE_SUB = ['observations', 'variants', 'assays', 'submit'];
+for (const s of INTAKE_SUB) {
+  PAGES[`intake.new-patient.${s}`] = ({ params, node }) => <IntakeWorkspace caseId={params.caseId} routeKey={node.route_key} />;
 }
 
 function PlaceholderPage({ node }) {
