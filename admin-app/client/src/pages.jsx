@@ -302,6 +302,8 @@ export function DiagnosisView() {
 const CASE_TABS = [
   ['', 'Case walk'],
   ['witness', '3-panel witness'],
+  ['progression', 'Disease course'],
+  ['treatment-line', 'Treatment line'],
   ['all', 'All'],
   ['report', 'Summary writeup'],
   ['evidence', 'Evidence'],
@@ -371,6 +373,8 @@ function CasePane({ predId, sub, patient }) {
   switch (sub) {
     case '': return <CaseWalkBody predId={predId} />;
     case 'witness': return <WitnessView predId={predId} />;
+    case 'progression': return <ProgressionPane predId={predId} patient={patient} />;
+    case 'treatment-line': return <TreatmentLinePane predId={predId} patient={patient} />;
     case 'keystone': return <DiagnosisChain predId={predId} patient={patient} />;
     case 'report': return <DiagnosisSummary predId={predId} />;
     case 'all':
@@ -383,6 +387,137 @@ function CasePane({ predId, sub, patient }) {
       return <LeafPane predId={predId} sub={sub} patient={patient} />;
     default: return <CaseWalkBody predId={predId} />;
   }
+}
+
+// ===========================================================================
+//  v2 PER-PATIENT PANES — the disease-state simulator, per case.
+// ===========================================================================
+
+// "Disease course" tab — the patient's walk through the lupus-nephritis machine
+// (bitemporal occupancy) ABOVE the raw serology panels that drove it. The two
+// halves are independently checkable: the serology numbers (leaves) vs the state
+// the model derived (the witness contract, now for disease state).
+function ProgressionPane({ predId, patient }) {
+  const indId = patient?.individual;
+  const { data, loading, error } = useFetch(indId ? `/api/individuals/${indId}/progression` : '/api/health', [indId]);
+  if (!indId) return <p style={{ color: C.sub }}>No case selected.</p>;
+  if (loading) return <p style={{ color: C.sub }}>Deriving disease course…</p>;
+  if (error || !data || data.error) return <p style={{ color: C.fail }}>{error || 'Could not load progression.'}</p>;
+  // the fetch may still hold the /api/health fallback shape between renders — wait
+  // for the real progression payload (has instances/serology) before drilling in.
+  if (!Array.isArray(data.instances) || !Array.isArray(data.serology)) return <p style={{ color: C.sub }}>Deriving disease course…</p>;
+
+  const cur = data.current;
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 760 }}>
+        The disease as a <strong>state machine</strong>: current state is <strong>derived</strong>
+        from the raw serology panels below — never set. <em>How long</em> in each state is the
+        bitemporal dwell. The panels are the LLM/lab’s input; the state is the model’s.
+      </p>
+
+      {/* the state timeline */}
+      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4, margin: '6px 0 14px' }}>
+        {data.instances.map((occ, i) => (
+          <React.Fragment key={occ.sequence_index}>
+            {i > 0 && <span style={{ color: C.sub }}>→</span>}
+            <div title={`entered ${String(occ.entered_at).slice(0, 10)}${occ.exited_at ? `, exited ${String(occ.exited_at).slice(0, 10)}` : ' (current)'}`}
+              style={{ padding: '6px 11px', borderRadius: 7, fontSize: 12.5, fontWeight: occ.is_current ? 700 : 500,
+                background: occ.is_current ? stateColor(occ.state_key) : '#f0f0f0',
+                color: occ.is_current ? '#fff' : C.ink, border: `1px solid ${occ.is_current ? stateColor(occ.state_key) : C.border}` }}>
+              {stateLbl(occ.state_key)}
+              <span style={{ fontWeight: 400, opacity: 0.85, fontSize: 11 }}> · {occ.dwell_days}d</span>
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+      <div style={{ display: 'flex', gap: 18, fontSize: 13, marginBottom: 16 }}>
+        <span>Current: <strong style={{ color: stateColor(cur) }}>{stateLbl(cur)}</strong></span>
+        <span>SLEDAI: <strong style={{ color: data.latest_sledai_score >= 12 ? C.fail : C.ink }}>{data.latest_sledai_score}</strong> ({data.activity_tier})</span>
+        <span>Progressing: <BoolPill value={data.is_disease_progressing} yes="yes" no="no" /></span>
+      </div>
+
+      {/* the raw serology leaves — the provenance */}
+      <h3 style={{ fontSize: 15, margin: '4px 0 6px' }}>Serology panels (raw leaves)</h3>
+      <p style={{ color: C.sub, fontSize: 12, margin: '0 0 8px' }}>Each panel’s implied state is derived from these numbers alone — check them independently of the verdict.</p>
+      <table style={{ borderCollapse: 'collapse', fontSize: 12.5 }}>
+        <thead>
+          <tr>{['Date', 'anti-dsDNA', 'C3', 'C4', 'proteinuria', 'sediment', 'dsDNA trend', 'complement trend', 'SLEDAI', '⇒ state'].map((h) => (
+            <th key={h} style={{ textAlign: 'left', padding: '4px 9px', borderBottom: `1px solid ${C.border}`, fontSize: 11, color: C.sub }}>{h}</th>
+          ))}</tr>
+        </thead>
+        <tbody>
+          {data.serology.map((s) => (
+            <tr key={s.serology_observation_id}>
+              <td style={{ padding: '4px 9px' }}>{String(s.observed_at).slice(0, 10)}</td>
+              <td style={{ padding: '4px 9px' }}>{s.anti_ds_dna_iu}</td>
+              <td style={{ padding: '4px 9px' }}>{s.complement_c3}</td>
+              <td style={{ padding: '4px 9px' }}>{s.complement_c4}</td>
+              <td style={{ padding: '4px 9px' }}>{s.proteinuria_g_per_day}</td>
+              <td style={{ padding: '4px 9px' }}>{s.has_active_urinary_sediment ? 'active' : '—'}</td>
+              <td style={{ padding: '4px 9px', color: s.anti_ds_dna_trend === 'Rising' ? C.fail : C.sub }}>{s.anti_ds_dna_trend}</td>
+              <td style={{ padding: '4px 9px', color: s.complement_trend === 'Falling' ? C.fail : C.sub }}>{s.complement_trend}</td>
+              <td style={{ padding: '4px 9px' }}>{s.sledai_score}</td>
+              <td style={{ padding: '4px 9px' }}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ width: 9, height: 9, borderRadius: 2, background: stateColor(s.progression_state_key) }} />
+                  {stateLbl(s.progression_state_key)}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// "Treatment line" tab — the derived recommendation + single deciding factor,
+// with the two upstream inputs (mechanism pathway + disease state) shown as the
+// cells it derives from. The audit's MMF/belimumab/anifrolumab example, per case.
+function TreatmentLinePane({ predId }) {
+  const { data: p, loading, error } = useFetch(predId ? `/api/predictions/${predId}` : '/api/health', [predId]);
+  if (loading) return <p style={{ color: C.sub }}>Deriving treatment line…</p>;
+  if (error || !p || p.error) return <p style={{ color: C.fail }}>{error || 'Could not load.'}</p>;
+  if (!('recommended_treatment_line' in p)) return <p style={{ color: C.sub }}>Deriving treatment line…</p>;
+  const disagree = p.progression_vs_actionability_disagree;
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 760 }}>
+        The recommended treatment line is <strong>derived</strong> from two upstream cells: the
+        confirmed mechanism’s <strong>target pathway</strong> and the patient’s <strong>disease
+        state</strong> (active nephritis overrides to induction). It names a single deciding reason.
+      </p>
+      <div style={{ display: 'flex', alignItems: 'stretch', gap: 10, flexWrap: 'wrap', margin: '10px 0 16px' }}>
+        <InputCell label="Mechanism confirmed?" value={p.rests_on_confirmed_mechanism ? 'yes' : 'no'} good={p.rests_on_confirmed_mechanism} />
+        <InputCell label="Target pathway" value={p.individual_target_pathway || '—'} />
+        <InputCell label="Disease state" value={stateLbl(p.individual_progression_state_key)} color={stateColor(p.individual_progression_state_key)} />
+        <span style={{ alignSelf: 'center', color: C.sub, fontSize: 18 }}>⇒</span>
+        <div style={{ padding: '12px 16px', borderRadius: 8, background: C.bgAccent, border: `1px solid ${C.accent}` }}>
+          <div style={{ fontSize: 11, color: C.sub }}>Recommended line</div>
+          <div style={{ fontWeight: 800, fontSize: 16, color: C.accent }}>{p.recommended_treatment_line}</div>
+          <div style={{ fontSize: 12, color: C.sub, marginTop: 2 }}>deciding factor: <strong>{p.treatment_line_deciding_factor}</strong></div>
+        </div>
+      </div>
+      {disagree && (
+        <div style={{ background: C.bgFail, border: `1px solid ${C.fail}`, borderRadius: 8, padding: '10px 14px', maxWidth: 760 }}>
+          <strong style={{ color: C.fail }}>⚠ Disease–evidence disagreement.</strong>
+          <span style={{ fontSize: 13, color: C.ink }}> The disease is progressing and warrants attention, but the
+            causal-mechanism prediction is <strong>not clinically actionable</strong> ({p.deciding_gate}) — do not use it
+            to choose targeted therapy. The induction recommendation reflects the disease state, not a validated mechanism.</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function InputCell({ label, value, good, color }) {
+  return (
+    <div style={{ padding: '10px 14px', borderRadius: 8, border: `1px solid ${C.border}`, background: '#fbfbfb', minWidth: 110 }}>
+      <div style={{ fontSize: 11, color: C.sub }}>{label}</div>
+      <div style={{ fontWeight: 700, fontSize: 14, color: color || (good === false ? C.fail : C.ink) }}>{value}</div>
+    </div>
+  );
 }
 
 // ===========================================================================
@@ -1111,11 +1246,313 @@ function WalkStep({ level, patient, reached, isDeciding, drillTo, drillTab }) {
   );
 }
 
-// CaseWalk — the admin.cohort entry point: a thin wrapper that, lacking a
-// predId in the URL, renders the cohort grid (each patient a Link). The actual
-// walk lives in CaseWalkBody, reused by CaseDetail's default pane.
+// ===========================================================================
+//  v2 COHORT DISCOVERY — the corpus-level surface. v1 = per-patient adjudication;
+//  v2 adds the population view where disease-state patterns EMERGE across the
+//  whole cohort. Four panels (?panel): the disease-state map, the emergent
+//  serology-signature scatter, the disagreement board, the treatment-line
+//  distribution. Every value is a DERIVED field read from /api/cohort-individuals
+//  (and the harness asserts each one green) — nothing is recomputed here.
+// ===========================================================================
+
+// The nephritis-progression states, ordered, with a severity ramp colour. Shared
+// by the map, scatter, and chips so the whole board reads one visual language.
+const NEPHRITIS_STATES = [
+  ['PresymptomaticAutoimmunity', 'Presymptomatic', '#8a8f98'],
+  ['SerologicActive', 'Serologic-active', '#caa53d'],
+  ['EarlyNephritis', 'Early nephritis', '#d98033'],
+  ['RenalFlareRisk', 'Renal-flare risk', '#c85a2b'],
+  ['BiopsyIndicated', 'Biopsy-indicated', '#c0282d'],
+];
+const STATE_META = Object.fromEntries(NEPHRITIS_STATES.map(([k, lbl, col], i) => [k, { lbl, col, order: i }]));
+const stateColor = (k) => STATE_META[k]?.col || C.sub;
+const stateLbl = (k) => STATE_META[k]?.lbl || k;
+const personName = (r) => `${r.given_name} ${r.family_name}`;
+
+const COHORT_PANELS = [
+  ['map', 'Disease-state map'],
+  ['signature', 'Emergent signature'],
+  ['disagreement', 'Disagreement board'],
+  ['treatment', 'Treatment lines'],
+];
+
+export function CohortDiscovery() {
+  const { data, loading, error } = useFetch('/api/cohort-individuals');
+  const [panel, setPanel] = useQueryParam('panel', 'map');
+  const rows = Array.isArray(data) ? data : [];
+
+  return (
+    <div>
+      <h2 style={{ marginTop: 0 }}>Cohort discovery</h2>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 760 }}>
+        v1 answered <em>“is this prediction actionable?”</em> one patient at a time. This is the
+        layer above it: the <strong>whole cohort</strong> at once, where disease-state patterns
+        emerge across people — because discovery is a corpus-level act, never a single chart. Every
+        cell is a <strong>derived</strong> field (green in the harness); nothing is computed here.
+      </p>
+
+      <div style={{ display: 'flex', gap: 4, borderBottom: `1px solid ${C.border}`, marginBottom: 16, flexWrap: 'wrap' }}>
+        {COHORT_PANELS.map(([k, lbl]) => {
+          const active = panel === k;
+          return (
+            <button key={k} onClick={() => setPanel(k)}
+              style={{ padding: '7px 14px', border: 'none', background: 'transparent', cursor: 'pointer',
+                borderBottom: `2px solid ${active ? C.accent : 'transparent'}`, color: active ? C.ink : C.sub,
+                fontWeight: active ? 700 : 500, fontSize: 14 }}>
+              {lbl}
+            </button>
+          );
+        })}
+      </div>
+
+      {loading ? <p style={{ color: C.sub }}>Loading cohort…</p>
+        : error ? <p style={{ color: C.fail }}>{error}</p>
+          : panel === 'signature' ? <SignaturePanel rows={rows} />
+            : panel === 'disagreement' ? <DisagreementPanel rows={rows} />
+              : panel === 'treatment' ? <TreatmentLinePanel rows={rows} />
+                : <DiseaseStateMap rows={rows} />}
+    </div>
+  );
+}
+
+// 1a — DISEASE-STATE COHORT MAP. Rows = individuals, columns = the ordered
+// nephritis states. The current state is the filled cell; reads like a population
+// moving through disease space.
+function DiseaseStateMap({ rows }) {
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
+        Each row is a patient; the filled cell is their <strong>current derived state</strong>
+        (from raw serology). The cluster that has crossed into nephritis is visible at a glance.
+      </p>
+      <table style={{ borderCollapse: 'collapse', fontSize: 13 }}>
+        <thead>
+          <tr>
+            <th style={{ textAlign: 'left', padding: '6px 10px', borderBottom: `1px solid ${C.border}` }}>Patient</th>
+            {NEPHRITIS_STATES.map(([k, lbl]) => (
+              <th key={k} style={{ padding: '6px 8px', borderBottom: `1px solid ${C.border}`, fontSize: 11, color: C.sub, fontWeight: 600 }}>{lbl}</th>
+            ))}
+            <th style={{ padding: '6px 10px', borderBottom: `1px solid ${C.border}`, fontSize: 11, color: C.sub }}>SLEDAI · tier</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => {
+            const curOrder = STATE_META[r.nephritis_progression_state_key]?.order ?? 0;
+            return (
+              <tr key={r.individual_id}>
+                <td style={{ padding: '5px 10px', whiteSpace: 'nowrap' }}>
+                  {r.individual_prediction_id
+                    ? <Link to={`/diagnosis/case/${r.individual_prediction_id}`} query={{ tab: 'progression' }} style={{ color: C.accent }}>{personName(r)}</Link>
+                    : <span>{personName(r)}</span>}
+                  <span style={{ color: C.sub, fontSize: 11 }}> · {r.ancestry_label}</span>
+                </td>
+                {NEPHRITIS_STATES.map(([k], i) => {
+                  const isCur = r.nephritis_progression_state_key === k;
+                  const passed = i <= curOrder;
+                  return (
+                    <td key={k} style={{ padding: '4px 6px', textAlign: 'center' }}>
+                      <div title={isCur ? `current: ${stateLbl(k)}` : ''}
+                        style={{ width: 18, height: 18, margin: '0 auto', borderRadius: 4,
+                          background: isCur ? stateColor(k) : passed ? '#e8e8e8' : 'transparent',
+                          border: isCur ? `2px solid ${stateColor(k)}` : `1px solid ${C.border}`,
+                          boxShadow: isCur ? `0 0 0 2px ${stateColor(k)}33` : 'none' }} />
+                    </td>
+                  );
+                })}
+                <td style={{ padding: '5px 10px', whiteSpace: 'nowrap', color: C.sub }}>
+                  <strong style={{ color: r.latest_sledai_score >= 12 ? C.fail : C.ink }}>{r.latest_sledai_score}</strong> · {r.activity_tier}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// 1b — EMERGENT SIGNATURE. A plain-SVG scatter: x = anti-dsDNA trend, y =
+// complement trend, colour = derived state, radius = SLEDAI. The rising-dsDNA +
+// falling-complement quadrant lights up with the nephritis cases — the SHAPE of
+// how the hypothesis "this serology signature precedes renal involvement" would
+// be discovered across a cohort. (Synthetic data — a demonstration, not a finding.)
+const TREND_X = { Falling: 0, Stable: 1, Rising: 2 };
+const TREND_Y = { Rising: 0, Stable: 1, Falling: 2 }; // falling complement = lower = "worse" = bottom
+function SignaturePanel({ rows }) {
+  const W = 520, H = 360, padL = 90, padB = 60, padT = 20, padR = 20;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const xAt = (t) => padL + (TREND_X[t] ?? 1) / 2 * plotW;
+  const yAt = (t) => padT + (TREND_Y[t] ?? 1) / 2 * plotH;
+  const rAt = (s) => 6 + Math.sqrt(s || 0) * 3;
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 760 }}>
+        Each point is a patient at their latest serology panel: <strong>x = anti-dsDNA trend</strong>,
+        <strong> y = complement trend</strong>, colour = derived nephritis state, size = SLEDAI.
+        The <strong>rising-dsDNA + falling-complement</strong> corner (bottom-right) is exactly where
+        the nephritis cases cluster — the emergent signature, surfaced across the whole cohort.
+      </p>
+      <svg width={W} height={H} style={{ border: `1px solid ${C.border}`, borderRadius: 8, background: '#fcfcfc' }}>
+        {/* quadrant shading: bottom-right = the "worsening" corner */}
+        <rect x={xAt('Stable')} y={yAt('Stable')} width={plotW / 2} height={plotH / 2} fill="#fdeaea" opacity={0.6} />
+        {/* axes */}
+        <line x1={padL} y1={padT} x2={padL} y2={padT + plotH} stroke={C.border} />
+        <line x1={padL} y1={padT + plotH} x2={padL + plotW} y2={padT + plotH} stroke={C.border} />
+        {['Falling', 'Stable', 'Rising'].map((t) => (
+          <text key={t} x={xAt(t)} y={padT + plotH + 18} textAnchor="middle" fontSize={11} fill={C.sub}>{t}</text>
+        ))}
+        <text x={padL + plotW / 2} y={H - 8} textAnchor="middle" fontSize={11} fill={C.ink}>anti-dsDNA trend →</text>
+        {['Rising', 'Stable', 'Falling'].map((t) => (
+          <text key={t} x={padL - 8} y={yAt(t) + 4} textAnchor="end" fontSize={11} fill={C.sub}>{t}</text>
+        ))}
+        <text x={16} y={padT + plotH / 2} textAnchor="middle" fontSize={11} fill={C.ink}
+          transform={`rotate(-90 16 ${padT + plotH / 2})`}>complement trend ↓</text>
+        {/* fan co-located points around their quadrant anchor so labels don't collide */}
+        {rows.map((r) => {
+          const key = `${r.anti_ds_dna_trend}|${r.complement_trend}`;
+          const peers = rows.filter((x) => `${x.anti_ds_dna_trend}|${x.complement_trend}` === key);
+          const pos = peers.findIndex((x) => x.individual_id === r.individual_id);
+          const n = peers.length;
+          // fan out on a ring (radius grows with crowd); single points stay centered
+          const ang = n > 1 ? (pos / n) * 2 * Math.PI : 0;
+          const ring = n > 1 ? 26 + n * 3 : 0;
+          const jx = Math.cos(ang) * ring, jy = Math.sin(ang) * ring;
+          const cx = xAt(r.anti_ds_dna_trend) + jx, cy = yAt(r.complement_trend) + jy;
+          return (
+            <g key={r.individual_id}>
+              <circle cx={cx} cy={cy} r={rAt(r.latest_sledai_score)} fill={stateColor(r.nephritis_progression_state_key)}
+                fillOpacity={0.65} stroke={stateColor(r.nephritis_progression_state_key)} strokeWidth={1.5}>
+                <title>{personName(r)} · {stateLbl(r.nephritis_progression_state_key)} · SLEDAI {r.latest_sledai_score}</title>
+              </circle>
+              <text x={cx} y={cy - rAt(r.latest_sledai_score) - 3} textAnchor="middle" fontSize={10} fill={C.ink}>
+                {r.family_name}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+      <StateLegend />
+      <p style={{ color: C.fail, fontSize: 11.5, marginTop: 8, fontWeight: 600 }}>
+        Synthetic, transparent data. This is a demonstration of the SHAPE of corpus-level discovery,
+        not a clinical finding.
+      </p>
+    </div>
+  );
+}
+
+function StateLegend() {
+  return (
+    <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 10 }}>
+      {NEPHRITIS_STATES.map(([k, lbl, col]) => (
+        <span key={k} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11.5, color: C.sub }}>
+          <span style={{ width: 11, height: 11, borderRadius: 3, background: col, display: 'inline-block' }} /> {lbl}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// 1c — DISAGREEMENT BOARD. The centerpiece: "is the disease progressing?"
+// (simulator) vs "is the prediction actionable?" (gate), side by side, with the
+// disagreeing row lit. Diego is the lit cell — progressing yet not actionable.
+function DisagreementPanel({ rows }) {
+  const withPred = rows.filter((r) => r.individual_prediction_id);
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 780 }}>
+        Two independent verdicts per patient. <strong>“Progressing?”</strong> is the disease-state
+        simulator; <strong>“Actionable?”</strong> is the v1 evidence gate. Where they
+        <strong> disagree</strong>, the row is lit — proof the two layers are independent. A pure
+        evidence gate could never flag a patient who is clearly worsening yet whose prediction is
+        untrustworthy.
+      </p>
+      <table style={{ borderCollapse: 'collapse', fontSize: 13, minWidth: 620 }}>
+        <thead>
+          <tr>
+            {['Patient', 'Disease state', 'Progressing?', 'Actionable?', 'Deciding gate', 'Disagree'].map((h) => (
+              <th key={h} style={{ textAlign: 'left', padding: '6px 12px', borderBottom: `1px solid ${C.border}`, fontSize: 11, color: C.sub }}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {withPred.map((r) => {
+            const lit = r.progression_vs_actionability_disagree;
+            return (
+              <tr key={r.individual_id} style={{ background: lit ? C.bgFail : 'transparent' }}>
+                <td style={{ padding: '6px 12px', whiteSpace: 'nowrap' }}>
+                  <Link to={`/diagnosis/case/${r.individual_prediction_id}`} query={{ tab: 'progression' }} style={{ color: C.accent, fontWeight: lit ? 700 : 500 }}>{personName(r)}</Link>
+                </td>
+                <td style={{ padding: '6px 12px' }}>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ width: 10, height: 10, borderRadius: 3, background: stateColor(r.nephritis_progression_state_key) }} />
+                    {stateLbl(r.nephritis_progression_state_key)}
+                  </span>
+                </td>
+                <td style={{ padding: '6px 12px' }}><BoolPill value={r.is_disease_progressing} yes="progressing" no="stable" /></td>
+                <td style={{ padding: '6px 12px' }}><BoolPill value={r.is_clinically_actionable} yes="actionable" no="not actionable" /></td>
+                <td style={{ padding: '6px 12px', color: C.sub, fontSize: 12 }}>{r.deciding_gate}</td>
+                <td style={{ padding: '6px 12px', fontWeight: 700, color: lit ? C.fail : C.sub }}>{lit ? '⚠ DISAGREE' : '—'}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <p style={{ color: C.sub, fontSize: 12.5, marginTop: 12, maxWidth: 780 }}>
+        Read the lit row as: <em>“this patient is clearly progressing toward a renal flare and needs
+        attention — but our causal-mechanism prediction is not trustworthy enough (cryptic
+        relatedness) to choose a targeted therapy.”</em> Only a system with both layers can say that.
+      </p>
+    </div>
+  );
+}
+
+// 1d — TREATMENT-LINE DISTRIBUTION. Confirmed-mechanism pathway → recommended
+// line, grouped, each patient drillable to the deciding factor.
+function TreatmentLinePanel({ rows }) {
+  const withPred = rows.filter((r) => r.individual_prediction_id);
+  const groups = {};
+  for (const r of withPred) {
+    const line = r.recommended_treatment_line || '—';
+    (groups[line] || (groups[line] = [])).push(r);
+  }
+  const order = Object.keys(groups).sort((a, b) => groups[b].length - groups[a].length);
+  const lineColor = (line) => line.includes('Mycophenolate') ? '#c0282d'
+    : line.includes('Anifrolumab') ? '#1f5fae' : line.includes('Belimumab') ? '#7a3da9'
+      : line.includes('Secukinumab') ? '#0a7d28' : '#8a8f98';
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0, maxWidth: 780 }}>
+        The recommended treatment line per patient — <strong>derived</strong> from the confirmed
+        mechanism’s target pathway and the disease state (active nephritis overrides to induction).
+        Each is a single deciding reason, not a label.
+      </p>
+      {order.map((line) => (
+        <div key={line} style={{ marginBottom: 14 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+            <span style={{ width: 11, height: 11, borderRadius: 3, background: lineColor(line) }} />
+            <strong style={{ fontSize: 13.5 }}>{line}</strong>
+            <span style={{ color: C.sub, fontSize: 12 }}>· {groups[line].length}</span>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, paddingLeft: 19 }}>
+            {groups[line].map((r) => (
+              <Link key={r.individual_id} to={`/diagnosis/case/${r.individual_prediction_id}`} query={{ tab: 'treatment-line' }}
+                title={`${r.treatment_line_deciding_factor} · pathway ${r.target_pathway || '—'}`}
+                style={{ fontSize: 12, padding: '3px 9px', borderRadius: 12, border: `1px solid ${lineColor(line)}`, color: lineColor(line), background: '#fff' }}>
+                {personName(r)} <span style={{ color: C.sub }}>· {r.treatment_line_deciding_factor}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// CaseWalk — the admin.cohort entry point: now the Cohort Discovery board (the
+// corpus-level surface). The per-case walk lives in CaseWalkBody, reused by
+// CaseDetail's default pane.
 export function CaseWalk() {
-  return <DiagnosisView />;
+  return <CohortDiscovery />;
 }
 
 // Each walk level can deep-link to the matching case sub-route, so the walk

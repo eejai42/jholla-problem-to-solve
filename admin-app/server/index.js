@@ -162,6 +162,36 @@ app.get('/api/cohort', async (_req, res) => {
 });
 app.get('/api/predictions/:id', one('vw_individual_predictions', 'individual_prediction_id'));
 
+// v2 COHORT DISCOVERY — the cohort-level disease-state surface. One row per
+// individual (all 9, incl. the progression-demo patients H/I that have no
+// prediction), joining the derived disease state to the latest serology trend
+// (the scatter inputs) and to the prediction's keystone + treatment line where
+// one exists. This is the data behind the Cohort Discovery board: discovery is a
+// CORPUS-level act, so this endpoint is the population view v1 never had.
+app.get('/api/cohort-individuals', async (_req, res) => {
+  try {
+    const rows = await query(`
+      SELECT i.individual_id,
+             i.given_name, i.family_name, i.ancestry_label, i.is_ancestry_absent_from_training,
+             i.nephritis_progression_state_key, i.latest_sledai_score, i.activity_tier,
+             i.is_disease_progressing, i.target_pathway,
+             s.anti_ds_dna_trend, s.complement_trend,
+             p.individual_prediction_id, p.is_clinically_actionable, p.deciding_gate,
+             p.recommended_treatment_line, p.treatment_line_deciding_factor,
+             p.progression_vs_actionability_disagree
+      FROM vw_individuals i
+      LEFT JOIN LATERAL (
+        SELECT anti_ds_dna_trend, complement_trend
+        FROM vw_serology_observations s2
+        WHERE s2.individual = i.individual_id
+        ORDER BY s2.sequence_index DESC LIMIT 1
+      ) s ON TRUE
+      LEFT JOIN vw_individual_predictions p ON p.individual = i.individual_id
+      ORDER BY i.individual_id`);
+    res.json(rows);
+  } catch (err) { res.status(500).json({ error: String(err) }); }
+});
+
 // The MARQUEE walk: each case's ordered path through the diagnosis-lifecycle machine,
 // ending at its deciding terminal. Anchors the case-by-case "upside-down" presentation.
 app.get('/api/predictions/:id/lifecycle', async (req, res) => {
@@ -257,6 +287,15 @@ app.get('/api/individuals/:id/progression', async (req, res) => {
        FROM vw_state_transitions
        WHERE state_machine = 'lupus-nephritis-progression' AND subject_id = $1
        ORDER BY transition_at`, [indId]);
+    // the RAW serology leaves that DROVE each derived state — the provenance the
+    // witness model demands: the panel numbers are checkable independently of the
+    // state the model derived from them.
+    const serology = await query(
+      `SELECT serology_observation_id, observed_at, sequence_index::int AS sequence_index,
+              anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day,
+              egfr_ml_min, has_active_urinary_sediment, anti_ds_dna_trend, complement_trend,
+              sledai_score, progression_state_key
+       FROM vw_serology_observations WHERE individual = $1 ORDER BY sequence_index`, [indId]);
     res.json({
       individual: indId,
       states: instances.map((i) => i.state_key),
@@ -268,6 +307,7 @@ app.get('/api/individuals/:id/progression', async (req, res) => {
       target_pathway: ind?.target_pathway ?? null,
       instances,
       transitions,
+      serology,
     });
   } catch (err) { res.status(500).json({ error: String(err) }); }
 });
