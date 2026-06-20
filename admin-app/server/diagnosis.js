@@ -78,6 +78,23 @@ function severityReason(p) {
   }
 }
 
+// Map the derived treatment-response gate (grounded in a mechanism match) to a
+// plain-English deciding reason. Consumes the derived fields as opaque truth.
+function treatmentReason(p) {
+  switch (p.treatment_response_deciding_factor) {
+    case 'EffectiveOnConfirmedMechanism':
+      return p.is_clinically_actionable
+        ? 'An effective therapy (Complete/Partial, no adverse effect) that targets the **confirmed** causal mechanism — the response is mechanistically grounded.'
+        : '**Treatment response is actionable even though the onset prediction is not:** the therapy responds and targets the confirmed mechanism, so the response prediction stands on its own (onset failed for a *different* reason).';
+    case 'NoEffectiveTreatmentOnMechanism':
+      return '**No effective treatment on the confirmed mechanism:** the therapy targets a confirmed mechanism, but it was adverse or produced no response — so a response is not predicted.';
+    case 'NoConfirmedMechanism':
+      return '**Treatment-response gate blocked by the mechanism match:** the therapy targets a mechanism that failed validation (not a confirmed causal node), so any apparent response is not mechanistically grounded.';
+    default:
+      return 'Treatment-response actionability undetermined from surfaced fields.';
+  }
+}
+
 // Build a structured diagnosis object from live views (read-only, opaque truth).
 export async function buildDiagnosis(predictionId) {
   const preds = await query('SELECT * FROM vw_individual_predictions WHERE individual_prediction_id = $1', [predictionId]);
@@ -290,6 +307,22 @@ export function renderMarkdown(d) {
     L.push(severityReason(p));
     L.push('');
     L.push('_Severity is grounded in `ClinicalPhenotypes.SeverityScore` and gated on the SAME mechanism gates as onset (rests-on-confirmed-mechanism ∧ not-spurious) — so a high severity number alone is never actionable on a debunked mechanism._');
+    L.push('');
+  }
+
+  // ---- THIRD PREDICTION: treatment response (Loop 5) ----
+  // Grounded in a MECHANISM MATCH: a Treatment targets a CausalMechanism (FK), and
+  // a response is predicted only when that mechanism is a confirmed causal node AND
+  // the therapy is effective (Complete/Partial, not adverse). Independent of onset
+  // and severity — pred-b is the marquee again (onset FALSE, treatment-response TRUE).
+  if (p.treatment_response_deciding_factor != null) {
+    L.push('## Treatment-response prediction (third derived prediction)');
+    L.push('');
+    L.push(`### IsTreatmentResponseActionable: ${p.is_treatment_response_actionable ? '✅ **TRUE**' : '⛔ **FALSE**'}  ·  _(${p.treatment_response_deciding_factor})_`);
+    L.push('');
+    L.push(treatmentReason(p));
+    L.push('');
+    L.push('_Treatment response is grounded in a **mechanism match**: the treatment\'s `TargetsMechanism` must be a confirmed causal-architecture node, and the therapy must be effective (`IsEffectiveTreatment`). A drug aimed at a debunked mechanism — or one that was adverse or didn\'t respond — is never predicted to respond._');
     L.push('');
   }
 

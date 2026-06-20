@@ -70,16 +70,16 @@ Show why each gate passed/failed one level down; consider installing the explain
 Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.
 
 - **Status:** done
-### [NEXT] Loop 5 — Treatment-response prediction
+### [DONE] Loop 5 — Treatment-response prediction
 
 Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.
 
-- **Status:** next
-### [BACKLOG] Loop 6 — LLM intake clerk + synthetic lab
+- **Status:** done
+### [NEXT] Loop 6 — LLM intake clerk + synthetic lab
 
 Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.
 
-- **Status:** backlog
+- **Status:** next
 ### [BACKLOG] Loop 7 — Adverse-effect prediction
 
 Wire adverse-effect prediction to observed treatment adverse-event rows.

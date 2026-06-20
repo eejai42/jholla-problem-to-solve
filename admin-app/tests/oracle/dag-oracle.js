@@ -177,6 +177,40 @@ export const SEVERITY_WITNESS = {
 };
 
 // ---------------------------------------------------------------------------
+//  L5c — TREATMENT-RESPONSE prediction (Loop 5). A THIRD derived prediction,
+//  grounded in a MECHANISM MATCH: a Treatment targets a CausalMechanism (FK), and
+//  the prediction fires only when that mechanism is a CONFIRMED causal-architecture
+//  node AND the treatment is effective (response∈{Complete,Partial} ∧ not adverse).
+//  Independent of onset/severity — pred-b again diverges (onset false, txresp true).
+//
+//  IsTreatmentResponseActionable = HasPredictedTreatmentResponse, where a treatment is
+//  predicted iff IsEffectiveTreatment ∧ IsMechanismMatched (target mechanism confirmed).
+// ---------------------------------------------------------------------------
+export const TREATMENT_LEVEL = {
+  // A: anifrolumab targets confirmed cm-a, Partial, no AE ⇒ predicted.
+  'pred-a': { is_treatment_response_actionable: true,  treatment_response_deciding_factor: 'EffectiveOnConfirmedMechanism' },
+  // B (marquee): onset FAILS on calibration, yet treatment-response is actionable —
+  //   the targeted mechanism is confirmed and the drug responds (Complete).
+  'pred-b': { is_treatment_response_actionable: true,  treatment_response_deciding_factor: 'EffectiveOnConfirmedMechanism' },
+  // C: drug targets cm-c, which failed validation ⇒ no mechanism match.
+  'pred-c': { is_treatment_response_actionable: false, treatment_response_deciding_factor: 'NoConfirmedMechanism' },
+  // D: targets confirmed cm-d and responds (Complete), but an adverse effect was observed
+  //   ⇒ not an effective treatment ⇒ not predicted.
+  'pred-d': { is_treatment_response_actionable: false, treatment_response_deciding_factor: 'NoEffectiveTreatmentOnMechanism' },
+  // E: targets debunked cm-e, no response ⇒ no mechanism match.
+  'pred-e': { is_treatment_response_actionable: false, treatment_response_deciding_factor: 'NoConfirmedMechanism' },
+  // F: targets confirmed cm-f but the patient did NOT respond (None) ⇒ not effective.
+  'pred-f': { is_treatment_response_actionable: false, treatment_response_deciding_factor: 'NoEffectiveTreatmentOnMechanism' },
+  // G: secukinumab targets confirmed cm-g, Partial, no AE ⇒ predicted.
+  'pred-g': { is_treatment_response_actionable: true,  treatment_response_deciding_factor: 'EffectiveOnConfirmedMechanism' },
+};
+
+export const TREATMENT_WITNESS = {
+  is_treatment_response_actionable:    'the individual has a treatment that is effective (Complete/Partial, not adverse) AND whose target mechanism is a confirmed causal node — the mechanism match.',
+  treatment_response_deciding_factor:  'EffectiveOnConfirmedMechanism | NoEffectiveTreatmentOnMechanism (adverse or no response) | NoConfirmedMechanism (drug targets a debunked mechanism).',
+};
+
+// ---------------------------------------------------------------------------
 //  L4 — INDIVIDUAL rollups.
 // ---------------------------------------------------------------------------
 export const INDIVIDUAL_LEVEL = {

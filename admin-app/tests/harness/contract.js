@@ -32,6 +32,11 @@ export const CONTRACT = {
     endpoint: (p) => `/api/predictions/${p.prediction}`,
     plannedLoop: 'Loop 4',
   },
+  treatmentLevel: {
+    surfaces: 'L5c treatment-response prediction (effective therapy on a confirmed mechanism — the mechanism match)',
+    endpoint: (p) => `/api/predictions/${p.prediction}`,
+    plannedLoop: 'Loop 5',
+  },
   individualLevel: {
     surfaces: 'L4 individual rollups',
     endpoint: (p) => `/api/individuals/${p.individual}`,

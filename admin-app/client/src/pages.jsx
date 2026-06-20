@@ -541,6 +541,36 @@ function GatesPane({ predId }) {
           </div>
         );
       })()}
+
+      {/* THIRD PREDICTION (Loop 5): treatment response, grounded in a MECHANISM
+          MATCH (the treatment's target mechanism must be a confirmed causal node)
+          AND an effective therapy. Read off the same prediction row; independent of
+          onset and severity — pred-b diverges (onset false, treatment-response true). */}
+      {p.treatment_response_deciding_factor != null && (() => {
+        const txOk = p.is_treatment_response_actionable === true;
+        return (
+          <div style={{ marginTop: 14 }}>
+            <p style={{ color: C.sub, fontSize: 13, margin: '0 0 6px' }}>
+              <strong>Third prediction — treatment response.</strong> Grounded in a <em>mechanism match</em>: the
+              treatment's target mechanism must be a <code>confirmed causal node</code> and the therapy must be
+              effective (Complete/Partial, not adverse). <em>Independent of the onset keystone and severity above.</em>
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8,
+              background: txOk ? C.bgPass : C.bgFail, border: `1px solid ${txOk ? C.pass : C.fail}` }}>
+              <span style={{ fontSize: 18 }}>{txOk ? '✅' : '⛔'}</span>
+              <div>
+                <div style={{ fontWeight: 700, color: txOk ? C.pass : C.fail }}>
+                  Treatment response — actionable: {txOk ? 'true' : 'false'}
+                </div>
+                <div style={{ fontSize: 12.5, color: C.sub }}>
+                  Deciding factor: <code>{p.treatment_response_deciding_factor}</code>
+                  {txOk && !keystone ? ' — actionable even though the onset prediction is not.' : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
