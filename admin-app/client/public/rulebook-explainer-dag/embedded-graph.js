@@ -1133,457 +1133,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "data": [
       {
-        "IndividualId": "ind-a-reyes",
-        "GivenName": "Ana",
-        "FamilyName": "Reyes",
-        "AncestryLabel": "European",
-        "AgeYears": 34,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "fed-europe",
-        "EnrollmentDate": "2023-04-10",
-        "HasCrypticRelatednessFlag": false,
-        "Name": "Ana Reyes",
-        "Slug": "reyes-ana",
-        "RelativePath": "/intake/new-patient/reyes-ana",
-        "FederatedDatasetNodeLabel": "European Reference Node",
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 1,
-        "RareVariantBurdenScore": 0.029411764705882353,
-        "CausalArchitectureScore": 15.029411764705882,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 1,
-        "SumConfirmedCausalConfidence": 0.7583333333333333,
-        "CountCrossAncestryConfirmedNodes": 1,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged.",
-        "MaxSeverityScore": 9,
-        "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true,
-        "CountPredictedTreatmentResponses": 1,
-        "HasPredictedTreatmentResponse": true,
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 2,
-        "LatestSledaiScore": 4,
-        "NephritisProgressionStateKey": "SerologicActive",
-        "ActivityTier": "Mild",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": false,
-        "TargetPathwayCode": 1,
-        "TargetPathway": "type-I-IFN"
-      },
-      {
-        "IndividualId": "ind-b-okafor",
-        "GivenName": "Bili",
-        "FamilyName": "Okafor",
-        "AncestryLabel": "European",
-        "AgeYears": 41,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "fed-europe",
-        "EnrollmentDate": "2023-05-12",
-        "HasCrypticRelatednessFlag": false,
-        "Name": "Bili Okafor",
-        "Slug": "okafor-bili",
-        "RelativePath": "/intake/new-patient/okafor-bili",
-        "FederatedDatasetNodeLabel": "European Reference Node",
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.024390243902439025,
-        "CausalArchitectureScore": 10.024390243902438,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 1,
-        "SumConfirmedCausalConfidence": 0.7583333333333333,
-        "CountCrossAncestryConfirmedNodes": 1,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged.",
-        "MaxSeverityScore": 8,
-        "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true,
-        "CountPredictedTreatmentResponses": 1,
-        "HasPredictedTreatmentResponse": true,
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 1,
-        "LatestSledaiScore": 0,
-        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ActivityTier": "Quiescent",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": false,
-        "TargetPathwayCode": 1,
-        "TargetPathway": "type-I-IFN"
-      },
-      {
-        "IndividualId": "ind-c-chen",
-        "GivenName": "Chen",
-        "FamilyName": "Wei",
-        "AncestryLabel": "East Asian",
-        "AgeYears": 47,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "fed-east-asia",
-        "EnrollmentDate": "2022-09-01",
-        "HasCrypticRelatednessFlag": false,
-        "Name": "Chen Wei",
-        "Slug": "wei-chen",
-        "RelativePath": "/intake/new-patient/wei-chen",
-        "FederatedDatasetNodeLabel": "East Asia Federated Node",
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.02127659574468085,
-        "CausalArchitectureScore": 10.02127659574468,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 0,
-        "SumConfirmedCausalConfidence": 0,
-        "CountCrossAncestryConfirmedNodes": 0,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged.",
-        "MaxSeverityScore": 9,
-        "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true,
-        "CountPredictedTreatmentResponses": 0,
-        "HasPredictedTreatmentResponse": false,
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 2,
-        "LatestSledaiScore": 4,
-        "NephritisProgressionStateKey": "SerologicActive",
-        "ActivityTier": "Mild",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": false,
-        "TargetPathwayCode": 2,
-        "TargetPathway": "B-cell/autoantibody"
-      },
-      {
-        "IndividualId": "ind-d-santos",
-        "GivenName": "Diego",
-        "FamilyName": "Santos",
-        "AncestryLabel": "European",
-        "AgeYears": 29,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "fed-europe",
-        "EnrollmentDate": "2024-01-20",
-        "HasCrypticRelatednessFlag": true,
-        "Name": "Diego Santos",
-        "Slug": "santos-diego",
-        "RelativePath": "/intake/new-patient/santos-diego",
-        "FederatedDatasetNodeLabel": "European Reference Node",
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.034482758620689655,
-        "CausalArchitectureScore": 10.03448275862069,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 1,
-        "SumConfirmedCausalConfidence": 0.7583333333333333,
-        "CountCrossAncestryConfirmedNodes": 1,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "Diego Santos, a 29-year-old man of European ancestry (in the training set), presents with nephritis and a malar rash concerning for SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is fully supported: a cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.95 (SE 0.21), and a pQTL in blood proteomics with effect 0.62 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.003) and an African cohort (p=0.019), with a non-significant European replication (p=0.16). Two ancestry-permutation controls collapse to the null (permutation effect 0.009 and 0.031 inside +/-0.1). The interferon target is druggable, and reliability bins carry coverage of 30-36 per bin. However, sample QC raised a cryptic-relatedness / assortative-mating flag for this participant: kinship estimates indicate undeclared relatives inside the cohort, so the prediction may be confounded by leakage rather than the mechanism alone.",
-        "MaxSeverityScore": 8,
-        "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true,
-        "CountPredictedTreatmentResponses": 0,
-        "HasPredictedTreatmentResponse": false,
-        "CountSerologyPanels": 3,
-        "MaxProgressionStateOrder": 5,
-        "LatestSledaiScore": 12,
-        "NephritisProgressionStateKey": "BiopsyIndicated",
-        "ActivityTier": "High / flare",
-        "IsHighDiseaseActivity": true,
-        "IsDiseaseProgressing": true,
-        "TargetPathwayCode": 2,
-        "TargetPathway": "B-cell/autoantibody"
-      },
-      {
-        "IndividualId": "ind-e-mensah",
-        "GivenName": "Esi",
-        "FamilyName": "Mensah",
-        "AncestryLabel": "African",
-        "AgeYears": 38,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": "fed-west-africa",
-        "EnrollmentDate": "2023-07-15",
-        "HasCrypticRelatednessFlag": false,
-        "Name": "Esi Mensah",
-        "Slug": "mensah-esi",
-        "RelativePath": "/intake/new-patient/mensah-esi",
-        "FederatedDatasetNodeLabel": "West Africa Federated Node",
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.02631578947368421,
-        "CausalArchitectureScore": 10.026315789473685,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 0,
-        "SumConfirmedCausalConfidence": 0,
-        "CountCrossAncestryConfirmedNodes": 0,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.71 (SE 0.20), and a pQTL in blood proteomics with effect 0.41 (SE 0.20), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.007) and a European cohort (p=0.021), with a non-significant African replication (p=0.19). Two ancestry-permutation controls collapse to the null (permutation effect 0.011 and 0.026 inside +/-0.1), and reliability bins carry coverage of 27-33 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated.",
-        "MaxSeverityScore": 3,
-        "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false,
-        "CountPredictedTreatmentResponses": 0,
-        "HasPredictedTreatmentResponse": false,
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 1,
-        "LatestSledaiScore": 0,
-        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ActivityTier": "Quiescent",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": false,
-        "TargetPathwayCode": 3,
-        "TargetPathway": "T-cell-costim"
-      },
-      {
-        "IndividualId": "ind-f-haidar",
-        "GivenName": "Faisal",
-        "FamilyName": "Haidar",
-        "AncestryLabel": "Indigenous American",
-        "AgeYears": 31,
-        "IsAncestryAbsentFromTraining": true,
-        "FederatedDataset": "fed-amazon",
-        "EnrollmentDate": "2025-02-01",
-        "HasCrypticRelatednessFlag": false,
-        "Name": "Faisal Haidar",
-        "Slug": "haidar-faisal",
-        "RelativePath": "/intake/new-patient/haidar-faisal",
-        "FederatedDatasetNodeLabel": "Amazon Indigenous Cohort",
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.03225806451612903,
-        "CausalArchitectureScore": 10.03225806451613,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 1,
-        "SumConfirmedCausalConfidence": 0.8583333333333333,
-        "CountCrossAncestryConfirmedNodes": 0,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.83 (SE 0.21), and a pQTL in blood proteomics with effect 0.74 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.008 and 0.022 inside +/-0.1), and reliability bins carry coverage of 30-35 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.005, p=0.015, and p=0.034, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged.",
-        "MaxSeverityScore": 2,
-        "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false,
-        "CountPredictedTreatmentResponses": 0,
-        "HasPredictedTreatmentResponse": false,
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 1,
-        "LatestSledaiScore": 0,
-        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ActivityTier": "Quiescent",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": false,
-        "TargetPathwayCode": 4,
-        "TargetPathway": "IL-17/23"
-      },
-      {
-        "IndividualId": "ind-g-lin",
-        "GivenName": "Grace",
-        "FamilyName": "Lin",
-        "AncestryLabel": "Indigenous American",
-        "AgeYears": 36,
-        "IsAncestryAbsentFromTraining": true,
-        "FederatedDataset": "fed-amazon",
-        "EnrollmentDate": "2025-02-03",
-        "HasCrypticRelatednessFlag": false,
-        "Name": "Grace Lin",
-        "Slug": "lin-grace",
-        "RelativePath": "/intake/new-patient/lin-grace",
-        "FederatedDatasetNodeLabel": "Amazon Indigenous Cohort",
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.027777777777777776,
-        "CausalArchitectureScore": 10.027777777777779,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 1,
-        "SumConfirmedCausalConfidence": 0.8583333333333333,
-        "CountCrossAncestryConfirmedNodes": 1,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.",
-        "MaxSeverityScore": 6,
-        "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false,
-        "CountPredictedTreatmentResponses": 1,
-        "HasPredictedTreatmentResponse": true,
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 1,
-        "LatestSledaiScore": 0,
-        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ActivityTier": "Quiescent",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": false,
-        "TargetPathwayCode": 4,
-        "TargetPathway": "IL-17/23"
-      },
-      {
-        "IndividualId": "ind-h-yamamoto",
-        "GivenName": "Hana",
-        "FamilyName": "Yamamoto",
-        "AncestryLabel": "East Asian",
-        "AgeYears": 33,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": null,
-        "EnrollmentDate": "2025-07-01",
-        "HasCrypticRelatednessFlag": false,
-        "Name": "Hana Yamamoto",
-        "Slug": "yamamoto-hana",
-        "RelativePath": "/intake/new-patient/yamamoto-hana",
-        "FederatedDatasetNodeLabel": null,
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.030303030303030304,
-        "CausalArchitectureScore": 10.030303030303031,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 1,
-        "SumConfirmedCausalConfidence": 0.7583333333333333,
-        "CountCrossAncestryConfirmedNodes": 1,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "33yo East Asian woman; rising anti-dsDNA with falling complement and new significant proteinuria (0.7 g/day) over one quarter — early lupus nephritis. Progression-demo case (no v1 keystone mechanism attached).",
-        "MaxSeverityScore": 9,
-        "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true,
-        "CountPredictedTreatmentResponses": 1,
-        "HasPredictedTreatmentResponse": true,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 3,
-        "LatestSledaiScore": 8,
-        "NephritisProgressionStateKey": "EarlyNephritis",
-        "ActivityTier": "Moderate",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": true,
-        "TargetPathwayCode": 1,
-        "TargetPathway": "type-I-IFN"
-      },
-      {
-        "IndividualId": "ind-i-conteh",
-        "GivenName": "Ibrahim",
-        "FamilyName": "Conteh",
-        "AncestryLabel": "African",
-        "AgeYears": 45,
-        "IsAncestryAbsentFromTraining": false,
-        "FederatedDataset": null,
-        "EnrollmentDate": "2025-06-01",
-        "HasCrypticRelatednessFlag": true,
-        "Name": "Ibrahim Conteh",
-        "Slug": "conteh-ibrahim",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim",
-        "FederatedDatasetNodeLabel": null,
-        "CountOfGenomicVariants": 1,
-        "CountOfCausalMechanisms": 1,
-        "CountOfEpistaticInteractions": 0,
-        "RareVariantBurdenScore": 0.022222222222222223,
-        "CausalArchitectureScore": 10.022222222222222,
-        "IsDevelopmentWindow": false,
-        "IsAgingWindow": false,
-        "CountConfirmedCausalNodes": 1,
-        "SumConfirmedCausalConfidence": 0.7583333333333333,
-        "CountCrossAncestryConfirmedNodes": 1,
-        "GenomicVariants": null,
-        "OmicsAssays": null,
-        "EnvironmentalExposures": null,
-        "Treatments": null,
-        "ClinicalPhenotypes": null,
-        "CausalMechanisms": null,
-        "EpistaticInteractions": null,
-        "CounterfactualTrajectories": null,
-        "IndividualPredictions": null,
-        "CaseNarrative": "45yo African man; brisk serologic activity and proteinuria climbing to 1.5 g/day — at risk of renal flare. Progression-demo case (no v1 keystone mechanism attached).",
-        "MaxSeverityScore": 8,
-        "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true,
-        "CountPredictedTreatmentResponses": 0,
-        "HasPredictedTreatmentResponse": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "CountSerologyPanels": 2,
-        "MaxProgressionStateOrder": 4,
-        "LatestSledaiScore": 8,
-        "NephritisProgressionStateKey": "RenalFlareRisk",
-        "ActivityTier": "Moderate",
-        "IsHighDiseaseActivity": false,
-        "IsDiseaseProgressing": true,
-        "TargetPathwayCode": 2,
-        "TargetPathway": "B-cell/autoantibody"
-      },
-      {
         "IndividualId": "ind-j-brooks",
         "GivenName": "Jamal",
         "FamilyName": "Brooks",
@@ -1607,6 +1156,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CountConfirmedCausalNodes": 1,
         "SumConfirmedCausalConfidence": 0.7583333333333333,
         "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 8,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true,
         "GenomicVariants": null,
         "OmicsAssays": null,
         "EnvironmentalExposures": null,
@@ -1617,16 +1171,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
         "CaseNarrative": "52yo Hispanic/Latino man; the targeted mechanism is confirmed but the calibration bins are under-covered — uncertainty collapses, so NOT actionable on the calibration gate.",
-        "MaxSeverityScore": 8,
-        "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true,
-        "CountPredictedTreatmentResponses": 1,
-        "HasPredictedTreatmentResponse": true,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "CountSerologyPanels": 2,
         "MaxProgressionStateOrder": 2,
         "LatestSledaiScore": 4,
@@ -1661,6 +1205,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CountConfirmedCausalNodes": 1,
         "SumConfirmedCausalConfidence": 0.8583333333333333,
         "CountCrossAncestryConfirmedNodes": 0,
+        "MaxSeverityScore": 2,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false,
         "GenomicVariants": null,
         "OmicsAssays": null,
         "EnvironmentalExposures": null,
@@ -1671,16 +1220,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
         "CaseNarrative": "39yo South Asian woman, ancestry absent from training; confirmed mechanism but all replications ran in one ancestry — fails ancestry transport, NOT actionable.",
-        "MaxSeverityScore": 2,
-        "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false,
-        "CountPredictedTreatmentResponses": 0,
-        "HasPredictedTreatmentResponse": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "CountSerologyPanels": 2,
         "MaxProgressionStateOrder": 1,
         "LatestSledaiScore": 0,
@@ -1715,6 +1254,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CountConfirmedCausalNodes": 1,
         "SumConfirmedCausalConfidence": 0.8583333333333333,
         "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 6,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true,
         "GenomicVariants": null,
         "OmicsAssays": null,
         "EnvironmentalExposures": null,
@@ -1725,16 +1269,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
         "CaseNarrative": "28yo Indigenous-American woman, holdout ancestry; the positive twin — the IL23R node replicated cross-ancestry, so transport passes and she is actionable.",
-        "MaxSeverityScore": 6,
-        "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false,
-        "CountPredictedTreatmentResponses": 1,
-        "HasPredictedTreatmentResponse": true,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "CountSerologyPanels": 2,
         "MaxProgressionStateOrder": 1,
         "LatestSledaiScore": 0,
@@ -1744,6 +1278,447 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsDiseaseProgressing": false,
         "TargetPathwayCode": 4,
         "TargetPathway": "IL-17/23"
+      },
+      {
+        "IndividualId": "ind-a-reyes",
+        "GivenName": "Ana",
+        "FamilyName": "Reyes",
+        "AncestryLabel": "European",
+        "AgeYears": 34,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-europe",
+        "EnrollmentDate": "2023-04-10",
+        "HasCrypticRelatednessFlag": false,
+        "Name": "Ana Reyes",
+        "Slug": "reyes-ana",
+        "RelativePath": "/intake/new-patient/reyes-ana",
+        "FederatedDatasetNodeLabel": "European Reference Node",
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 1,
+        "RareVariantBurdenScore": 0.029411764705882353,
+        "CausalArchitectureScore": 15.029411764705882,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 1,
+        "SumConfirmedCausalConfidence": 0.7583333333333333,
+        "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 9,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged.",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 2,
+        "LatestSledaiScore": 4,
+        "NephritisProgressionStateKey": "SerologicActive",
+        "ActivityTier": "Mild",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": false,
+        "TargetPathwayCode": 1,
+        "TargetPathway": "type-I-IFN"
+      },
+      {
+        "IndividualId": "ind-b-okafor",
+        "GivenName": "Bili",
+        "FamilyName": "Okafor",
+        "AncestryLabel": "European",
+        "AgeYears": 41,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-europe",
+        "EnrollmentDate": "2023-05-12",
+        "HasCrypticRelatednessFlag": false,
+        "Name": "Bili Okafor",
+        "Slug": "okafor-bili",
+        "RelativePath": "/intake/new-patient/okafor-bili",
+        "FederatedDatasetNodeLabel": "European Reference Node",
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.024390243902439025,
+        "CausalArchitectureScore": 10.024390243902438,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 1,
+        "SumConfirmedCausalConfidence": 0.7583333333333333,
+        "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 8,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged.",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 1,
+        "LatestSledaiScore": 0,
+        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
+        "ActivityTier": "Quiescent",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": false,
+        "TargetPathwayCode": 1,
+        "TargetPathway": "type-I-IFN"
+      },
+      {
+        "IndividualId": "ind-c-chen",
+        "GivenName": "Chen",
+        "FamilyName": "Wei",
+        "AncestryLabel": "East Asian",
+        "AgeYears": 47,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-east-asia",
+        "EnrollmentDate": "2022-09-01",
+        "HasCrypticRelatednessFlag": false,
+        "Name": "Chen Wei",
+        "Slug": "wei-chen",
+        "RelativePath": "/intake/new-patient/wei-chen",
+        "FederatedDatasetNodeLabel": "East Asia Federated Node",
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.02127659574468085,
+        "CausalArchitectureScore": 10.02127659574468,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 0,
+        "SumConfirmedCausalConfidence": 0,
+        "CountCrossAncestryConfirmedNodes": 0,
+        "MaxSeverityScore": 9,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged.",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 2,
+        "LatestSledaiScore": 4,
+        "NephritisProgressionStateKey": "SerologicActive",
+        "ActivityTier": "Mild",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": false,
+        "TargetPathwayCode": 2,
+        "TargetPathway": "B-cell/autoantibody"
+      },
+      {
+        "IndividualId": "ind-g-lin",
+        "GivenName": "Grace",
+        "FamilyName": "Lin",
+        "AncestryLabel": "Indigenous American",
+        "AgeYears": 36,
+        "IsAncestryAbsentFromTraining": true,
+        "FederatedDataset": "fed-amazon",
+        "EnrollmentDate": "2025-02-03",
+        "HasCrypticRelatednessFlag": false,
+        "Name": "Grace Lin",
+        "Slug": "lin-grace",
+        "RelativePath": "/intake/new-patient/lin-grace",
+        "FederatedDatasetNodeLabel": "Amazon Indigenous Cohort",
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.027777777777777776,
+        "CausalArchitectureScore": 10.027777777777779,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 1,
+        "SumConfirmedCausalConfidence": 0.8583333333333333,
+        "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 6,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 1,
+        "LatestSledaiScore": 0,
+        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
+        "ActivityTier": "Quiescent",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": false,
+        "TargetPathwayCode": 4,
+        "TargetPathway": "IL-17/23"
+      },
+      {
+        "IndividualId": "ind-d-santos",
+        "GivenName": "Diego",
+        "FamilyName": "Santos",
+        "AncestryLabel": "European",
+        "AgeYears": 29,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-europe",
+        "EnrollmentDate": "2024-01-20",
+        "HasCrypticRelatednessFlag": true,
+        "Name": "Diego Santos",
+        "Slug": "santos-diego",
+        "RelativePath": "/intake/new-patient/santos-diego",
+        "FederatedDatasetNodeLabel": "European Reference Node",
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.034482758620689655,
+        "CausalArchitectureScore": 10.03448275862069,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 1,
+        "SumConfirmedCausalConfidence": 0.7583333333333333,
+        "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 8,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "Diego Santos, a 29-year-old man of European ancestry (in the training set), presents with nephritis and a malar rash concerning for SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is fully supported: a cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.95 (SE 0.21), and a pQTL in blood proteomics with effect 0.62 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.003) and an African cohort (p=0.019), with a non-significant European replication (p=0.16). Two ancestry-permutation controls collapse to the null (permutation effect 0.009 and 0.031 inside +/-0.1). The interferon target is druggable, and reliability bins carry coverage of 30-36 per bin. However, sample QC raised a cryptic-relatedness / assortative-mating flag for this participant: kinship estimates indicate undeclared relatives inside the cohort, so the prediction may be confounded by leakage rather than the mechanism alone.",
+        "CountSerologyPanels": 3,
+        "MaxProgressionStateOrder": 5,
+        "LatestSledaiScore": 12,
+        "NephritisProgressionStateKey": "BiopsyIndicated",
+        "ActivityTier": "High / flare",
+        "IsHighDiseaseActivity": true,
+        "IsDiseaseProgressing": true,
+        "TargetPathwayCode": 2,
+        "TargetPathway": "B-cell/autoantibody"
+      },
+      {
+        "IndividualId": "ind-e-mensah",
+        "GivenName": "Esi",
+        "FamilyName": "Mensah",
+        "AncestryLabel": "African",
+        "AgeYears": 38,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": "fed-west-africa",
+        "EnrollmentDate": "2023-07-15",
+        "HasCrypticRelatednessFlag": false,
+        "Name": "Esi Mensah",
+        "Slug": "mensah-esi",
+        "RelativePath": "/intake/new-patient/mensah-esi",
+        "FederatedDatasetNodeLabel": "West Africa Federated Node",
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.02631578947368421,
+        "CausalArchitectureScore": 10.026315789473685,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 0,
+        "SumConfirmedCausalConfidence": 0,
+        "CountCrossAncestryConfirmedNodes": 0,
+        "MaxSeverityScore": 3,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.71 (SE 0.20), and a pQTL in blood proteomics with effect 0.41 (SE 0.20), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.007) and a European cohort (p=0.021), with a non-significant African replication (p=0.19). Two ancestry-permutation controls collapse to the null (permutation effect 0.011 and 0.026 inside +/-0.1), and reliability bins carry coverage of 27-33 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated.",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 1,
+        "LatestSledaiScore": 0,
+        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
+        "ActivityTier": "Quiescent",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": false,
+        "TargetPathwayCode": 3,
+        "TargetPathway": "T-cell-costim"
+      },
+      {
+        "IndividualId": "ind-f-haidar",
+        "GivenName": "Faisal",
+        "FamilyName": "Haidar",
+        "AncestryLabel": "Indigenous American",
+        "AgeYears": 31,
+        "IsAncestryAbsentFromTraining": true,
+        "FederatedDataset": "fed-amazon",
+        "EnrollmentDate": "2025-02-01",
+        "HasCrypticRelatednessFlag": false,
+        "Name": "Faisal Haidar",
+        "Slug": "haidar-faisal",
+        "RelativePath": "/intake/new-patient/haidar-faisal",
+        "FederatedDatasetNodeLabel": "Amazon Indigenous Cohort",
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.03225806451612903,
+        "CausalArchitectureScore": 10.03225806451613,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 1,
+        "SumConfirmedCausalConfidence": 0.8583333333333333,
+        "CountCrossAncestryConfirmedNodes": 0,
+        "MaxSeverityScore": 2,
+        "CountHighSeverityPhenotypes": 0,
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.83 (SE 0.21), and a pQTL in blood proteomics with effect 0.74 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.008 and 0.022 inside +/-0.1), and reliability bins carry coverage of 30-35 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.005, p=0.015, and p=0.034, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged.",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 1,
+        "LatestSledaiScore": 0,
+        "NephritisProgressionStateKey": "PresymptomaticAutoimmunity",
+        "ActivityTier": "Quiescent",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": false,
+        "TargetPathwayCode": 4,
+        "TargetPathway": "IL-17/23"
+      },
+      {
+        "IndividualId": "ind-h-yamamoto",
+        "GivenName": "Hana",
+        "FamilyName": "Yamamoto",
+        "AncestryLabel": "East Asian",
+        "AgeYears": 33,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": null,
+        "EnrollmentDate": "2025-07-01",
+        "HasCrypticRelatednessFlag": false,
+        "Name": "Hana Yamamoto",
+        "Slug": "yamamoto-hana",
+        "RelativePath": "/intake/new-patient/yamamoto-hana",
+        "FederatedDatasetNodeLabel": null,
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.030303030303030304,
+        "CausalArchitectureScore": 10.030303030303031,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 1,
+        "SumConfirmedCausalConfidence": 0.7583333333333333,
+        "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 9,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "33yo East Asian woman; rising anti-dsDNA with falling complement and new significant proteinuria (0.7 g/day) over one quarter — early lupus nephritis. Progression-demo case (no v1 keystone mechanism attached).",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 3,
+        "LatestSledaiScore": 8,
+        "NephritisProgressionStateKey": "EarlyNephritis",
+        "ActivityTier": "Moderate",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": true,
+        "TargetPathwayCode": 1,
+        "TargetPathway": "type-I-IFN"
+      },
+      {
+        "IndividualId": "ind-i-conteh",
+        "GivenName": "Ibrahim",
+        "FamilyName": "Conteh",
+        "AncestryLabel": "African",
+        "AgeYears": 45,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": null,
+        "EnrollmentDate": "2025-06-01",
+        "HasCrypticRelatednessFlag": true,
+        "Name": "Ibrahim Conteh",
+        "Slug": "conteh-ibrahim",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim",
+        "FederatedDatasetNodeLabel": null,
+        "CountOfGenomicVariants": 1,
+        "CountOfCausalMechanisms": 1,
+        "CountOfEpistaticInteractions": 0,
+        "RareVariantBurdenScore": 0.022222222222222223,
+        "CausalArchitectureScore": 10.022222222222222,
+        "IsDevelopmentWindow": false,
+        "IsAgingWindow": false,
+        "CountConfirmedCausalNodes": 1,
+        "SumConfirmedCausalConfidence": 0.7583333333333333,
+        "CountCrossAncestryConfirmedNodes": 1,
+        "MaxSeverityScore": 8,
+        "CountHighSeverityPhenotypes": 1,
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false,
+        "GenomicVariants": null,
+        "OmicsAssays": null,
+        "EnvironmentalExposures": null,
+        "Treatments": null,
+        "ClinicalPhenotypes": null,
+        "CausalMechanisms": null,
+        "EpistaticInteractions": null,
+        "CounterfactualTrajectories": null,
+        "IndividualPredictions": null,
+        "CaseNarrative": "45yo African man; brisk serologic activity and proteinuria climbing to 1.5 g/day — at risk of renal flare. Progression-demo case (no v1 keystone mechanism attached).",
+        "CountSerologyPanels": 2,
+        "MaxProgressionStateOrder": 4,
+        "LatestSledaiScore": 8,
+        "NephritisProgressionStateKey": "RenalFlareRisk",
+        "ActivityTier": "Moderate",
+        "IsHighDiseaseActivity": false,
+        "IsDiseaseProgressing": true,
+        "TargetPathwayCode": 2,
+        "TargetPathway": "B-cell/autoantibody"
       }
     ]
   },
@@ -2002,12 +1977,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualAncestryLabel": "East Asian",
         "IsRareVariant": true,
         "IsCausalCandidate": true,
-        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present"
       },
       {
         "GenomicVariantId": "var-i-irf5",
@@ -2024,12 +1994,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualAncestryLabel": "African",
         "IsRareVariant": true,
         "IsCausalCandidate": true,
-        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-j-irf5",
@@ -2046,12 +2011,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualAncestryLabel": "Hispanic/Latino",
         "IsRareVariant": true,
         "IsCausalCandidate": true,
-        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-k-il23r",
@@ -2068,12 +2028,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualAncestryLabel": "South Asian",
         "IsRareVariant": true,
         "IsCausalCandidate": true,
-        "SourceQuote": "IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present"
       },
       {
         "GenomicVariantId": "var-l-il23r",
@@ -2090,12 +2045,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualAncestryLabel": "Indigenous American",
         "IsRareVariant": true,
         "IsCausalCandidate": true,
-        "SourceQuote": "IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present"
       }
     ]
   },
@@ -2650,12 +2600,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-h-atac",
@@ -2674,12 +2619,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-h-prot",
@@ -2698,12 +2638,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-i-rna",
@@ -2722,12 +2657,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-i-atac",
@@ -2746,12 +2676,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-i-prot",
@@ -2770,12 +2695,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-j-rna",
@@ -2794,12 +2714,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-j-atac",
@@ -2818,12 +2733,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-j-prot",
@@ -2842,12 +2752,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-k-rna",
@@ -2866,12 +2771,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-k-atac",
@@ -2890,12 +2790,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-k-prot",
@@ -2914,12 +2809,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-l-rna",
@@ -2938,12 +2828,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-l-atac",
@@ -2962,12 +2847,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       },
       {
         "OmicsAssayId": "assay-l-prot",
@@ -2986,12 +2866,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TissueLabel": "Blood",
         "HasBatchEffectRisk": false,
         "IsHighQualityAssay": true,
-        "EvidenceItems": null,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "EvidenceItems": null
       }
     ]
   },
@@ -3168,7 +3043,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.2,
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
@@ -3191,7 +3065,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.19,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "caQTL, blood ATAC-seq",
@@ -3214,7 +3087,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
@@ -3237,7 +3109,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.21,
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
@@ -3260,7 +3131,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "caQTL, blood ATAC-seq",
@@ -3283,7 +3153,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
@@ -3306,7 +3175,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.225,
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
@@ -3329,7 +3197,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "caQTL, blood ATAC-seq",
@@ -3352,7 +3219,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.215,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
@@ -3375,7 +3241,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
@@ -3398,7 +3263,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.21,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "caQTL, blood ATAC-seq",
@@ -3421,7 +3285,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
@@ -3444,7 +3307,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.21,
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
@@ -3459,6 +3321,336 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21)"
       },
       {
+        "EvidenceItemId": "ev-h-1",
+        "EvidenceLabel": "ev-h-1",
+        "CausalMechanism": "cm-h",
+        "OmicsAssay": "assay-h-rna",
+        "EffectSize": 0.91,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
+        "Name": "ev-h-1",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/evidence/ev-h-1",
+        "AssayIsHighQuality": true,
+        "ZStat": 4.55,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-h-2",
+        "EvidenceLabel": "ev-h-2",
+        "CausalMechanism": "cm-h",
+        "OmicsAssay": "assay-h-atac",
+        "EffectSize": 0.73,
+        "StandardError": 0.19,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
+        "Name": "ev-h-2",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/evidence/ev-h-2",
+        "AssayIsHighQuality": true,
+        "ZStat": 3.8421052631578947,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.73 (SE 0.19)"
+      },
+      {
+        "EvidenceItemId": "ev-h-3",
+        "EvidenceLabel": "ev-h-3",
+        "CausalMechanism": "cm-h",
+        "OmicsAssay": "assay-h-prot",
+        "EffectSize": 0.66,
+        "StandardError": 0.205,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
+        "Name": "ev-h-3",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/evidence/ev-h-3",
+        "AssayIsHighQuality": true,
+        "ZStat": 3.2195121951219514,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.66 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-i-1",
+        "EvidenceLabel": "ev-i-1",
+        "CausalMechanism": "cm-i",
+        "OmicsAssay": "assay-i-rna",
+        "EffectSize": 0.88,
+        "StandardError": 0.205,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
+        "Name": "ev-i-1",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/evidence/ev-i-1",
+        "AssayIsHighQuality": true,
+        "ZStat": 4.2926829268292686,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-i-2",
+        "EvidenceLabel": "ev-i-2",
+        "CausalMechanism": "cm-i",
+        "OmicsAssay": "assay-i-atac",
+        "EffectSize": 0.95,
+        "StandardError": 0.21,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
+        "Name": "ev-i-2",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/evidence/ev-i-2",
+        "AssayIsHighQuality": true,
+        "ZStat": 4.523809523809524,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.95 (SE 0.21)"
+      },
+      {
+        "EvidenceItemId": "ev-i-3",
+        "EvidenceLabel": "ev-i-3",
+        "CausalMechanism": "cm-i",
+        "OmicsAssay": "assay-i-prot",
+        "EffectSize": 0.62,
+        "StandardError": 0.205,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
+        "Name": "ev-i-3",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/evidence/ev-i-3",
+        "AssayIsHighQuality": true,
+        "ZStat": 3.024390243902439,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.62 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-j-1",
+        "EvidenceLabel": "ev-j-1",
+        "CausalMechanism": "cm-j",
+        "OmicsAssay": "assay-j-rna",
+        "EffectSize": 0.84,
+        "StandardError": 0.21,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
+        "Name": "ev-j-1",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/evidence/ev-j-1",
+        "AssayIsHighQuality": true,
+        "ZStat": 4,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21)"
+      },
+      {
+        "EvidenceItemId": "ev-j-2",
+        "EvidenceLabel": "ev-j-2",
+        "CausalMechanism": "cm-j",
+        "OmicsAssay": "assay-j-atac",
+        "EffectSize": 0.79,
+        "StandardError": 0.205,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
+        "Name": "ev-j-2",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/evidence/ev-j-2",
+        "AssayIsHighQuality": true,
+        "ZStat": 3.8536585365853657,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.79 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-j-3",
+        "EvidenceLabel": "ev-j-3",
+        "CausalMechanism": "cm-j",
+        "OmicsAssay": "assay-j-prot",
+        "EffectSize": 0.58,
+        "StandardError": 0.205,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
+        "Name": "ev-j-3",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/evidence/ev-j-3",
+        "AssayIsHighQuality": true,
+        "ZStat": 2.8292682926829267,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.58 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-k-1",
+        "EvidenceLabel": "ev-k-1",
+        "CausalMechanism": "cm-k",
+        "OmicsAssay": "assay-k-rna",
+        "EffectSize": 1.07,
+        "StandardError": 0.205,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
+        "Name": "ev-k-1",
+        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/evidence/ev-k-1",
+        "AssayIsHighQuality": true,
+        "ZStat": 5.219512195121951,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-k-2",
+        "EvidenceLabel": "ev-k-2",
+        "CausalMechanism": "cm-k",
+        "OmicsAssay": "assay-k-atac",
+        "EffectSize": 0.83,
+        "StandardError": 0.21,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
+        "Name": "ev-k-2",
+        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/evidence/ev-k-2",
+        "AssayIsHighQuality": true,
+        "ZStat": 3.9523809523809526,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.83 (SE 0.21)"
+      },
+      {
+        "EvidenceItemId": "ev-k-3",
+        "EvidenceLabel": "ev-k-3",
+        "CausalMechanism": "cm-k",
+        "OmicsAssay": "assay-k-prot",
+        "EffectSize": 0.74,
+        "StandardError": 0.205,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
+        "Name": "ev-k-3",
+        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/evidence/ev-k-3",
+        "AssayIsHighQuality": true,
+        "ZStat": 3.6097560975609757,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.74 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-l-1",
+        "EvidenceLabel": "ev-l-1",
+        "CausalMechanism": "cm-l",
+        "OmicsAssay": "assay-l-rna",
+        "EffectSize": 0.96,
+        "StandardError": 0.2,
+        "IsCrossModality": false,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
+        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
+        "Name": "ev-l-1",
+        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
+        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/evidence/ev-l-1",
+        "AssayIsHighQuality": true,
+        "ZStat": 4.8,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20)"
+      },
+      {
+        "EvidenceItemId": "ev-l-2",
+        "EvidenceLabel": "ev-l-2",
+        "CausalMechanism": "cm-l",
+        "OmicsAssay": "assay-l-atac",
+        "EffectSize": 0.88,
+        "StandardError": 0.21,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
+        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
+        "Name": "ev-l-2",
+        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
+        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/evidence/ev-l-2",
+        "AssayIsHighQuality": true,
+        "ZStat": 4.190476190476191,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.88 (SE 0.21)"
+      },
+      {
+        "EvidenceItemId": "ev-l-3",
+        "EvidenceLabel": "ev-l-3",
+        "CausalMechanism": "cm-l",
+        "OmicsAssay": "assay-l-prot",
+        "EffectSize": 0.69,
+        "StandardError": 0.205,
+        "IsCrossModality": true,
+        "IsNegativeControlArm": false,
+        "IsAdjustedForBatch": true,
+        "IsSyntheticLeaf": true,
+        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
+        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
+        "Name": "ev-l-3",
+        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
+        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/evidence/ev-l-3",
+        "AssayIsHighQuality": true,
+        "ZStat": 3.3658536585365852,
+        "IsConfoundControlled": true,
+        "IsQualifiedEvidence": true,
+        "SourceQuote": "pQTL in blood proteomics with effect 0.69 (SE 0.20)"
+      },
+      {
         "EvidenceItemId": "ev-e-2",
         "EvidenceLabel": "ev-e-2",
         "CausalMechanism": "cm-e",
@@ -3467,7 +3659,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "caQTL, blood ATAC-seq",
@@ -3490,7 +3681,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.2,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
@@ -3513,7 +3703,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
@@ -3536,7 +3725,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.21,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "caQTL, blood ATAC-seq",
@@ -3559,7 +3747,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
@@ -3582,7 +3769,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.2,
         "IsCrossModality": false,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
@@ -3605,7 +3791,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.21,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "caQTL, blood ATAC-seq",
@@ -3628,7 +3813,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StandardError": 0.205,
         "IsCrossModality": true,
         "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
         "IsAdjustedForBatch": true,
         "IsSyntheticLeaf": true,
         "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
@@ -3641,426 +3825,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsConfoundControlled": true,
         "IsQualifiedEvidence": true,
         "SourceQuote": "pQTL in blood proteomics with effect 0.69 (SE 0.20)"
-      },
-      {
-        "EvidenceItemId": "ev-h-1",
-        "EvidenceLabel": "ev-h-1",
-        "CausalMechanism": "cm-h",
-        "OmicsAssay": "assay-h-rna",
-        "EffectSize": 0.91,
-        "StandardError": 0.2,
-        "IsCrossModality": false,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
-        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
-        "Name": "ev-h-1",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/evidence/ev-h-1",
-        "AssayIsHighQuality": true,
-        "ZStat": 4.55,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-h-2",
-        "EvidenceLabel": "ev-h-2",
-        "CausalMechanism": "cm-h",
-        "OmicsAssay": "assay-h-atac",
-        "EffectSize": 0.73,
-        "StandardError": 0.19,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
-        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
-        "Name": "ev-h-2",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/evidence/ev-h-2",
-        "AssayIsHighQuality": true,
-        "ZStat": 3.8421052631578947,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.73 (SE 0.19)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-h-3",
-        "EvidenceLabel": "ev-h-3",
-        "CausalMechanism": "cm-h",
-        "OmicsAssay": "assay-h-prot",
-        "EffectSize": 0.66,
-        "StandardError": 0.205,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
-        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
-        "Name": "ev-h-3",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/evidence/ev-h-3",
-        "AssayIsHighQuality": true,
-        "ZStat": 3.2195121951219514,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "pQTL in blood proteomics with effect 0.66 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-i-1",
-        "EvidenceLabel": "ev-i-1",
-        "CausalMechanism": "cm-i",
-        "OmicsAssay": "assay-i-rna",
-        "EffectSize": 0.88,
-        "StandardError": 0.205,
-        "IsCrossModality": false,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
-        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
-        "Name": "ev-i-1",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/evidence/ev-i-1",
-        "AssayIsHighQuality": true,
-        "ZStat": 4.2926829268292686,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-i-2",
-        "EvidenceLabel": "ev-i-2",
-        "CausalMechanism": "cm-i",
-        "OmicsAssay": "assay-i-atac",
-        "EffectSize": 0.95,
-        "StandardError": 0.21,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
-        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
-        "Name": "ev-i-2",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/evidence/ev-i-2",
-        "AssayIsHighQuality": true,
-        "ZStat": 4.523809523809524,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.95 (SE 0.21)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-i-3",
-        "EvidenceLabel": "ev-i-3",
-        "CausalMechanism": "cm-i",
-        "OmicsAssay": "assay-i-prot",
-        "EffectSize": 0.62,
-        "StandardError": 0.205,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
-        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
-        "Name": "ev-i-3",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/evidence/ev-i-3",
-        "AssayIsHighQuality": true,
-        "ZStat": 3.024390243902439,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "pQTL in blood proteomics with effect 0.62 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-j-1",
-        "EvidenceLabel": "ev-j-1",
-        "CausalMechanism": "cm-j",
-        "OmicsAssay": "assay-j-rna",
-        "EffectSize": 0.84,
-        "StandardError": 0.21,
-        "IsCrossModality": false,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
-        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
-        "Name": "ev-j-1",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/evidence/ev-j-1",
-        "AssayIsHighQuality": true,
-        "ZStat": 4,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-j-2",
-        "EvidenceLabel": "ev-j-2",
-        "CausalMechanism": "cm-j",
-        "OmicsAssay": "assay-j-atac",
-        "EffectSize": 0.79,
-        "StandardError": 0.205,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
-        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
-        "Name": "ev-j-2",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/evidence/ev-j-2",
-        "AssayIsHighQuality": true,
-        "ZStat": 3.8536585365853657,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.79 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-j-3",
-        "EvidenceLabel": "ev-j-3",
-        "CausalMechanism": "cm-j",
-        "OmicsAssay": "assay-j-prot",
-        "EffectSize": 0.58,
-        "StandardError": 0.205,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
-        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
-        "Name": "ev-j-3",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/evidence/ev-j-3",
-        "AssayIsHighQuality": true,
-        "ZStat": 2.8292682926829267,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "pQTL in blood proteomics with effect 0.58 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-k-1",
-        "EvidenceLabel": "ev-k-1",
-        "CausalMechanism": "cm-k",
-        "OmicsAssay": "assay-k-rna",
-        "EffectSize": 1.07,
-        "StandardError": 0.205,
-        "IsCrossModality": false,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
-        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
-        "Name": "ev-k-1",
-        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/evidence/ev-k-1",
-        "AssayIsHighQuality": true,
-        "ZStat": 5.219512195121951,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-k-2",
-        "EvidenceLabel": "ev-k-2",
-        "CausalMechanism": "cm-k",
-        "OmicsAssay": "assay-k-atac",
-        "EffectSize": 0.83,
-        "StandardError": 0.21,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
-        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
-        "Name": "ev-k-2",
-        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/evidence/ev-k-2",
-        "AssayIsHighQuality": true,
-        "ZStat": 3.9523809523809526,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.83 (SE 0.21)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-k-3",
-        "EvidenceLabel": "ev-k-3",
-        "CausalMechanism": "cm-k",
-        "OmicsAssay": "assay-k-prot",
-        "EffectSize": 0.74,
-        "StandardError": 0.205,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
-        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
-        "Name": "ev-k-3",
-        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/evidence/ev-k-3",
-        "AssayIsHighQuality": true,
-        "ZStat": 3.6097560975609757,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "pQTL in blood proteomics with effect 0.74 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-l-1",
-        "EvidenceLabel": "ev-l-1",
-        "CausalMechanism": "cm-l",
-        "OmicsAssay": "assay-l-rna",
-        "EffectSize": 0.96,
-        "StandardError": 0.2,
-        "IsCrossModality": false,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "cis-eQTL, blood RNA-seq",
-        "IdentificationAssumption": "colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument",
-        "Name": "ev-l-1",
-        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
-        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/evidence/ev-l-1",
-        "AssayIsHighQuality": true,
-        "ZStat": 4.8,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-l-2",
-        "EvidenceLabel": "ev-l-2",
-        "CausalMechanism": "cm-l",
-        "OmicsAssay": "assay-l-atac",
-        "EffectSize": 0.88,
-        "StandardError": 0.21,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "caQTL, blood ATAC-seq",
-        "IdentificationAssumption": "open-chromatin peak maps to the credible set; cell-state confounding adjusted",
-        "Name": "ev-l-2",
-        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
-        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/evidence/ev-l-2",
-        "AssayIsHighQuality": true,
-        "ZStat": 4.190476190476191,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "caQTL in blood ATAC-seq with effect 0.88 (SE 0.21)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "EvidenceItemId": "ev-l-3",
-        "EvidenceLabel": "ev-l-3",
-        "CausalMechanism": "cm-l",
-        "OmicsAssay": "assay-l-prot",
-        "EffectSize": 0.69,
-        "StandardError": 0.205,
-        "IsCrossModality": true,
-        "IsNegativeControlArm": false,
-        "IsAdjustedForAncestryPCs": true,
-        "IsAdjustedForBatch": true,
-        "IsSyntheticLeaf": true,
-        "RepresentsAssayModality": "pQTL, blood mass-spec proteomics",
-        "IdentificationAssumption": "cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded",
-        "Name": "ev-l-3",
-        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
-        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/evidence/ev-l-3",
-        "AssayIsHighQuality": true,
-        "ZStat": 3.3658536585365852,
-        "IsConfoundControlled": true,
-        "IsQualifiedEvidence": true,
-        "SourceQuote": "pQTL in blood proteomics with effect 0.69 (SE 0.20)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -4544,204 +4308,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SourceQuote": "positive in an Indigenous American cohort (p=0.029)"
       },
       {
-        "CohortReplicationId": "rep-h-1",
-        "ReplicationLabel": "rep-h-1",
-        "CausalMechanism": "cm-h",
-        "FederatedDataset": "fed-east-asia",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.004,
-        "ReplicationAncestryLabel": "East Asian",
-        "Name": "rep-h-1",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/replications/rep-h-1",
-        "ReplicatedAtNominalSig": true,
-        "MechanismPrimaryAncestry": "East Asian",
-        "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false,
-        "SourceQuote": "positive effect sign in an East Asian cohort (p=0.004)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-h-2",
-        "ReplicationLabel": "rep-h-2",
-        "CausalMechanism": "cm-h",
-        "FederatedDataset": "fed-west-africa",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.013,
-        "ReplicationAncestryLabel": "African",
-        "Name": "rep-h-2",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/replications/rep-h-2",
-        "ReplicatedAtNominalSig": true,
-        "MechanismPrimaryAncestry": "East Asian",
-        "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true,
-        "SourceQuote": "in an African cohort (p=0.013)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-h-3",
-        "ReplicationLabel": "rep-h-3",
-        "CausalMechanism": "cm-h",
-        "FederatedDataset": "fed-europe",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.18,
-        "ReplicationAncestryLabel": "European",
-        "Name": "rep-h-3",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/replications/rep-h-3",
-        "ReplicatedAtNominalSig": false,
-        "MechanismPrimaryAncestry": "East Asian",
-        "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": false,
-        "SourceQuote": "European replication is directionally consistent but not significant (p=0.18)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-i-1",
-        "ReplicationLabel": "rep-i-1",
-        "CausalMechanism": "cm-i",
-        "FederatedDataset": "fed-east-asia",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.003,
-        "ReplicationAncestryLabel": "East Asian",
-        "Name": "rep-i-1",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/replications/rep-i-1",
-        "ReplicatedAtNominalSig": true,
-        "MechanismPrimaryAncestry": "African",
-        "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true,
-        "SourceQuote": "replicates positive in an East Asian cohort (p=0.003)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-i-2",
-        "ReplicationLabel": "rep-i-2",
-        "CausalMechanism": "cm-i",
-        "FederatedDataset": "fed-west-africa",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.019,
-        "ReplicationAncestryLabel": "African",
-        "Name": "rep-i-2",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/replications/rep-i-2",
-        "ReplicatedAtNominalSig": true,
-        "MechanismPrimaryAncestry": "African",
-        "IsDifferentAncestryReplication": false,
-        "IsCrossAncestryConcordant": false,
-        "SourceQuote": "an African cohort (p=0.019)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-i-3",
-        "ReplicationLabel": "rep-i-3",
-        "CausalMechanism": "cm-i",
-        "FederatedDataset": "fed-europe",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.16,
-        "ReplicationAncestryLabel": "European",
-        "Name": "rep-i-3",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/replications/rep-i-3",
-        "ReplicatedAtNominalSig": false,
-        "MechanismPrimaryAncestry": "African",
-        "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": false,
-        "SourceQuote": "non-significant European replication (p=0.16)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-j-1",
-        "ReplicationLabel": "rep-j-1",
-        "CausalMechanism": "cm-j",
-        "FederatedDataset": "fed-east-asia",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.006,
-        "ReplicationAncestryLabel": "East Asian",
-        "Name": "rep-j-1",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/replications/rep-j-1",
-        "ReplicatedAtNominalSig": true,
-        "MechanismPrimaryAncestry": "Hispanic/Latino",
-        "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true,
-        "SourceQuote": "replicates positive in an East Asian cohort (p=0.006)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-j-2",
-        "ReplicationLabel": "rep-j-2",
-        "CausalMechanism": "cm-j",
-        "FederatedDataset": "fed-west-africa",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.017,
-        "ReplicationAncestryLabel": "African",
-        "Name": "rep-j-2",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/replications/rep-j-2",
-        "ReplicatedAtNominalSig": true,
-        "MechanismPrimaryAncestry": "Hispanic/Latino",
-        "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": true,
-        "SourceQuote": "an African cohort (p=0.017)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CohortReplicationId": "rep-j-3",
-        "ReplicationLabel": "rep-j-3",
-        "CausalMechanism": "cm-j",
-        "FederatedDataset": "fed-europe",
-        "ReplicationEffectSign": 1,
-        "ReplicationPValue": 0.22,
-        "ReplicationAncestryLabel": "European",
-        "Name": "rep-j-3",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/replications/rep-j-3",
-        "ReplicatedAtNominalSig": false,
-        "MechanismPrimaryAncestry": "Hispanic/Latino",
-        "IsDifferentAncestryReplication": true,
-        "IsCrossAncestryConcordant": false,
-        "SourceQuote": "non-significant European replication (p=0.22)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
         "CohortReplicationId": "rep-k-1",
         "ReplicationLabel": "rep-k-1",
         "CausalMechanism": "cm-k",
@@ -4756,12 +4322,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "MechanismPrimaryAncestry": "South Asian",
         "IsDifferentAncestryReplication": false,
         "IsCrossAncestryConcordant": false,
-        "SourceQuote": "run in an Indigenous American cohort: p=0.005",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "run in an Indigenous American cohort: p=0.005"
       },
       {
         "CohortReplicationId": "rep-k-2",
@@ -4778,12 +4339,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "MechanismPrimaryAncestry": "South Asian",
         "IsDifferentAncestryReplication": false,
         "IsCrossAncestryConcordant": false,
-        "SourceQuote": "p=0.015",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "p=0.015"
       },
       {
         "CohortReplicationId": "rep-k-3",
@@ -4800,12 +4356,160 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "MechanismPrimaryAncestry": "South Asian",
         "IsDifferentAncestryReplication": false,
         "IsCrossAncestryConcordant": false,
-        "SourceQuote": "p=0.034, all positive, all in the SAME ancestry",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "p=0.034, all positive, all in the SAME ancestry"
+      },
+      {
+        "CohortReplicationId": "rep-h-1",
+        "ReplicationLabel": "rep-h-1",
+        "CausalMechanism": "cm-h",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.004,
+        "ReplicationAncestryLabel": "East Asian",
+        "Name": "rep-h-1",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/replications/rep-h-1",
+        "ReplicatedAtNominalSig": true,
+        "MechanismPrimaryAncestry": "East Asian",
+        "IsDifferentAncestryReplication": false,
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "positive effect sign in an East Asian cohort (p=0.004)"
+      },
+      {
+        "CohortReplicationId": "rep-h-2",
+        "ReplicationLabel": "rep-h-2",
+        "CausalMechanism": "cm-h",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.013,
+        "ReplicationAncestryLabel": "African",
+        "Name": "rep-h-2",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/replications/rep-h-2",
+        "ReplicatedAtNominalSig": true,
+        "MechanismPrimaryAncestry": "East Asian",
+        "IsDifferentAncestryReplication": true,
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "in an African cohort (p=0.013)"
+      },
+      {
+        "CohortReplicationId": "rep-h-3",
+        "ReplicationLabel": "rep-h-3",
+        "CausalMechanism": "cm-h",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.18,
+        "ReplicationAncestryLabel": "European",
+        "Name": "rep-h-3",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/replications/rep-h-3",
+        "ReplicatedAtNominalSig": false,
+        "MechanismPrimaryAncestry": "East Asian",
+        "IsDifferentAncestryReplication": true,
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "European replication is directionally consistent but not significant (p=0.18)"
+      },
+      {
+        "CohortReplicationId": "rep-i-1",
+        "ReplicationLabel": "rep-i-1",
+        "CausalMechanism": "cm-i",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.003,
+        "ReplicationAncestryLabel": "East Asian",
+        "Name": "rep-i-1",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/replications/rep-i-1",
+        "ReplicatedAtNominalSig": true,
+        "MechanismPrimaryAncestry": "African",
+        "IsDifferentAncestryReplication": true,
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "replicates positive in an East Asian cohort (p=0.003)"
+      },
+      {
+        "CohortReplicationId": "rep-i-2",
+        "ReplicationLabel": "rep-i-2",
+        "CausalMechanism": "cm-i",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.019,
+        "ReplicationAncestryLabel": "African",
+        "Name": "rep-i-2",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/replications/rep-i-2",
+        "ReplicatedAtNominalSig": true,
+        "MechanismPrimaryAncestry": "African",
+        "IsDifferentAncestryReplication": false,
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "an African cohort (p=0.019)"
+      },
+      {
+        "CohortReplicationId": "rep-i-3",
+        "ReplicationLabel": "rep-i-3",
+        "CausalMechanism": "cm-i",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.16,
+        "ReplicationAncestryLabel": "European",
+        "Name": "rep-i-3",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/replications/rep-i-3",
+        "ReplicatedAtNominalSig": false,
+        "MechanismPrimaryAncestry": "African",
+        "IsDifferentAncestryReplication": true,
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "non-significant European replication (p=0.16)"
+      },
+      {
+        "CohortReplicationId": "rep-j-1",
+        "ReplicationLabel": "rep-j-1",
+        "CausalMechanism": "cm-j",
+        "FederatedDataset": "fed-east-asia",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.006,
+        "ReplicationAncestryLabel": "East Asian",
+        "Name": "rep-j-1",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/replications/rep-j-1",
+        "ReplicatedAtNominalSig": true,
+        "MechanismPrimaryAncestry": "Hispanic/Latino",
+        "IsDifferentAncestryReplication": true,
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "replicates positive in an East Asian cohort (p=0.006)"
+      },
+      {
+        "CohortReplicationId": "rep-j-2",
+        "ReplicationLabel": "rep-j-2",
+        "CausalMechanism": "cm-j",
+        "FederatedDataset": "fed-west-africa",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.017,
+        "ReplicationAncestryLabel": "African",
+        "Name": "rep-j-2",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/replications/rep-j-2",
+        "ReplicatedAtNominalSig": true,
+        "MechanismPrimaryAncestry": "Hispanic/Latino",
+        "IsDifferentAncestryReplication": true,
+        "IsCrossAncestryConcordant": true,
+        "SourceQuote": "an African cohort (p=0.017)"
+      },
+      {
+        "CohortReplicationId": "rep-j-3",
+        "ReplicationLabel": "rep-j-3",
+        "CausalMechanism": "cm-j",
+        "FederatedDataset": "fed-europe",
+        "ReplicationEffectSign": 1,
+        "ReplicationPValue": 0.22,
+        "ReplicationAncestryLabel": "European",
+        "Name": "rep-j-3",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/replications/rep-j-3",
+        "ReplicatedAtNominalSig": false,
+        "MechanismPrimaryAncestry": "Hispanic/Latino",
+        "IsDifferentAncestryReplication": true,
+        "IsCrossAncestryConcordant": false,
+        "SourceQuote": "non-significant European replication (p=0.22)"
       },
       {
         "CohortReplicationId": "rep-l-1",
@@ -4822,12 +4526,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": true,
         "IsCrossAncestryConcordant": true,
-        "SourceQuote": "positive in a European cohort (p=0.004)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "positive in a European cohort (p=0.004)"
       },
       {
         "CohortReplicationId": "rep-l-2",
@@ -4844,12 +4543,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": true,
         "IsCrossAncestryConcordant": true,
-        "SourceQuote": "positive in an East Asian cohort (p=0.012)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "positive in an East Asian cohort (p=0.012)"
       },
       {
         "CohortReplicationId": "rep-l-3",
@@ -4866,12 +4560,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "MechanismPrimaryAncestry": "Indigenous American",
         "IsDifferentAncestryReplication": false,
         "IsCrossAncestryConcordant": false,
-        "SourceQuote": "positive in an Indigenous American cohort (p=0.029)",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "positive in an Indigenous American cohort (p=0.029)"
       }
     ]
   },
@@ -4965,6 +4654,136 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       }
     ],
     "data": [
+      {
+        "NegativeControlTestId": "nct-h-1",
+        "ControlLabel": "nct-h-1",
+        "CausalMechanism": "cm-h",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.012,
+        "NullThreshold": 0.1,
+        "Name": "nct-h-1",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/neg-controls/nct-h-1",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.012 and 0.028 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-h-2",
+        "ControlLabel": "nct-h-2",
+        "CausalMechanism": "cm-h",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.028,
+        "NullThreshold": 0.1,
+        "Name": "nct-h-2",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/neg-controls/nct-h-2",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.012 and 0.028 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-i-1",
+        "ControlLabel": "nct-i-1",
+        "CausalMechanism": "cm-i",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.009,
+        "NullThreshold": 0.1,
+        "Name": "nct-i-1",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/neg-controls/nct-i-1",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.009 and 0.031 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-i-2",
+        "ControlLabel": "nct-i-2",
+        "CausalMechanism": "cm-i",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.031,
+        "NullThreshold": 0.1,
+        "Name": "nct-i-2",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/neg-controls/nct-i-2",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.009 and 0.031 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-j-1",
+        "ControlLabel": "nct-j-1",
+        "CausalMechanism": "cm-j",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.015,
+        "NullThreshold": 0.1,
+        "Name": "nct-j-1",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/neg-controls/nct-j-1",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.015 and 0.024 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-j-2",
+        "ControlLabel": "nct-j-2",
+        "CausalMechanism": "cm-j",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.024,
+        "NullThreshold": 0.1,
+        "Name": "nct-j-2",
+        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/neg-controls/nct-j-2",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.015 and 0.024 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-k-1",
+        "ControlLabel": "nct-k-1",
+        "CausalMechanism": "cm-k",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.008,
+        "NullThreshold": 0.1,
+        "Name": "nct-k-1",
+        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/neg-controls/nct-k-1",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.008 and 0.022 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-k-2",
+        "ControlLabel": "nct-k-2",
+        "CausalMechanism": "cm-k",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.022,
+        "NullThreshold": 0.1,
+        "Name": "nct-k-2",
+        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/neg-controls/nct-k-2",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.008 and 0.022 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-l-1",
+        "ControlLabel": "nct-l-1",
+        "CausalMechanism": "cm-l",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.007,
+        "NullThreshold": 0.1,
+        "Name": "nct-l-1",
+        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
+        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/neg-controls/nct-l-1",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.007 and 0.019 inside +/-0.1"
+      },
+      {
+        "NegativeControlTestId": "nct-l-2",
+        "ControlLabel": "nct-l-2",
+        "CausalMechanism": "cm-l",
+        "TestKind": "ancestry-permutation",
+        "PermutationEffectSize": 0.019,
+        "NullThreshold": 0.1,
+        "Name": "nct-l-2",
+        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
+        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/neg-controls/nct-l-2",
+        "IsSurvived": true,
+        "SourceQuote": "permutation effect 0.007 and 0.019 inside +/-0.1"
+      },
       {
         "NegativeControlTestId": "nct-a-1",
         "ControlLabel": "nct-a-1",
@@ -5146,186 +4965,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/wei-chen/mechanisms/cm-c/neg-controls/nct-c-2",
         "IsSurvived": false,
         "SourceQuote": "its permutation effect is 0.46, far outside the +/-0.1 null band"
-      },
-      {
-        "NegativeControlTestId": "nct-h-1",
-        "ControlLabel": "nct-h-1",
-        "CausalMechanism": "cm-h",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.012,
-        "NullThreshold": 0.1,
-        "Name": "nct-h-1",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/neg-controls/nct-h-1",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.012 and 0.028 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-h-2",
-        "ControlLabel": "nct-h-2",
-        "CausalMechanism": "cm-h",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.028,
-        "NullThreshold": 0.1,
-        "Name": "nct-h-2",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/neg-controls/nct-h-2",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.012 and 0.028 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-i-1",
-        "ControlLabel": "nct-i-1",
-        "CausalMechanism": "cm-i",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.009,
-        "NullThreshold": 0.1,
-        "Name": "nct-i-1",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/neg-controls/nct-i-1",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.009 and 0.031 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-i-2",
-        "ControlLabel": "nct-i-2",
-        "CausalMechanism": "cm-i",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.031,
-        "NullThreshold": 0.1,
-        "Name": "nct-i-2",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/neg-controls/nct-i-2",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.009 and 0.031 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-j-1",
-        "ControlLabel": "nct-j-1",
-        "CausalMechanism": "cm-j",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.015,
-        "NullThreshold": 0.1,
-        "Name": "nct-j-1",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/neg-controls/nct-j-1",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.015 and 0.024 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-j-2",
-        "ControlLabel": "nct-j-2",
-        "CausalMechanism": "cm-j",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.024,
-        "NullThreshold": 0.1,
-        "Name": "nct-j-2",
-        "ParentPath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/neg-controls/nct-j-2",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.015 and 0.024 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-k-1",
-        "ControlLabel": "nct-k-1",
-        "CausalMechanism": "cm-k",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.008,
-        "NullThreshold": 0.1,
-        "Name": "nct-k-1",
-        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/neg-controls/nct-k-1",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.008 and 0.022 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-k-2",
-        "ControlLabel": "nct-k-2",
-        "CausalMechanism": "cm-k",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.022,
-        "NullThreshold": 0.1,
-        "Name": "nct-k-2",
-        "ParentPath": "/intake/new-patient/nair-kavya/mechanisms/cm-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/neg-controls/nct-k-2",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.008 and 0.022 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-l-1",
-        "ControlLabel": "nct-l-1",
-        "CausalMechanism": "cm-l",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.007,
-        "NullThreshold": 0.1,
-        "Name": "nct-l-1",
-        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
-        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/neg-controls/nct-l-1",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.007 and 0.019 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "NegativeControlTestId": "nct-l-2",
-        "ControlLabel": "nct-l-2",
-        "CausalMechanism": "cm-l",
-        "TestKind": "ancestry-permutation",
-        "PermutationEffectSize": 0.019,
-        "NullThreshold": 0.1,
-        "Name": "nct-l-2",
-        "ParentPath": "/intake/new-patient/brandt-lena/mechanisms/cm-l",
-        "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/neg-controls/nct-l-2",
-        "IsSurvived": true,
-        "SourceQuote": "permutation effect 0.007 and 0.019 inside +/-0.1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -5719,12 +5358,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsEffectiveTreatment": true,
         "IsMechanismMatched": true,
         "IsTreatmentResponsePredicted": true,
-        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
       },
       {
         "TreatmentId": "tx-i",
@@ -5743,12 +5377,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsEffectiveTreatment": false,
         "IsMechanismMatched": true,
         "IsTreatmentResponsePredicted": false,
-        "TreatmentResponseDecidingFactor": "AdverseEffect",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "TreatmentResponseDecidingFactor": "AdverseEffect"
       },
       {
         "TreatmentId": "tx-j",
@@ -5767,12 +5396,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsEffectiveTreatment": true,
         "IsMechanismMatched": true,
         "IsTreatmentResponsePredicted": true,
-        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
       },
       {
         "TreatmentId": "tx-k",
@@ -5791,12 +5415,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsEffectiveTreatment": false,
         "IsMechanismMatched": true,
         "IsTreatmentResponsePredicted": false,
-        "TreatmentResponseDecidingFactor": "NoResponse",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "TreatmentResponseDecidingFactor": "NoResponse"
       },
       {
         "TreatmentId": "tx-l",
@@ -5815,12 +5434,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IsEffectiveTreatment": true,
         "IsMechanismMatched": true,
         "IsTreatmentResponsePredicted": true,
-        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
       }
     ]
   },
@@ -6077,12 +5691,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/yamamoto-hana/phenotypes/ph-sev-h",
         "DiseaseStageLabel": "Active",
         "IsHighSeverity": true,
-        "IsPresymptomaticPhenotype": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsPresymptomaticPhenotype": false
       },
       {
         "ClinicalPhenotypeId": "ph-sev-i",
@@ -6099,12 +5708,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/conteh-ibrahim/phenotypes/ph-sev-i",
         "DiseaseStageLabel": "Active",
         "IsHighSeverity": true,
-        "IsPresymptomaticPhenotype": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsPresymptomaticPhenotype": false
       },
       {
         "ClinicalPhenotypeId": "ph-sev-j",
@@ -6121,12 +5725,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brooks-jamal/phenotypes/ph-sev-j",
         "DiseaseStageLabel": "Active",
         "IsHighSeverity": true,
-        "IsPresymptomaticPhenotype": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsPresymptomaticPhenotype": false
       },
       {
         "ClinicalPhenotypeId": "ph-sev-k",
@@ -6143,12 +5742,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/nair-kavya/phenotypes/ph-sev-k",
         "DiseaseStageLabel": "Active",
         "IsHighSeverity": false,
-        "IsPresymptomaticPhenotype": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsPresymptomaticPhenotype": false
       },
       {
         "ClinicalPhenotypeId": "ph-sev-l",
@@ -6165,12 +5759,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brandt-lena/phenotypes/ph-sev-l",
         "DiseaseStageLabel": "Active",
         "IsHighSeverity": false,
-        "IsPresymptomaticPhenotype": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsPresymptomaticPhenotype": false
       }
     ]
   },
@@ -6453,6 +6042,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-a-irf5",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "type-I-IFN",
+        "TargetPathwayCode": 1,
         "HasPleiotropy": false,
         "Name": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "ParentPath": "/intake/new-patient/reyes-ana",
@@ -6478,9 +6069,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "type-I-IFN",
-        "TargetPathwayCode": 1
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-b",
@@ -6489,6 +6078,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-b-irf5",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "type-I-IFN",
+        "TargetPathwayCode": 1,
         "HasPleiotropy": false,
         "Name": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "ParentPath": "/intake/new-patient/okafor-bili",
@@ -6514,9 +6105,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "type-I-IFN",
-        "TargetPathwayCode": 1
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-c",
@@ -6525,6 +6114,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-c-stat4",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "B-cell/autoantibody",
+        "TargetPathwayCode": 2,
         "HasPleiotropy": false,
         "Name": "STAT4 regulatory -> Th1/IFN -> SLE risk",
         "ParentPath": "/intake/new-patient/wei-chen",
@@ -6550,9 +6141,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "B-cell/autoantibody",
-        "TargetPathwayCode": 2
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-d",
@@ -6561,6 +6150,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-d-irf5",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "B-cell/autoantibody",
+        "TargetPathwayCode": 2,
         "HasPleiotropy": false,
         "Name": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "ParentPath": "/intake/new-patient/santos-diego",
@@ -6586,9 +6177,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "B-cell/autoantibody",
-        "TargetPathwayCode": 2
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-e",
@@ -6597,6 +6186,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-e-ctla4",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "T-cell-costim",
+        "TargetPathwayCode": 3,
         "HasPleiotropy": false,
         "Name": "CTLA4 enhancer -> T-cell costimulation -> SLE risk",
         "ParentPath": "/intake/new-patient/mensah-esi",
@@ -6622,9 +6213,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "T-cell-costim",
-        "TargetPathwayCode": 3
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-f",
@@ -6633,6 +6222,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-f-il23r",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "IL-17/23",
+        "TargetPathwayCode": 4,
         "HasPleiotropy": false,
         "Name": "IL23R regulatory -> IL-17 axis -> PsA risk",
         "ParentPath": "/intake/new-patient/haidar-faisal",
@@ -6658,9 +6249,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "IL-17/23",
-        "TargetPathwayCode": 4
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-g",
@@ -6669,6 +6258,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-g-il23r",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "IL-17/23",
+        "TargetPathwayCode": 4,
         "HasPleiotropy": false,
         "Name": "IL23R regulatory -> IL-17 axis -> PsA risk",
         "ParentPath": "/intake/new-patient/lin-grace",
@@ -6694,9 +6285,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "IL-17/23",
-        "TargetPathwayCode": 4
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-h",
@@ -6705,6 +6294,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-h-irf5",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "type-I-IFN",
+        "TargetPathwayCode": 1,
         "HasPleiotropy": false,
         "Name": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "ParentPath": "/intake/new-patient/yamamoto-hana",
@@ -6730,14 +6321,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "type-I-IFN",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "TargetPathwayCode": 1
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-i",
@@ -6746,6 +6330,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-i-irf5",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "B-cell/autoantibody",
+        "TargetPathwayCode": 2,
         "HasPleiotropy": false,
         "Name": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "ParentPath": "/intake/new-patient/conteh-ibrahim",
@@ -6771,14 +6357,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "B-cell/autoantibody",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "TargetPathwayCode": 2
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-j",
@@ -6787,6 +6366,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-j-irf5",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "type-I-IFN",
+        "TargetPathwayCode": 1,
         "HasPleiotropy": false,
         "Name": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "ParentPath": "/intake/new-patient/brooks-jamal",
@@ -6812,14 +6393,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "type-I-IFN",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "TargetPathwayCode": 1
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-k",
@@ -6828,6 +6402,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-k-il23r",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "IL-17/23",
+        "TargetPathwayCode": 4,
         "HasPleiotropy": false,
         "Name": "IL23R regulatory -> IL-17 axis -> PsA risk",
         "ParentPath": "/intake/new-patient/nair-kavya",
@@ -6853,14 +6429,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "IL-17/23",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "TargetPathwayCode": 4
+        "NegativeControlTests": null
       },
       {
         "CausalMechanismId": "cm-l",
@@ -6869,6 +6438,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "GenomicVariant": "var-l-il23r",
         "EnvironmentalExposure": "",
         "MechanismType": "regulatory",
+        "TargetPathway": "IL-17/23",
+        "TargetPathwayCode": 4,
         "HasPleiotropy": false,
         "Name": "IL23R regulatory -> IL-17 axis -> PsA risk",
         "ParentPath": "/intake/new-patient/brandt-lena",
@@ -6894,14 +6465,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null,
-        "TargetPathway": "IL-17/23",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "TargetPathwayCode": 4
+        "NegativeControlTests": null
       }
     ]
   },
@@ -7529,6 +7093,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 9,
+        "IndividualHasHighSeverityPhenotype": true,
+        "IndividualHasPredictedTreatmentResponse": true,
         "PredictedValue": 3.0166666666666666,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7544,19 +7111,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": true,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": true,
-        "LifecycleStateKey": "Actionable",
-        "CalibrationBins": null,
-        "DecidingGate": "AllGatesPass",
-        "IndividualMaxSeverityScore": 9,
-        "IndividualHasHighSeverityPhenotype": true,
         "PredictedSeverityValue": 9,
         "SeverityTier": "Severe",
         "IsSeverityActionable": true,
         "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism",
-        "IndividualHasPredictedTreatmentResponse": true,
         "IsTreatmentResponseActionable": true,
         "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
+        "IsClinicallyActionable": true,
+        "LifecycleStateKey": "Actionable",
+        "DecidingGate": "AllGatesPass",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "type-I-IFN",
         "IndividualProgressionStateKey": "SerologicActive",
         "IndividualIsDiseaseProgressing": false,
@@ -7579,6 +7143,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 8,
+        "IndividualHasHighSeverityPhenotype": true,
+        "IndividualHasPredictedTreatmentResponse": true,
         "PredictedValue": 3.0166666666666666,
         "CountBins": 5,
         "CountWellCalibratedBins": 0,
@@ -7594,19 +7161,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": false,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "Calibration",
-        "IndividualMaxSeverityScore": 8,
-        "IndividualHasHighSeverityPhenotype": true,
         "PredictedSeverityValue": 8,
         "SeverityTier": "Severe",
         "IsSeverityActionable": true,
         "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism",
-        "IndividualHasPredictedTreatmentResponse": true,
         "IsTreatmentResponseActionable": true,
         "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "Calibration",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "type-I-IFN",
         "IndividualProgressionStateKey": "PresymptomaticAutoimmunity",
         "IndividualIsDiseaseProgressing": false,
@@ -7629,6 +7193,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 0,
         "IndividualCrossAncestryNodeCount": 0,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 9,
+        "IndividualHasHighSeverityPhenotype": true,
+        "IndividualHasPredictedTreatmentResponse": false,
         "PredictedValue": 0,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7644,19 +7211,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": false,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "NoValidatedMechanism",
-        "IndividualMaxSeverityScore": 9,
-        "IndividualHasHighSeverityPhenotype": true,
         "PredictedSeverityValue": 9,
         "SeverityTier": "Severe",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "NoValidatedMechanism",
-        "IndividualHasPredictedTreatmentResponse": false,
         "IsTreatmentResponseActionable": false,
         "TreatmentResponseDecidingFactor": "NoConfirmedMechanism",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "NoValidatedMechanism",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "B-cell/autoantibody",
         "IndividualProgressionStateKey": "SerologicActive",
         "IndividualIsDiseaseProgressing": false,
@@ -7679,6 +7243,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": true,
+        "IndividualMaxSeverityScore": 8,
+        "IndividualHasHighSeverityPhenotype": true,
+        "IndividualHasPredictedTreatmentResponse": false,
         "PredictedValue": 3.0166666666666666,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7694,19 +7261,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": false,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "CrypticRelatedness",
-        "IndividualMaxSeverityScore": 8,
-        "IndividualHasHighSeverityPhenotype": true,
         "PredictedSeverityValue": 8,
         "SeverityTier": "Severe",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "SpuriousFlag",
-        "IndividualHasPredictedTreatmentResponse": false,
         "IsTreatmentResponseActionable": false,
         "TreatmentResponseDecidingFactor": "NoEffectiveTreatmentOnMechanism",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "CrypticRelatedness",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "B-cell/autoantibody",
         "IndividualProgressionStateKey": "BiopsyIndicated",
         "IndividualIsDiseaseProgressing": true,
@@ -7729,6 +7293,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 0,
         "IndividualCrossAncestryNodeCount": 0,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 3,
+        "IndividualHasHighSeverityPhenotype": false,
+        "IndividualHasPredictedTreatmentResponse": false,
         "PredictedValue": 0,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7744,19 +7311,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": false,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "NoValidatedMechanism",
-        "IndividualMaxSeverityScore": 3,
-        "IndividualHasHighSeverityPhenotype": false,
         "PredictedSeverityValue": 3,
         "SeverityTier": "Mild",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "NotHighSeverity",
-        "IndividualHasPredictedTreatmentResponse": false,
         "IsTreatmentResponseActionable": false,
         "TreatmentResponseDecidingFactor": "NoConfirmedMechanism",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "NoValidatedMechanism",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "T-cell-costim",
         "IndividualProgressionStateKey": "PresymptomaticAutoimmunity",
         "IndividualIsDiseaseProgressing": false,
@@ -7779,6 +7343,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 0,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 2,
+        "IndividualHasHighSeverityPhenotype": false,
+        "IndividualHasPredictedTreatmentResponse": false,
         "PredictedValue": 3.216666666666667,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7794,19 +7361,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "FAIL",
         "IsHighConfidencePrediction": true,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "AncestryTransport",
-        "IndividualMaxSeverityScore": 2,
-        "IndividualHasHighSeverityPhenotype": false,
         "PredictedSeverityValue": 2,
         "SeverityTier": "Mild",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "NotHighSeverity",
-        "IndividualHasPredictedTreatmentResponse": false,
         "IsTreatmentResponseActionable": false,
         "TreatmentResponseDecidingFactor": "NoEffectiveTreatmentOnMechanism",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "AncestryTransport",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "IL-17/23",
         "IndividualProgressionStateKey": "PresymptomaticAutoimmunity",
         "IndividualIsDiseaseProgressing": false,
@@ -7829,6 +7393,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 6,
+        "IndividualHasHighSeverityPhenotype": false,
+        "IndividualHasPredictedTreatmentResponse": true,
         "PredictedValue": 3.216666666666667,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7844,19 +7411,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "PASS-tested",
         "IsHighConfidencePrediction": true,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": true,
-        "LifecycleStateKey": "Actionable",
-        "CalibrationBins": null,
-        "DecidingGate": "AllGatesPass",
-        "IndividualMaxSeverityScore": 6,
-        "IndividualHasHighSeverityPhenotype": false,
         "PredictedSeverityValue": 6,
         "SeverityTier": "Moderate",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "NotHighSeverity",
-        "IndividualHasPredictedTreatmentResponse": true,
         "IsTreatmentResponseActionable": true,
         "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
+        "IsClinicallyActionable": true,
+        "LifecycleStateKey": "Actionable",
+        "DecidingGate": "AllGatesPass",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "IL-17/23",
         "IndividualProgressionStateKey": "PresymptomaticAutoimmunity",
         "IndividualIsDiseaseProgressing": false,
@@ -7879,6 +7443,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 9,
+        "IndividualHasHighSeverityPhenotype": true,
+        "IndividualHasPredictedTreatmentResponse": true,
         "PredictedValue": 3.0166666666666666,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7894,24 +7461,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": true,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": true,
-        "LifecycleStateKey": "Actionable",
-        "CalibrationBins": null,
-        "DecidingGate": "AllGatesPass",
-        "IndividualMaxSeverityScore": 9,
-        "IndividualHasHighSeverityPhenotype": true,
         "PredictedSeverityValue": 9,
         "SeverityTier": "Severe",
         "IsSeverityActionable": true,
         "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism",
-        "IndividualHasPredictedTreatmentResponse": true,
         "IsTreatmentResponseActionable": true,
         "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
+        "IsClinicallyActionable": true,
+        "LifecycleStateKey": "Actionable",
+        "DecidingGate": "AllGatesPass",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "type-I-IFN",
         "IndividualProgressionStateKey": "EarlyNephritis",
         "IndividualIsDiseaseProgressing": true,
@@ -7934,6 +7493,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": true,
+        "IndividualMaxSeverityScore": 8,
+        "IndividualHasHighSeverityPhenotype": true,
+        "IndividualHasPredictedTreatmentResponse": false,
         "PredictedValue": 3.0166666666666666,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -7949,24 +7511,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": false,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "CrypticRelatedness",
-        "IndividualMaxSeverityScore": 8,
-        "IndividualHasHighSeverityPhenotype": true,
         "PredictedSeverityValue": 8,
         "SeverityTier": "Severe",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "SpuriousFlag",
-        "IndividualHasPredictedTreatmentResponse": false,
         "IsTreatmentResponseActionable": false,
         "TreatmentResponseDecidingFactor": "NoEffectiveTreatmentOnMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "CrypticRelatedness",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "B-cell/autoantibody",
         "IndividualProgressionStateKey": "RenalFlareRisk",
         "IndividualIsDiseaseProgressing": true,
@@ -7989,6 +7543,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 8,
+        "IndividualHasHighSeverityPhenotype": true,
+        "IndividualHasPredictedTreatmentResponse": true,
         "PredictedValue": 3.0166666666666666,
         "CountBins": 5,
         "CountWellCalibratedBins": 0,
@@ -8004,24 +7561,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "NotApplicable",
         "IsHighConfidencePrediction": false,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "Calibration",
-        "IndividualMaxSeverityScore": 8,
-        "IndividualHasHighSeverityPhenotype": true,
         "PredictedSeverityValue": 8,
         "SeverityTier": "Severe",
         "IsSeverityActionable": true,
         "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism",
-        "IndividualHasPredictedTreatmentResponse": true,
         "IsTreatmentResponseActionable": true,
         "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "Calibration",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "type-I-IFN",
         "IndividualProgressionStateKey": "SerologicActive",
         "IndividualIsDiseaseProgressing": false,
@@ -8044,6 +7593,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 0,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 2,
+        "IndividualHasHighSeverityPhenotype": false,
+        "IndividualHasPredictedTreatmentResponse": false,
         "PredictedValue": 3.216666666666667,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -8059,24 +7611,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "FAIL",
         "IsHighConfidencePrediction": true,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": false,
-        "LifecycleStateKey": "NotActionable",
-        "CalibrationBins": null,
-        "DecidingGate": "AncestryTransport",
-        "IndividualMaxSeverityScore": 2,
-        "IndividualHasHighSeverityPhenotype": false,
         "PredictedSeverityValue": 2,
         "SeverityTier": "Mild",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "NotHighSeverity",
-        "IndividualHasPredictedTreatmentResponse": false,
         "IsTreatmentResponseActionable": false,
         "TreatmentResponseDecidingFactor": "NoEffectiveTreatmentOnMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
+        "IsClinicallyActionable": false,
+        "LifecycleStateKey": "NotActionable",
+        "DecidingGate": "AncestryTransport",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "IL-17/23",
         "IndividualProgressionStateKey": "PresymptomaticAutoimmunity",
         "IndividualIsDiseaseProgressing": false,
@@ -8099,6 +7643,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "IndividualConfirmedNodeCount": 1,
         "IndividualCrossAncestryNodeCount": 1,
         "IndividualHasCrypticRelatedness": false,
+        "IndividualMaxSeverityScore": 6,
+        "IndividualHasHighSeverityPhenotype": false,
+        "IndividualHasPredictedTreatmentResponse": true,
         "PredictedValue": 3.216666666666667,
         "CountBins": 5,
         "CountWellCalibratedBins": 5,
@@ -8114,24 +7661,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransportGateStatus": "PASS-tested",
         "IsHighConfidencePrediction": true,
         "PatientStratificationTier": "Low-Risk Pathway",
-        "IsClinicallyActionable": true,
-        "LifecycleStateKey": "Actionable",
-        "CalibrationBins": null,
-        "DecidingGate": "AllGatesPass",
-        "IndividualMaxSeverityScore": 6,
-        "IndividualHasHighSeverityPhenotype": false,
         "PredictedSeverityValue": 6,
         "SeverityTier": "Moderate",
         "IsSeverityActionable": false,
         "SeverityDecidingFactor": "NotHighSeverity",
-        "IndividualHasPredictedTreatmentResponse": true,
         "IsTreatmentResponseActionable": true,
         "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
+        "IsClinicallyActionable": true,
+        "LifecycleStateKey": "Actionable",
+        "DecidingGate": "AllGatesPass",
+        "CalibrationBins": null,
         "IndividualTargetPathway": "IL-17/23",
         "IndividualProgressionStateKey": "PresymptomaticAutoimmunity",
         "IndividualIsDiseaseProgressing": false,
@@ -8646,6 +8185,286 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
       },
       {
+        "CalibrationBinId": "cb-h-0",
+        "BinLabel": "cb-h-0",
+        "IndividualPrediction": "pred-h",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.09,
+        "CoverageCount": 34,
+        "Name": "cb-h-0",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-0",
+        "BinAbsError": 0.01,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-h-1",
+        "BinLabel": "cb-h-1",
+        "IndividualPrediction": "pred-h",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.31,
+        "CoverageCount": 31,
+        "Name": "cb-h-1",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-1",
+        "BinAbsError": 0.01,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-h-2",
+        "BinLabel": "cb-h-2",
+        "IndividualPrediction": "pred-h",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.49,
+        "CoverageCount": 29,
+        "Name": "cb-h-2",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-2",
+        "BinAbsError": 0.01,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-h-3",
+        "BinLabel": "cb-h-3",
+        "IndividualPrediction": "pred-h",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.71,
+        "CoverageCount": 33,
+        "Name": "cb-h-3",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-3",
+        "BinAbsError": 0.01,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-h-4",
+        "BinLabel": "cb-h-4",
+        "IndividualPrediction": "pred-h",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.88,
+        "CoverageCount": 30,
+        "Name": "cb-h-4",
+        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
+        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-4",
+        "BinAbsError": 0.02,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-i-0",
+        "BinLabel": "cb-i-0",
+        "IndividualPrediction": "pred-i",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.08,
+        "CoverageCount": 36,
+        "Name": "cb-i-0",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-0",
+        "BinAbsError": 0.02,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-i-1",
+        "BinLabel": "cb-i-1",
+        "IndividualPrediction": "pred-i",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.32,
+        "CoverageCount": 33,
+        "Name": "cb-i-1",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-1",
+        "BinAbsError": 0.02,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-i-2",
+        "BinLabel": "cb-i-2",
+        "IndividualPrediction": "pred-i",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.5,
+        "CoverageCount": 35,
+        "Name": "cb-i-2",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-2",
+        "BinAbsError": 0,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-i-3",
+        "BinLabel": "cb-i-3",
+        "IndividualPrediction": "pred-i",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.69,
+        "CoverageCount": 30,
+        "Name": "cb-i-3",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-3",
+        "BinAbsError": 0.01,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-i-4",
+        "BinLabel": "cb-i-4",
+        "IndividualPrediction": "pred-i",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.91,
+        "CoverageCount": 34,
+        "Name": "cb-i-4",
+        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
+        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-4",
+        "BinAbsError": 0.01,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-j-0",
+        "BinLabel": "cb-j-0",
+        "IndividualPrediction": "pred-j",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.07,
+        "CoverageCount": 11,
+        "Name": "cb-j-0",
+        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-0",
+        "BinAbsError": 0.03,
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-j-1",
+        "BinLabel": "cb-j-1",
+        "IndividualPrediction": "pred-j",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.33,
+        "CoverageCount": 9,
+        "Name": "cb-j-1",
+        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-1",
+        "BinAbsError": 0.03,
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-j-2",
+        "BinLabel": "cb-j-2",
+        "IndividualPrediction": "pred-j",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.55,
+        "CoverageCount": 14,
+        "Name": "cb-j-2",
+        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-2",
+        "BinAbsError": 0.05,
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-j-3",
+        "BinLabel": "cb-j-3",
+        "IndividualPrediction": "pred-j",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.66,
+        "CoverageCount": 7,
+        "Name": "cb-j-3",
+        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-3",
+        "BinAbsError": 0.04,
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-j-4",
+        "BinLabel": "cb-j-4",
+        "IndividualPrediction": "pred-j",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.93,
+        "CoverageCount": 12,
+        "Name": "cb-j-4",
+        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
+        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-4",
+        "BinAbsError": 0.03,
+        "IsWellCalibratedBin": false,
+        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-k-0",
+        "BinLabel": "cb-k-0",
+        "IndividualPrediction": "pred-k",
+        "PredictedProbabilityBand": 0.1,
+        "ObservedEventRate": 0.12,
+        "CoverageCount": 32,
+        "Name": "cb-k-0",
+        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-0",
+        "BinAbsError": 0.02,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-k-1",
+        "BinLabel": "cb-k-1",
+        "IndividualPrediction": "pred-k",
+        "PredictedProbabilityBand": 0.3,
+        "ObservedEventRate": 0.3,
+        "CoverageCount": 35,
+        "Name": "cb-k-1",
+        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-1",
+        "BinAbsError": 0,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-k-2",
+        "BinLabel": "cb-k-2",
+        "IndividualPrediction": "pred-k",
+        "PredictedProbabilityBand": 0.5,
+        "ObservedEventRate": 0.48,
+        "CoverageCount": 31,
+        "Name": "cb-k-2",
+        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-2",
+        "BinAbsError": 0.02,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-k-3",
+        "BinLabel": "cb-k-3",
+        "IndividualPrediction": "pred-k",
+        "PredictedProbabilityBand": 0.7,
+        "ObservedEventRate": 0.7,
+        "CoverageCount": 34,
+        "Name": "cb-k-3",
+        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-3",
+        "BinAbsError": 0,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin"
+      },
+      {
+        "CalibrationBinId": "cb-k-4",
+        "BinLabel": "cb-k-4",
+        "IndividualPrediction": "pred-k",
+        "PredictedProbabilityBand": 0.9,
+        "ObservedEventRate": 0.93,
+        "CoverageCount": 30,
+        "Name": "cb-k-4",
+        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
+        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-4",
+        "BinAbsError": 0.03,
+        "IsWellCalibratedBin": true,
+        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin"
+      },
+      {
         "CalibrationBinId": "cb-g-4",
         "BinLabel": "cb-g-4",
         "IndividualPrediction": "pred-g",
@@ -8730,386 +8549,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin"
       },
       {
-        "CalibrationBinId": "cb-h-0",
-        "BinLabel": "cb-h-0",
-        "IndividualPrediction": "pred-h",
-        "PredictedProbabilityBand": 0.1,
-        "ObservedEventRate": 0.09,
-        "CoverageCount": 34,
-        "Name": "cb-h-0",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-0",
-        "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-h-1",
-        "BinLabel": "cb-h-1",
-        "IndividualPrediction": "pred-h",
-        "PredictedProbabilityBand": 0.3,
-        "ObservedEventRate": 0.31,
-        "CoverageCount": 31,
-        "Name": "cb-h-1",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-1",
-        "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-h-2",
-        "BinLabel": "cb-h-2",
-        "IndividualPrediction": "pred-h",
-        "PredictedProbabilityBand": 0.5,
-        "ObservedEventRate": 0.49,
-        "CoverageCount": 29,
-        "Name": "cb-h-2",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-2",
-        "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-h-3",
-        "BinLabel": "cb-h-3",
-        "IndividualPrediction": "pred-h",
-        "PredictedProbabilityBand": 0.7,
-        "ObservedEventRate": 0.71,
-        "CoverageCount": 33,
-        "Name": "cb-h-3",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-3",
-        "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-h-4",
-        "BinLabel": "cb-h-4",
-        "IndividualPrediction": "pred-h",
-        "PredictedProbabilityBand": 0.9,
-        "ObservedEventRate": 0.88,
-        "CoverageCount": 30,
-        "Name": "cb-h-4",
-        "ParentPath": "/intake/new-patient/yamamoto-hana/predictions/pred-h",
-        "RelativePath": "/intake/new-patient/yamamoto-hana/predictions/pred-h/bins/cb-h-4",
-        "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 29-34 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-i-0",
-        "BinLabel": "cb-i-0",
-        "IndividualPrediction": "pred-i",
-        "PredictedProbabilityBand": 0.1,
-        "ObservedEventRate": 0.08,
-        "CoverageCount": 36,
-        "Name": "cb-i-0",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-0",
-        "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-i-1",
-        "BinLabel": "cb-i-1",
-        "IndividualPrediction": "pred-i",
-        "PredictedProbabilityBand": 0.3,
-        "ObservedEventRate": 0.32,
-        "CoverageCount": 33,
-        "Name": "cb-i-1",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-1",
-        "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-i-2",
-        "BinLabel": "cb-i-2",
-        "IndividualPrediction": "pred-i",
-        "PredictedProbabilityBand": 0.5,
-        "ObservedEventRate": 0.5,
-        "CoverageCount": 35,
-        "Name": "cb-i-2",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-2",
-        "BinAbsError": 0,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-i-3",
-        "BinLabel": "cb-i-3",
-        "IndividualPrediction": "pred-i",
-        "PredictedProbabilityBand": 0.7,
-        "ObservedEventRate": 0.69,
-        "CoverageCount": 30,
-        "Name": "cb-i-3",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-3",
-        "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-i-4",
-        "BinLabel": "cb-i-4",
-        "IndividualPrediction": "pred-i",
-        "PredictedProbabilityBand": 0.9,
-        "ObservedEventRate": 0.91,
-        "CoverageCount": 34,
-        "Name": "cb-i-4",
-        "ParentPath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i",
-        "RelativePath": "/intake/new-patient/conteh-ibrahim/predictions/pred-i/bins/cb-i-4",
-        "BinAbsError": 0.01,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-j-0",
-        "BinLabel": "cb-j-0",
-        "IndividualPrediction": "pred-j",
-        "PredictedProbabilityBand": 0.1,
-        "ObservedEventRate": 0.07,
-        "CoverageCount": 11,
-        "Name": "cb-j-0",
-        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-0",
-        "BinAbsError": 0.03,
-        "IsWellCalibratedBin": false,
-        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-j-1",
-        "BinLabel": "cb-j-1",
-        "IndividualPrediction": "pred-j",
-        "PredictedProbabilityBand": 0.3,
-        "ObservedEventRate": 0.33,
-        "CoverageCount": 9,
-        "Name": "cb-j-1",
-        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-1",
-        "BinAbsError": 0.03,
-        "IsWellCalibratedBin": false,
-        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-j-2",
-        "BinLabel": "cb-j-2",
-        "IndividualPrediction": "pred-j",
-        "PredictedProbabilityBand": 0.5,
-        "ObservedEventRate": 0.55,
-        "CoverageCount": 14,
-        "Name": "cb-j-2",
-        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-2",
-        "BinAbsError": 0.05,
-        "IsWellCalibratedBin": false,
-        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-j-3",
-        "BinLabel": "cb-j-3",
-        "IndividualPrediction": "pred-j",
-        "PredictedProbabilityBand": 0.7,
-        "ObservedEventRate": 0.66,
-        "CoverageCount": 7,
-        "Name": "cb-j-3",
-        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-3",
-        "BinAbsError": 0.04,
-        "IsWellCalibratedBin": false,
-        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-j-4",
-        "BinLabel": "cb-j-4",
-        "IndividualPrediction": "pred-j",
-        "PredictedProbabilityBand": 0.9,
-        "ObservedEventRate": 0.93,
-        "CoverageCount": 12,
-        "Name": "cb-j-4",
-        "ParentPath": "/intake/new-patient/brooks-jamal/predictions/pred-j",
-        "RelativePath": "/intake/new-patient/brooks-jamal/predictions/pred-j/bins/cb-j-4",
-        "BinAbsError": 0.03,
-        "IsWellCalibratedBin": false,
-        "SourceQuote": "coverage of 7-14 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-k-0",
-        "BinLabel": "cb-k-0",
-        "IndividualPrediction": "pred-k",
-        "PredictedProbabilityBand": 0.1,
-        "ObservedEventRate": 0.12,
-        "CoverageCount": 32,
-        "Name": "cb-k-0",
-        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-0",
-        "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-k-1",
-        "BinLabel": "cb-k-1",
-        "IndividualPrediction": "pred-k",
-        "PredictedProbabilityBand": 0.3,
-        "ObservedEventRate": 0.3,
-        "CoverageCount": 35,
-        "Name": "cb-k-1",
-        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-1",
-        "BinAbsError": 0,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-k-2",
-        "BinLabel": "cb-k-2",
-        "IndividualPrediction": "pred-k",
-        "PredictedProbabilityBand": 0.5,
-        "ObservedEventRate": 0.48,
-        "CoverageCount": 31,
-        "Name": "cb-k-2",
-        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-2",
-        "BinAbsError": 0.02,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-k-3",
-        "BinLabel": "cb-k-3",
-        "IndividualPrediction": "pred-k",
-        "PredictedProbabilityBand": 0.7,
-        "ObservedEventRate": 0.7,
-        "CoverageCount": 34,
-        "Name": "cb-k-3",
-        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-3",
-        "BinAbsError": 0,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
-        "CalibrationBinId": "cb-k-4",
-        "BinLabel": "cb-k-4",
-        "IndividualPrediction": "pred-k",
-        "PredictedProbabilityBand": 0.9,
-        "ObservedEventRate": 0.93,
-        "CoverageCount": 30,
-        "Name": "cb-k-4",
-        "ParentPath": "/intake/new-patient/nair-kavya/predictions/pred-k",
-        "RelativePath": "/intake/new-patient/nair-kavya/predictions/pred-k/bins/cb-k-4",
-        "BinAbsError": 0.03,
-        "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-35 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
-      },
-      {
         "CalibrationBinId": "cb-l-0",
         "BinLabel": "cb-l-0",
         "IndividualPrediction": "pred-l",
@@ -9121,12 +8560,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brandt-lena/predictions/pred-l/bins/cb-l-0",
         "BinAbsError": 0.01,
         "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-l-1",
@@ -9140,12 +8574,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brandt-lena/predictions/pred-l/bins/cb-l-1",
         "BinAbsError": 0.01,
         "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-l-2",
@@ -9159,12 +8588,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brandt-lena/predictions/pred-l/bins/cb-l-2",
         "BinAbsError": 0.02,
         "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-l-3",
@@ -9178,12 +8602,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brandt-lena/predictions/pred-l/bins/cb-l-3",
         "BinAbsError": 0.02,
         "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
       },
       {
         "CalibrationBinId": "cb-l-4",
@@ -9197,12 +8616,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brandt-lena/predictions/pred-l/bins/cb-l-4",
         "BinAbsError": 0.02,
         "IsWellCalibratedBin": true,
-        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "SourceQuote": "coverage of 30-36 held-out individuals per reliability bin"
       }
     ]
   },
@@ -9400,12 +8814,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/yamamoto-hana/mechanisms/cm-h/targets/it-h",
         "CausalMechanismLabel": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "IsGeneBasedTherapy": true,
-        "IsCellBasedTherapy": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsCellBasedTherapy": false
       },
       {
         "InterventionTargetId": "it-i",
@@ -9419,12 +8828,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/conteh-ibrahim/mechanisms/cm-i/targets/it-i",
         "CausalMechanismLabel": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "IsGeneBasedTherapy": true,
-        "IsCellBasedTherapy": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsCellBasedTherapy": false
       },
       {
         "InterventionTargetId": "it-j",
@@ -9438,12 +8842,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brooks-jamal/mechanisms/cm-j/targets/it-j",
         "CausalMechanismLabel": "IRF5 regulatory -> type-I IFN -> SLE risk",
         "IsGeneBasedTherapy": true,
-        "IsCellBasedTherapy": false,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsCellBasedTherapy": false
       },
       {
         "InterventionTargetId": "it-k",
@@ -9457,12 +8856,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/nair-kavya/mechanisms/cm-k/targets/it-k",
         "CausalMechanismLabel": "IL23R regulatory -> IL-17 axis -> PsA risk",
         "IsGeneBasedTherapy": false,
-        "IsCellBasedTherapy": true,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsCellBasedTherapy": true
       },
       {
         "InterventionTargetId": "it-l",
@@ -9476,12 +8870,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/intake/new-patient/brandt-lena/mechanisms/cm-l/targets/it-l",
         "CausalMechanismLabel": "IL23R regulatory -> IL-17 axis -> PsA risk",
         "IsGeneBasedTherapy": false,
-        "IsCellBasedTherapy": true,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "IsCellBasedTherapy": true
       }
     ]
   },
@@ -10359,12 +9748,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleCommitMsg": "rule: keystone IsClinicallyActionable now derived from observations",
         "StateCommitMsg": "state: Loop 0 - Postgres solve-by-inference verified",
         "SortOrder": 0,
-        "StatusBadge": "[DONE]",
-        "StatusLine": " - rule `rule: keystone IsClinicallyActionable now derived from observations`; state `state: Loop 0 - Postgres solve-by-inference verified`",
         "Name": "Loop 0 — Solve-by-inference rulebook",
         "RelativePath": "/admin/leopold-loops/loop-0",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `rule: keystone IsClinicallyActionable now derived from observations`; state `state: Loop 0 - Postgres solve-by-inference verified`"
       },
       {
         "LeopoldLoopId": "loop-0-5",
@@ -10375,12 +9764,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleCommitMsg": "none - app-only loop, test-harness-first, no rule change",
         "StateCommitMsg": "state: Loop 0.5 - red witnessed-inference harness is the app's contract",
         "SortOrder": 1,
-        "StatusBadge": "[DONE]",
-        "StatusLine": " - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app's contract`",
         "Name": "Loop 0.5 — Test Harness First (the red contract)",
         "RelativePath": "/admin/leopold-loops/loop-0-5",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app's contract`"
       },
       {
         "LeopoldLoopId": "loop-1",
@@ -10391,12 +9780,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleCommitMsg": "none - app-only loop, no rule change",
         "StateCommitMsg": "state: Loop 1 - read-only intake app surfaces the keystone",
         "SortOrder": 2,
-        "StatusBadge": "[DONE]",
-        "StatusLine": "",
         "Name": "Loop 1 — Intake app skeleton",
         "RelativePath": "/admin/leopold-loops/loop-1",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-2",
@@ -10407,12 +9796,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleCommitMsg": "rule (if any) for new intake field",
         "StateCommitMsg": "state: Loop 2 - facts-in to derived diagnosis works end to end",
         "SortOrder": 3,
-        "StatusBadge": "[DONE]",
-        "StatusLine": "",
         "Name": "Loop 2 — Patient intake (facts in)",
         "RelativePath": "/admin/leopold-loops/loop-2",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-3",
@@ -10423,12 +9812,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleCommitMsg": "rule: install explainer-dag",
         "StateCommitMsg": "state: Loop 3 - gate explainability",
         "SortOrder": 4,
-        "StatusBadge": "[DONE]",
-        "StatusLine": "",
         "Name": "Loop 3 — 3-panel witness — provenance back into the case text",
         "RelativePath": "/admin/leopold-loops/loop-3",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-4",
@@ -10439,12 +9828,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleCommitMsg": "rule: derive a severity prediction (IsSeverityActionable) chained to the onset gates",
         "StateCommitMsg": "state: Loop 4 - severity prediction (second prediction type) green",
         "SortOrder": 5,
-        "StatusBadge": "[DONE]",
-        "StatusLine": "",
         "Name": "Loop 4 — Second prediction type (severity)",
         "RelativePath": "/admin/leopold-loops/loop-4",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-5",
@@ -10455,76 +9844,76 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleCommitMsg": "rule: derive a treatment-response prediction (IsTreatmentResponseActionable) via mechanism match",
         "StateCommitMsg": "state: Loop 5 - treatment-response prediction (third prediction type) green",
         "SortOrder": 6,
-        "StatusBadge": "[DONE]",
-        "StatusLine": "",
         "Name": "Loop 5 — Treatment-response prediction",
         "RelativePath": "/admin/leopold-loops/loop-5",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-vocab-completeness",
         "LoopNumber": "6",
-        "Title": "Vocabulary completeness — every audit-named concept enters the hub",
-        "Goal": "Answer the audit's breadth: bring every concept the physician named (lupus nephritis, NPSLE, cutaneous lupus, sero±RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns, treatment lines, SLEDAI/DAS28) into the hub as DiseaseDomainConcepts, each with an honest ModelingStatus (deep-DAG / schema / vocabulary). Coverage becomes checkable by grep, not by trust.",
+        "Title": "Vocabulary completeness - every audit-named concept enters the hub",
+        "Goal": "Answer the audit's breadth: bring every concept the physician named (lupus nephritis, NPSLE, cutaneous lupus, sero+/-RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns, treatment lines, SLEDAI/DAS28) into the hub as DiseaseDomainConcepts, each with an honest ModelingStatus (deep-DAG / schema / vocabulary). Coverage becomes checkable by grep, not by trust.",
         "Status": "done",
-        "RuleCommitMsg": "rule: DiseaseDomainConcepts — every audit-named concept in the hub with honest ModelingStatus",
-        "StateCommitMsg": "state: v2 step1 — vocabulary completeness; coverage checkable by grep",
+        "RuleCommitMsg": "rule: DiseaseDomainConcepts - every audit-named concept in the hub with honest ModelingStatus",
+        "StateCommitMsg": "state: v2 step1 - vocabulary completeness; coverage checkable by grep",
         "SortOrder": 7,
-        "StatusBadge": "[DONE]",
-        "StatusLine": " - rule `rule: DiseaseDomainConcepts — every audit-named concept in the hub with honest ModelingStatus`; state `state: v2 step1 — vocabulary completeness; coverage checkable by grep`",
-        "Name": "Loop 6 — Vocabulary completeness — every audit-named concept enters the hub",
+        "Name": "Loop 6 - Vocabulary completeness - every audit-named concept enters the hub",
         "RelativePath": "/admin/leopold-loops/loop-vocab-completeness",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `rule: DiseaseDomainConcepts - every audit-named concept in the hub with honest ModelingStatus`; state `state: v2 step1 - vocabulary completeness; coverage checkable by grep`"
       },
       {
         "LeopoldLoopId": "loop-disease-state",
         "LoopNumber": "7",
-        "Title": "Disease-state simulator — the layer the audit said did not exist",
-        "Goal": "Reframe: v1 was a per-patient evidence gate; v2 adds the disease-state layer. A disease progressing is a state machine (lupus-nephritis-progression: Presymptomatic → SerologicActive → EarlyNephritis → RenalFlareRisk → BiopsyIndicated) whose CURRENT state is DERIVED purely from raw serology leaves (rising anti-dsDNA + falling complement + proteinuria + sediment) — never hand-set. Bitemporal DwellDays answers the audit's 'how long in this state.' Same trust boundary: labs are the LLM's/clinician's, the state is the model's. Diego Santos's first worked example computes (derived SledaiScore 12, High/flare).",
+        "Title": "Disease-state simulator - the layer the audit said did not exist",
+        "Goal": "Reframe: v1 was a per-patient evidence gate; v2 adds the disease-state layer. A disease progressing is a state machine (lupus-nephritis-progression: Presymptomatic then SerologicActive then EarlyNephritis then RenalFlareRisk then BiopsyIndicated) whose CURRENT state is DERIVED purely from raw serology leaves (rising anti-dsDNA + falling complement + proteinuria + sediment) - never hand-set. Bitemporal DwellDays answers the audit's 'how long in this state.' Same trust boundary: labs are the LLM's/clinician's, the state is the model's. Diego Santos's first worked example computes (derived SledaiScore 12, High/flare).",
         "Status": "done",
-        "RuleCommitMsg": "rule: lupus-nephritis-progression state machine — disease state DERIVED from raw serology",
-        "StateCommitMsg": "state: v2 step3 — disease-state simulator; harness green, counter-example witnessed",
+        "RuleCommitMsg": "rule: lupus-nephritis-progression state machine - disease state DERIVED from raw serology",
+        "StateCommitMsg": "state: v2 step3 - disease-state simulator; harness green, counter-example witnessed",
         "SortOrder": 8,
-        "StatusBadge": "[DONE]",
-        "StatusLine": " - rule `rule: lupus-nephritis-progression state machine — disease state DERIVED from raw serology`; state `state: v2 step3 — disease-state simulator; harness green, counter-example witnessed`",
-        "Name": "Loop 7 — Disease-state simulator — the layer the audit said did not exist",
+        "Name": "Loop 7 - Disease-state simulator - the layer the audit said did not exist",
         "RelativePath": "/admin/leopold-loops/loop-disease-state",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `rule: lupus-nephritis-progression state machine - disease state DERIVED from raw serology`; state `state: v2 step3 - disease-state simulator; harness green, counter-example witnessed`"
       },
       {
         "LeopoldLoopId": "loop-treatment-line",
         "LoopNumber": "8",
         "Title": "Treatment-line recommendation + the disagreement counter-example",
-        "Goal": "The audit's second worked example, computed: a derived RecommendedTreatmentLine + single TreatmentLineDecidingFactor (mycophenolate for active nephritis, anifrolumab for type-I-IFN, belimumab for autoantibody-driven, secukinumab for IL-17/23) — differentiated by confirmed mechanism × disease state, never by a label. The load-bearing proof: Diego is progression_vs_actionability_disagree = TRUE — the disease-state simulator says he IS progressing (BiopsyIndicated, high activity) while the actionability gate says NOT actionable (cryptic-relatedness leakage). A pure evidence gate could never produce that sentence; that it can is the proof v2 ≠ v1 relabeled.",
+        "Goal": "The audit's second worked example, computed: a derived RecommendedTreatmentLine + single TreatmentLineDecidingFactor (mycophenolate for active nephritis, anifrolumab for type-I-IFN, belimumab for autoantibody-driven, secukinumab for IL-17/23) - differentiated by confirmed mechanism x disease state, never by a label. The load-bearing proof: Diego is progression_vs_actionability_disagree = TRUE - the disease-state simulator says he IS progressing (BiopsyIndicated, high activity) while the actionability gate says NOT actionable (cryptic-relatedness leakage). A pure evidence gate could never produce that sentence; that it can is the proof v2 != v1 relabeled.",
         "Status": "done",
         "RuleCommitMsg": "rule: RecommendedTreatmentLine + progression_vs_actionability_disagree counter-example",
-        "StateCommitMsg": "state: v2 — treatment-line + disagreement; the two layers proven independent",
+        "StateCommitMsg": "state: v2 - treatment-line + disagreement; the two layers proven independent",
         "SortOrder": 9,
-        "StatusBadge": "[DONE]",
-        "StatusLine": " - rule `rule: RecommendedTreatmentLine + progression_vs_actionability_disagree counter-example`; state `state: v2 — treatment-line + disagreement; the two layers proven independent`",
-        "Name": "Loop 8 — Treatment-line recommendation + the disagreement counter-example",
+        "Name": "Loop 8 - Treatment-line recommendation + the disagreement counter-example",
         "RelativePath": "/admin/leopold-loops/loop-treatment-line",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `rule: RecommendedTreatmentLine + progression_vs_actionability_disagree counter-example`; state `state: v2 - treatment-line + disagreement; the two layers proven independent`"
       },
       {
         "LeopoldLoopId": "loop-cohort-discovery",
         "LoopNumber": "9",
-        "Title": "Cohort discovery board — the corpus-level surface",
-        "Goal": "The doctor's deepest point: discovery is corpus-level — a single chart never discovers a mechanism, a pattern across many patients does. Build the top-level, all-roles Cohort discovery board over a 12-member claim-bearing cohort: the disease-state map, the emergent serology-signature scatter, the disease-vs-evidence disagreement board, and the treatment-line distribution — all reading derived fields. Per-patient progression + treatment-line tabs hang off the same model. The punchline, sorted to the top of the nav.",
+        "Title": "Cohort discovery board - the corpus-level surface",
+        "Goal": "The doctor's deepest point: discovery is corpus-level - a single chart never discovers a mechanism, a pattern across many patients does. Build the top-level, all-roles Cohort discovery board over a 12-member claim-bearing cohort: the disease-state map, the emergent serology-signature scatter, the disease-vs-evidence disagreement board, and the treatment-line distribution - all reading derived fields. Per-patient progression + treatment-line tabs hang off the same model. The punchline, sorted to the top of the nav.",
         "Status": "done",
         "RuleCommitMsg": "rule: 12-member cohort expansion; corpus-level derived fields for the discovery board",
-        "StateCommitMsg": "state: v2 steps9-10 — Cohort discovery is the top-level all-roles nav item",
+        "StateCommitMsg": "state: v2 steps9-10 - Cohort discovery is the top-level all-roles nav item",
         "SortOrder": 10,
-        "StatusBadge": "[DONE]",
-        "StatusLine": " - rule `rule: 12-member cohort expansion; corpus-level derived fields for the discovery board`; state `state: v2 steps9-10 — Cohort discovery is the top-level all-roles nav item`",
-        "Name": "Loop 9 — Cohort discovery board — the corpus-level surface",
+        "Name": "Loop 9 - Cohort discovery board - the corpus-level surface",
         "RelativePath": "/admin/leopold-loops/loop-cohort-discovery",
         "Completedness": "done",
-        "IsInCurrentPlan": false
+        "IsInCurrentPlan": false,
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `rule: 12-member cohort expansion; corpus-level derived fields for the discovery board`; state `state: v2 steps9-10 - Cohort discovery is the top-level all-roles nav item`"
       },
       {
         "LeopoldLoopId": "loop-progression-admin",
@@ -10533,90 +9922,74 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Goal": "The one concrete unbuilt V2-UI item (per V2-UI-PLAN.md). StateMachineView is hardcoded to diagnosis-lifecycle; lupus-nephritis-progression already lives in vw_state_machines and is served by the same router. Make StateMachineView select the machine (a binding change, not a model change): render its states, the 5 raw-leaf-triggered transition rules, and a per-state cohort-occupancy strip. Closes the loop between the disease-state simulator and its admin witness.",
         "Status": "next",
         "RuleCommitMsg": "",
-        "StateCommitMsg": "state: Loop 10 — progression machine bound into the state-machine admin",
+        "StateCommitMsg": "state: Loop 10 - progression machine bound into the state-machine admin",
         "SortOrder": 11,
-        "StatusBadge": "[NEXT]",
-        "StatusLine": " - state `state: Loop 10 — progression machine bound into the state-machine admin`",
-        "Name": "Loop 10 — Progression machine in the state-machine admin",
+        "Name": "Loop 10 - Progression machine in the state-machine admin",
         "RelativePath": "/admin/leopold-loops/loop-progression-admin",
         "Completedness": "next",
-        "IsInCurrentPlan": true
+        "IsInCurrentPlan": true,
+        "StatusBadge": "[NEXT]",
+        "StatusLine": " - state `state: Loop 10 - progression machine bound into the state-machine admin`"
       },
       {
         "LeopoldLoopId": "loop-serology-discovery",
         "LoopNumber": "11",
-        "Title": "Serology-signature discovery — emergent cluster, not a label",
-        "Goal": "Make the discovery claim falsifiable at corpus scale. The serology signature that PRECEDES nephritis (the rising-anti-dsDNA / falling-complement trajectory) should surface as a DERIVED corpus-level cluster on the cohort scatter — emergent from the population's raw serology series, not a label anyone assigned. Derive the cluster membership / signature-strength field in the hub so the discovery is reproducible and witnessed, then surface it on the cohort board. This is the literal answer to 'discovery is corpus-level.'",
+        "Title": "Serology-signature discovery - emergent cluster, not a label",
+        "Goal": "Make the discovery claim falsifiable at corpus scale. The serology signature that PRECEDES nephritis (the rising-anti-dsDNA / falling-complement trajectory) should surface as a DERIVED corpus-level cluster on the cohort scatter - emergent from the population's raw serology series, not a label anyone assigned. Derive the cluster membership / signature-strength field in the hub so the discovery is reproducible and witnessed, then surface it on the cohort board. This is the literal answer to 'discovery is corpus-level.'",
         "Status": "planned",
         "RuleCommitMsg": "",
         "StateCommitMsg": "",
         "SortOrder": 12,
-        "StatusBadge": "[PLANNED]",
-        "StatusLine": "",
-        "Name": "Loop 11 — Serology-signature discovery — emergent cluster, not a label",
+        "Name": "Loop 11 - Serology-signature discovery - emergent cluster, not a label",
         "RelativePath": "/admin/leopold-loops/loop-serology-discovery",
         "Completedness": "planned",
-        "IsInCurrentPlan": true
+        "IsInCurrentPlan": true,
+        "StatusBadge": "[PLANNED]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-llm-intake",
-        "LoopNumber": "6",
+        "LoopNumber": "12",
         "Title": "LLM intake clerk + synthetic lab",
-        "Goal": "Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.",
-        "Status": "next",
+        "Goal": "The trust-boundary payoff: wire the LLM to read a natural-language case and write ONLY leaf observations - intake facts + synthetic-but-transparent test results - with the three-panel witness (case text / extracted facts with per-fact provenance / derived diagnosis + gate trace). The LLM never computes a higher-order inference; every value it emits is an editable knob. Demotes the model to a replaceable, fully-overridable transcriber - the structural defeat of 'a hallucination laundered through a deterministic function.'",
+        "Status": "planned",
         "RuleCommitMsg": "rule (if any) for provenance fields",
-        "StateCommitMsg": "state: Loop 6 - LLM intake clerk, everything-is-a-knob",
-        "SortOrder": 7,
-        "StatusBadge": "[NEXT]",
-        "StatusLine": "",
-        "Name": "Loop 6 — LLM intake clerk + synthetic lab",
+        "StateCommitMsg": "state: Loop 12 - LLM intake clerk, everything-is-a-knob",
+        "SortOrder": 13,
+        "Name": "Loop 12 - LLM intake clerk + synthetic lab",
         "RelativePath": "/admin/leopold-loops/loop-llm-intake",
-        "Completedness": "next",
-        "IsInCurrentPlan": true
+        "Completedness": "planned",
+        "IsInCurrentPlan": true,
+        "StatusBadge": "[PLANNED]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-equity",
-        "LoopNumber": "8",
+        "LoopNumber": "13",
         "Title": "Cohort-level equity report",
-        "Goal": "Calibration & actionability rates by ancestry (ancestry-equity dashboard).",
+        "Goal": "Ancestry-equity made structural and corpus-level: calibration and actionability rates by ancestry (gates 2 and 4 of the keystone) as a derived dashboard, complementing the cohort discovery board. Equity is a checkable rate, not a promise.",
         "Status": "backlog",
         "RuleCommitMsg": "",
         "StateCommitMsg": "",
-        "SortOrder": 9,
-        "StatusBadge": "[BACKLOG]",
-        "StatusLine": "",
-        "Name": "Loop 8 — Cohort-level equity report",
+        "SortOrder": 14,
+        "Name": "Loop 13 - Cohort-level equity report",
         "RelativePath": "/admin/leopold-loops/loop-equity",
         "Completedness": "backlog",
-        "IsInCurrentPlan": true
+        "IsInCurrentPlan": true,
+        "StatusBadge": "[BACKLOG]",
+        "StatusLine": ""
       },
       {
         "LeopoldLoopId": "loop-prune-nonloadbearing",
         "LoopNumber": "14",
-        "Title": "Prune excess engineering — keep only what is load-bearing for the v2 audit response",
+        "Title": "Prune excess engineering - keep only what is load-bearing for the v2 audit response",
         "Goal": "A deliberate trimming pass (NOT a delete spree). Walk the model, the app, and the docs and find anything that was UPGRADED or SUPERSEDED and now lingers as a duplicate, plus any engineering that is not actually load-bearing toward the clearest pedagogical answer to the v1 audit. Candidates to scrutinise: superseded prediction types that don't earn their keep (e.g. a 4th parallel adverse-effect prediction once severity + treatment-response + treatment-line exist), redundant ontology slots that no longer carry a claim, and any view/endpoint with no consumer. Promotion rule inverted: if a thing is neither traceable to problem-to-solve.md nor load-bearing toward the keystone or the audit response, retire it. Goal: the clearest, most complete, DUPLICATE-FREE representation of the problem.",
         "Status": "backlog",
         "RuleCommitMsg": "",
         "StateCommitMsg": "",
         "SortOrder": 15,
-        "StatusBadge": "[BACKLOG]",
-        "StatusLine": "",
-        "Name": "Loop 14 — Prune excess engineering — keep only what is load-bearing for the v2 audit response",
+        "Name": "Loop 14 - Prune excess engineering - keep only what is load-bearing for the v2 audit response",
         "RelativePath": "/admin/leopold-loops/loop-prune-nonloadbearing",
-        "Completedness": "backlog",
-        "IsInCurrentPlan": true
-      },
-      {
-        "LeopoldLoopId": "loop-adverse",
-        "LoopNumber": "7",
-        "Title": "Adverse-effect prediction",
-        "Goal": "Wire adverse-effect prediction to observed treatment adverse-event rows.",
-        "Status": "backlog",
-        "RuleCommitMsg": "",
-        "StateCommitMsg": "",
-        "SortOrder": 8,
-        "Name": "Loop 7 — Adverse-effect prediction",
-        "RelativePath": "/admin/leopold-loops/loop-adverse",
         "Completedness": "backlog",
         "IsInCurrentPlan": true,
         "StatusBadge": "[BACKLOG]",
@@ -10960,6 +10333,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "RoutingAndNavigationId": "nav-intake",
+        "Name": "intake",
         "DisplayName": "Intake",
         "Route": "/intake",
         "Description": "Clinician intake workspace — bring a new patient case in.",
@@ -10968,18 +10342,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "intake",
         "NavLevel": "top",
         "RoleVisibility": "admin,intake-clinician",
+        "PrimaryTable": "Individuals",
+        "PrimaryView": "vw_individuals",
+        "IconHint": "clipboard-plus",
         "IsDynamic": false,
         "PinToTop": true,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "CRU",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "Individuals",
-        "PrimaryView": "vw_individuals",
-        "IconHint": "clipboard-plus",
-        "Name": "intake",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11001,11 +10372,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "intake",
         "RelativePath": "/admin/routing/nav-intake",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-intake-new",
+        "Name": "new-patient",
         "DisplayName": "New Patient",
         "Route": "/intake/new-patient/:caseId",
         "Description": "Open or start a case by slug, e.g. /intake/new-patient/reyes-ana.",
@@ -11014,18 +10388,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "intake.new-patient",
         "NavLevel": "sub",
         "RoleVisibility": "admin,intake-clinician",
+        "PrimaryTable": "Individuals",
+        "PrimaryView": "vw_individuals",
+        "IconHint": "user-plus",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "CRU",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "Individuals",
-        "PrimaryView": "vw_individuals",
-        "IconHint": "user-plus",
-        "Name": "new-patient",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11047,11 +10418,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "intake new patient",
         "RelativePath": "/admin/routing/nav-intake-new",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-intake-observations",
+        "Name": "observations",
         "DisplayName": "Observations",
         "Route": "/intake/new-patient/:caseId/observations",
         "Description": "Raw presenting facts: ancestry, age, federated node, cryptic-relatedness flag.",
@@ -11060,18 +10434,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "intake.new-patient.observations",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,intake-clinician",
+        "PrimaryTable": "Individuals",
+        "PrimaryView": "vw_individuals",
+        "IconHint": "stethoscope",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "CRU",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "Individuals",
-        "PrimaryView": "vw_individuals",
-        "IconHint": "stethoscope",
-        "Name": "observations",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11093,11 +10464,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "intake new patient observations",
         "RelativePath": "/admin/routing/nav-intake-observations",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-intake-variants",
+        "Name": "variants",
         "DisplayName": "Variants",
         "Route": "/intake/new-patient/:caseId/variants",
         "Description": "Genomic variant calls: allele frequency, allele-specific expression.",
@@ -11106,18 +10480,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "intake.new-patient.variants",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,intake-clinician",
+        "PrimaryTable": "GenomicVariants",
+        "PrimaryView": "vw_genomic_variants",
+        "IconHint": "dna",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "CRU",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "GenomicVariants",
-        "PrimaryView": "vw_genomic_variants",
-        "IconHint": "dna",
-        "Name": "variants",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11139,11 +10510,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "intake new patient variants",
         "RelativePath": "/admin/routing/nav-intake-variants",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-intake-assays",
+        "Name": "assays",
         "DisplayName": "Assays",
         "Route": "/intake/new-patient/:caseId/assays",
         "Description": "Omics assays per modality/tissue: measurement error, cell-state effects.",
@@ -11152,18 +10526,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "intake.new-patient.assays",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,intake-clinician",
+        "PrimaryTable": "OmicsAssays",
+        "PrimaryView": "vw_omics_assays",
+        "IconHint": "flask-conical",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "CRU",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "OmicsAssays",
-        "PrimaryView": "vw_omics_assays",
-        "IconHint": "flask-conical",
-        "Name": "assays",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11185,11 +10556,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "intake new patient assays",
         "RelativePath": "/admin/routing/nav-intake-assays",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-intake-submit",
+        "Name": "submit-case",
         "DisplayName": "Submit Case",
         "Route": "/intake/new-patient/:caseId/submit",
         "Description": "Hand the assembled raw facts to the deterministic inference graph.",
@@ -11198,18 +10572,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "intake.new-patient.submit",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,intake-clinician",
+        "PrimaryTable": null,
+        "PrimaryView": null,
+        "IconHint": "send",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "RU",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "IconHint": "send",
-        "Name": "submit-case",
-        "PrimaryTable": null,
-        "PrimaryView": null,
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11231,11 +10602,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "intake new patient submit",
         "RelativePath": "/admin/routing/nav-intake-submit",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis",
+        "Name": "diagnosis",
         "DisplayName": "Diagnosis",
         "Route": "/diagnosis",
         "Description": "Diagnosing doctor workspace — walk a case to its keystone.",
@@ -11244,18 +10618,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis",
         "NavLevel": "top",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "brain-circuit",
         "IsDynamic": false,
         "PinToTop": true,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "IndividualPredictions",
-        "PrimaryView": "vw_individual_predictions",
-        "IconHint": "brain-circuit",
-        "Name": "diagnosis",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11277,11 +10648,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis",
         "RelativePath": "/admin/routing/nav-diagnosis",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-case",
+        "Name": "case",
         "DisplayName": "Case",
         "Route": "/diagnosis/case/:predictionId",
         "Description": "One case's diagnostic walk, anchored on its lifecycle state.",
@@ -11290,18 +10664,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case",
         "NavLevel": "sub",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "folder-open",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "IndividualPredictions",
-        "PrimaryView": "vw_individual_predictions",
-        "IconHint": "folder-open",
-        "Name": "case",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11323,11 +10694,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case",
         "RelativePath": "/admin/routing/nav-diagnosis-case",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-evidence",
+        "Name": "evidence",
         "DisplayName": "Evidence",
         "Route": "/diagnosis/case/:predictionId/evidence",
         "Description": "L1 evidence atoms: effect size / SE / ZStat, confound controls.",
@@ -11336,18 +10710,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.evidence",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "EvidenceItems",
+        "PrimaryView": "vw_evidence_items",
+        "IconHint": "microscope",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "EvidenceItems",
-        "PrimaryView": "vw_evidence_items",
-        "IconHint": "microscope",
-        "Name": "evidence",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11369,11 +10740,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case evidence",
         "RelativePath": "/admin/routing/nav-diagnosis-evidence",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-mechanism",
+        "Name": "mechanism",
         "DisplayName": "Mechanism",
         "Route": "/diagnosis/case/:predictionId/mechanism",
         "Description": "L2/L3 mechanism aggregations + IsCausalArchitectureNode verdict.",
@@ -11382,18 +10756,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.mechanism",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "CausalMechanisms",
+        "PrimaryView": "vw_causal_mechanisms",
+        "IconHint": "git-branch",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "CausalMechanisms",
-        "PrimaryView": "vw_causal_mechanisms",
-        "IconHint": "git-branch",
-        "Name": "mechanism",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11415,11 +10786,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case mechanism",
         "RelativePath": "/admin/routing/nav-diagnosis-mechanism",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-replication",
+        "Name": "replication",
         "DisplayName": "Replication",
         "Route": "/diagnosis/case/:predictionId/replication",
         "Description": "Cross-cohort / cross-ancestry replication — the transport atoms.",
@@ -11428,18 +10802,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.replication",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "CohortReplications",
+        "PrimaryView": "vw_cohort_replications",
+        "IconHint": "copy-check",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "CohortReplications",
-        "PrimaryView": "vw_cohort_replications",
-        "IconHint": "copy-check",
-        "Name": "replication",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11461,11 +10832,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case replication",
         "RelativePath": "/admin/routing/nav-diagnosis-replication",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-controls",
+        "Name": "neg-controls",
         "DisplayName": "Neg Controls",
         "Route": "/diagnosis/case/:predictionId/controls",
         "Description": "Permutation / stratification controls — the anti-spurious atoms.",
@@ -11474,18 +10848,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.controls",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "NegativeControlTests",
+        "PrimaryView": "vw_negative_control_tests",
+        "IconHint": "shield",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "NegativeControlTests",
-        "PrimaryView": "vw_negative_control_tests",
-        "IconHint": "shield",
-        "Name": "neg-controls",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11507,11 +10878,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case controls",
         "RelativePath": "/admin/routing/nav-diagnosis-controls",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-calibration",
+        "Name": "calibration",
         "DisplayName": "Calibration",
         "Route": "/diagnosis/case/:predictionId/calibration",
         "Description": "Per-bin reliability coverage — the calibration atoms.",
@@ -11520,18 +10894,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.calibration",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "CalibrationBins",
+        "PrimaryView": "vw_calibration_bins",
+        "IconHint": "gauge",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "CalibrationBins",
-        "PrimaryView": "vw_calibration_bins",
-        "IconHint": "gauge",
-        "Name": "calibration",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11553,11 +10924,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case calibration",
         "RelativePath": "/admin/routing/nav-diagnosis-calibration",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-gates",
+        "Name": "gates",
         "DisplayName": "Gates",
         "Route": "/diagnosis/case/:predictionId/gates",
         "Description": "The four gates: confidence, falsifiability, transport, predicted value.",
@@ -11566,18 +10940,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.gates",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "door-open",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "IndividualPredictions",
-        "PrimaryView": "vw_individual_predictions",
-        "IconHint": "door-open",
-        "Name": "gates",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11599,11 +10970,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case gates",
         "RelativePath": "/admin/routing/nav-diagnosis-gates",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-keystone",
+        "Name": "keystone",
         "DisplayName": "Keystone",
         "Route": "/diagnosis/case/:predictionId/keystone",
         "Description": "IsClinicallyActionable — the derived conclusion.",
@@ -11612,18 +10986,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.keystone",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "key-round",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "IndividualPredictions",
-        "PrimaryView": "vw_individual_predictions",
-        "IconHint": "key-round",
-        "Name": "keystone",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11645,11 +11016,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case keystone",
         "RelativePath": "/admin/routing/nav-diagnosis-keystone",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-diagnosis-report",
+        "Name": "report",
         "DisplayName": "Report",
         "Route": "/diagnosis/case/:predictionId/report",
         "Description": "The derived, total-coverage diagnosis report: every patient word and every linked DAG node rendered as predicate-gated structured natural language, assembled from this case's narrative fragment fields. Markdown now -> diagnosis.pdf once green.",
@@ -11658,18 +11032,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "diagnosis.case.report",
         "NavLevel": "leaf",
         "RoleVisibility": "admin,diagnosing-doctor",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "file-text",
         "IsDynamic": true,
         "PinToTop": false,
         "AdminCRUD": "R",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "R",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "IndividualPredictions",
-        "PrimaryView": "vw_individual_predictions",
-        "IconHint": "file-text",
-        "Name": "report",
         "AdminCanCreate": false,
         "AdminCanRead": true,
         "AdminCanUpdate": false,
@@ -11691,11 +11062,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "diagnosis case report",
         "RelativePath": "/admin/routing/nav-diagnosis-report",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-admin",
+        "Name": "admin",
         "DisplayName": "Admin",
         "Route": "/admin",
         "Description": "Model & platform administration.",
@@ -11704,18 +11078,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "admin",
         "NavLevel": "top",
         "RoleVisibility": "admin",
+        "PrimaryTable": null,
+        "PrimaryView": null,
+        "IconHint": "settings",
         "IsDynamic": false,
         "PinToTop": true,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "IconHint": "settings",
-        "Name": "admin",
-        "PrimaryTable": null,
-        "PrimaryView": null,
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11737,11 +11108,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "admin",
         "RelativePath": "/admin/routing/nav-admin",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-admin-harness",
+        "Name": "harness",
         "DisplayName": "Harness",
         "Route": "/admin/harness",
         "Description": "The witnessed inference harness (home screen).",
@@ -11750,18 +11124,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "admin.harness",
         "NavLevel": "sub",
         "RoleVisibility": "admin",
+        "PrimaryTable": null,
+        "PrimaryView": null,
+        "IconHint": "list-checks",
         "IsDynamic": false,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "IconHint": "list-checks",
-        "Name": "harness",
-        "PrimaryTable": null,
-        "PrimaryView": null,
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11783,11 +11154,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "admin harness",
         "RelativePath": "/admin/routing/nav-admin-harness",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-admin-routing",
+        "Name": "routing",
         "DisplayName": "Routing",
         "Route": "/admin/routing",
         "Description": "Edit role-based navigation.",
@@ -11796,18 +11170,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "admin.routing",
         "NavLevel": "sub",
         "RoleVisibility": "admin",
+        "PrimaryTable": "RoutingAndNavigation",
+        "PrimaryView": "vw_routing_and_navigation",
+        "IconHint": "route",
         "IsDynamic": false,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "RoutingAndNavigation",
-        "PrimaryView": "vw_routing_and_navigation",
-        "IconHint": "route",
-        "Name": "routing",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11829,11 +11200,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "admin routing",
         "RelativePath": "/admin/routing/nav-admin-routing",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-admin-state-machine",
+        "Name": "state-machine",
         "DisplayName": "State Machine",
         "Route": "/admin/state-machine",
         "Description": "View/edit the diagnosis lifecycle.",
@@ -11842,18 +11216,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "admin.state-machine",
         "NavLevel": "sub",
         "RoleVisibility": "admin",
+        "PrimaryTable": "StateMachines",
+        "PrimaryView": "vw_state_machines",
+        "IconHint": "workflow",
         "IsDynamic": false,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "StateMachines",
-        "PrimaryView": "vw_state_machines",
-        "IconHint": "workflow",
-        "Name": "state-machine",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11875,11 +11246,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "admin state machine",
         "RelativePath": "/admin/routing/nav-admin-state-machine",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-admin-explainer",
+        "Name": "explainer-dag",
         "DisplayName": "Explainer DAG",
         "Route": "/admin/explainer",
         "Description": "Click any derived field to see how it was computed.",
@@ -11888,18 +11262,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "admin.explainer",
         "NavLevel": "sub",
         "RoleVisibility": "admin",
+        "PrimaryTable": null,
+        "PrimaryView": null,
+        "IconHint": "share-2",
         "IsDynamic": false,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "IconHint": "share-2",
-        "Name": "explainer-dag",
-        "PrimaryTable": null,
-        "PrimaryView": null,
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -11921,57 +11292,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "admin explainer",
         "RelativePath": "/admin/routing/nav-admin-explainer",
         "CreatedAt": null,
-        "ModifiedAt": null,
-        "ModifiedByModel": null
-      },
-      {
-        "RoutingAndNavigationId": "nav-admin-cohort",
-        "DisplayName": "Cohort discovery",
-        "Route": "/cohort",
-        "Description": "All 7 cases and their keystone verdicts.",
-        "SortOrder": 5,
-        "ParentRouteKey": "",
-        "RouteKey": "admin.cohort",
-        "NavLevel": "top",
-        "RoleVisibility": "admin,diagnosing-doctor,intake-clinician",
-        "IsDynamic": false,
-        "PinToTop": false,
-        "AdminCRUD": "CRUD",
-        "IntakeClinicianCRUD": "",
-        "DiagnosingDoctorCRUD": "",
-        "ExternalLlmCRUD": "",
         "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "IndividualPredictions",
-        "PrimaryView": "vw_individual_predictions",
-        "IconHint": "users",
-        "Name": "cohort-discovery",
-        "AdminCanCreate": true,
-        "AdminCanRead": true,
-        "AdminCanUpdate": true,
-        "AdminCanDelete": true,
-        "IntakeClinicianCanCreate": null,
-        "IntakeClinicianCanRead": null,
-        "IntakeClinicianCanUpdate": null,
-        "IntakeClinicianCanDelete": null,
-        "DiagnosingDoctorCanCreate": null,
-        "DiagnosingDoctorCanRead": null,
-        "DiagnosingDoctorCanUpdate": null,
-        "DiagnosingDoctorCanDelete": null,
-        "ExternalLlmCanCreate": null,
-        "ExternalLlmCanRead": null,
-        "ExternalLlmCanUpdate": null,
-        "ExternalLlmCanDelete": null,
-        "Depth": 0,
-        "FullPath": "/cohort",
-        "HandlerBaseName": "admin cohort",
-        "RelativePath": "/admin/routing/nav-admin-cohort",
-        "CreatedAt": null,
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "RoutingAndNavigationId": "nav-admin-leopold",
+        "Name": "leopold-loops",
         "DisplayName": "Leopold Loops",
         "Route": "/admin/leopold",
         "Description": "Edit the Leopold loop plan rows and regenerate LEOPOLD_LOOPING_PLAN.md.",
@@ -11980,18 +11308,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RouteKey": "admin.leopold",
         "NavLevel": "sub",
         "RoleVisibility": "admin",
+        "PrimaryTable": "LeopoldLoops",
+        "PrimaryView": "vw_leopold_loops",
+        "IconHint": "repeat",
         "IsDynamic": false,
         "PinToTop": false,
         "AdminCRUD": "CRUD",
         "IntakeClinicianCRUD": "",
         "DiagnosingDoctorCRUD": "",
         "ExternalLlmCRUD": "",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "PrimaryTable": "LeopoldLoops",
-        "PrimaryView": "vw_leopold_loops",
-        "IconHint": "repeat",
-        "Name": "leopold-loops",
         "AdminCanCreate": true,
         "AdminCanRead": true,
         "AdminCanUpdate": true,
@@ -12013,7 +11338,55 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "HandlerBaseName": "admin leopold",
         "RelativePath": "/admin/routing/nav-admin-leopold",
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
+        "ModifiedByModel": null
+      },
+      {
+        "RoutingAndNavigationId": "nav-admin-cohort",
+        "Name": "cohort-discovery",
+        "DisplayName": "Cohort discovery",
+        "Route": "/cohort",
+        "Description": "All 7 cases and their keystone verdicts.",
+        "SortOrder": 5,
+        "ParentRouteKey": "",
+        "RouteKey": "admin.cohort",
+        "NavLevel": "top",
+        "RoleVisibility": "admin,diagnosing-doctor,intake-clinician",
+        "PrimaryTable": "IndividualPredictions",
+        "PrimaryView": "vw_individual_predictions",
+        "IconHint": "users",
+        "IsDynamic": false,
+        "PinToTop": false,
+        "AdminCRUD": "CRUD",
+        "IntakeClinicianCRUD": "",
+        "DiagnosingDoctorCRUD": "",
+        "ExternalLlmCRUD": "",
+        "AdminCanCreate": true,
+        "AdminCanRead": true,
+        "AdminCanUpdate": true,
+        "AdminCanDelete": true,
+        "IntakeClinicianCanCreate": null,
+        "IntakeClinicianCanRead": null,
+        "IntakeClinicianCanUpdate": null,
+        "IntakeClinicianCanDelete": null,
+        "DiagnosingDoctorCanCreate": null,
+        "DiagnosingDoctorCanRead": null,
+        "DiagnosingDoctorCanUpdate": null,
+        "DiagnosingDoctorCanDelete": null,
+        "ExternalLlmCanCreate": null,
+        "ExternalLlmCanRead": null,
+        "ExternalLlmCanUpdate": null,
+        "ExternalLlmCanDelete": null,
+        "Depth": 0,
+        "FullPath": "/cohort",
+        "HandlerBaseName": "admin cohort",
+        "RelativePath": "/admin/routing/nav-admin-cohort",
+        "CreatedAt": null,
+        "CreatedBy": "build-seed",
+        "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       }
     ]
@@ -12160,21 +11533,21 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "StateMachineId": "diagnosis-lifecycle",
+        "Name": "diagnosis-lifecycle",
+        "RelativePath": "/admin/state-machine/diagnosis-lifecycle",
         "Title": "Diagnosis Lifecycle",
         "Description": "Walks each case from Intake through the four gates to a terminal Actionable / NotActionable verdict. Each patient branches at its single deciding gate. Current state is DERIVED (IndividualPredictions.LifecycleStateKey); the transition log is the witnessed history.",
         "SubjectTableName": "IndividualPredictions",
         "SubjectStateColumn": "LifecycleStateKey",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle",
-        "RelativePath": "/admin/state-machine/diagnosis-lifecycle",
         "MachineStates": null,
         "StateTransitionRules": null,
         "StateTransitions": null,
         "StateCount": 7,
         "TransitionRuleCount": 9,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
@@ -12185,16 +11558,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Description": "Disease-state simulator: a patient's lupus-nephritis course derived from raw serology trajectories. Presymptomatic -> SerologicActive -> EarlyNephritis -> RenalFlareRisk -> BiopsyIndicated (+ Quiescent). Current state is the derived Individuals.NephritisProgressionStateKey; never hand-set.",
         "SubjectTableName": "Individuals",
         "SubjectStateColumn": "NephritisProgressionStateKey",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "MachineStates": null,
         "StateTransitionRules": null,
         "StateTransitions": null,
         "StateCount": 6,
-        "TransitionRuleCount": 5
+        "TransitionRuleCount": 5,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -12331,128 +11704,128 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "MachineStateId": "diagnosis-lifecycle--intake",
+        "Name": "diagnosis-lifecycle--intake",
+        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--intake",
         "StateMachine": "diagnosis-lifecycle",
         "StateKey": "Intake",
         "Title": "Intake",
         "OrderIndex": 1,
         "IsInitial": true,
         "IsTerminal": false,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--intake",
-        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--intake",
         "FromTransitionRules": null,
         "ToTransitionRules": null,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "MachineStateId": "diagnosis-lifecycle--evidenceassessed",
+        "Name": "diagnosis-lifecycle--evidenceassessed",
+        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "StateKey": "EvidenceAssessed",
         "Title": "EvidenceAssessed",
         "OrderIndex": 2,
         "IsInitial": false,
         "IsTerminal": false,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--evidenceassessed",
-        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--evidenceassessed",
         "FromTransitionRules": null,
         "ToTransitionRules": null,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "MachineStateId": "diagnosis-lifecycle--mechanismconfirmed",
+        "Name": "diagnosis-lifecycle--mechanismconfirmed",
+        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--mechanismconfirmed",
         "StateMachine": "diagnosis-lifecycle",
         "StateKey": "MechanismConfirmed",
         "Title": "MechanismConfirmed",
         "OrderIndex": 3,
         "IsInitial": false,
         "IsTerminal": false,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--mechanismconfirmed",
-        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--mechanismconfirmed",
         "FromTransitionRules": null,
         "ToTransitionRules": null,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "MachineStateId": "diagnosis-lifecycle--calibrationchecked",
+        "Name": "diagnosis-lifecycle--calibrationchecked",
+        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--calibrationchecked",
         "StateMachine": "diagnosis-lifecycle",
         "StateKey": "CalibrationChecked",
         "Title": "CalibrationChecked",
         "OrderIndex": 4,
         "IsInitial": false,
         "IsTerminal": false,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--calibrationchecked",
-        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--calibrationchecked",
         "FromTransitionRules": null,
         "ToTransitionRules": null,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "MachineStateId": "diagnosis-lifecycle--transportchecked",
+        "Name": "diagnosis-lifecycle--transportchecked",
+        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--transportchecked",
         "StateMachine": "diagnosis-lifecycle",
         "StateKey": "TransportChecked",
         "Title": "TransportChecked",
         "OrderIndex": 5,
         "IsInitial": false,
         "IsTerminal": false,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--transportchecked",
-        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--transportchecked",
         "FromTransitionRules": null,
         "ToTransitionRules": null,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "MachineStateId": "diagnosis-lifecycle--actionable",
+        "Name": "diagnosis-lifecycle--actionable",
+        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--actionable",
         "StateMachine": "diagnosis-lifecycle",
         "StateKey": "Actionable",
         "Title": "Actionable",
         "OrderIndex": 6,
         "IsInitial": false,
         "IsTerminal": true,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--actionable",
-        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--actionable",
         "FromTransitionRules": null,
         "ToTransitionRules": null,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "MachineStateId": "diagnosis-lifecycle--notactionable",
+        "Name": "diagnosis-lifecycle--notactionable",
+        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "StateKey": "NotActionable",
         "Title": "NotActionable",
         "OrderIndex": 7,
         "IsInitial": false,
         "IsTerminal": true,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--notactionable",
-        "RelativePath": "/admin/state-machine/states/diagnosis-lifecycle--notactionable",
         "FromTransitionRules": null,
         "ToTransitionRules": null,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
@@ -12465,13 +11838,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "OrderIndex": 0,
         "IsInitial": false,
         "IsTerminal": true,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "MachineStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
@@ -12483,13 +11856,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "OrderIndex": 1,
         "IsInitial": true,
         "IsTerminal": false,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "MachineStateId": "lupus-nephritis-progression--serologicactive",
@@ -12501,13 +11874,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "OrderIndex": 2,
         "IsInitial": false,
         "IsTerminal": false,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "MachineStateId": "lupus-nephritis-progression--earlynephritis",
@@ -12519,13 +11892,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "OrderIndex": 3,
         "IsInitial": false,
         "IsTerminal": false,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "MachineStateId": "lupus-nephritis-progression--renalflarerisk",
@@ -12537,13 +11910,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "OrderIndex": 4,
         "IsInitial": false,
         "IsTerminal": false,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "MachineStateId": "lupus-nephritis-progression--biopsyindicated",
@@ -12555,13 +11928,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "OrderIndex": 5,
         "IsInitial": false,
         "IsTerminal": true,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -12721,182 +12094,182 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--intake->evidenceassessed",
+        "Name": "diagnosis-lifecycle--intake->evidenceassessed",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--intake->evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--intake",
         "ToState": "diagnosis-lifecycle--evidenceassessed",
         "GuardDescription": "Intake facts transcribed; evidence atoms computed.",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--intake->evidenceassessed",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--intake->evidenceassessed",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "Intake",
         "ToStateKey": "EvidenceAssessed",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--evidenceassessed->mechanismconfirmed",
+        "Name": "diagnosis-lifecycle--evidenceassessed->mechanismconfirmed",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--evidenceassessed->mechanismconfirmed",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--evidenceassessed",
         "ToState": "diagnosis-lifecycle--mechanismconfirmed",
         "GuardDescription": "IsCausalArchitectureNode TRUE (replicated, controls survive, >=2 modalities).",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--evidenceassessed->mechanismconfirmed",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--evidenceassessed->mechanismconfirmed",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "EvidenceAssessed",
         "ToStateKey": "MechanismConfirmed",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--evidenceassessed->notactionable",
+        "Name": "diagnosis-lifecycle--evidenceassessed->notactionable",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--evidenceassessed->notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--evidenceassessed",
         "ToState": "diagnosis-lifecycle--notactionable",
         "GuardDescription": "Spurious mechanism OR no falsifiability (0 intervention targets).",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--evidenceassessed->notactionable",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--evidenceassessed->notactionable",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "EvidenceAssessed",
         "ToStateKey": "NotActionable",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--mechanismconfirmed->calibrationchecked",
+        "Name": "diagnosis-lifecycle--mechanismconfirmed->calibrationchecked",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--mechanismconfirmed->calibrationchecked",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--mechanismconfirmed",
         "ToState": "diagnosis-lifecycle--calibrationchecked",
         "GuardDescription": "RestsOnConfirmedMechanism and no cryptic leakage.",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--mechanismconfirmed->calibrationchecked",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--mechanismconfirmed->calibrationchecked",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "MechanismConfirmed",
         "ToStateKey": "CalibrationChecked",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--mechanismconfirmed->notactionable",
+        "Name": "diagnosis-lifecycle--mechanismconfirmed->notactionable",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--mechanismconfirmed->notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--mechanismconfirmed",
         "ToState": "diagnosis-lifecycle--notactionable",
         "GuardDescription": "Cryptic-relatedness leakage ⇒ HasSpuriousCorrelationFlag.",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--mechanismconfirmed->notactionable",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--mechanismconfirmed->notactionable",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "MechanismConfirmed",
         "ToStateKey": "NotActionable",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--calibrationchecked->transportchecked",
+        "Name": "diagnosis-lifecycle--calibrationchecked->transportchecked",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--calibrationchecked->transportchecked",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--calibrationchecked",
         "ToState": "diagnosis-lifecycle--transportchecked",
         "GuardDescription": "CalibratedUncertainty >= 0.7.",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--calibrationchecked->transportchecked",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--calibrationchecked->transportchecked",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "CalibrationChecked",
         "ToStateKey": "TransportChecked",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--calibrationchecked->notactionable",
+        "Name": "diagnosis-lifecycle--calibrationchecked->notactionable",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--calibrationchecked->notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--calibrationchecked",
         "ToState": "diagnosis-lifecycle--notactionable",
         "GuardDescription": "CalibratedUncertainty < 0.7 (calibration gate fails).",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--calibrationchecked->notactionable",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--calibrationchecked->notactionable",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "CalibrationChecked",
         "ToStateKey": "NotActionable",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--transportchecked->actionable",
+        "Name": "diagnosis-lifecycle--transportchecked->actionable",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--transportchecked->actionable",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--transportchecked",
         "ToState": "diagnosis-lifecycle--actionable",
         "GuardDescription": "IsAncestryTransportSafe AND keystone holds.",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--transportchecked->actionable",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--transportchecked->actionable",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "TransportChecked",
         "ToStateKey": "Actionable",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionRuleId": "diagnosis-lifecycle--transportchecked->notactionable",
+        "Name": "diagnosis-lifecycle--transportchecked->notactionable",
+        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--transportchecked->notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--transportchecked",
         "ToState": "diagnosis-lifecycle--notactionable",
         "GuardDescription": "NOT IsAncestryTransportSafe (ancestry-transport gate fails).",
-        "TriggeredByRole": "system",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "diagnosis-lifecycle--transportchecked->notactionable",
-        "RelativePath": "/admin/state-machine/rules/diagnosis-lifecycle--transportchecked->notactionable",
         "RuleRefs": null,
         "TriggerEndpoint": null,
+        "TriggeredByRole": "system",
         "FromStateKey": "TransportChecked",
         "ToStateKey": "NotActionable",
         "IsForwardEdge": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
@@ -12910,14 +12283,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleRefs": "SERO-ACTIVE",
         "TriggerEndpoint": "/api/individuals/:id/serology",
         "TriggeredByRole": "system",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromStateKey": "PresymptomaticAutoimmunity",
         "ToStateKey": "SerologicActive",
-        "IsForwardEdge": true
+        "IsForwardEdge": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionRuleId": "lupus-nephritis-progression--serologicactive->earlynephritis",
@@ -12930,14 +12303,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleRefs": "NEPH-ONSET",
         "TriggerEndpoint": "/api/individuals/:id/serology",
         "TriggeredByRole": "system",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromStateKey": "SerologicActive",
         "ToStateKey": "EarlyNephritis",
-        "IsForwardEdge": true
+        "IsForwardEdge": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionRuleId": "lupus-nephritis-progression--earlynephritis->renalflarerisk",
@@ -12950,14 +12323,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleRefs": "FLARE-RISK",
         "TriggerEndpoint": "/api/individuals/:id/serology",
         "TriggeredByRole": "system",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromStateKey": "EarlyNephritis",
         "ToStateKey": "RenalFlareRisk",
-        "IsForwardEdge": true
+        "IsForwardEdge": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionRuleId": "lupus-nephritis-progression--renalflarerisk->biopsyindicated",
@@ -12970,14 +12343,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleRefs": "BIOPSY-IND",
         "TriggerEndpoint": "/api/individuals/:id/serology",
         "TriggeredByRole": "system",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromStateKey": "RenalFlareRisk",
         "ToStateKey": "BiopsyIndicated",
-        "IsForwardEdge": true
+        "IsForwardEdge": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionRuleId": "lupus-nephritis-progression--serologicactive->quiescent",
@@ -12990,14 +12363,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RuleRefs": "REMISSION",
         "TriggerEndpoint": "/api/individuals/:id/serology",
         "TriggeredByRole": "system",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "FromStateKey": "SerologicActive",
         "ToStateKey": "Quiescent",
-        "IsForwardEdge": true
+        "IsForwardEdge": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -13134,6 +12507,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "StateTransitionId": "st-a-02-intake-to-evidenceassessed",
+        "Name": "st-a-02-intake-to-evidenceassessed",
+        "RelativePath": "/admin/state-machine/transitions/st-a-02-intake-to-evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -13142,17 +12517,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Intake → EvidenceAssessed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-a-02-intake-to-evidenceassessed",
-        "RelativePath": "/admin/state-machine/transitions/st-a-02-intake-to-evidenceassessed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-a-03-evidenceassessed-to-mechanismconfirmed",
+        "Name": "st-a-03-evidenceassessed-to-mechanismconfirmed",
+        "RelativePath": "/admin/state-machine/transitions/st-a-03-evidenceassessed-to-mechanismconfirmed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -13161,17 +12536,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "EvidenceAssessed → MechanismConfirmed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-a-03-evidenceassessed-to-mechanismconfirmed",
-        "RelativePath": "/admin/state-machine/transitions/st-a-03-evidenceassessed-to-mechanismconfirmed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-a-04-mechanismconfirmed-to-calibrationchecked",
+        "Name": "st-a-04-mechanismconfirmed-to-calibrationchecked",
+        "RelativePath": "/admin/state-machine/transitions/st-a-04-mechanismconfirmed-to-calibrationchecked",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -13180,17 +12555,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "MechanismConfirmed → CalibrationChecked.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-a-04-mechanismconfirmed-to-calibrationchecked",
-        "RelativePath": "/admin/state-machine/transitions/st-a-04-mechanismconfirmed-to-calibrationchecked",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-a-05-calibrationchecked-to-transportchecked",
+        "Name": "st-a-05-calibrationchecked-to-transportchecked",
+        "RelativePath": "/admin/state-machine/transitions/st-a-05-calibrationchecked-to-transportchecked",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -13199,17 +12574,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "CalibrationChecked → TransportChecked.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-a-05-calibrationchecked-to-transportchecked",
-        "RelativePath": "/admin/state-machine/transitions/st-a-05-calibrationchecked-to-transportchecked",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-a-06-transportchecked-to-actionable",
+        "Name": "st-a-06-transportchecked-to-actionable",
+        "RelativePath": "/admin/state-machine/transitions/st-a-06-transportchecked-to-actionable",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -13218,17 +12593,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-06T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "all gates pass.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-a-06-transportchecked-to-actionable",
-        "RelativePath": "/admin/state-machine/transitions/st-a-06-transportchecked-to-actionable",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-b-02-intake-to-evidenceassessed",
+        "Name": "st-b-02-intake-to-evidenceassessed",
+        "RelativePath": "/admin/state-machine/transitions/st-b-02-intake-to-evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -13237,17 +12612,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Intake → EvidenceAssessed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-b-02-intake-to-evidenceassessed",
-        "RelativePath": "/admin/state-machine/transitions/st-b-02-intake-to-evidenceassessed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-b-03-evidenceassessed-to-mechanismconfirmed",
+        "Name": "st-b-03-evidenceassessed-to-mechanismconfirmed",
+        "RelativePath": "/admin/state-machine/transitions/st-b-03-evidenceassessed-to-mechanismconfirmed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -13256,17 +12631,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "EvidenceAssessed → MechanismConfirmed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-b-03-evidenceassessed-to-mechanismconfirmed",
-        "RelativePath": "/admin/state-machine/transitions/st-b-03-evidenceassessed-to-mechanismconfirmed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-b-04-mechanismconfirmed-to-calibrationchecked",
+        "Name": "st-b-04-mechanismconfirmed-to-calibrationchecked",
+        "RelativePath": "/admin/state-machine/transitions/st-b-04-mechanismconfirmed-to-calibrationchecked",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -13275,17 +12650,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "MechanismConfirmed → CalibrationChecked.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-b-04-mechanismconfirmed-to-calibrationchecked",
-        "RelativePath": "/admin/state-machine/transitions/st-b-04-mechanismconfirmed-to-calibrationchecked",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-b-05-calibrationchecked-to-notactionable",
+        "Name": "st-b-05-calibrationchecked-to-notactionable",
+        "RelativePath": "/admin/state-machine/transitions/st-b-05-calibrationchecked-to-notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -13294,17 +12669,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "calibration gate fails.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-b-05-calibrationchecked-to-notactionable",
-        "RelativePath": "/admin/state-machine/transitions/st-b-05-calibrationchecked-to-notactionable",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-c-02-intake-to-evidenceassessed",
+        "Name": "st-c-02-intake-to-evidenceassessed",
+        "RelativePath": "/admin/state-machine/transitions/st-c-02-intake-to-evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-c",
@@ -13313,17 +12688,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Intake → EvidenceAssessed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-c-02-intake-to-evidenceassessed",
-        "RelativePath": "/admin/state-machine/transitions/st-c-02-intake-to-evidenceassessed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-c-03-evidenceassessed-to-notactionable",
+        "Name": "st-c-03-evidenceassessed-to-notactionable",
+        "RelativePath": "/admin/state-machine/transitions/st-c-03-evidenceassessed-to-notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-c",
@@ -13332,17 +12707,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "spurious mechanism.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-c-03-evidenceassessed-to-notactionable",
-        "RelativePath": "/admin/state-machine/transitions/st-c-03-evidenceassessed-to-notactionable",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-d-02-intake-to-evidenceassessed",
+        "Name": "st-d-02-intake-to-evidenceassessed",
+        "RelativePath": "/admin/state-machine/transitions/st-d-02-intake-to-evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-d",
@@ -13351,17 +12726,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Intake → EvidenceAssessed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-d-02-intake-to-evidenceassessed",
-        "RelativePath": "/admin/state-machine/transitions/st-d-02-intake-to-evidenceassessed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-d-03-evidenceassessed-to-mechanismconfirmed",
+        "Name": "st-d-03-evidenceassessed-to-mechanismconfirmed",
+        "RelativePath": "/admin/state-machine/transitions/st-d-03-evidenceassessed-to-mechanismconfirmed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-d",
@@ -13370,17 +12745,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "EvidenceAssessed → MechanismConfirmed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-d-03-evidenceassessed-to-mechanismconfirmed",
-        "RelativePath": "/admin/state-machine/transitions/st-d-03-evidenceassessed-to-mechanismconfirmed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-d-04-mechanismconfirmed-to-notactionable",
+        "Name": "st-d-04-mechanismconfirmed-to-notactionable",
+        "RelativePath": "/admin/state-machine/transitions/st-d-04-mechanismconfirmed-to-notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-d",
@@ -13389,17 +12764,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "cryptic relatedness.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-d-04-mechanismconfirmed-to-notactionable",
-        "RelativePath": "/admin/state-machine/transitions/st-d-04-mechanismconfirmed-to-notactionable",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-e-02-intake-to-evidenceassessed",
+        "Name": "st-e-02-intake-to-evidenceassessed",
+        "RelativePath": "/admin/state-machine/transitions/st-e-02-intake-to-evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-e",
@@ -13408,17 +12783,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Intake → EvidenceAssessed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-e-02-intake-to-evidenceassessed",
-        "RelativePath": "/admin/state-machine/transitions/st-e-02-intake-to-evidenceassessed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-e-03-evidenceassessed-to-notactionable",
+        "Name": "st-e-03-evidenceassessed-to-notactionable",
+        "RelativePath": "/admin/state-machine/transitions/st-e-03-evidenceassessed-to-notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-e",
@@ -13427,17 +12802,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "falsifiability gate fails.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-e-03-evidenceassessed-to-notactionable",
-        "RelativePath": "/admin/state-machine/transitions/st-e-03-evidenceassessed-to-notactionable",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-f-02-intake-to-evidenceassessed",
+        "Name": "st-f-02-intake-to-evidenceassessed",
+        "RelativePath": "/admin/state-machine/transitions/st-f-02-intake-to-evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -13446,17 +12821,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Intake → EvidenceAssessed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-f-02-intake-to-evidenceassessed",
-        "RelativePath": "/admin/state-machine/transitions/st-f-02-intake-to-evidenceassessed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-f-03-evidenceassessed-to-mechanismconfirmed",
+        "Name": "st-f-03-evidenceassessed-to-mechanismconfirmed",
+        "RelativePath": "/admin/state-machine/transitions/st-f-03-evidenceassessed-to-mechanismconfirmed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -13465,17 +12840,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "EvidenceAssessed → MechanismConfirmed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-f-03-evidenceassessed-to-mechanismconfirmed",
-        "RelativePath": "/admin/state-machine/transitions/st-f-03-evidenceassessed-to-mechanismconfirmed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-f-04-mechanismconfirmed-to-calibrationchecked",
+        "Name": "st-f-04-mechanismconfirmed-to-calibrationchecked",
+        "RelativePath": "/admin/state-machine/transitions/st-f-04-mechanismconfirmed-to-calibrationchecked",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -13484,17 +12859,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "MechanismConfirmed → CalibrationChecked.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-f-04-mechanismconfirmed-to-calibrationchecked",
-        "RelativePath": "/admin/state-machine/transitions/st-f-04-mechanismconfirmed-to-calibrationchecked",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-f-05-calibrationchecked-to-transportchecked",
+        "Name": "st-f-05-calibrationchecked-to-transportchecked",
+        "RelativePath": "/admin/state-machine/transitions/st-f-05-calibrationchecked-to-transportchecked",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -13503,17 +12878,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "CalibrationChecked → TransportChecked.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-f-05-calibrationchecked-to-transportchecked",
-        "RelativePath": "/admin/state-machine/transitions/st-f-05-calibrationchecked-to-transportchecked",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-f-06-transportchecked-to-notactionable",
+        "Name": "st-f-06-transportchecked-to-notactionable",
+        "RelativePath": "/admin/state-machine/transitions/st-f-06-transportchecked-to-notactionable",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -13522,17 +12897,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-06T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "ancestry-transport gate fails.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-f-06-transportchecked-to-notactionable",
-        "RelativePath": "/admin/state-machine/transitions/st-f-06-transportchecked-to-notactionable",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-g-02-intake-to-evidenceassessed",
+        "Name": "st-g-02-intake-to-evidenceassessed",
+        "RelativePath": "/admin/state-machine/transitions/st-g-02-intake-to-evidenceassessed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -13541,17 +12916,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Intake → EvidenceAssessed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-g-02-intake-to-evidenceassessed",
-        "RelativePath": "/admin/state-machine/transitions/st-g-02-intake-to-evidenceassessed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-g-03-evidenceassessed-to-mechanismconfirmed",
+        "Name": "st-g-03-evidenceassessed-to-mechanismconfirmed",
+        "RelativePath": "/admin/state-machine/transitions/st-g-03-evidenceassessed-to-mechanismconfirmed",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -13560,17 +12935,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "EvidenceAssessed → MechanismConfirmed.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-g-03-evidenceassessed-to-mechanismconfirmed",
-        "RelativePath": "/admin/state-machine/transitions/st-g-03-evidenceassessed-to-mechanismconfirmed",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-g-04-mechanismconfirmed-to-calibrationchecked",
+        "Name": "st-g-04-mechanismconfirmed-to-calibrationchecked",
+        "RelativePath": "/admin/state-machine/transitions/st-g-04-mechanismconfirmed-to-calibrationchecked",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -13579,17 +12954,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "MechanismConfirmed → CalibrationChecked.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-g-04-mechanismconfirmed-to-calibrationchecked",
-        "RelativePath": "/admin/state-machine/transitions/st-g-04-mechanismconfirmed-to-calibrationchecked",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-g-05-calibrationchecked-to-transportchecked",
+        "Name": "st-g-05-calibrationchecked-to-transportchecked",
+        "RelativePath": "/admin/state-machine/transitions/st-g-05-calibrationchecked-to-transportchecked",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -13598,17 +12973,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "CalibrationChecked → TransportChecked.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-g-05-calibrationchecked-to-transportchecked",
-        "RelativePath": "/admin/state-machine/transitions/st-g-05-calibrationchecked-to-transportchecked",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
         "StateTransitionId": "st-g-06-transportchecked-to-actionable",
+        "Name": "st-g-06-transportchecked-to-actionable",
+        "RelativePath": "/admin/state-machine/transitions/st-g-06-transportchecked-to-actionable",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -13617,13 +12992,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-06T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "transport passes — actionable despite holdout.",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "st-g-06-transportchecked-to-actionable",
-        "RelativePath": "/admin/state-machine/transitions/st-g-06-transportchecked-to-actionable",
         "IsForward": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null
       },
       {
@@ -13638,12 +13011,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-09-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-a-reyes-serologicactive-2",
@@ -13657,12 +13030,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-12-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to SerologicActive",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-b-okafor-presymptomaticautoimmunity-1",
@@ -13676,12 +13049,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-08-15T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-c-chen-presymptomaticautoimmunity-1",
@@ -13695,12 +13068,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-07-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-c-chen-serologicactive-2",
@@ -13714,12 +13087,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-10-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to SerologicActive",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-d-santos-presymptomaticautoimmunity-1",
@@ -13733,12 +13106,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-06-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-d-santos-renalflarerisk-2",
@@ -13752,12 +13125,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-09-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to RenalFlareRisk",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-d-santos-biopsyindicated-3",
@@ -13771,12 +13144,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-12-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to BiopsyIndicated",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-e-mensah-presymptomaticautoimmunity-1",
@@ -13790,12 +13163,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-08-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-f-haidar-presymptomaticautoimmunity-1",
@@ -13809,12 +13182,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-09-10T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-g-lin-presymptomaticautoimmunity-1",
@@ -13828,12 +13201,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-09-05T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-h-yamamoto-presymptomaticautoimmunity-1",
@@ -13847,12 +13220,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-07-20T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-h-yamamoto-earlynephritis-2",
@@ -13866,126 +13239,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-10-20T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to EarlyNephritis",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
         "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-h-intake-1",
-        "Name": "st-pred-h-intake-1",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-h-intake-1",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "FromStateKey": null,
-        "ToStateKey": "Intake",
-        "TransitionAt": "2026-06-02T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to Intake",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": false
-      },
-      {
-        "StateTransitionId": "st-pred-h-evidenceassessed-2",
-        "Name": "st-pred-h-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-h-evidenceassessed-2",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "FromStateKey": "Intake",
-        "ToStateKey": "EvidenceAssessed",
-        "TransitionAt": "2026-06-03T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to EvidenceAssessed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-h-mechanismconfirmed-3",
-        "Name": "st-pred-h-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-h-mechanismconfirmed-3",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "FromStateKey": "EvidenceAssessed",
-        "ToStateKey": "MechanismConfirmed",
-        "TransitionAt": "2026-06-04T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to MechanismConfirmed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-h-calibrationchecked-4",
-        "Name": "st-pred-h-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-h-calibrationchecked-4",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "FromStateKey": "MechanismConfirmed",
-        "ToStateKey": "CalibrationChecked",
-        "TransitionAt": "2026-06-05T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to CalibrationChecked",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-h-transportchecked-5",
-        "Name": "st-pred-h-transportchecked-5",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-h-transportchecked-5",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "FromStateKey": "CalibrationChecked",
-        "ToStateKey": "TransportChecked",
-        "TransitionAt": "2026-06-06T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to TransportChecked",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-h-actionable-6",
-        "Name": "st-pred-h-actionable-6",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-h-actionable-6",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "FromStateKey": "TransportChecked",
-        "ToStateKey": "Actionable",
-        "TransitionAt": "2026-06-07T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to Actionable",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-i-conteh-earlynephritis-1",
@@ -13999,12 +13258,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-06-15T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to EarlyNephritis",
-        "CreatedBy": "v2-step3",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
+        "CreatedBy": "v2-step3",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-i-conteh-renalflarerisk-2",
@@ -14018,88 +13277,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-09-15T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to RenalFlareRisk",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
         "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-i-intake-1",
-        "Name": "st-pred-i-intake-1",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-i-intake-1",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "FromStateKey": null,
-        "ToStateKey": "Intake",
-        "TransitionAt": "2026-06-02T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to Intake",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": false
-      },
-      {
-        "StateTransitionId": "st-pred-i-evidenceassessed-2",
-        "Name": "st-pred-i-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-i-evidenceassessed-2",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "FromStateKey": "Intake",
-        "ToStateKey": "EvidenceAssessed",
-        "TransitionAt": "2026-06-03T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to EvidenceAssessed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-i-mechanismconfirmed-3",
-        "Name": "st-pred-i-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-i-mechanismconfirmed-3",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "FromStateKey": "EvidenceAssessed",
-        "ToStateKey": "MechanismConfirmed",
-        "TransitionAt": "2026-06-04T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to MechanismConfirmed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-i-notactionable-4",
-        "Name": "st-pred-i-notactionable-4",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-i-notactionable-4",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "FromStateKey": "MechanismConfirmed",
-        "ToStateKey": "NotActionable",
-        "TransitionAt": "2026-06-05T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to NotActionable",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-j-brooks-presymptomaticautoimmunity-1",
@@ -14113,12 +13296,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-08-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-j-brooks-serologicactive-2",
@@ -14132,107 +13315,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-11-01T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to SerologicActive",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-j-intake-1",
-        "Name": "st-pred-j-intake-1",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-j-intake-1",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-j",
-        "FromStateKey": null,
-        "ToStateKey": "Intake",
-        "TransitionAt": "2026-06-02T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to Intake",
         "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": false
-      },
-      {
-        "StateTransitionId": "st-pred-j-evidenceassessed-2",
-        "Name": "st-pred-j-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-j-evidenceassessed-2",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-j",
-        "FromStateKey": "Intake",
-        "ToStateKey": "EvidenceAssessed",
-        "TransitionAt": "2026-06-03T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to EvidenceAssessed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
         "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-j-mechanismconfirmed-3",
-        "Name": "st-pred-j-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-j-mechanismconfirmed-3",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-j",
-        "FromStateKey": "EvidenceAssessed",
-        "ToStateKey": "MechanismConfirmed",
-        "TransitionAt": "2026-06-04T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to MechanismConfirmed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-j-calibrationchecked-4",
-        "Name": "st-pred-j-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-j-calibrationchecked-4",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-j",
-        "FromStateKey": "MechanismConfirmed",
-        "ToStateKey": "CalibrationChecked",
-        "TransitionAt": "2026-06-05T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to CalibrationChecked",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-j-notactionable-5",
-        "Name": "st-pred-j-notactionable-5",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-j-notactionable-5",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-j",
-        "FromStateKey": "CalibrationChecked",
-        "ToStateKey": "NotActionable",
-        "TransitionAt": "2026-06-06T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to NotActionable",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-k-nair-presymptomaticautoimmunity-1",
@@ -14246,126 +13334,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-07-05T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-k-intake-1",
-        "Name": "st-pred-k-intake-1",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-k-intake-1",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-k",
-        "FromStateKey": null,
-        "ToStateKey": "Intake",
-        "TransitionAt": "2026-06-02T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to Intake",
         "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": false
-      },
-      {
-        "StateTransitionId": "st-pred-k-evidenceassessed-2",
-        "Name": "st-pred-k-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-k-evidenceassessed-2",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-k",
-        "FromStateKey": "Intake",
-        "ToStateKey": "EvidenceAssessed",
-        "TransitionAt": "2026-06-03T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to EvidenceAssessed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
         "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-k-mechanismconfirmed-3",
-        "Name": "st-pred-k-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-k-mechanismconfirmed-3",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-k",
-        "FromStateKey": "EvidenceAssessed",
-        "ToStateKey": "MechanismConfirmed",
-        "TransitionAt": "2026-06-04T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to MechanismConfirmed",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-k-calibrationchecked-4",
-        "Name": "st-pred-k-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-k-calibrationchecked-4",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-k",
-        "FromStateKey": "MechanismConfirmed",
-        "ToStateKey": "CalibrationChecked",
-        "TransitionAt": "2026-06-05T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to CalibrationChecked",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-k-transportchecked-5",
-        "Name": "st-pred-k-transportchecked-5",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-k-transportchecked-5",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-k",
-        "FromStateKey": "CalibrationChecked",
-        "ToStateKey": "TransportChecked",
-        "TransitionAt": "2026-06-06T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to TransportChecked",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
-      },
-      {
-        "StateTransitionId": "st-pred-k-notactionable-6",
-        "Name": "st-pred-k-notactionable-6",
-        "RelativePath": "/admin/state-machine/transitions/st-pred-k-notactionable-6",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-k",
-        "FromStateKey": "TransportChecked",
-        "ToStateKey": "NotActionable",
-        "TransitionAt": "2026-06-07T09:00:00Z",
-        "TriggeredByRole": "system",
-        "Reason": "Lifecycle transition to NotActionable",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-ind-l-brandt-presymptomaticautoimmunity-1",
@@ -14379,12 +13353,411 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2025-09-05T00:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-h-intake-1",
+        "Name": "st-pred-h-intake-1",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-h-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "FromStateKey": null,
+        "ToStateKey": "Intake",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to Intake",
+        "IsForward": false,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-h-evidenceassessed-2",
+        "Name": "st-pred-h-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-h-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to EvidenceAssessed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-h-mechanismconfirmed-3",
+        "Name": "st-pred-h-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-h-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to MechanismConfirmed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-h-calibrationchecked-4",
+        "Name": "st-pred-h-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-h-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "CalibrationChecked",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to CalibrationChecked",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-h-transportchecked-5",
+        "Name": "st-pred-h-transportchecked-5",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-h-transportchecked-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "FromStateKey": "CalibrationChecked",
+        "ToStateKey": "TransportChecked",
+        "TransitionAt": "2026-06-06T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to TransportChecked",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-h-actionable-6",
+        "Name": "st-pred-h-actionable-6",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-h-actionable-6",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "FromStateKey": "TransportChecked",
+        "ToStateKey": "Actionable",
+        "TransitionAt": "2026-06-07T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to Actionable",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-i-intake-1",
+        "Name": "st-pred-i-intake-1",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-i-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "FromStateKey": null,
+        "ToStateKey": "Intake",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to Intake",
+        "IsForward": false,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-i-evidenceassessed-2",
+        "Name": "st-pred-i-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-i-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to EvidenceAssessed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-i-mechanismconfirmed-3",
+        "Name": "st-pred-i-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-i-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to MechanismConfirmed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-i-notactionable-4",
+        "Name": "st-pred-i-notactionable-4",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-i-notactionable-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to NotActionable",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-j-intake-1",
+        "Name": "st-pred-j-intake-1",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-j-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-j",
+        "FromStateKey": null,
+        "ToStateKey": "Intake",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to Intake",
+        "IsForward": false,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-j-evidenceassessed-2",
+        "Name": "st-pred-j-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-j-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-j",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to EvidenceAssessed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-j-mechanismconfirmed-3",
+        "Name": "st-pred-j-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-j-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-j",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to MechanismConfirmed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-j-calibrationchecked-4",
+        "Name": "st-pred-j-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-j-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-j",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "CalibrationChecked",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to CalibrationChecked",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-j-notactionable-5",
+        "Name": "st-pred-j-notactionable-5",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-j-notactionable-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-j",
+        "FromStateKey": "CalibrationChecked",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-06T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to NotActionable",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-k-intake-1",
+        "Name": "st-pred-k-intake-1",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-k-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-k",
+        "FromStateKey": null,
+        "ToStateKey": "Intake",
+        "TransitionAt": "2026-06-02T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to Intake",
+        "IsForward": false,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-k-evidenceassessed-2",
+        "Name": "st-pred-k-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-k-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-k",
+        "FromStateKey": "Intake",
+        "ToStateKey": "EvidenceAssessed",
+        "TransitionAt": "2026-06-03T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to EvidenceAssessed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-k-mechanismconfirmed-3",
+        "Name": "st-pred-k-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-k-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-k",
+        "FromStateKey": "EvidenceAssessed",
+        "ToStateKey": "MechanismConfirmed",
+        "TransitionAt": "2026-06-04T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to MechanismConfirmed",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-k-calibrationchecked-4",
+        "Name": "st-pred-k-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-k-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-k",
+        "FromStateKey": "MechanismConfirmed",
+        "ToStateKey": "CalibrationChecked",
+        "TransitionAt": "2026-06-05T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to CalibrationChecked",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-k-transportchecked-5",
+        "Name": "st-pred-k-transportchecked-5",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-k-transportchecked-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-k",
+        "FromStateKey": "CalibrationChecked",
+        "ToStateKey": "TransportChecked",
+        "TransitionAt": "2026-06-06T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to TransportChecked",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-pred-k-notactionable-6",
+        "Name": "st-pred-k-notactionable-6",
+        "RelativePath": "/admin/state-machine/transitions/st-pred-k-notactionable-6",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-k",
+        "FromStateKey": "TransportChecked",
+        "ToStateKey": "NotActionable",
+        "TransitionAt": "2026-06-07T09:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Lifecycle transition to NotActionable",
+        "IsForward": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-pred-l-intake-1",
@@ -14398,12 +13771,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Lifecycle transition to Intake",
-        "CreatedBy": "v2-step10",
+        "IsForward": false,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": false
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-pred-l-evidenceassessed-2",
@@ -14417,12 +13790,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Lifecycle transition to EvidenceAssessed",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-pred-l-mechanismconfirmed-3",
@@ -14436,12 +13809,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Lifecycle transition to MechanismConfirmed",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-pred-l-calibrationchecked-4",
@@ -14455,12 +13828,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Lifecycle transition to CalibrationChecked",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-pred-l-transportchecked-5",
@@ -14474,12 +13847,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-06T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Lifecycle transition to TransportChecked",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       },
       {
         "StateTransitionId": "st-pred-l-actionable-6",
@@ -14493,12 +13866,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TransitionAt": "2026-06-07T09:00:00Z",
         "TriggeredByRole": "system",
         "Reason": "Lifecycle transition to Actionable",
-        "CreatedBy": "v2-step10",
+        "IsForward": true,
         "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
+        "CreatedBy": "v2-step10",
         "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsForward": true
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -14673,6 +14046,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "SubjectStateInstanceId": "ssi-pred-a-intake-1",
+        "Name": "ssi-pred-a-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-intake-1",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -14682,20 +14057,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": null,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-a-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-intake-1",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-a-evidenceassessed-2",
+        "Name": "ssi-pred-a-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-evidenceassessed-2",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -14705,20 +14080,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-a-intake-1",
         "EnteredViaTransition": "st-a-02-intake-to-evidenceassessed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-a-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-evidenceassessed-2",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-a-mechanismconfirmed-3",
+        "Name": "ssi-pred-a-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-mechanismconfirmed-3",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -14728,20 +14103,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-a-evidenceassessed-2",
         "EnteredViaTransition": "st-a-03-evidenceassessed-to-mechanismconfirmed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-a-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-mechanismconfirmed-3",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-a-calibrationchecked-4",
+        "Name": "ssi-pred-a-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-calibrationchecked-4",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -14751,20 +14126,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-a-mechanismconfirmed-3",
         "EnteredViaTransition": "st-a-04-mechanismconfirmed-to-calibrationchecked",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-a-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-calibrationchecked-4",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-a-transportchecked-5",
+        "Name": "ssi-pred-a-transportchecked-5",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-transportchecked-5",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -14774,20 +14149,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 5,
         "PriorInstance": "ssi-pred-a-calibrationchecked-4",
         "EnteredViaTransition": "st-a-05-calibrationchecked-to-transportchecked",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-a-transportchecked-5",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-transportchecked-5",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-a-actionable-6",
+        "Name": "ssi-pred-a-actionable-6",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-actionable-6",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-a",
@@ -14797,20 +14172,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 6,
         "PriorInstance": "ssi-pred-a-transportchecked-5",
         "EnteredViaTransition": "st-a-06-transportchecked-to-actionable",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-a-actionable-6",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-a-actionable-6",
         "IsCurrent": true,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-b-intake-1",
+        "Name": "ssi-pred-b-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-intake-1",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -14820,20 +14195,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": null,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-b-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-intake-1",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-b-evidenceassessed-2",
+        "Name": "ssi-pred-b-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-evidenceassessed-2",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -14843,20 +14218,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-b-intake-1",
         "EnteredViaTransition": "st-b-02-intake-to-evidenceassessed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-b-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-evidenceassessed-2",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-b-mechanismconfirmed-3",
+        "Name": "ssi-pred-b-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-mechanismconfirmed-3",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -14866,20 +14241,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-b-evidenceassessed-2",
         "EnteredViaTransition": "st-b-03-evidenceassessed-to-mechanismconfirmed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-b-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-mechanismconfirmed-3",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-b-calibrationchecked-4",
+        "Name": "ssi-pred-b-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-calibrationchecked-4",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -14889,20 +14264,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-b-mechanismconfirmed-3",
         "EnteredViaTransition": "st-b-04-mechanismconfirmed-to-calibrationchecked",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-b-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-calibrationchecked-4",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-b-notactionable-5",
+        "Name": "ssi-pred-b-notactionable-5",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-notactionable-5",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-b",
@@ -14912,20 +14287,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 5,
         "PriorInstance": "ssi-pred-b-calibrationchecked-4",
         "EnteredViaTransition": "st-b-05-calibrationchecked-to-notactionable",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-b-notactionable-5",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-b-notactionable-5",
         "IsCurrent": true,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-c-intake-1",
+        "Name": "ssi-pred-c-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-c-intake-1",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-c",
@@ -14935,20 +14310,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": null,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-c-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-c-intake-1",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-c-evidenceassessed-2",
+        "Name": "ssi-pred-c-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-c-evidenceassessed-2",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-c",
@@ -14958,20 +14333,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-c-intake-1",
         "EnteredViaTransition": "st-c-02-intake-to-evidenceassessed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-c-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-c-evidenceassessed-2",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-c-notactionable-3",
+        "Name": "ssi-pred-c-notactionable-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-c-notactionable-3",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-c",
@@ -14981,20 +14356,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-c-evidenceassessed-2",
         "EnteredViaTransition": "st-c-03-evidenceassessed-to-notactionable",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-c-notactionable-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-c-notactionable-3",
         "IsCurrent": true,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-d-intake-1",
+        "Name": "ssi-pred-d-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-intake-1",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-d",
@@ -15004,20 +14379,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": null,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-d-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-intake-1",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-d-evidenceassessed-2",
+        "Name": "ssi-pred-d-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-evidenceassessed-2",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-d",
@@ -15027,20 +14402,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-d-intake-1",
         "EnteredViaTransition": "st-d-02-intake-to-evidenceassessed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-d-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-evidenceassessed-2",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-d-mechanismconfirmed-3",
+        "Name": "ssi-pred-d-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-mechanismconfirmed-3",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-d",
@@ -15050,20 +14425,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-d-evidenceassessed-2",
         "EnteredViaTransition": "st-d-03-evidenceassessed-to-mechanismconfirmed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-d-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-mechanismconfirmed-3",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-d-notactionable-4",
+        "Name": "ssi-pred-d-notactionable-4",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-notactionable-4",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-d",
@@ -15073,20 +14448,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-d-mechanismconfirmed-3",
         "EnteredViaTransition": "st-d-04-mechanismconfirmed-to-notactionable",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-d-notactionable-4",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-d-notactionable-4",
         "IsCurrent": true,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-e-intake-1",
+        "Name": "ssi-pred-e-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-e-intake-1",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-e",
@@ -15096,20 +14471,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": null,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-e-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-e-intake-1",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-e-evidenceassessed-2",
+        "Name": "ssi-pred-e-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-e-evidenceassessed-2",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-e",
@@ -15119,20 +14494,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-e-intake-1",
         "EnteredViaTransition": "st-e-02-intake-to-evidenceassessed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-e-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-e-evidenceassessed-2",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-e-notactionable-3",
+        "Name": "ssi-pred-e-notactionable-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-e-notactionable-3",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-e",
@@ -15142,20 +14517,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-e-evidenceassessed-2",
         "EnteredViaTransition": "st-e-03-evidenceassessed-to-notactionable",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-e-notactionable-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-e-notactionable-3",
         "IsCurrent": true,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-f-intake-1",
+        "Name": "ssi-pred-f-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-intake-1",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -15165,20 +14540,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": null,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-f-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-intake-1",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-f-evidenceassessed-2",
+        "Name": "ssi-pred-f-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-evidenceassessed-2",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -15188,20 +14563,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-f-intake-1",
         "EnteredViaTransition": "st-f-02-intake-to-evidenceassessed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-f-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-evidenceassessed-2",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-f-mechanismconfirmed-3",
+        "Name": "ssi-pred-f-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-mechanismconfirmed-3",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -15211,20 +14586,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-f-evidenceassessed-2",
         "EnteredViaTransition": "st-f-03-evidenceassessed-to-mechanismconfirmed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-f-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-mechanismconfirmed-3",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-f-calibrationchecked-4",
+        "Name": "ssi-pred-f-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-calibrationchecked-4",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -15234,20 +14609,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-f-mechanismconfirmed-3",
         "EnteredViaTransition": "st-f-04-mechanismconfirmed-to-calibrationchecked",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-f-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-calibrationchecked-4",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-f-transportchecked-5",
+        "Name": "ssi-pred-f-transportchecked-5",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-transportchecked-5",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -15257,20 +14632,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 5,
         "PriorInstance": "ssi-pred-f-calibrationchecked-4",
         "EnteredViaTransition": "st-f-05-calibrationchecked-to-transportchecked",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-f-transportchecked-5",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-transportchecked-5",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-f-notactionable-6",
+        "Name": "ssi-pred-f-notactionable-6",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-notactionable-6",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-f",
@@ -15280,20 +14655,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 6,
         "PriorInstance": "ssi-pred-f-transportchecked-5",
         "EnteredViaTransition": "st-f-06-transportchecked-to-notactionable",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-f-notactionable-6",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-f-notactionable-6",
         "IsCurrent": true,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-g-intake-1",
+        "Name": "ssi-pred-g-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-intake-1",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -15303,20 +14678,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": null,
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-g-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-intake-1",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-g-evidenceassessed-2",
+        "Name": "ssi-pred-g-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-evidenceassessed-2",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -15326,20 +14701,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-g-intake-1",
         "EnteredViaTransition": "st-g-02-intake-to-evidenceassessed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-g-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-evidenceassessed-2",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-g-mechanismconfirmed-3",
+        "Name": "ssi-pred-g-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-mechanismconfirmed-3",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -15349,20 +14724,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-g-evidenceassessed-2",
         "EnteredViaTransition": "st-g-03-evidenceassessed-to-mechanismconfirmed",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-g-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-mechanismconfirmed-3",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-g-calibrationchecked-4",
+        "Name": "ssi-pred-g-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-calibrationchecked-4",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -15372,20 +14747,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-g-mechanismconfirmed-3",
         "EnteredViaTransition": "st-g-04-mechanismconfirmed-to-calibrationchecked",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-g-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-calibrationchecked-4",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-g-transportchecked-5",
+        "Name": "ssi-pred-g-transportchecked-5",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-transportchecked-5",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -15395,20 +14770,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 5,
         "PriorInstance": "ssi-pred-g-calibrationchecked-4",
         "EnteredViaTransition": "st-g-05-calibrationchecked-to-transportchecked",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-g-transportchecked-5",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-transportchecked-5",
         "IsCurrent": false,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-g-actionable-6",
+        "Name": "ssi-pred-g-actionable-6",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-actionable-6",
         "StateMachine": "diagnosis-lifecycle",
         "SubjectTableName": "IndividualPredictions",
         "SubjectId": "pred-g",
@@ -15418,14 +14793,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 6,
         "PriorInstance": "ssi-pred-g-transportchecked-5",
         "EnteredViaTransition": "st-g-06-transportchecked-to-actionable",
-        "CreatedBy": "build-seed",
-        "ModifiedBy": "build-seed",
-        "Name": "ssi-pred-g-actionable-6",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-g-actionable-6",
         "IsCurrent": true,
         "HasCompleteLineage": true,
         "CreatedAt": null,
+        "CreatedBy": "build-seed",
         "ModifiedAt": null,
+        "ModifiedBy": "build-seed",
         "ModifiedByModel": null,
         "DwellDays": null,
         "IsLongDwell": false
@@ -15443,14 +14816,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-a-reyes-presymptomaticautoimmunity-1",
-        "DwellDays": 90,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 90,
         "IsLongDwell": true
       },
       {
@@ -15466,14 +14839,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-ind-a-reyes-presymptomaticautoimmunity-1",
         "EnteredViaTransition": "st-ind-a-reyes-serologicactive-2",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
       },
       {
@@ -15489,14 +14862,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-b-okafor-presymptomaticautoimmunity-1",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
       },
       {
@@ -15512,14 +14885,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-c-chen-presymptomaticautoimmunity-1",
-        "DwellDays": 90,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 90,
         "IsLongDwell": true
       },
       {
@@ -15535,14 +14908,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-ind-c-chen-presymptomaticautoimmunity-1",
         "EnteredViaTransition": "st-ind-c-chen-serologicactive-2",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
       },
       {
@@ -15558,14 +14931,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-d-santos-presymptomaticautoimmunity-1",
-        "DwellDays": 90,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 90,
         "IsLongDwell": true
       },
       {
@@ -15581,14 +14954,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-ind-d-santos-presymptomaticautoimmunity-1",
         "EnteredViaTransition": "st-ind-d-santos-renalflarerisk-2",
-        "DwellDays": 90,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 90,
         "IsLongDwell": true
       },
       {
@@ -15604,14 +14977,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-ind-d-santos-renalflarerisk-2",
         "EnteredViaTransition": "st-ind-d-santos-biopsyindicated-3",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
       },
       {
@@ -15627,14 +15000,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-e-mensah-presymptomaticautoimmunity-1",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
       },
       {
@@ -15650,14 +15023,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-f-haidar-presymptomaticautoimmunity-1",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
       },
       {
@@ -15673,14 +15046,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-g-lin-presymptomaticautoimmunity-1",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
       },
       {
@@ -15696,14 +15069,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-h-yamamoto-presymptomaticautoimmunity-1",
-        "DwellDays": 90,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 90,
         "IsLongDwell": true
       },
       {
@@ -15719,153 +15092,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-ind-h-yamamoto-presymptomaticautoimmunity-1",
         "EnteredViaTransition": "st-ind-h-yamamoto-earlynephritis-2",
-        "DwellDays": 120,
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
         "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
+        "DwellDays": 120,
         "IsLongDwell": true
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-h-intake-1",
-        "Name": "ssi-pred-h-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-intake-1",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "StateKey": "Intake",
-        "EnteredAt": "2026-06-02T09:00:00Z",
-        "ExitedAt": "2026-06-03T09:00:00Z",
-        "SequenceIndex": 1,
-        "PriorInstance": null,
-        "EnteredViaTransition": "st-pred-h-intake-1",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-h-evidenceassessed-2",
-        "Name": "ssi-pred-h-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-evidenceassessed-2",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "StateKey": "EvidenceAssessed",
-        "EnteredAt": "2026-06-03T09:00:00Z",
-        "ExitedAt": "2026-06-04T09:00:00Z",
-        "SequenceIndex": 2,
-        "PriorInstance": "ssi-pred-h-intake-1",
-        "EnteredViaTransition": "st-pred-h-evidenceassessed-2",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-h-mechanismconfirmed-3",
-        "Name": "ssi-pred-h-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-mechanismconfirmed-3",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "StateKey": "MechanismConfirmed",
-        "EnteredAt": "2026-06-04T09:00:00Z",
-        "ExitedAt": "2026-06-05T09:00:00Z",
-        "SequenceIndex": 3,
-        "PriorInstance": "ssi-pred-h-evidenceassessed-2",
-        "EnteredViaTransition": "st-pred-h-mechanismconfirmed-3",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-h-calibrationchecked-4",
-        "Name": "ssi-pred-h-calibrationchecked-4",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-calibrationchecked-4",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "StateKey": "CalibrationChecked",
-        "EnteredAt": "2026-06-05T09:00:00Z",
-        "ExitedAt": "2026-06-06T09:00:00Z",
-        "SequenceIndex": 4,
-        "PriorInstance": "ssi-pred-h-mechanismconfirmed-3",
-        "EnteredViaTransition": "st-pred-h-calibrationchecked-4",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-h-transportchecked-5",
-        "Name": "ssi-pred-h-transportchecked-5",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-transportchecked-5",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "StateKey": "TransportChecked",
-        "EnteredAt": "2026-06-06T09:00:00Z",
-        "ExitedAt": "2026-06-07T09:00:00Z",
-        "SequenceIndex": 5,
-        "PriorInstance": "ssi-pred-h-calibrationchecked-4",
-        "EnteredViaTransition": "st-pred-h-transportchecked-5",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-h-actionable-6",
-        "Name": "ssi-pred-h-actionable-6",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-actionable-6",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-h",
-        "StateKey": "Actionable",
-        "EnteredAt": "2026-06-07T09:00:00Z",
-        "ExitedAt": null,
-        "SequenceIndex": 6,
-        "PriorInstance": "ssi-pred-h-transportchecked-5",
-        "EnteredViaTransition": "st-pred-h-actionable-6",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-ind-i-conteh-earlynephritis-1",
@@ -15880,14 +15115,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-i-conteh-earlynephritis-1",
-        "DwellDays": 90,
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 90,
         "IsLongDwell": true
       },
       {
@@ -15903,107 +15138,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-ind-i-conteh-earlynephritis-1",
         "EnteredViaTransition": "st-ind-i-conteh-renalflarerisk-2",
-        "DwellDays": 120,
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
         "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
+        "DwellDays": 120,
         "IsLongDwell": true
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-i-intake-1",
-        "Name": "ssi-pred-i-intake-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-intake-1",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "StateKey": "Intake",
-        "EnteredAt": "2026-06-02T09:00:00Z",
-        "ExitedAt": "2026-06-03T09:00:00Z",
-        "SequenceIndex": 1,
-        "PriorInstance": null,
-        "EnteredViaTransition": "st-pred-i-intake-1",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-i-evidenceassessed-2",
-        "Name": "ssi-pred-i-evidenceassessed-2",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-evidenceassessed-2",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "StateKey": "EvidenceAssessed",
-        "EnteredAt": "2026-06-03T09:00:00Z",
-        "ExitedAt": "2026-06-04T09:00:00Z",
-        "SequenceIndex": 2,
-        "PriorInstance": "ssi-pred-i-intake-1",
-        "EnteredViaTransition": "st-pred-i-evidenceassessed-2",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-i-mechanismconfirmed-3",
-        "Name": "ssi-pred-i-mechanismconfirmed-3",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-mechanismconfirmed-3",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "StateKey": "MechanismConfirmed",
-        "EnteredAt": "2026-06-04T09:00:00Z",
-        "ExitedAt": "2026-06-05T09:00:00Z",
-        "SequenceIndex": 3,
-        "PriorInstance": "ssi-pred-i-evidenceassessed-2",
-        "EnteredViaTransition": "st-pred-i-mechanismconfirmed-3",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": false,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-pred-i-notactionable-4",
-        "Name": "ssi-pred-i-notactionable-4",
-        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-notactionable-4",
-        "StateMachine": "diagnosis-lifecycle",
-        "SubjectTableName": "IndividualPredictions",
-        "SubjectId": "pred-i",
-        "StateKey": "NotActionable",
-        "EnteredAt": "2026-06-05T09:00:00Z",
-        "ExitedAt": null,
-        "SequenceIndex": 4,
-        "PriorInstance": "ssi-pred-i-mechanismconfirmed-3",
-        "EnteredViaTransition": "st-pred-i-notactionable-4",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
-        "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-ind-j-brooks-presymptomaticautoimmunity-1",
@@ -16018,14 +15161,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-ind-j-brooks-presymptomaticautoimmunity-1",
-        "DwellDays": 90,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 90,
         "IsLongDwell": true
       },
       {
@@ -16041,15 +15184,291 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-ind-j-brooks-presymptomaticautoimmunity-1",
         "EnteredViaTransition": "st-ind-j-brooks-serologicactive-2",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
         "IsLongDwell": true
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-k-nair-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-k-nair-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-k-nair-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-k-nair",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-07-05T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-k-nair-presymptomaticautoimmunity-1",
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
+        "IsLongDwell": true
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-l-brandt-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-l-brandt-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-l-brandt-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-l-brandt",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-09-05T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-l-brandt-presymptomaticautoimmunity-1",
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 120,
+        "IsLongDwell": true
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-h-intake-1",
+        "Name": "ssi-pred-h-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-pred-h-intake-1",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-h-evidenceassessed-2",
+        "Name": "ssi-pred-h-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": "2026-06-04T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-h-intake-1",
+        "EnteredViaTransition": "st-pred-h-evidenceassessed-2",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-h-mechanismconfirmed-3",
+        "Name": "ssi-pred-h-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "StateKey": "MechanismConfirmed",
+        "EnteredAt": "2026-06-04T09:00:00Z",
+        "ExitedAt": "2026-06-05T09:00:00Z",
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-h-evidenceassessed-2",
+        "EnteredViaTransition": "st-pred-h-mechanismconfirmed-3",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-h-calibrationchecked-4",
+        "Name": "ssi-pred-h-calibrationchecked-4",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-calibrationchecked-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "StateKey": "CalibrationChecked",
+        "EnteredAt": "2026-06-05T09:00:00Z",
+        "ExitedAt": "2026-06-06T09:00:00Z",
+        "SequenceIndex": 4,
+        "PriorInstance": "ssi-pred-h-mechanismconfirmed-3",
+        "EnteredViaTransition": "st-pred-h-calibrationchecked-4",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-h-transportchecked-5",
+        "Name": "ssi-pred-h-transportchecked-5",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-transportchecked-5",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "StateKey": "TransportChecked",
+        "EnteredAt": "2026-06-06T09:00:00Z",
+        "ExitedAt": "2026-06-07T09:00:00Z",
+        "SequenceIndex": 5,
+        "PriorInstance": "ssi-pred-h-calibrationchecked-4",
+        "EnteredViaTransition": "st-pred-h-transportchecked-5",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-h-actionable-6",
+        "Name": "ssi-pred-h-actionable-6",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-h-actionable-6",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-h",
+        "StateKey": "Actionable",
+        "EnteredAt": "2026-06-07T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 6,
+        "PriorInstance": "ssi-pred-h-transportchecked-5",
+        "EnteredViaTransition": "st-pred-h-actionable-6",
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-i-intake-1",
+        "Name": "ssi-pred-i-intake-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-intake-1",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "StateKey": "Intake",
+        "EnteredAt": "2026-06-02T09:00:00Z",
+        "ExitedAt": "2026-06-03T09:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-pred-i-intake-1",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-i-evidenceassessed-2",
+        "Name": "ssi-pred-i-evidenceassessed-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-evidenceassessed-2",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "StateKey": "EvidenceAssessed",
+        "EnteredAt": "2026-06-03T09:00:00Z",
+        "ExitedAt": "2026-06-04T09:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-pred-i-intake-1",
+        "EnteredViaTransition": "st-pred-i-evidenceassessed-2",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-i-mechanismconfirmed-3",
+        "Name": "ssi-pred-i-mechanismconfirmed-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-mechanismconfirmed-3",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "StateKey": "MechanismConfirmed",
+        "EnteredAt": "2026-06-04T09:00:00Z",
+        "ExitedAt": "2026-06-05T09:00:00Z",
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-pred-i-evidenceassessed-2",
+        "EnteredViaTransition": "st-pred-i-mechanismconfirmed-3",
+        "IsCurrent": false,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
+      },
+      {
+        "SubjectStateInstanceId": "ssi-pred-i-notactionable-4",
+        "Name": "ssi-pred-i-notactionable-4",
+        "RelativePath": "/admin/state-machine/instances/ssi-pred-i-notactionable-4",
+        "StateMachine": "diagnosis-lifecycle",
+        "SubjectTableName": "IndividualPredictions",
+        "SubjectId": "pred-i",
+        "StateKey": "NotActionable",
+        "EnteredAt": "2026-06-05T09:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 4,
+        "PriorInstance": "ssi-pred-i-mechanismconfirmed-3",
+        "EnteredViaTransition": "st-pred-i-notactionable-4",
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
+        "IsLongDwell": false
       },
       {
         "SubjectStateInstanceId": "ssi-pred-j-intake-1",
@@ -16064,14 +15483,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-pred-j-intake-1",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16087,14 +15506,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-j-intake-1",
         "EnteredViaTransition": "st-pred-j-evidenceassessed-2",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16110,14 +15529,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-j-evidenceassessed-2",
         "EnteredViaTransition": "st-pred-j-mechanismconfirmed-3",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16133,14 +15552,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-j-mechanismconfirmed-3",
         "EnteredViaTransition": "st-pred-j-calibrationchecked-4",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16156,38 +15575,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 5,
         "PriorInstance": "ssi-pred-j-calibrationchecked-4",
         "EnteredViaTransition": "st-pred-j-notactionable-5",
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
         "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
         "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-ind-k-nair-presymptomaticautoimmunity-1",
-        "Name": "ssi-ind-k-nair-presymptomaticautoimmunity-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-ind-k-nair-presymptomaticautoimmunity-1",
-        "StateMachine": "lupus-nephritis-progression",
-        "SubjectTableName": "Individuals",
-        "SubjectId": "ind-k-nair",
-        "StateKey": "PresymptomaticAutoimmunity",
-        "EnteredAt": "2025-07-05T00:00:00Z",
-        "ExitedAt": null,
-        "SequenceIndex": 1,
-        "PriorInstance": null,
-        "EnteredViaTransition": "st-ind-k-nair-presymptomaticautoimmunity-1",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
-        "IsLongDwell": true
       },
       {
         "SubjectStateInstanceId": "ssi-pred-k-intake-1",
@@ -16202,14 +15598,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-pred-k-intake-1",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16225,14 +15621,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-k-intake-1",
         "EnteredViaTransition": "st-pred-k-evidenceassessed-2",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16248,14 +15644,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-k-evidenceassessed-2",
         "EnteredViaTransition": "st-pred-k-mechanismconfirmed-3",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16271,14 +15667,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-k-mechanismconfirmed-3",
         "EnteredViaTransition": "st-pred-k-calibrationchecked-4",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16294,14 +15690,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 5,
         "PriorInstance": "ssi-pred-k-calibrationchecked-4",
         "EnteredViaTransition": "st-pred-k-transportchecked-5",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16317,38 +15713,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 6,
         "PriorInstance": "ssi-pred-k-transportchecked-5",
         "EnteredViaTransition": "st-pred-k-notactionable-6",
+        "IsCurrent": true,
+        "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
         "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
         "IsLongDwell": false
-      },
-      {
-        "SubjectStateInstanceId": "ssi-ind-l-brandt-presymptomaticautoimmunity-1",
-        "Name": "ssi-ind-l-brandt-presymptomaticautoimmunity-1",
-        "RelativePath": "/admin/state-machine/instances/ssi-ind-l-brandt-presymptomaticautoimmunity-1",
-        "StateMachine": "lupus-nephritis-progression",
-        "SubjectTableName": "Individuals",
-        "SubjectId": "ind-l-brandt",
-        "StateKey": "PresymptomaticAutoimmunity",
-        "EnteredAt": "2025-09-05T00:00:00Z",
-        "ExitedAt": null,
-        "SequenceIndex": 1,
-        "PriorInstance": null,
-        "EnteredViaTransition": "st-ind-l-brandt-presymptomaticautoimmunity-1",
-        "DwellDays": 120,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
-        "IsCurrent": true,
-        "HasCompleteLineage": true,
-        "IsLongDwell": true
       },
       {
         "SubjectStateInstanceId": "ssi-pred-l-intake-1",
@@ -16363,14 +15736,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 1,
         "PriorInstance": null,
         "EnteredViaTransition": "st-pred-l-intake-1",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16386,14 +15759,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 2,
         "PriorInstance": "ssi-pred-l-intake-1",
         "EnteredViaTransition": "st-pred-l-evidenceassessed-2",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16409,14 +15782,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 3,
         "PriorInstance": "ssi-pred-l-evidenceassessed-2",
         "EnteredViaTransition": "st-pred-l-mechanismconfirmed-3",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16432,14 +15805,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 4,
         "PriorInstance": "ssi-pred-l-mechanismconfirmed-3",
         "EnteredViaTransition": "st-pred-l-calibrationchecked-4",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16455,14 +15828,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 5,
         "PriorInstance": "ssi-pred-l-calibrationchecked-4",
         "EnteredViaTransition": "st-pred-l-transportchecked-5",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": false,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       },
       {
@@ -16478,14 +15851,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SequenceIndex": 6,
         "PriorInstance": "ssi-pred-l-transportchecked-5",
         "EnteredViaTransition": "st-pred-l-actionable-6",
-        "DwellDays": 1,
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "IsCurrent": true,
         "HasCompleteLineage": true,
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "CreatedBy": "v2-step10",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step10",
+        "ModifiedByModel": "claude-opus-4-8",
+        "DwellDays": 1,
         "IsLongDwell": false
       }
     ]
@@ -17309,13 +16682,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 95,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-a-reyes-1",
-        "RelativePath": "/admin/serology/sero-ind-a-reyes-1",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17327,7 +16693,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-a-reyes-1",
+        "RelativePath": "/admin/serology/sero-ind-a-reyes-1"
       },
       {
         "SerologyObservationId": "sero-ind-a-reyes-2",
@@ -17341,13 +16709,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 94,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-a-reyes-1",
-        "Name": "sero-ind-a-reyes-2",
-        "RelativePath": "/admin/serology/sero-ind-a-reyes-2",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 40,
         "PriorC3": 110,
         "PriorC4": 22,
@@ -17359,7 +16720,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 4,
         "ProgressionStateKey": "SerologicActive",
-        "ProgressionStateOrder": 2
+        "ProgressionStateOrder": 2,
+        "Name": "sero-ind-a-reyes-2",
+        "RelativePath": "/admin/serology/sero-ind-a-reyes-2"
       },
       {
         "SerologyObservationId": "sero-ind-b-okafor-1",
@@ -17373,13 +16736,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 99,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-b-okafor-1",
-        "RelativePath": "/admin/serology/sero-ind-b-okafor-1",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17391,7 +16747,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-b-okafor-1",
+        "RelativePath": "/admin/serology/sero-ind-b-okafor-1"
       },
       {
         "SerologyObservationId": "sero-ind-b-okafor-2",
@@ -17405,13 +16763,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 98,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-b-okafor-1",
-        "Name": "sero-ind-b-okafor-2",
-        "RelativePath": "/admin/serology/sero-ind-b-okafor-2",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 30,
         "PriorC3": 120,
         "PriorC4": 25,
@@ -17423,7 +16774,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-b-okafor-2",
+        "RelativePath": "/admin/serology/sero-ind-b-okafor-2"
       },
       {
         "SerologyObservationId": "sero-ind-c-chen-1",
@@ -17437,13 +16790,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 92,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-c-chen-1",
-        "RelativePath": "/admin/serology/sero-ind-c-chen-1",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17455,7 +16801,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-c-chen-1",
+        "RelativePath": "/admin/serology/sero-ind-c-chen-1"
       },
       {
         "SerologyObservationId": "sero-ind-c-chen-2",
@@ -17469,13 +16817,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 90,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-c-chen-1",
-        "Name": "sero-ind-c-chen-2",
-        "RelativePath": "/admin/serology/sero-ind-c-chen-2",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 50,
         "PriorC3": 100,
         "PriorC4": 20,
@@ -17487,7 +16828,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 4,
         "ProgressionStateKey": "SerologicActive",
-        "ProgressionStateOrder": 2
+        "ProgressionStateOrder": 2,
+        "Name": "sero-ind-c-chen-2",
+        "RelativePath": "/admin/serology/sero-ind-c-chen-2"
       },
       {
         "SerologyObservationId": "sero-ind-d-santos-1",
@@ -17501,13 +16844,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 88,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-d-santos-1",
-        "RelativePath": "/admin/serology/sero-ind-d-santos-1",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17519,7 +16855,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-d-santos-1",
+        "RelativePath": "/admin/serology/sero-ind-d-santos-1"
       },
       {
         "SerologyObservationId": "sero-ind-d-santos-2",
@@ -17533,13 +16871,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 80,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-d-santos-1",
-        "Name": "sero-ind-d-santos-2",
-        "RelativePath": "/admin/serology/sero-ind-d-santos-2",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 60,
         "PriorC3": 95,
         "PriorC4": 18,
@@ -17551,7 +16882,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 8,
         "ProgressionStateKey": "RenalFlareRisk",
-        "ProgressionStateOrder": 4
+        "ProgressionStateOrder": 4,
+        "Name": "sero-ind-d-santos-2",
+        "RelativePath": "/admin/serology/sero-ind-d-santos-2"
       },
       {
         "SerologyObservationId": "sero-ind-d-santos-3",
@@ -17565,13 +16898,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 68,
         "HasActiveUrinarySediment": true,
         "PriorObservation": "sero-ind-d-santos-2",
-        "Name": "sero-ind-d-santos-3",
-        "RelativePath": "/admin/serology/sero-ind-d-santos-3",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 140,
         "PriorC3": 60,
         "PriorC4": 9,
@@ -17583,7 +16909,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 12,
         "ProgressionStateKey": "BiopsyIndicated",
-        "ProgressionStateOrder": 5
+        "ProgressionStateOrder": 5,
+        "Name": "sero-ind-d-santos-3",
+        "RelativePath": "/admin/serology/sero-ind-d-santos-3"
       },
       {
         "SerologyObservationId": "sero-ind-e-mensah-1",
@@ -17597,13 +16925,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 100,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-e-mensah-1",
-        "RelativePath": "/admin/serology/sero-ind-e-mensah-1",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17615,7 +16936,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-e-mensah-1",
+        "RelativePath": "/admin/serology/sero-ind-e-mensah-1"
       },
       {
         "SerologyObservationId": "sero-ind-e-mensah-2",
@@ -17629,13 +16952,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 101,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-e-mensah-1",
-        "Name": "sero-ind-e-mensah-2",
-        "RelativePath": "/admin/serology/sero-ind-e-mensah-2",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 25,
         "PriorC3": 125,
         "PriorC4": 26,
@@ -17647,7 +16963,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-e-mensah-2",
+        "RelativePath": "/admin/serology/sero-ind-e-mensah-2"
       },
       {
         "SerologyObservationId": "sero-ind-f-haidar-1",
@@ -17661,13 +16979,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 100,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-f-haidar-1",
-        "RelativePath": "/admin/serology/sero-ind-f-haidar-1",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17679,7 +16990,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-f-haidar-1",
+        "RelativePath": "/admin/serology/sero-ind-f-haidar-1"
       },
       {
         "SerologyObservationId": "sero-ind-f-haidar-2",
@@ -17693,13 +17006,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 99,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-f-haidar-1",
-        "Name": "sero-ind-f-haidar-2",
-        "RelativePath": "/admin/serology/sero-ind-f-haidar-2",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 20,
         "PriorC3": 130,
         "PriorC4": 28,
@@ -17711,7 +17017,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-f-haidar-2",
+        "RelativePath": "/admin/serology/sero-ind-f-haidar-2"
       },
       {
         "SerologyObservationId": "sero-ind-g-lin-1",
@@ -17725,13 +17033,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 100,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-g-lin-1",
-        "RelativePath": "/admin/serology/sero-ind-g-lin-1",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17743,7 +17044,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-g-lin-1",
+        "RelativePath": "/admin/serology/sero-ind-g-lin-1"
       },
       {
         "SerologyObservationId": "sero-ind-g-lin-2",
@@ -17757,13 +17060,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 100,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-g-lin-1",
-        "Name": "sero-ind-g-lin-2",
-        "RelativePath": "/admin/serology/sero-ind-g-lin-2",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 18,
         "PriorC3": 132,
         "PriorC4": 29,
@@ -17775,7 +17071,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-g-lin-2",
+        "RelativePath": "/admin/serology/sero-ind-g-lin-2"
       },
       {
         "SerologyObservationId": "sero-ind-h-yamamoto-1",
@@ -17789,13 +17087,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 90,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-h-yamamoto-1",
-        "RelativePath": "/admin/serology/sero-ind-h-yamamoto-1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17807,7 +17098,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-h-yamamoto-1",
+        "RelativePath": "/admin/serology/sero-ind-h-yamamoto-1"
       },
       {
         "SerologyObservationId": "sero-ind-h-yamamoto-2",
@@ -17821,13 +17114,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 85,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-h-yamamoto-1",
-        "Name": "sero-ind-h-yamamoto-2",
-        "RelativePath": "/admin/serology/sero-ind-h-yamamoto-2",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 55,
         "PriorC3": 98,
         "PriorC4": 19,
@@ -17839,7 +17125,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 8,
         "ProgressionStateKey": "EarlyNephritis",
-        "ProgressionStateOrder": 3
+        "ProgressionStateOrder": 3,
+        "Name": "sero-ind-h-yamamoto-2",
+        "RelativePath": "/admin/serology/sero-ind-h-yamamoto-2"
       },
       {
         "SerologyObservationId": "sero-ind-i-conteh-1",
@@ -17853,13 +17141,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 84,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-i-conteh-1",
-        "RelativePath": "/admin/serology/sero-ind-i-conteh-1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17871,7 +17152,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 4,
         "ProgressionStateKey": "EarlyNephritis",
-        "ProgressionStateOrder": 3
+        "ProgressionStateOrder": 3,
+        "Name": "sero-ind-i-conteh-1",
+        "RelativePath": "/admin/serology/sero-ind-i-conteh-1"
       },
       {
         "SerologyObservationId": "sero-ind-i-conteh-2",
@@ -17885,13 +17168,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 76,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-i-conteh-1",
-        "Name": "sero-ind-i-conteh-2",
-        "RelativePath": "/admin/serology/sero-ind-i-conteh-2",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 70,
         "PriorC3": 90,
         "PriorC4": 16,
@@ -17903,7 +17179,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 8,
         "ProgressionStateKey": "RenalFlareRisk",
-        "ProgressionStateOrder": 4
+        "ProgressionStateOrder": 4,
+        "Name": "sero-ind-i-conteh-2",
+        "RelativePath": "/admin/serology/sero-ind-i-conteh-2"
       },
       {
         "SerologyObservationId": "sero-ind-j-brooks-1",
@@ -17917,13 +17195,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 92,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-j-brooks-1",
-        "RelativePath": "/admin/serology/sero-ind-j-brooks-1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17935,7 +17206,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-j-brooks-1",
+        "RelativePath": "/admin/serology/sero-ind-j-brooks-1"
       },
       {
         "SerologyObservationId": "sero-ind-j-brooks-2",
@@ -17949,13 +17222,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 90,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-j-brooks-1",
-        "Name": "sero-ind-j-brooks-2",
-        "RelativePath": "/admin/serology/sero-ind-j-brooks-2",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 48,
         "PriorC3": 100,
         "PriorC4": 20,
@@ -17967,7 +17233,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 4,
         "SledaiScore": 4,
         "ProgressionStateKey": "SerologicActive",
-        "ProgressionStateOrder": 2
+        "ProgressionStateOrder": 2,
+        "Name": "sero-ind-j-brooks-2",
+        "RelativePath": "/admin/serology/sero-ind-j-brooks-2"
       },
       {
         "SerologyObservationId": "sero-ind-k-nair-1",
@@ -17981,13 +17249,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 99,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-k-nair-1",
-        "RelativePath": "/admin/serology/sero-ind-k-nair-1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -17999,7 +17260,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-k-nair-1",
+        "RelativePath": "/admin/serology/sero-ind-k-nair-1"
       },
       {
         "SerologyObservationId": "sero-ind-k-nair-2",
@@ -18013,13 +17276,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 98,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-k-nair-1",
-        "Name": "sero-ind-k-nair-2",
-        "RelativePath": "/admin/serology/sero-ind-k-nair-2",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 30,
         "PriorC3": 120,
         "PriorC4": 25,
@@ -18031,7 +17287,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-k-nair-2",
+        "RelativePath": "/admin/serology/sero-ind-k-nair-2"
       },
       {
         "SerologyObservationId": "sero-ind-l-brandt-1",
@@ -18045,13 +17303,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 100,
         "HasActiveUrinarySediment": false,
         "PriorObservation": null,
-        "Name": "sero-ind-l-brandt-1",
-        "RelativePath": "/admin/serology/sero-ind-l-brandt-1",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": null,
         "PriorC3": null,
         "PriorC4": null,
@@ -18063,7 +17314,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-l-brandt-1",
+        "RelativePath": "/admin/serology/sero-ind-l-brandt-1"
       },
       {
         "SerologyObservationId": "sero-ind-l-brandt-2",
@@ -18077,13 +17330,6 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EgfrMlMin": 100,
         "HasActiveUrinarySediment": false,
         "PriorObservation": "sero-ind-l-brandt-1",
-        "Name": "sero-ind-l-brandt-2",
-        "RelativePath": "/admin/serology/sero-ind-l-brandt-2",
-        "CreatedBy": "v2-step10",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step10",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8",
         "PriorAntiDsDnaIU": 22,
         "PriorC3": 130,
         "PriorC4": 28,
@@ -18095,7 +17341,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SledaiSerologyPoints": 0,
         "SledaiScore": 0,
         "ProgressionStateKey": "PresymptomaticAutoimmunity",
-        "ProgressionStateOrder": 1
+        "ProgressionStateOrder": 1,
+        "Name": "sero-ind-l-brandt-2",
+        "RelativePath": "/admin/serology/sero-ind-l-brandt-2"
       }
     ]
   },
@@ -18162,12 +17410,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "LineOrdinal": 1,
         "PreferredWhen": "active nephritis (proteinuria-driven)",
         "Name": "Mycophenolate (MMF)",
-        "RelativePath": "/admin/therapy-options/mmf",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "RelativePath": "/admin/therapy-options/mmf"
       },
       {
         "TherapyOptionId": "belimumab",
@@ -18176,12 +17419,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "LineOrdinal": 2,
         "PreferredWhen": "serologically active, autoantibody-driven",
         "Name": "Belimumab (anti-BLyS)",
-        "RelativePath": "/admin/therapy-options/belimumab",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "RelativePath": "/admin/therapy-options/belimumab"
       },
       {
         "TherapyOptionId": "anifrolumab",
@@ -18190,12 +17428,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "LineOrdinal": 2,
         "PreferredWhen": "type-I-IFN-signature mechanism",
         "Name": "Anifrolumab (anti-IFNAR1)",
-        "RelativePath": "/admin/therapy-options/anifrolumab",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "RelativePath": "/admin/therapy-options/anifrolumab"
       },
       {
         "TherapyOptionId": "secukinumab",
@@ -18204,12 +17437,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "LineOrdinal": 2,
         "PreferredWhen": "IL-17/23-axis disease (PsA/SpA)",
         "Name": "Secukinumab (anti-IL-17)",
-        "RelativePath": "/admin/therapy-options/secukinumab",
-        "CreatedBy": "v2-step3",
-        "CreatedAt": "2026-06-20T00:00:00Z",
-        "ModifiedBy": "v2-step3",
-        "ModifiedAt": "2026-06-20T00:00:00Z",
-        "ModifiedByModel": "claude-opus-4-8"
+        "RelativePath": "/admin/therapy-options/secukinumab"
       }
     ]
   }
@@ -18218,7 +17446,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "AutoimmuneDiseases",
     "field": "Name",
     "kind": "formula",
-    "rule": "An autoimmune diseas\u0027s name is computed as the disease label.",
+    "rule": "An autoimmune diseas's name is computed as the disease label.",
     "mechanical": false,
     "refs": [
       {
@@ -18233,7 +17461,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "AutoimmuneDiseases",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An autoimmune diseas\u0027s relative path is computed as the literal \u201C/diseases/\u201D, followed by the autoimmune disease ID.",
+    "rule": "An autoimmune diseas's relative path is computed as the literal “/diseases/”, followed by the autoimmune disease ID.",
     "mechanical": false,
     "refs": [
       {
@@ -18248,7 +17476,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "AutoimmuneDiseases",
     "field": "CountOfDiseaseStages",
     "kind": "rollup",
-    "rule": "An autoimmune diseas\u0027s count of disease stages is the number of disease stages related to the autoimmune diseas.",
+    "rule": "An autoimmune diseas's count of disease stages is the number of disease stages related to the autoimmune diseas.",
     "mechanical": false,
     "refs": [
       {
@@ -18268,7 +17496,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "AutoimmuneDiseases",
     "field": "CountOfInterventionTargets",
     "kind": "rollup",
-    "rule": "An autoimmune diseas\u0027s count of intervention targets is the number of intervention targets related to the autoimmune diseas.",
+    "rule": "An autoimmune diseas's count of intervention targets is the number of intervention targets related to the autoimmune diseas.",
     "mechanical": false,
     "refs": [
       {
@@ -18288,7 +17516,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseStages",
     "field": "Name",
     "kind": "formula",
-    "rule": "A disease stage\u0027s name is computed as the autoimmune disease disease label, followed by the literal \u201C \u2014 \u201D, followed by the stage label.",
+    "rule": "A disease stage's name is computed as the autoimmune disease disease label, followed by the literal “ — ”, followed by the stage label.",
     "mechanical": false,
     "refs": [
       {
@@ -18308,7 +17536,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseStages",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A disease stage\u0027s parent path is the relative path of the disease stage\u0027s autoimmune disease.",
+    "rule": "A disease stage's parent path is the relative path of the disease stage's autoimmune disease.",
     "mechanical": false,
     "refs": [
       {
@@ -18333,7 +17561,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseStages",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A disease stage\u0027s relative path is computed as the parent path, followed by the literal \u201C/stages/\u201D, followed by the disease stage ID.",
+    "rule": "A disease stage's relative path is computed as the parent path, followed by the literal “/stages/”, followed by the disease stage ID.",
     "mechanical": false,
     "refs": [
       {
@@ -18353,7 +17581,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseStages",
     "field": "AutoimmuneDiseaseDiseaseLabel",
     "kind": "formula",
-    "rule": "A disease stage\u0027s autoimmune disease disease label is the disease label of the disease stage\u0027s autoimmune disease.",
+    "rule": "A disease stage's autoimmune disease disease label is the disease label of the disease stage's autoimmune disease.",
     "mechanical": false,
     "refs": [
       {
@@ -18378,7 +17606,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseStages",
     "field": "IsPresymptomatic",
     "kind": "formula",
-    "rule": "A disease stage is considered a presymptomatic if the stage label is the literal \u201CPresymptomatic\u201D.",
+    "rule": "A disease stage is considered a presymptomatic if the stage label is the literal “Presymptomatic”.",
     "mechanical": false,
     "refs": [
       {
@@ -18389,13 +17617,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The disease stage\u0027s is presymptomatic is determined by the following priority:",
+      "headline": "The disease stage's is presymptomatic is determined by the following priority:",
       "cases": [
         {
           "value": "true",
           "when": {
             "kind": "leaf",
-            "text": "the stage label is the literal \u201CPresymptomatic\u201D"
+            "text": "the stage label is the literal “Presymptomatic”"
           }
         },
         {
@@ -18410,7 +17638,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Tissues",
     "field": "Name",
     "kind": "formula",
-    "rule": "A tissue\u0027s name is computed as the tissue label.",
+    "rule": "A tissue's name is computed as the tissue label.",
     "mechanical": false,
     "refs": [
       {
@@ -18425,7 +17653,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Tissues",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A tissue\u0027s relative path is computed as the literal \u201C/tissues/\u201D, followed by the tissue ID.",
+    "rule": "A tissue's relative path is computed as the literal “/tissues/”, followed by the tissue ID.",
     "mechanical": false,
     "refs": [
       {
@@ -18440,7 +17668,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Tissues",
     "field": "CountOfOmicsAssays",
     "kind": "rollup",
-    "rule": "A tissue\u0027s count of omics assays is the number of omics assays related to the tissue.",
+    "rule": "A tissue's count of omics assays is the number of omics assays related to the tissue.",
     "mechanical": false,
     "refs": [
       {
@@ -18460,7 +17688,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsModalities",
     "field": "Name",
     "kind": "formula",
-    "rule": "An omics modality\u0027s name is computed as the modality label.",
+    "rule": "An omics modality's name is computed as the modality label.",
     "mechanical": false,
     "refs": [
       {
@@ -18475,7 +17703,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsModalities",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An omics modality\u0027s relative path is computed as the literal \u201C/omics-modalities/\u201D, followed by the omics modality ID.",
+    "rule": "An omics modality's relative path is computed as the literal “/omics-modalities/”, followed by the omics modality ID.",
     "mechanical": false,
     "refs": [
       {
@@ -18490,7 +17718,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsModalities",
     "field": "CountOfOmicsAssays",
     "kind": "rollup",
-    "rule": "An omics modality\u0027s count of omics assays is the number of omics assays related to the omics modality.",
+    "rule": "An omics modality's count of omics assays is the number of omics assays related to the omics modality.",
     "mechanical": false,
     "refs": [
       {
@@ -18510,7 +17738,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "FederatedDatasets",
     "field": "Name",
     "kind": "formula",
-    "rule": "A federated dataset\u0027s name is computed as the node label.",
+    "rule": "A federated dataset's name is computed as the node label.",
     "mechanical": false,
     "refs": [
       {
@@ -18525,7 +17753,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "FederatedDatasets",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A federated dataset\u0027s relative path is computed as the literal \u201C/datasets/\u201D, followed by the federated dataset ID.",
+    "rule": "A federated dataset's relative path is computed as the literal “/datasets/”, followed by the federated dataset ID.",
     "mechanical": false,
     "refs": [
       {
@@ -18540,7 +17768,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "FederatedDatasets",
     "field": "CountOfIndividuals",
     "kind": "rollup",
-    "rule": "A federated dataset\u0027s count of individuals is the number of individuals related to the federated dataset.",
+    "rule": "A federated dataset's count of individuals is the number of individuals related to the federated dataset.",
     "mechanical": false,
     "refs": [
       {
@@ -18560,7 +17788,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "VariantTypes",
     "field": "Name",
     "kind": "formula",
-    "rule": "A variant type\u0027s name is computed as the type label.",
+    "rule": "A variant type's name is computed as the type label.",
     "mechanical": false,
     "refs": [
       {
@@ -18575,7 +17803,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "VariantTypes",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A variant type\u0027s relative path is computed as the literal \u201C/variant-types/\u201D, followed by the variant type ID.",
+    "rule": "A variant type's relative path is computed as the literal “/variant-types/”, followed by the variant type ID.",
     "mechanical": false,
     "refs": [
       {
@@ -18590,7 +17818,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "VariantTypes",
     "field": "CountOfGenomicVariants",
     "kind": "rollup",
-    "rule": "A variant type\u0027s count of genomic variants is the number of genomic variants related to the variant type.",
+    "rule": "A variant type's count of genomic variants is the number of genomic variants related to the variant type.",
     "mechanical": false,
     "refs": [
       {
@@ -18610,7 +17838,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "Name",
     "kind": "formula",
-    "rule": "An individual\u0027s name is computed as the given name, followed by a space, followed by the family name.",
+    "rule": "An individual's name is computed as the given name, followed by a space, followed by the family name.",
     "mechanical": false,
     "refs": [
       {
@@ -18630,7 +17858,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "Slug",
     "kind": "formula",
-    "rule": "An individual\u0027s slug is computed as the lower-cased family name, followed by a hyphen, followed by the given name with every a space replaced by a hyphen.",
+    "rule": "An individual's slug is computed as the lower-cased family name, followed by a hyphen, followed by the given name with every a space replaced by a hyphen.",
     "mechanical": true,
     "refs": [
       {
@@ -18650,7 +17878,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An individual\u0027s relative path is computed as the literal \u201C/intake/new-patient/\u201D, followed by the slug.",
+    "rule": "An individual's relative path is computed as the literal “/intake/new-patient/”, followed by the slug.",
     "mechanical": false,
     "refs": [
       {
@@ -18665,7 +17893,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "FederatedDatasetNodeLabel",
     "kind": "formula",
-    "rule": "The individual\u0027s federated dataset node label is determined by the following priority:\n1. an empty string, if the federated dataset is blank;\n2. otherwise the node label of the individual\u0027s federated dataset.",
+    "rule": "The individual's federated dataset node label is determined by the following priority:\n1. an empty string, if the federated dataset is blank;\n2. otherwise the node label of the individual's federated dataset.",
     "mechanical": false,
     "refs": [
       {
@@ -18686,7 +17914,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s federated dataset node label is determined by the following priority:",
+      "headline": "The individual's federated dataset node label is determined by the following priority:",
       "cases": [
         {
           "value": "an empty string",
@@ -18696,7 +17924,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the node label of the individual\u0027s federated dataset",
+          "value": "the node label of the individual's federated dataset",
           "when": null
         }
       ],
@@ -18707,7 +17935,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountOfGenomicVariants",
     "kind": "rollup",
-    "rule": "An individual\u0027s count of genomic variants is the number of genomic variants related to the individual.",
+    "rule": "An individual's count of genomic variants is the number of genomic variants related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -18727,7 +17955,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountOfCausalMechanisms",
     "kind": "rollup",
-    "rule": "An individual\u0027s count of causal mechanisms is the number of causal mechanisms related to the individual.",
+    "rule": "An individual's count of causal mechanisms is the number of causal mechanisms related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -18747,7 +17975,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountOfEpistaticInteractions",
     "kind": "rollup",
-    "rule": "An individual\u0027s count of epistatic interactions is the number of epistatic interactions related to the individual.",
+    "rule": "An individual's count of epistatic interactions is the number of epistatic interactions related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -18767,7 +17995,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "RareVariantBurdenScore",
     "kind": "formula",
-    "rule": "The individual\u0027s rare variant burden score is determined by the following priority:\n1. the count of genomic variants divided by the age years, if the age years is greater than 0;\n2. otherwise 0.",
+    "rule": "The individual's rare variant burden score is determined by the following priority:\n1. the count of genomic variants divided by the age years, if the age years is greater than 0;\n2. otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -18783,7 +18011,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s rare variant burden score is determined by the following priority:",
+      "headline": "The individual's rare variant burden score is determined by the following priority:",
       "cases": [
         {
           "value": "the count of genomic variants divided by the age years",
@@ -18804,7 +18032,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CausalArchitectureScore",
     "kind": "formula",
-    "rule": "An individual\u0027s causal architecture score is computed as the count of causal mechanisms times 10 plus the count of epistatic interactions times 5 plus the rare variant burden score.",
+    "rule": "An individual's causal architecture score is computed as the count of causal mechanisms times 10 plus the count of epistatic interactions times 5 plus the rare variant burden score.",
     "mechanical": false,
     "refs": [
       {
@@ -18840,7 +18068,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s is development window is determined by the following priority:",
+      "headline": "The individual's is development window is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -18872,7 +18100,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s is aging window is determined by the following priority:",
+      "headline": "The individual's is aging window is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -18893,7 +18121,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountConfirmedCausalNodes",
     "kind": "rollup",
-    "rule": "An individual\u0027s count confirmed causal nodes is the number of the individual\u0027s causal mechanisms that are causal architecture nodes.",
+    "rule": "An individual's count confirmed causal nodes is the number of the individual's causal mechanisms that are causal architecture nodes.",
     "mechanical": false,
     "refs": [
       {
@@ -18918,7 +18146,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "SumConfirmedCausalConfidence",
     "kind": "rollup",
-    "rule": "An individual\u0027s sum confirmed causal confidence is the total causal confidence across the individual\u0027s causal mechanisms that are causal architecture nodes.",
+    "rule": "An individual's sum confirmed causal confidence is the total causal confidence across the individual's causal mechanisms that are causal architecture nodes.",
     "mechanical": false,
     "refs": [
       {
@@ -18948,7 +18176,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountCrossAncestryConfirmedNodes",
     "kind": "rollup",
-    "rule": "An individual\u0027s count cross ancestry confirmed nodes is the number of the individual\u0027s causal mechanisms that are ancestry transportables.",
+    "rule": "An individual's count cross ancestry confirmed nodes is the number of the individual's causal mechanisms that are ancestry transportables.",
     "mechanical": false,
     "refs": [
       {
@@ -18973,7 +18201,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "MaxSeverityScore",
     "kind": "rollup",
-    "rule": "An individual\u0027s max severity score is the largest severity score across the clinical phenotypes related to the individual.",
+    "rule": "An individual's max severity score is the largest severity score across the clinical phenotypes related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -18998,7 +18226,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountHighSeverityPhenotypes",
     "kind": "rollup",
-    "rule": "An individual\u0027s count high severity phenotypes is the number of the individual\u0027s clinical phenotypes that are high severities.",
+    "rule": "An individual's count high severity phenotypes is the number of the individual's clinical phenotypes that are high severities.",
     "mechanical": false,
     "refs": [
       {
@@ -19034,7 +18262,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s has high severity phenotype is determined by the following priority:",
+      "headline": "The individual's has high severity phenotype is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19055,7 +18283,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountPredictedTreatmentResponses",
     "kind": "rollup",
-    "rule": "An individual\u0027s count predicted treatment responses is the number of the individual\u0027s treatments that are treatment response predicted.",
+    "rule": "An individual's count predicted treatment responses is the number of the individual's treatments that are treatment response predicted.",
     "mechanical": false,
     "refs": [
       {
@@ -19091,7 +18319,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s has predicted treatment response is determined by the following priority:",
+      "headline": "The individual's has predicted treatment response is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19112,7 +18340,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "CountSerologyPanels",
     "kind": "rollup",
-    "rule": "An individual\u0027s count serology panels is the number of serology observations related to the individual.",
+    "rule": "An individual's count serology panels is the number of serology observations related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -19132,7 +18360,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "MaxProgressionStateOrder",
     "kind": "rollup",
-    "rule": "An individual\u0027s max progression state order is the largest progression state order across the serology observations related to the individual.",
+    "rule": "An individual's max progression state order is the largest progression state order across the serology observations related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -19157,7 +18385,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "LatestSledaiScore",
     "kind": "rollup",
-    "rule": "An individual\u0027s latest sledai score is the largest sledai score across the serology observations related to the individual.",
+    "rule": "An individual's latest sledai score is the largest sledai score across the serology observations related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -19182,7 +18410,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "NephritisProgressionStateKey",
     "kind": "formula",
-    "rule": "The individual\u0027s nephritis progression state key is determined by the following priority:\n1. the literal \u201CBiopsyIndicated\u201D, if the max progression state order is at least 5;\n2. the literal \u201CRenalFlareRisk\u201D, if the max progression state order is at least 4;\n3. the literal \u201CEarlyNephritis\u201D, if the max progression state order is at least 3;\n4. the literal \u201CSerologicActive\u201D, if the max progression state order is at least 2;\n5. otherwise the literal \u201CPresymptomaticAutoimmunity\u201D.",
+    "rule": "The individual's nephritis progression state key is determined by the following priority:\n1. the literal “BiopsyIndicated”, if the max progression state order is at least 5;\n2. the literal “RenalFlareRisk”, if the max progression state order is at least 4;\n3. the literal “EarlyNephritis”, if the max progression state order is at least 3;\n4. the literal “SerologicActive”, if the max progression state order is at least 2;\n5. otherwise the literal “PresymptomaticAutoimmunity”.",
     "mechanical": false,
     "refs": [
       {
@@ -19193,38 +18421,38 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s nephritis progression state key is determined by the following priority:",
+      "headline": "The individual's nephritis progression state key is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CBiopsyIndicated\u201D",
+          "value": "the literal “BiopsyIndicated”",
           "when": {
             "kind": "leaf",
             "text": "the max progression state order is at least 5"
           }
         },
         {
-          "value": "the literal \u201CRenalFlareRisk\u201D",
+          "value": "the literal “RenalFlareRisk”",
           "when": {
             "kind": "leaf",
             "text": "the max progression state order is at least 4"
           }
         },
         {
-          "value": "the literal \u201CEarlyNephritis\u201D",
+          "value": "the literal “EarlyNephritis”",
           "when": {
             "kind": "leaf",
             "text": "the max progression state order is at least 3"
           }
         },
         {
-          "value": "the literal \u201CSerologicActive\u201D",
+          "value": "the literal “SerologicActive”",
           "when": {
             "kind": "leaf",
             "text": "the max progression state order is at least 2"
           }
         },
         {
-          "value": "the literal \u201CPresymptomaticAutoimmunity\u201D",
+          "value": "the literal “PresymptomaticAutoimmunity”",
           "when": null
         }
       ],
@@ -19235,7 +18463,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "ActivityTier",
     "kind": "formula",
-    "rule": "The individual\u0027s activity tier is determined by the following priority:\n1. the literal \u201CHigh / flare\u201D, if the latest sledai score is at least 12;\n2. the literal \u201CModerate\u201D, if the latest sledai score is at least 6;\n3. the literal \u201CMild\u201D, if the latest sledai score is at least 1;\n4. otherwise the literal \u201CQuiescent\u201D.",
+    "rule": "The individual's activity tier is determined by the following priority:\n1. the literal “High / flare”, if the latest sledai score is at least 12;\n2. the literal “Moderate”, if the latest sledai score is at least 6;\n3. the literal “Mild”, if the latest sledai score is at least 1;\n4. otherwise the literal “Quiescent”.",
     "mechanical": false,
     "refs": [
       {
@@ -19246,31 +18474,31 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s activity tier is determined by the following priority:",
+      "headline": "The individual's activity tier is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CHigh / flare\u201D",
+          "value": "the literal “High / flare”",
           "when": {
             "kind": "leaf",
             "text": "the latest sledai score is at least 12"
           }
         },
         {
-          "value": "the literal \u201CModerate\u201D",
+          "value": "the literal “Moderate”",
           "when": {
             "kind": "leaf",
             "text": "the latest sledai score is at least 6"
           }
         },
         {
-          "value": "the literal \u201CMild\u201D",
+          "value": "the literal “Mild”",
           "when": {
             "kind": "leaf",
             "text": "the latest sledai score is at least 1"
           }
         },
         {
-          "value": "the literal \u201CQuiescent\u201D",
+          "value": "the literal “Quiescent”",
           "when": null
         }
       ],
@@ -19292,7 +18520,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s is high disease activity is determined by the following priority:",
+      "headline": "The individual's is high disease activity is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19313,7 +18541,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "IsDiseaseProgressing",
     "kind": "formula",
-    "rule": "An individual is considered disease progressing if at least one of the following holds: the nephritis progression state key is the literal \u201CEarlyNephritis\u201D; the nephritis progression state key is the literal \u201CRenalFlareRisk\u201D; or the nephritis progression state key is the literal \u201CBiopsyIndicated\u201D.",
+    "rule": "An individual is considered disease progressing if at least one of the following holds: the nephritis progression state key is the literal “EarlyNephritis”; the nephritis progression state key is the literal “RenalFlareRisk”; or the nephritis progression state key is the literal “BiopsyIndicated”.",
     "mechanical": false,
     "refs": [
       {
@@ -19324,7 +18552,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s is disease progressing is determined by the following priority:",
+      "headline": "The individual's is disease progressing is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19333,15 +18561,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
             "children": [
               {
                 "kind": "leaf",
-                "text": "the nephritis progression state key is the literal \u201CEarlyNephritis\u201D"
+                "text": "the nephritis progression state key is the literal “EarlyNephritis”"
               },
               {
                 "kind": "leaf",
-                "text": "the nephritis progression state key is the literal \u201CRenalFlareRisk\u201D"
+                "text": "the nephritis progression state key is the literal “RenalFlareRisk”"
               },
               {
                 "kind": "leaf",
-                "text": "the nephritis progression state key is the literal \u201CBiopsyIndicated\u201D"
+                "text": "the nephritis progression state key is the literal “BiopsyIndicated”"
               }
             ]
           }
@@ -19358,7 +18586,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "TargetPathwayCode",
     "kind": "rollup",
-    "rule": "An individual\u0027s target pathway code is the largest target pathway code across the causal mechanisms related to the individual.",
+    "rule": "An individual's target pathway code is the largest target pathway code across the causal mechanisms related to the individual.",
     "mechanical": false,
     "refs": [
       {
@@ -19383,7 +18611,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Individuals",
     "field": "TargetPathway",
     "kind": "formula",
-    "rule": "The individual\u0027s target pathway is determined by the following priority:\n1. the literal \u201Ctype-I-IFN\u201D, if the target pathway code is 1;\n2. the literal \u201CB-cell/autoantibody\u201D, if the target pathway code is 2;\n3. the literal \u201CT-cell-costim\u201D, if the target pathway code is 3;\n4. the literal \u201CIL-17/23\u201D, if the target pathway code is 4;\n5. otherwise an empty string.",
+    "rule": "The individual's target pathway is determined by the following priority:\n1. the literal “type-I-IFN”, if the target pathway code is 1;\n2. the literal “B-cell/autoantibody”, if the target pathway code is 2;\n3. the literal “T-cell-costim”, if the target pathway code is 3;\n4. the literal “IL-17/23”, if the target pathway code is 4;\n5. otherwise an empty string.",
     "mechanical": false,
     "refs": [
       {
@@ -19394,31 +18622,31 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual\u0027s target pathway is determined by the following priority:",
+      "headline": "The individual's target pathway is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201Ctype-I-IFN\u201D",
+          "value": "the literal “type-I-IFN”",
           "when": {
             "kind": "leaf",
             "text": "the target pathway code is 1"
           }
         },
         {
-          "value": "the literal \u201CB-cell/autoantibody\u201D",
+          "value": "the literal “B-cell/autoantibody”",
           "when": {
             "kind": "leaf",
             "text": "the target pathway code is 2"
           }
         },
         {
-          "value": "the literal \u201CT-cell-costim\u201D",
+          "value": "the literal “T-cell-costim”",
           "when": {
             "kind": "leaf",
             "text": "the target pathway code is 3"
           }
         },
         {
-          "value": "the literal \u201CIL-17/23\u201D",
+          "value": "the literal “IL-17/23”",
           "when": {
             "kind": "leaf",
             "text": "the target pathway code is 4"
@@ -19436,7 +18664,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GenomicVariants",
     "field": "Name",
     "kind": "formula",
-    "rule": "A genomic variant\u0027s name is computed as the variant label.",
+    "rule": "A genomic variant's name is computed as the variant label.",
     "mechanical": false,
     "refs": [
       {
@@ -19451,7 +18679,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GenomicVariants",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A genomic variant\u0027s parent path is the relative path of the genomic variant\u0027s individual.",
+    "rule": "A genomic variant's parent path is the relative path of the genomic variant's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -19476,7 +18704,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GenomicVariants",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A genomic variant\u0027s relative path is computed as the parent path, followed by the literal \u201C/variants/\u201D, followed by the genomic variant ID.",
+    "rule": "A genomic variant's relative path is computed as the parent path, followed by the literal “/variants/”, followed by the genomic variant ID.",
     "mechanical": false,
     "refs": [
       {
@@ -19496,7 +18724,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GenomicVariants",
     "field": "VariantTypeLabel",
     "kind": "formula",
-    "rule": "A genomic variant\u0027s variant type label is the type label of the genomic variant\u0027s variant type.",
+    "rule": "A genomic variant's variant type label is the type label of the genomic variant's variant type.",
     "mechanical": false,
     "refs": [
       {
@@ -19521,7 +18749,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GenomicVariants",
     "field": "VariantClassIsRare",
     "kind": "lookup",
-    "rule": "A genomic variant\u0027s variant class is rare is true when the genomic variant\u0027s variant type is a rare variant class.",
+    "rule": "A genomic variant's variant class is rare is true when the genomic variant's variant type is a rare variant class.",
     "mechanical": false,
     "refs": [
       {
@@ -19546,7 +18774,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GenomicVariants",
     "field": "IndividualAncestryLabel",
     "kind": "formula",
-    "rule": "A genomic variant\u0027s individual ancestry label is the ancestry label of the genomic variant\u0027s individual.",
+    "rule": "A genomic variant's individual ancestry label is the ancestry label of the genomic variant's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -19582,7 +18810,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The genomic variant\u0027s is rare variant is determined by the following priority:",
+      "headline": "The genomic variant's is rare variant is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19624,7 +18852,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The genomic variant\u0027s is causal candidate is determined by the following priority:",
+      "headline": "The genomic variant's is causal candidate is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19663,7 +18891,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsAssays",
     "field": "Name",
     "kind": "formula",
-    "rule": "An omics assay\u0027s name is computed as the assay label.",
+    "rule": "An omics assay's name is computed as the assay label.",
     "mechanical": false,
     "refs": [
       {
@@ -19678,7 +18906,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsAssays",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "An omics assay\u0027s parent path is the relative path of the omics assay\u0027s individual.",
+    "rule": "An omics assay's parent path is the relative path of the omics assay's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -19703,7 +18931,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsAssays",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An omics assay\u0027s relative path is computed as the parent path, followed by the literal \u201C/assays/\u201D, followed by the omics assay ID.",
+    "rule": "An omics assay's relative path is computed as the parent path, followed by the literal “/assays/”, followed by the omics assay ID.",
     "mechanical": false,
     "refs": [
       {
@@ -19723,7 +18951,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsAssays",
     "field": "ModalityLabel",
     "kind": "formula",
-    "rule": "An omics assay\u0027s modality label is the modality label of the omics assay\u0027s omics modality.",
+    "rule": "An omics assay's modality label is the modality label of the omics assay's omics modality.",
     "mechanical": false,
     "refs": [
       {
@@ -19748,7 +18976,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OmicsAssays",
     "field": "TissueLabel",
     "kind": "formula",
-    "rule": "The omics assay\u0027s tissue label is determined by the following priority:\n1. the literal \u201CMissing Tissue\u201D, if the tissue is blank;\n2. otherwise the tissue label of the omics assay\u0027s tissue.",
+    "rule": "The omics assay's tissue label is determined by the following priority:\n1. the literal “Missing Tissue”, if the tissue is blank;\n2. otherwise the tissue label of the omics assay's tissue.",
     "mechanical": false,
     "refs": [
       {
@@ -19769,17 +18997,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The omics assay\u0027s tissue label is determined by the following priority:",
+      "headline": "The omics assay's tissue label is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CMissing Tissue\u201D",
+          "value": "the literal “Missing Tissue”",
           "when": {
             "kind": "leaf",
             "text": "the tissue is blank"
           }
         },
         {
-          "value": "the tissue label of the omics assay\u0027s tissue",
+          "value": "the tissue label of the omics assay's tissue",
           "when": null
         }
       ],
@@ -19801,7 +19029,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The omics assay\u0027s has batch effect risk is determined by the following priority:",
+      "headline": "The omics assay's has batch effect risk is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19838,7 +19066,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The omics assay\u0027s is high quality assay is determined by the following priority:",
+      "headline": "The omics assay's is high quality assay is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -19868,7 +19096,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EvidenceItems",
     "field": "Name",
     "kind": "formula",
-    "rule": "An evidence item\u0027s name is computed as the evidence label.",
+    "rule": "An evidence item's name is computed as the evidence label.",
     "mechanical": false,
     "refs": [
       {
@@ -19883,7 +19111,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EvidenceItems",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "An evidence item\u0027s parent path is the relative path of the evidence item\u0027s causal mechanism.",
+    "rule": "An evidence item's parent path is the relative path of the evidence item's causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -19908,7 +19136,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EvidenceItems",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An evidence item\u0027s relative path is computed as the parent path, followed by the literal \u201C/evidence/\u201D, followed by the evidence item ID.",
+    "rule": "An evidence item's relative path is computed as the parent path, followed by the literal “/evidence/”, followed by the evidence item ID.",
     "mechanical": false,
     "refs": [
       {
@@ -19928,7 +19156,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EvidenceItems",
     "field": "AssayIsHighQuality",
     "kind": "lookup",
-    "rule": "An evidence item\u0027s assay is high quality is true when the evidence item\u0027s omics assay is a high quality assay.",
+    "rule": "An evidence item's assay is high quality is true when the evidence item's omics assay is a high quality assay.",
     "mechanical": false,
     "refs": [
       {
@@ -19953,7 +19181,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EvidenceItems",
     "field": "ZStat",
     "kind": "formula",
-    "rule": "The evidence item\u0027s z stat is determined by the following priority:\n1. the effect size divided by the standard error, if the standard error is greater than 0;\n2. otherwise 0.",
+    "rule": "The evidence item's z stat is determined by the following priority:\n1. the effect size divided by the standard error, if the standard error is greater than 0;\n2. otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -19969,7 +19197,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The evidence item\u0027s z stat is determined by the following priority:",
+      "headline": "The evidence item's z stat is determined by the following priority:",
       "cases": [
         {
           "value": "the effect size divided by the standard error",
@@ -20006,7 +19234,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The evidence item\u0027s is confound controlled is determined by the following priority:",
+      "headline": "The evidence item's is confound controlled is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20062,7 +19290,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The evidence item\u0027s is qualified evidence is determined by the following priority:",
+      "headline": "The evidence item's is qualified evidence is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20100,7 +19328,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CohortReplications",
     "field": "Name",
     "kind": "formula",
-    "rule": "A cohort replication\u0027s name is computed as the replication label.",
+    "rule": "A cohort replication's name is computed as the replication label.",
     "mechanical": false,
     "refs": [
       {
@@ -20115,7 +19343,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CohortReplications",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A cohort replication\u0027s parent path is the relative path of the cohort replication\u0027s causal mechanism.",
+    "rule": "A cohort replication's parent path is the relative path of the cohort replication's causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -20140,7 +19368,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CohortReplications",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A cohort replication\u0027s relative path is computed as the parent path, followed by the literal \u201C/replications/\u201D, followed by the cohort replication ID.",
+    "rule": "A cohort replication's relative path is computed as the parent path, followed by the literal “/replications/”, followed by the cohort replication ID.",
     "mechanical": false,
     "refs": [
       {
@@ -20176,7 +19404,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The cohort replication\u0027s replicated at nominal sig is determined by the following priority:",
+      "headline": "The cohort replication's replicated at nominal sig is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20206,7 +19434,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CohortReplications",
     "field": "MechanismPrimaryAncestry",
     "kind": "lookup",
-    "rule": "A cohort replication\u0027s mechanism primary ancestry is the individual ancestry label of the cohort replication\u0027s causal mechanism.",
+    "rule": "A cohort replication's mechanism primary ancestry is the individual ancestry label of the cohort replication's causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -20247,7 +19475,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The cohort replication\u0027s is different ancestry replication is determined by the following priority:",
+      "headline": "The cohort replication's is different ancestry replication is determined by the following priority:",
       "cases": [
         {
           "value": "false",
@@ -20284,7 +19512,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The cohort replication\u0027s is cross ancestry concordant is determined by the following priority:",
+      "headline": "The cohort replication's is cross ancestry concordant is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20314,7 +19542,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "NegativeControlTests",
     "field": "Name",
     "kind": "formula",
-    "rule": "A negative control test\u0027s name is computed as the control label.",
+    "rule": "A negative control test's name is computed as the control label.",
     "mechanical": false,
     "refs": [
       {
@@ -20329,7 +19557,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "NegativeControlTests",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A negative control test\u0027s parent path is the relative path of the negative control test\u0027s causal mechanism.",
+    "rule": "A negative control test's parent path is the relative path of the negative control test's causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -20354,7 +19582,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "NegativeControlTests",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A negative control test\u0027s relative path is computed as the parent path, followed by the literal \u201C/neg-controls/\u201D, followed by the negative control test ID.",
+    "rule": "A negative control test's relative path is computed as the parent path, followed by the literal “/neg-controls/”, followed by the negative control test ID.",
     "mechanical": false,
     "refs": [
       {
@@ -20390,7 +19618,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The negative control test\u0027s is survived is determined by the following priority:",
+      "headline": "The negative control test's is survived is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20411,7 +19639,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EnvironmentalExposures",
     "field": "Name",
     "kind": "formula",
-    "rule": "An environmental exposure\u0027s name is computed as the exposure label.",
+    "rule": "An environmental exposure's name is computed as the exposure label.",
     "mechanical": false,
     "refs": [
       {
@@ -20426,7 +19654,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EnvironmentalExposures",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "An environmental exposure\u0027s parent path is the relative path of the environmental exposure\u0027s individual.",
+    "rule": "An environmental exposure's parent path is the relative path of the environmental exposure's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -20451,7 +19679,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EnvironmentalExposures",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An environmental exposure\u0027s relative path is computed as the parent path, followed by the literal \u201C/exposures/\u201D, followed by the environmental exposure ID.",
+    "rule": "An environmental exposure's relative path is computed as the parent path, followed by the literal “/exposures/”, followed by the environmental exposure ID.",
     "mechanical": false,
     "refs": [
       {
@@ -20471,7 +19699,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EnvironmentalExposures",
     "field": "IndividualAncestryLabel",
     "kind": "formula",
-    "rule": "An environmental exposure\u0027s individual ancestry label is the ancestry label of the environmental exposure\u0027s individual.",
+    "rule": "An environmental exposure's individual ancestry label is the ancestry label of the environmental exposure's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -20507,7 +19735,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The environmental exposure\u0027s is high exposure is determined by the following priority:",
+      "headline": "The environmental exposure's is high exposure is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20528,7 +19756,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Treatments",
     "field": "Name",
     "kind": "formula",
-    "rule": "A treatment\u0027s name is computed as the treatment label.",
+    "rule": "A treatment's name is computed as the treatment label.",
     "mechanical": false,
     "refs": [
       {
@@ -20543,7 +19771,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Treatments",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A treatment\u0027s parent path is the relative path of the treatment\u0027s individual.",
+    "rule": "A treatment's parent path is the relative path of the treatment's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -20568,7 +19796,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Treatments",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A treatment\u0027s relative path is computed as the parent path, followed by the literal \u201C/treatments/\u201D, followed by the treatment ID.",
+    "rule": "A treatment's relative path is computed as the parent path, followed by the literal “/treatments/”, followed by the treatment ID.",
     "mechanical": false,
     "refs": [
       {
@@ -20588,7 +19816,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Treatments",
     "field": "AutoimmuneDiseaseLabel",
     "kind": "formula",
-    "rule": "A treatment\u0027s autoimmune disease label is the disease label of the treatment\u0027s autoimmune disease.",
+    "rule": "A treatment's autoimmune disease label is the disease label of the treatment's autoimmune disease.",
     "mechanical": false,
     "refs": [
       {
@@ -20613,7 +19841,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Treatments",
     "field": "IsEffectiveTreatment",
     "kind": "formula",
-    "rule": "A treatment is considered an effective treatment if all of the following hold: at least one of the following holds: the treatment response is the literal \u201CComplete\u201D or the treatment response is the literal \u201CPartial\u201D and it is not the case that the has adverse effect flag is set.",
+    "rule": "A treatment is considered an effective treatment if all of the following hold: at least one of the following holds: the treatment response is the literal “Complete” or the treatment response is the literal “Partial” and it is not the case that the has adverse effect flag is set.",
     "mechanical": false,
     "refs": [
       {
@@ -20629,7 +19857,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The treatment\u0027s is effective treatment is determined by the following priority:",
+      "headline": "The treatment's is effective treatment is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20641,11 +19869,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
                 "children": [
                   {
                     "kind": "leaf",
-                    "text": "the treatment response is the literal \u201CComplete\u201D"
+                    "text": "the treatment response is the literal “Complete”"
                   },
                   {
                     "kind": "leaf",
-                    "text": "the treatment response is the literal \u201CPartial\u201D"
+                    "text": "the treatment response is the literal “Partial”"
                   }
                 ]
               },
@@ -20668,7 +19896,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Treatments",
     "field": "IsMechanismMatched",
     "kind": "lookup",
-    "rule": "A treatment\u0027s is mechanism matched is false if the targets mechanism is blank, otherwise the is causal architecture node of the treatment\u0027s targets mechanism.",
+    "rule": "A treatment's is mechanism matched is false if the targets mechanism is blank, otherwise the is causal architecture node of the treatment's targets mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -20689,7 +19917,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The treatment\u0027s is mechanism matched is determined by the following priority:",
+      "headline": "The treatment's is mechanism matched is determined by the following priority:",
       "cases": [
         {
           "value": "false",
@@ -20699,7 +19927,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the is causal architecture node of the treatment\u0027s targets mechanism",
+          "value": "the is causal architecture node of the treatment's targets mechanism",
           "when": null
         }
       ],
@@ -20726,7 +19954,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The treatment\u0027s is treatment response predicted is determined by the following priority:",
+      "headline": "The treatment's is treatment response predicted is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20756,7 +19984,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Treatments",
     "field": "TreatmentResponseDecidingFactor",
     "kind": "formula",
-    "rule": "The treatment\u0027s treatment response deciding factor is determined by the following priority:\n1. the literal \u201CEffectiveOnConfirmedMechanism\u201D, if the is treatment response predicted flag is set;\n2. the literal \u201CNoConfirmedMechanism\u201D, if it is not the case that the is mechanism matched flag is set;\n3. the literal \u201CAdverseEffect\u201D, if the has adverse effect flag is set;\n4. the literal \u201CNoResponse\u201D, if at least one of the following holds: the treatment response is the literal \u201CNone\u201D or the treatment response is the literal \u201CAdverse\u201D;\n5. otherwise the literal \u201CUndetermined\u201D.",
+    "rule": "The treatment's treatment response deciding factor is determined by the following priority:\n1. the literal “EffectiveOnConfirmedMechanism”, if the is treatment response predicted flag is set;\n2. the literal “NoConfirmedMechanism”, if it is not the case that the is mechanism matched flag is set;\n3. the literal “AdverseEffect”, if the has adverse effect flag is set;\n4. the literal “NoResponse”, if at least one of the following holds: the treatment response is the literal “None” or the treatment response is the literal “Adverse”;\n5. otherwise the literal “Undetermined”.",
     "mechanical": false,
     "refs": [
       {
@@ -20782,47 +20010,47 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The treatment\u0027s treatment response deciding factor is determined by the following priority:",
+      "headline": "The treatment's treatment response deciding factor is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CEffectiveOnConfirmedMechanism\u201D",
+          "value": "the literal “EffectiveOnConfirmedMechanism”",
           "when": {
             "kind": "leaf",
             "text": "the is treatment response predicted flag is set"
           }
         },
         {
-          "value": "the literal \u201CNoConfirmedMechanism\u201D",
+          "value": "the literal “NoConfirmedMechanism”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the is mechanism matched flag is set"
           }
         },
         {
-          "value": "the literal \u201CAdverseEffect\u201D",
+          "value": "the literal “AdverseEffect”",
           "when": {
             "kind": "leaf",
             "text": "the has adverse effect flag is set"
           }
         },
         {
-          "value": "the literal \u201CNoResponse\u201D",
+          "value": "the literal “NoResponse”",
           "when": {
             "kind": "any",
             "children": [
               {
                 "kind": "leaf",
-                "text": "the treatment response is the literal \u201CNone\u201D"
+                "text": "the treatment response is the literal “None”"
               },
               {
                 "kind": "leaf",
-                "text": "the treatment response is the literal \u201CAdverse\u201D"
+                "text": "the treatment response is the literal “Adverse”"
               }
             ]
           }
         },
         {
-          "value": "the literal \u201CUndetermined\u201D",
+          "value": "the literal “Undetermined”",
           "when": null
         }
       ],
@@ -20833,7 +20061,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "ClinicalPhenotypes",
     "field": "Name",
     "kind": "formula",
-    "rule": "A clinical phenotype\u0027s name is computed as the phenotype label.",
+    "rule": "A clinical phenotype's name is computed as the phenotype label.",
     "mechanical": false,
     "refs": [
       {
@@ -20848,7 +20076,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "ClinicalPhenotypes",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A clinical phenotype\u0027s parent path is the relative path of the clinical phenotype\u0027s individual.",
+    "rule": "A clinical phenotype's parent path is the relative path of the clinical phenotype's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -20873,7 +20101,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "ClinicalPhenotypes",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A clinical phenotype\u0027s relative path is computed as the parent path, followed by the literal \u201C/phenotypes/\u201D, followed by the clinical phenotype ID.",
+    "rule": "A clinical phenotype's relative path is computed as the parent path, followed by the literal “/phenotypes/”, followed by the clinical phenotype ID.",
     "mechanical": false,
     "refs": [
       {
@@ -20893,7 +20121,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "ClinicalPhenotypes",
     "field": "DiseaseStageLabel",
     "kind": "formula",
-    "rule": "The clinical phenotype\u0027s disease stage label is determined by the following priority:\n1. an empty string, if the disease stage is blank;\n2. otherwise the stage label of the clinical phenotype\u0027s disease stage.",
+    "rule": "The clinical phenotype's disease stage label is determined by the following priority:\n1. an empty string, if the disease stage is blank;\n2. otherwise the stage label of the clinical phenotype's disease stage.",
     "mechanical": false,
     "refs": [
       {
@@ -20914,7 +20142,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The clinical phenotype\u0027s disease stage label is determined by the following priority:",
+      "headline": "The clinical phenotype's disease stage label is determined by the following priority:",
       "cases": [
         {
           "value": "an empty string",
@@ -20924,7 +20152,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the stage label of the clinical phenotype\u0027s disease stage",
+          "value": "the stage label of the clinical phenotype's disease stage",
           "when": null
         }
       ],
@@ -20946,7 +20174,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The clinical phenotype\u0027s is high severity is determined by the following priority:",
+      "headline": "The clinical phenotype's is high severity is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -20967,7 +20195,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "ClinicalPhenotypes",
     "field": "IsPresymptomaticPhenotype",
     "kind": "formula",
-    "rule": "A clinical phenotype is considered a presymptomatic phenotype if the disease stage label is the literal \u201CPresymptomatic\u201D.",
+    "rule": "A clinical phenotype is considered a presymptomatic phenotype if the disease stage label is the literal “Presymptomatic”.",
     "mechanical": false,
     "refs": [
       {
@@ -20978,13 +20206,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The clinical phenotype\u0027s is presymptomatic phenotype is determined by the following priority:",
+      "headline": "The clinical phenotype's is presymptomatic phenotype is determined by the following priority:",
       "cases": [
         {
           "value": "true",
           "when": {
             "kind": "leaf",
-            "text": "the disease stage label is the literal \u201CPresymptomatic\u201D"
+            "text": "the disease stage label is the literal “Presymptomatic”"
           }
         },
         {
@@ -20999,7 +20227,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "TargetPathwayCode",
     "kind": "formula",
-    "rule": "The causal mechanism\u0027s target pathway code is determined by the following priority:\n1. 1, if the target pathway is the literal \u201Ctype-I-IFN\u201D;\n2. 2, if the target pathway is the literal \u201CB-cell/autoantibody\u201D;\n3. 3, if the target pathway is the literal \u201CT-cell-costim\u201D;\n4. 4, if the target pathway is the literal \u201CIL-17/23\u201D;\n5. otherwise 0.",
+    "rule": "The causal mechanism's target pathway code is determined by the following priority:\n1. 1, if the target pathway is the literal “type-I-IFN”;\n2. 2, if the target pathway is the literal “B-cell/autoantibody”;\n3. 3, if the target pathway is the literal “T-cell-costim”;\n4. 4, if the target pathway is the literal “IL-17/23”;\n5. otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -21010,34 +20238,34 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s target pathway code is determined by the following priority:",
+      "headline": "The causal mechanism's target pathway code is determined by the following priority:",
       "cases": [
         {
           "value": "1",
           "when": {
             "kind": "leaf",
-            "text": "the target pathway is the literal \u201Ctype-I-IFN\u201D"
+            "text": "the target pathway is the literal “type-I-IFN”"
           }
         },
         {
           "value": "2",
           "when": {
             "kind": "leaf",
-            "text": "the target pathway is the literal \u201CB-cell/autoantibody\u201D"
+            "text": "the target pathway is the literal “B-cell/autoantibody”"
           }
         },
         {
           "value": "3",
           "when": {
             "kind": "leaf",
-            "text": "the target pathway is the literal \u201CT-cell-costim\u201D"
+            "text": "the target pathway is the literal “T-cell-costim”"
           }
         },
         {
           "value": "4",
           "when": {
             "kind": "leaf",
-            "text": "the target pathway is the literal \u201CIL-17/23\u201D"
+            "text": "the target pathway is the literal “IL-17/23”"
           }
         },
         {
@@ -21052,7 +20280,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "Name",
     "kind": "formula",
-    "rule": "A causal mechanism\u0027s name is computed as the mechanism label.",
+    "rule": "A causal mechanism's name is computed as the mechanism label.",
     "mechanical": false,
     "refs": [
       {
@@ -21067,7 +20295,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A causal mechanism\u0027s parent path is the relative path of the causal mechanism\u0027s individual.",
+    "rule": "A causal mechanism's parent path is the relative path of the causal mechanism's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -21092,7 +20320,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A causal mechanism\u0027s relative path is computed as the parent path, followed by the literal \u201C/mechanisms/\u201D, followed by the causal mechanism ID.",
+    "rule": "A causal mechanism's relative path is computed as the parent path, followed by the literal “/mechanisms/”, followed by the causal mechanism ID.",
     "mechanical": false,
     "refs": [
       {
@@ -21112,7 +20340,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "IndividualAncestryLabel",
     "kind": "formula",
-    "rule": "A causal mechanism\u0027s individual ancestry label is the ancestry label of the causal mechanism\u0027s individual.",
+    "rule": "A causal mechanism's individual ancestry label is the ancestry label of the causal mechanism's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -21137,7 +20365,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountQualifiedEvidence",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count qualified evidence is the number of the causal mechanism\u0027s evidence items that are qualified evidences.",
+    "rule": "A causal mechanism's count qualified evidence is the number of the causal mechanism's evidence items that are qualified evidences.",
     "mechanical": false,
     "refs": [
       {
@@ -21162,7 +20390,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountModalitiesSupporting",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count modalities supporting is the number of the causal mechanism\u0027s evidence items that are cross modalities and are qualified evidences.",
+    "rule": "A causal mechanism's count modalities supporting is the number of the causal mechanism's evidence items that are cross modalities and are qualified evidences.",
     "mechanical": false,
     "refs": [
       {
@@ -21192,7 +20420,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountInterventionTargets",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count intervention targets is the number of intervention targets related to the causal mechanism.",
+    "rule": "A causal mechanism's count intervention targets is the number of intervention targets related to the causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -21228,7 +20456,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s is experimentally falsifiable is determined by the following priority:",
+      "headline": "The causal mechanism's is experimentally falsifiable is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21258,7 +20486,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountReplications",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count replications is the number of cohort replications related to the causal mechanism.",
+    "rule": "A causal mechanism's count replications is the number of cohort replications related to the causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -21278,7 +20506,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountConcordantReplications",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count concordant replications is the number of the causal mechanism\u0027s cohort replications that are replicated at nominal sig.",
+    "rule": "A causal mechanism's count concordant replications is the number of the causal mechanism's cohort replications that are replicated at nominal sig.",
     "mechanical": false,
     "refs": [
       {
@@ -21303,7 +20531,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountCrossAncestryConcordant",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count cross ancestry concordant is the number of the causal mechanism\u0027s cohort replications that are cross ancestry concordants.",
+    "rule": "A causal mechanism's count cross ancestry concordant is the number of the causal mechanism's cohort replications that are cross ancestry concordants.",
     "mechanical": false,
     "refs": [
       {
@@ -21328,7 +20556,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "ReplicationFraction",
     "kind": "formula",
-    "rule": "The causal mechanism\u0027s replication fraction is determined by the following priority:\n1. the count concordant replications divided by the count replications, if the count replications is greater than 0;\n2. otherwise 0.",
+    "rule": "The causal mechanism's replication fraction is determined by the following priority:\n1. the count concordant replications divided by the count replications, if the count replications is greater than 0;\n2. otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -21344,7 +20572,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s replication fraction is determined by the following priority:",
+      "headline": "The causal mechanism's replication fraction is determined by the following priority:",
       "cases": [
         {
           "value": "the count concordant replications divided by the count replications",
@@ -21381,7 +20609,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s replicates across cohorts is determined by the following priority:",
+      "headline": "The causal mechanism's replicates across cohorts is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21411,7 +20639,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountNegControlTests",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count neg control tests is the number of negative control tests related to the causal mechanism.",
+    "rule": "A causal mechanism's count neg control tests is the number of negative control tests related to the causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -21431,7 +20659,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CountNegControlSurvived",
     "kind": "rollup",
-    "rule": "A causal mechanism\u0027s count neg control survived is the number of the causal mechanism\u0027s negative control tests that are survived.",
+    "rule": "A causal mechanism's count neg control survived is the number of the causal mechanism's negative control tests that are survived.",
     "mechanical": false,
     "refs": [
       {
@@ -21472,7 +20700,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s survives negative controls is determined by the following priority:",
+      "headline": "The causal mechanism's survives negative controls is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21528,7 +20756,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s is spurious derived is determined by the following priority:",
+      "headline": "The causal mechanism's is spurious derived is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21566,7 +20794,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "CausalConfidence",
     "kind": "formula",
-    "rule": "The causal mechanism\u0027s causal confidence is determined by the following priority:\n1. 1, if 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0 is greater than 1;\n2. otherwise 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0.",
+    "rule": "The causal mechanism's causal confidence is determined by the following priority:\n1. 1, if 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0 is greater than 1;\n2. otherwise 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -21592,7 +20820,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s causal confidence is determined by the following priority:",
+      "headline": "The causal mechanism's causal confidence is determined by the following priority:",
       "cases": [
         {
           "value": "1",
@@ -21613,7 +20841,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CausalMechanisms",
     "field": "VariantIsCausalCandidate",
     "kind": "lookup",
-    "rule": "A causal mechanism\u0027s variant is causal candidate is false if the genomic variant is blank, otherwise the is causal candidate of the causal mechanism\u0027s genomic variant.",
+    "rule": "A causal mechanism's variant is causal candidate is false if the genomic variant is blank, otherwise the is causal candidate of the causal mechanism's genomic variant.",
     "mechanical": false,
     "refs": [
       {
@@ -21634,7 +20862,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s variant is causal candidate is determined by the following priority:",
+      "headline": "The causal mechanism's variant is causal candidate is determined by the following priority:",
       "cases": [
         {
           "value": "false",
@@ -21644,7 +20872,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the is causal candidate of the causal mechanism\u0027s genomic variant",
+          "value": "the is causal candidate of the causal mechanism's genomic variant",
           "when": null
         }
       ],
@@ -21686,7 +20914,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s is causal architecture node is determined by the following priority:",
+      "headline": "The causal mechanism's is causal architecture node is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21749,7 +20977,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The causal mechanism\u0027s is ancestry transportable is determined by the following priority:",
+      "headline": "The causal mechanism's is ancestry transportable is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21779,7 +21007,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EpistaticInteractions",
     "field": "Name",
     "kind": "formula",
-    "rule": "An epistatic interaction\u0027s name is computed as the interaction label.",
+    "rule": "An epistatic interaction's name is computed as the interaction label.",
     "mechanical": false,
     "refs": [
       {
@@ -21794,7 +21022,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EpistaticInteractions",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "An epistatic interaction\u0027s parent path is the relative path of the epistatic interaction\u0027s individual.",
+    "rule": "An epistatic interaction's parent path is the relative path of the epistatic interaction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -21819,7 +21047,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "EpistaticInteractions",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An epistatic interaction\u0027s relative path is computed as the parent path, followed by the literal \u201C/epistasis/\u201D, followed by the epistatic interaction ID.",
+    "rule": "An epistatic interaction's relative path is computed as the parent path, followed by the literal “/epistasis/”, followed by the epistatic interaction ID.",
     "mechanical": false,
     "refs": [
       {
@@ -21850,7 +21078,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The epistatic interaction\u0027s is high order epistasis is determined by the following priority:",
+      "headline": "The epistatic interaction's is high order epistasis is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21871,7 +21099,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CounterfactualTrajectories",
     "field": "Name",
     "kind": "formula",
-    "rule": "A counterfactual trajectory\u0027s name is computed as the trajectory label.",
+    "rule": "A counterfactual trajectory's name is computed as the trajectory label.",
     "mechanical": false,
     "refs": [
       {
@@ -21886,7 +21114,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CounterfactualTrajectories",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A counterfactual trajectory\u0027s parent path is the relative path of the counterfactual trajectory\u0027s individual.",
+    "rule": "A counterfactual trajectory's parent path is the relative path of the counterfactual trajectory's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -21911,7 +21139,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CounterfactualTrajectories",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A counterfactual trajectory\u0027s relative path is computed as the parent path, followed by the literal \u201C/trajectories/\u201D, followed by the counterfactual trajectory ID.",
+    "rule": "A counterfactual trajectory's relative path is computed as the parent path, followed by the literal “/trajectories/”, followed by the counterfactual trajectory ID.",
     "mechanical": false,
     "refs": [
       {
@@ -21931,7 +21159,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CounterfactualTrajectories",
     "field": "AutoimmuneDiseaseLabel",
     "kind": "formula",
-    "rule": "A counterfactual trajectory\u0027s autoimmune disease label is the disease label of the counterfactual trajectory\u0027s autoimmune disease.",
+    "rule": "A counterfactual trajectory's autoimmune disease label is the disease label of the counterfactual trajectory's autoimmune disease.",
     "mechanical": false,
     "refs": [
       {
@@ -21967,7 +21195,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The counterfactual trajectory\u0027s is worsening trajectory is determined by the following priority:",
+      "headline": "The counterfactual trajectory's is worsening trajectory is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -21988,7 +21216,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "Name",
     "kind": "formula",
-    "rule": "An individual prediction\u0027s name is computed as the prediction label.",
+    "rule": "An individual prediction's name is computed as the prediction label.",
     "mechanical": false,
     "refs": [
       {
@@ -22003,7 +21231,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s parent path is the relative path of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's parent path is the relative path of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22028,7 +21256,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An individual prediction\u0027s relative path is computed as the parent path, followed by the literal \u201C/predictions/\u201D, followed by the individual prediction ID.",
+    "rule": "An individual prediction's relative path is computed as the parent path, followed by the literal “/predictions/”, followed by the individual prediction ID.",
     "mechanical": false,
     "refs": [
       {
@@ -22048,7 +21276,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualAncestryLabel",
     "kind": "formula",
-    "rule": "An individual prediction\u0027s individual ancestry label is the ancestry label of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual ancestry label is the ancestry label of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22073,7 +21301,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IsAncestryHoldout",
     "kind": "formula",
-    "rule": "An individual prediction\u0027s is ancestry holdout is true when the individual prediction\u0027s individual is ancestry absent from training.",
+    "rule": "An individual prediction's is ancestry holdout is true when the individual prediction's individual is ancestry absent from training.",
     "mechanical": false,
     "refs": [
       {
@@ -22098,7 +21326,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualCausalMass",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual causal mass is 0 if the individual is blank, otherwise the sum confirmed causal confidence of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual causal mass is 0 if the individual is blank, otherwise the sum confirmed causal confidence of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22119,7 +21347,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s individual causal mass is determined by the following priority:",
+      "headline": "The individual prediction's individual causal mass is determined by the following priority:",
       "cases": [
         {
           "value": "0",
@@ -22129,7 +21357,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the sum confirmed causal confidence of the individual prediction\u0027s individual",
+          "value": "the sum confirmed causal confidence of the individual prediction's individual",
           "when": null
         }
       ],
@@ -22140,7 +21368,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualConfirmedNodeCount",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual confirmed node count is 0 if the individual is blank, otherwise the count confirmed causal nodes of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual confirmed node count is 0 if the individual is blank, otherwise the count confirmed causal nodes of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22161,7 +21389,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s individual confirmed node count is determined by the following priority:",
+      "headline": "The individual prediction's individual confirmed node count is determined by the following priority:",
       "cases": [
         {
           "value": "0",
@@ -22171,7 +21399,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the count confirmed causal nodes of the individual prediction\u0027s individual",
+          "value": "the count confirmed causal nodes of the individual prediction's individual",
           "when": null
         }
       ],
@@ -22182,7 +21410,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualCrossAncestryNodeCount",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual cross ancestry node count is 0 if the individual is blank, otherwise the count cross ancestry confirmed nodes of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual cross ancestry node count is 0 if the individual is blank, otherwise the count cross ancestry confirmed nodes of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22203,7 +21431,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s individual cross ancestry node count is determined by the following priority:",
+      "headline": "The individual prediction's individual cross ancestry node count is determined by the following priority:",
       "cases": [
         {
           "value": "0",
@@ -22213,7 +21441,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the count cross ancestry confirmed nodes of the individual prediction\u0027s individual",
+          "value": "the count cross ancestry confirmed nodes of the individual prediction's individual",
           "when": null
         }
       ],
@@ -22224,7 +21452,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualHasCrypticRelatedness",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual has cryptic relatedness is false if the individual is blank, otherwise the has cryptic relatedness flag of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual has cryptic relatedness is false if the individual is blank, otherwise the has cryptic relatedness flag of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22245,7 +21473,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s individual has cryptic relatedness is determined by the following priority:",
+      "headline": "The individual prediction's individual has cryptic relatedness is determined by the following priority:",
       "cases": [
         {
           "value": "false",
@@ -22255,7 +21483,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the has cryptic relatedness flag of the individual prediction\u0027s individual",
+          "value": "the has cryptic relatedness flag of the individual prediction's individual",
           "when": null
         }
       ],
@@ -22266,7 +21494,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualMaxSeverityScore",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual max severity score is 0 if the individual is blank, otherwise the max severity score of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual max severity score is 0 if the individual is blank, otherwise the max severity score of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22287,7 +21515,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s individual max severity score is determined by the following priority:",
+      "headline": "The individual prediction's individual max severity score is determined by the following priority:",
       "cases": [
         {
           "value": "0",
@@ -22297,7 +21525,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the max severity score of the individual prediction\u0027s individual",
+          "value": "the max severity score of the individual prediction's individual",
           "when": null
         }
       ],
@@ -22308,7 +21536,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualHasHighSeverityPhenotype",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual has high severity phenotype is false if the individual is blank, otherwise the has high severity phenotype of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual has high severity phenotype is false if the individual is blank, otherwise the has high severity phenotype of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22329,7 +21557,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s individual has high severity phenotype is determined by the following priority:",
+      "headline": "The individual prediction's individual has high severity phenotype is determined by the following priority:",
       "cases": [
         {
           "value": "false",
@@ -22339,7 +21567,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the has high severity phenotype of the individual prediction\u0027s individual",
+          "value": "the has high severity phenotype of the individual prediction's individual",
           "when": null
         }
       ],
@@ -22350,7 +21578,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualHasPredictedTreatmentResponse",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual has predicted treatment response is false if the individual is blank, otherwise the has predicted treatment response of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual has predicted treatment response is false if the individual is blank, otherwise the has predicted treatment response of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -22371,7 +21599,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s individual has predicted treatment response is determined by the following priority:",
+      "headline": "The individual prediction's individual has predicted treatment response is determined by the following priority:",
       "cases": [
         {
           "value": "false",
@@ -22381,7 +21609,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the has predicted treatment response of the individual prediction\u0027s individual",
+          "value": "the has predicted treatment response of the individual prediction's individual",
           "when": null
         }
       ],
@@ -22392,7 +21620,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "PredictedValue",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s predicted value is determined by the following priority:\n1. 10, if 2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10;\n2. otherwise 2 times the individual causal mass plus 1.5 times the individual confirmed node count.",
+    "rule": "The individual prediction's predicted value is determined by the following priority:\n1. 10, if 2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10;\n2. otherwise 2 times the individual causal mass plus 1.5 times the individual confirmed node count.",
     "mechanical": false,
     "refs": [
       {
@@ -22408,7 +21636,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s predicted value is determined by the following priority:",
+      "headline": "The individual prediction's predicted value is determined by the following priority:",
       "cases": [
         {
           "value": "10",
@@ -22429,7 +21657,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "CountBins",
     "kind": "rollup",
-    "rule": "An individual prediction\u0027s count bins is the number of calibration bins related to the individual prediction.",
+    "rule": "An individual prediction's count bins is the number of calibration bins related to the individual prediction.",
     "mechanical": false,
     "refs": [
       {
@@ -22449,7 +21677,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "CountWellCalibratedBins",
     "kind": "rollup",
-    "rule": "An individual prediction\u0027s count well calibrated bins is the number of the individual prediction\u0027s calibration bins that are well calibrated bins.",
+    "rule": "An individual prediction's count well calibrated bins is the number of the individual prediction's calibration bins that are well calibrated bins.",
     "mechanical": false,
     "refs": [
       {
@@ -22474,7 +21702,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "SumBinAbsError",
     "kind": "rollup",
-    "rule": "An individual prediction\u0027s sum bin abs error is the total bin abs error across the calibration bins related to the individual prediction.",
+    "rule": "An individual prediction's sum bin abs error is the total bin abs error across the calibration bins related to the individual prediction.",
     "mechanical": false,
     "refs": [
       {
@@ -22499,7 +21727,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "MeanBinAbsError",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s mean bin abs error is determined by the following priority:\n1. the sum bin abs error divided by the count bins, if the count bins is greater than 0;\n2. otherwise 1.",
+    "rule": "The individual prediction's mean bin abs error is determined by the following priority:\n1. the sum bin abs error divided by the count bins, if the count bins is greater than 0;\n2. otherwise 1.",
     "mechanical": false,
     "refs": [
       {
@@ -22515,7 +21743,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s mean bin abs error is determined by the following priority:",
+      "headline": "The individual prediction's mean bin abs error is determined by the following priority:",
       "cases": [
         {
           "value": "the sum bin abs error divided by the count bins",
@@ -22536,7 +21764,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "WellCalibratedFraction",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s well calibrated fraction is determined by the following priority:\n1. the count well calibrated bins divided by the count bins, if the count bins is greater than 0;\n2. otherwise 0.",
+    "rule": "The individual prediction's well calibrated fraction is determined by the following priority:\n1. the count well calibrated bins divided by the count bins, if the count bins is greater than 0;\n2. otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -22552,7 +21780,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s well calibrated fraction is determined by the following priority:",
+      "headline": "The individual prediction's well calibrated fraction is determined by the following priority:",
       "cases": [
         {
           "value": "the count well calibrated bins divided by the count bins",
@@ -22573,7 +21801,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "CalibratedUncertainty",
     "kind": "formula",
-    "rule": "An individual prediction\u0027s calibrated uncertainty is computed as 0 if 1 minus the mean bin abs error is less than 0, otherwise 1 minus the mean bin abs error times the well calibrated fraction.",
+    "rule": "An individual prediction's calibrated uncertainty is computed as 0 if 1 minus the mean bin abs error is less than 0, otherwise 1 minus the mean bin abs error times the well calibrated fraction.",
     "mechanical": false,
     "refs": [
       {
@@ -22604,7 +21832,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s rests on confirmed mechanism is determined by the following priority:",
+      "headline": "The individual prediction's rests on confirmed mechanism is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -22641,7 +21869,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s has spurious correlation flag is determined by the following priority:",
+      "headline": "The individual prediction's has spurious correlation flag is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -22682,7 +21910,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s is falsifiability backed is determined by the following priority:",
+      "headline": "The individual prediction's is falsifiability backed is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -22724,7 +21952,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s is transportable to absent ancestry is determined by the following priority:",
+      "headline": "The individual prediction's is transportable to absent ancestry is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -22774,7 +22002,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s is ancestry transport safe is determined by the following priority:",
+      "headline": "The individual prediction's is ancestry transport safe is determined by the following priority:",
       "cases": [
         {
           "value": "the is transportable to absent ancestry",
@@ -22795,7 +22023,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "TransportGateStatus",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s transport gate status is determined by the following priority:\n1. the literal \u201CNotApplicable\u201D, if it is not the case that the is ancestry holdout flag is set;\n2. the literal \u201CPASS-tested\u201D, if the is transportable to absent ancestry flag is set;\n3. otherwise the literal \u201CFAIL\u201D.",
+    "rule": "The individual prediction's transport gate status is determined by the following priority:\n1. the literal “NotApplicable”, if it is not the case that the is ancestry holdout flag is set;\n2. the literal “PASS-tested”, if the is transportable to absent ancestry flag is set;\n3. otherwise the literal “FAIL”.",
     "mechanical": false,
     "refs": [
       {
@@ -22811,24 +22039,24 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s transport gate status is determined by the following priority:",
+      "headline": "The individual prediction's transport gate status is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CNotApplicable\u201D",
+          "value": "the literal “NotApplicable”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the is ancestry holdout flag is set"
           }
         },
         {
-          "value": "the literal \u201CPASS-tested\u201D",
+          "value": "the literal “PASS-tested”",
           "when": {
             "kind": "leaf",
             "text": "the is transportable to absent ancestry flag is set"
           }
         },
         {
-          "value": "the literal \u201CFAIL\u201D",
+          "value": "the literal “FAIL”",
           "when": null
         }
       ],
@@ -22855,7 +22083,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s is high confidence prediction is determined by the following priority:",
+      "headline": "The individual prediction's is high confidence prediction is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -22885,7 +22113,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "PatientStratificationTier",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s patient stratification tier is determined by the following priority:\n1. the literal \u201CHigh-Risk Pathway\u201D, if the predicted value is at least 7;\n2. the literal \u201CModerate-Risk Pathway\u201D, if the predicted value is at least 4;\n3. otherwise the literal \u201CLow-Risk Pathway\u201D.",
+    "rule": "The individual prediction's patient stratification tier is determined by the following priority:\n1. the literal “High-Risk Pathway”, if the predicted value is at least 7;\n2. the literal “Moderate-Risk Pathway”, if the predicted value is at least 4;\n3. otherwise the literal “Low-Risk Pathway”.",
     "mechanical": false,
     "refs": [
       {
@@ -22896,24 +22124,24 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s patient stratification tier is determined by the following priority:",
+      "headline": "The individual prediction's patient stratification tier is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CHigh-Risk Pathway\u201D",
+          "value": "the literal “High-Risk Pathway”",
           "when": {
             "kind": "leaf",
             "text": "the predicted value is at least 7"
           }
         },
         {
-          "value": "the literal \u201CModerate-Risk Pathway\u201D",
+          "value": "the literal “Moderate-Risk Pathway”",
           "when": {
             "kind": "leaf",
             "text": "the predicted value is at least 4"
           }
         },
         {
-          "value": "the literal \u201CLow-Risk Pathway\u201D",
+          "value": "the literal “Low-Risk Pathway”",
           "when": null
         }
       ],
@@ -22924,7 +22152,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "PredictedSeverityValue",
     "kind": "formula",
-    "rule": "An individual prediction\u0027s predicted severity value is computed as the individual max severity score.",
+    "rule": "An individual prediction's predicted severity value is computed as the individual max severity score.",
     "mechanical": false,
     "refs": [
       {
@@ -22939,7 +22167,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "SeverityTier",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s severity tier is determined by the following priority:\n1. the literal \u201CSevere\u201D, if the predicted severity value is greater than 7;\n2. the literal \u201CModerate\u201D, if the predicted severity value is at least 4;\n3. otherwise the literal \u201CMild\u201D.",
+    "rule": "The individual prediction's severity tier is determined by the following priority:\n1. the literal “Severe”, if the predicted severity value is greater than 7;\n2. the literal “Moderate”, if the predicted severity value is at least 4;\n3. otherwise the literal “Mild”.",
     "mechanical": false,
     "refs": [
       {
@@ -22950,24 +22178,24 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s severity tier is determined by the following priority:",
+      "headline": "The individual prediction's severity tier is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CSevere\u201D",
+          "value": "the literal “Severe”",
           "when": {
             "kind": "leaf",
             "text": "the predicted severity value is greater than 7"
           }
         },
         {
-          "value": "the literal \u201CModerate\u201D",
+          "value": "the literal “Moderate”",
           "when": {
             "kind": "leaf",
             "text": "the predicted severity value is at least 4"
           }
         },
         {
-          "value": "the literal \u201CMild\u201D",
+          "value": "the literal “Mild”",
           "when": null
         }
       ],
@@ -22999,7 +22227,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s is severity actionable is determined by the following priority:",
+      "headline": "The individual prediction's is severity actionable is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -23033,7 +22261,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "SeverityDecidingFactor",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s severity deciding factor is determined by the following priority:\n1. the literal \u201CHighSeverityOnConfirmedMechanism\u201D, if the is severity actionable flag is set;\n2. the literal \u201CNotHighSeverity\u201D, if it is not the case that the individual has high severity phenotype flag is set;\n3. the literal \u201CNoValidatedMechanism\u201D, if it is not the case that the rests on confirmed mechanism flag is set;\n4. the literal \u201CSpuriousFlag\u201D, if the has spurious correlation flag is set;\n5. otherwise the literal \u201CUndetermined\u201D.",
+    "rule": "The individual prediction's severity deciding factor is determined by the following priority:\n1. the literal “HighSeverityOnConfirmedMechanism”, if the is severity actionable flag is set;\n2. the literal “NotHighSeverity”, if it is not the case that the individual has high severity phenotype flag is set;\n3. the literal “NoValidatedMechanism”, if it is not the case that the rests on confirmed mechanism flag is set;\n4. the literal “SpuriousFlag”, if the has spurious correlation flag is set;\n5. otherwise the literal “Undetermined”.",
     "mechanical": false,
     "refs": [
       {
@@ -23059,38 +22287,38 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s severity deciding factor is determined by the following priority:",
+      "headline": "The individual prediction's severity deciding factor is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CHighSeverityOnConfirmedMechanism\u201D",
+          "value": "the literal “HighSeverityOnConfirmedMechanism”",
           "when": {
             "kind": "leaf",
             "text": "the is severity actionable flag is set"
           }
         },
         {
-          "value": "the literal \u201CNotHighSeverity\u201D",
+          "value": "the literal “NotHighSeverity”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the individual has high severity phenotype flag is set"
           }
         },
         {
-          "value": "the literal \u201CNoValidatedMechanism\u201D",
+          "value": "the literal “NoValidatedMechanism”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the rests on confirmed mechanism flag is set"
           }
         },
         {
-          "value": "the literal \u201CSpuriousFlag\u201D",
+          "value": "the literal “SpuriousFlag”",
           "when": {
             "kind": "leaf",
             "text": "the has spurious correlation flag is set"
           }
         },
         {
-          "value": "the literal \u201CUndetermined\u201D",
+          "value": "the literal “Undetermined”",
           "when": null
         }
       ],
@@ -23112,7 +22340,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s is treatment response actionable is determined by the following priority:",
+      "headline": "The individual prediction's is treatment response actionable is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -23133,7 +22361,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "TreatmentResponseDecidingFactor",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s treatment response deciding factor is determined by the following priority:\n1. the literal \u201CEffectiveOnConfirmedMechanism\u201D, if the is treatment response actionable flag is set;\n2. the literal \u201CNoEffectiveTreatmentOnMechanism\u201D, if the rests on confirmed mechanism flag is set;\n3. otherwise the literal \u201CNoConfirmedMechanism\u201D.",
+    "rule": "The individual prediction's treatment response deciding factor is determined by the following priority:\n1. the literal “EffectiveOnConfirmedMechanism”, if the is treatment response actionable flag is set;\n2. the literal “NoEffectiveTreatmentOnMechanism”, if the rests on confirmed mechanism flag is set;\n3. otherwise the literal “NoConfirmedMechanism”.",
     "mechanical": false,
     "refs": [
       {
@@ -23149,24 +22377,24 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s treatment response deciding factor is determined by the following priority:",
+      "headline": "The individual prediction's treatment response deciding factor is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CEffectiveOnConfirmedMechanism\u201D",
+          "value": "the literal “EffectiveOnConfirmedMechanism”",
           "when": {
             "kind": "leaf",
             "text": "the is treatment response actionable flag is set"
           }
         },
         {
-          "value": "the literal \u201CNoEffectiveTreatmentOnMechanism\u201D",
+          "value": "the literal “NoEffectiveTreatmentOnMechanism”",
           "when": {
             "kind": "leaf",
             "text": "the rests on confirmed mechanism flag is set"
           }
         },
         {
-          "value": "the literal \u201CNoConfirmedMechanism\u201D",
+          "value": "the literal “NoConfirmedMechanism”",
           "when": null
         }
       ],
@@ -23203,7 +22431,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s is clinically actionable is determined by the following priority:",
+      "headline": "The individual prediction's is clinically actionable is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -23241,7 +22469,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "LifecycleStateKey",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s lifecycle state key is determined by the following priority:\n1. the literal \u201CActionable\u201D, if all of the following hold: the is high confidence prediction flag is set; the is falsifiability backed flag is set; the is ancestry transport safe flag is set; and the predicted value is greater than 0;\n2. the literal \u201CNotActionable\u201D, if at least one of the following holds: it is not the case that the rests on confirmed mechanism flag is set or it is not the case that the is falsifiability backed flag is set;\n3. the literal \u201CNotActionable\u201D, if the individual has cryptic relatedness flag is set;\n4. the literal \u201CNotActionable\u201D, if the calibrated uncertainty is less than 0.7;\n5. the literal \u201CNotActionable\u201D, if it is not the case that the is ancestry transport safe flag is set;\n6. otherwise the literal \u201CActionable\u201D.",
+    "rule": "The individual prediction's lifecycle state key is determined by the following priority:\n1. the literal “Actionable”, if all of the following hold: the is high confidence prediction flag is set; the is falsifiability backed flag is set; the is ancestry transport safe flag is set; and the predicted value is greater than 0;\n2. the literal “NotActionable”, if at least one of the following holds: it is not the case that the rests on confirmed mechanism flag is set or it is not the case that the is falsifiability backed flag is set;\n3. the literal “NotActionable”, if the individual has cryptic relatedness flag is set;\n4. the literal “NotActionable”, if the calibrated uncertainty is less than 0.7;\n5. the literal “NotActionable”, if it is not the case that the is ancestry transport safe flag is set;\n6. otherwise the literal “Actionable”.",
     "mechanical": false,
     "refs": [
       {
@@ -23282,10 +22510,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s lifecycle state key is determined by the following priority:",
+      "headline": "The individual prediction's lifecycle state key is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CActionable\u201D",
+          "value": "the literal “Actionable”",
           "when": {
             "kind": "all",
             "children": [
@@ -23309,7 +22537,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the literal \u201CNotActionable\u201D",
+          "value": "the literal “NotActionable”",
           "when": {
             "kind": "any",
             "children": [
@@ -23325,28 +22553,28 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the literal \u201CNotActionable\u201D",
+          "value": "the literal “NotActionable”",
           "when": {
             "kind": "leaf",
             "text": "the individual has cryptic relatedness flag is set"
           }
         },
         {
-          "value": "the literal \u201CNotActionable\u201D",
+          "value": "the literal “NotActionable”",
           "when": {
             "kind": "leaf",
             "text": "the calibrated uncertainty is less than 0.7"
           }
         },
         {
-          "value": "the literal \u201CNotActionable\u201D",
+          "value": "the literal “NotActionable”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the is ancestry transport safe flag is set"
           }
         },
         {
-          "value": "the literal \u201CActionable\u201D",
+          "value": "the literal “Actionable”",
           "when": null
         }
       ],
@@ -23357,7 +22585,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "DecidingGate",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s deciding gate is determined by the following priority:\n1. the literal \u201CAllGatesPass\u201D, if the is clinically actionable flag is set;\n2. the literal \u201CNoValidatedMechanism\u201D, if it is not the case that the rests on confirmed mechanism flag is set;\n3. the literal \u201CCrypticRelatedness\u201D, if the individual has cryptic relatedness flag is set;\n4. the literal \u201CCalibration\u201D, if the calibrated uncertainty is less than 0.7;\n5. the literal \u201CAncestryTransport\u201D, if it is not the case that the is ancestry transport safe flag is set;\n6. otherwise the literal \u201CUndetermined\u201D.",
+    "rule": "The individual prediction's deciding gate is determined by the following priority:\n1. the literal “AllGatesPass”, if the is clinically actionable flag is set;\n2. the literal “NoValidatedMechanism”, if it is not the case that the rests on confirmed mechanism flag is set;\n3. the literal “CrypticRelatedness”, if the individual has cryptic relatedness flag is set;\n4. the literal “Calibration”, if the calibrated uncertainty is less than 0.7;\n5. the literal “AncestryTransport”, if it is not the case that the is ancestry transport safe flag is set;\n6. otherwise the literal “Undetermined”.",
     "mechanical": false,
     "refs": [
       {
@@ -23388,45 +22616,45 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s deciding gate is determined by the following priority:",
+      "headline": "The individual prediction's deciding gate is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CAllGatesPass\u201D",
+          "value": "the literal “AllGatesPass”",
           "when": {
             "kind": "leaf",
             "text": "the is clinically actionable flag is set"
           }
         },
         {
-          "value": "the literal \u201CNoValidatedMechanism\u201D",
+          "value": "the literal “NoValidatedMechanism”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the rests on confirmed mechanism flag is set"
           }
         },
         {
-          "value": "the literal \u201CCrypticRelatedness\u201D",
+          "value": "the literal “CrypticRelatedness”",
           "when": {
             "kind": "leaf",
             "text": "the individual has cryptic relatedness flag is set"
           }
         },
         {
-          "value": "the literal \u201CCalibration\u201D",
+          "value": "the literal “Calibration”",
           "when": {
             "kind": "leaf",
             "text": "the calibrated uncertainty is less than 0.7"
           }
         },
         {
-          "value": "the literal \u201CAncestryTransport\u201D",
+          "value": "the literal “AncestryTransport”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the is ancestry transport safe flag is set"
           }
         },
         {
-          "value": "the literal \u201CUndetermined\u201D",
+          "value": "the literal “Undetermined”",
           "when": null
         }
       ],
@@ -23437,7 +22665,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualTargetPathway",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual target pathway is the target pathway of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual target pathway is the target pathway of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -23462,7 +22690,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualProgressionStateKey",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual progression state key is the nephritis progression state key of the individual prediction\u0027s individual.",
+    "rule": "An individual prediction's individual progression state key is the nephritis progression state key of the individual prediction's individual.",
     "mechanical": false,
     "refs": [
       {
@@ -23487,7 +22715,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "IndividualIsDiseaseProgressing",
     "kind": "lookup",
-    "rule": "An individual prediction\u0027s individual is disease progressing is true when the individual prediction\u0027s individual is disease progressing.",
+    "rule": "An individual prediction's individual is disease progressing is true when the individual prediction's individual is disease progressing.",
     "mechanical": false,
     "refs": [
       {
@@ -23512,7 +22740,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "RecommendedTreatmentLine",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s recommended treatment line is determined by the following priority:\n1. the literal \u201CNo targeted line \u2014 mechanism unconfirmed\u201D, if it is not the case that the rests on confirmed mechanism flag is set;\n2. the literal \u201CMycophenolate (induction)\u201D, if at least one of the following holds: the individual progression state key is the literal \u201CRenalFlareRisk\u201D or the individual progression state key is the literal \u201CBiopsyIndicated\u201D;\n3. the literal \u201CAnifrolumab\u201D, if the individual target pathway is the literal \u201Ctype-I-IFN\u201D;\n4. the literal \u201CBelimumab\u201D, if the individual target pathway is the literal \u201CB-cell/autoantibody\u201D;\n5. the literal \u201CSecukinumab\u201D, if the individual target pathway is the literal \u201CIL-17/23\u201D;\n6. otherwise the literal \u201CStandard-of-care (no mechanism-matched targeted line)\u201D.",
+    "rule": "The individual prediction's recommended treatment line is determined by the following priority:\n1. the literal “No targeted line — mechanism unconfirmed”, if it is not the case that the rests on confirmed mechanism flag is set;\n2. the literal “Mycophenolate (induction)”, if at least one of the following holds: the individual progression state key is the literal “RenalFlareRisk” or the individual progression state key is the literal “BiopsyIndicated”;\n3. the literal “Anifrolumab”, if the individual target pathway is the literal “type-I-IFN”;\n4. the literal “Belimumab”, if the individual target pathway is the literal “B-cell/autoantibody”;\n5. the literal “Secukinumab”, if the individual target pathway is the literal “IL-17/23”;\n6. otherwise the literal “Standard-of-care (no mechanism-matched targeted line)”.",
     "mechanical": false,
     "refs": [
       {
@@ -23533,54 +22761,54 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s recommended treatment line is determined by the following priority:",
+      "headline": "The individual prediction's recommended treatment line is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CNo targeted line \u2014 mechanism unconfirmed\u201D",
+          "value": "the literal “No targeted line — mechanism unconfirmed”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the rests on confirmed mechanism flag is set"
           }
         },
         {
-          "value": "the literal \u201CMycophenolate (induction)\u201D",
+          "value": "the literal “Mycophenolate (induction)”",
           "when": {
             "kind": "any",
             "children": [
               {
                 "kind": "leaf",
-                "text": "the individual progression state key is the literal \u201CRenalFlareRisk\u201D"
+                "text": "the individual progression state key is the literal “RenalFlareRisk”"
               },
               {
                 "kind": "leaf",
-                "text": "the individual progression state key is the literal \u201CBiopsyIndicated\u201D"
+                "text": "the individual progression state key is the literal “BiopsyIndicated”"
               }
             ]
           }
         },
         {
-          "value": "the literal \u201CAnifrolumab\u201D",
+          "value": "the literal “Anifrolumab”",
           "when": {
             "kind": "leaf",
-            "text": "the individual target pathway is the literal \u201Ctype-I-IFN\u201D"
+            "text": "the individual target pathway is the literal “type-I-IFN”"
           }
         },
         {
-          "value": "the literal \u201CBelimumab\u201D",
+          "value": "the literal “Belimumab”",
           "when": {
             "kind": "leaf",
-            "text": "the individual target pathway is the literal \u201CB-cell/autoantibody\u201D"
+            "text": "the individual target pathway is the literal “B-cell/autoantibody”"
           }
         },
         {
-          "value": "the literal \u201CSecukinumab\u201D",
+          "value": "the literal “Secukinumab”",
           "when": {
             "kind": "leaf",
-            "text": "the individual target pathway is the literal \u201CIL-17/23\u201D"
+            "text": "the individual target pathway is the literal “IL-17/23”"
           }
         },
         {
-          "value": "the literal \u201CStandard-of-care (no mechanism-matched targeted line)\u201D",
+          "value": "the literal “Standard-of-care (no mechanism-matched targeted line)”",
           "when": null
         }
       ],
@@ -23591,7 +22819,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "IndividualPredictions",
     "field": "TreatmentLineDecidingFactor",
     "kind": "formula",
-    "rule": "The individual prediction\u0027s treatment line deciding factor is determined by the following priority:\n1. the literal \u201CMechanismUnconfirmed\u201D, if it is not the case that the rests on confirmed mechanism flag is set;\n2. the literal \u201CActiveNephritis-Induction\u201D, if at least one of the following holds: the individual progression state key is the literal \u201CRenalFlareRisk\u201D or the individual progression state key is the literal \u201CBiopsyIndicated\u201D;\n3. the literal \u201CIFNSignature-Anifrolumab\u201D, if the individual target pathway is the literal \u201Ctype-I-IFN\u201D;\n4. the literal \u201CAutoantibodyDriven-Belimumab\u201D, if the individual target pathway is the literal \u201CB-cell/autoantibody\u201D;\n5. the literal \u201CIL17Axis-Secukinumab\u201D, if the individual target pathway is the literal \u201CIL-17/23\u201D;\n6. otherwise the literal \u201CNoMechanismMatch\u201D.",
+    "rule": "The individual prediction's treatment line deciding factor is determined by the following priority:\n1. the literal “MechanismUnconfirmed”, if it is not the case that the rests on confirmed mechanism flag is set;\n2. the literal “ActiveNephritis-Induction”, if at least one of the following holds: the individual progression state key is the literal “RenalFlareRisk” or the individual progression state key is the literal “BiopsyIndicated”;\n3. the literal “IFNSignature-Anifrolumab”, if the individual target pathway is the literal “type-I-IFN”;\n4. the literal “AutoantibodyDriven-Belimumab”, if the individual target pathway is the literal “B-cell/autoantibody”;\n5. the literal “IL17Axis-Secukinumab”, if the individual target pathway is the literal “IL-17/23”;\n6. otherwise the literal “NoMechanismMatch”.",
     "mechanical": false,
     "refs": [
       {
@@ -23612,54 +22840,54 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s treatment line deciding factor is determined by the following priority:",
+      "headline": "The individual prediction's treatment line deciding factor is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CMechanismUnconfirmed\u201D",
+          "value": "the literal “MechanismUnconfirmed”",
           "when": {
             "kind": "leaf",
             "text": "it is not the case that the rests on confirmed mechanism flag is set"
           }
         },
         {
-          "value": "the literal \u201CActiveNephritis-Induction\u201D",
+          "value": "the literal “ActiveNephritis-Induction”",
           "when": {
             "kind": "any",
             "children": [
               {
                 "kind": "leaf",
-                "text": "the individual progression state key is the literal \u201CRenalFlareRisk\u201D"
+                "text": "the individual progression state key is the literal “RenalFlareRisk”"
               },
               {
                 "kind": "leaf",
-                "text": "the individual progression state key is the literal \u201CBiopsyIndicated\u201D"
+                "text": "the individual progression state key is the literal “BiopsyIndicated”"
               }
             ]
           }
         },
         {
-          "value": "the literal \u201CIFNSignature-Anifrolumab\u201D",
+          "value": "the literal “IFNSignature-Anifrolumab”",
           "when": {
             "kind": "leaf",
-            "text": "the individual target pathway is the literal \u201Ctype-I-IFN\u201D"
+            "text": "the individual target pathway is the literal “type-I-IFN”"
           }
         },
         {
-          "value": "the literal \u201CAutoantibodyDriven-Belimumab\u201D",
+          "value": "the literal “AutoantibodyDriven-Belimumab”",
           "when": {
             "kind": "leaf",
-            "text": "the individual target pathway is the literal \u201CB-cell/autoantibody\u201D"
+            "text": "the individual target pathway is the literal “B-cell/autoantibody”"
           }
         },
         {
-          "value": "the literal \u201CIL17Axis-Secukinumab\u201D",
+          "value": "the literal “IL17Axis-Secukinumab”",
           "when": {
             "kind": "leaf",
-            "text": "the individual target pathway is the literal \u201CIL-17/23\u201D"
+            "text": "the individual target pathway is the literal “IL-17/23”"
           }
         },
         {
-          "value": "the literal \u201CNoMechanismMatch\u201D",
+          "value": "the literal “NoMechanismMatch”",
           "when": null
         }
       ],
@@ -23686,7 +22914,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The individual prediction\u0027s progression vs actionability disagree is determined by the following priority:",
+      "headline": "The individual prediction's progression vs actionability disagree is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -23716,7 +22944,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CalibrationBins",
     "field": "Name",
     "kind": "formula",
-    "rule": "A calibration bin\u0027s name is computed as the bin label.",
+    "rule": "A calibration bin's name is computed as the bin label.",
     "mechanical": false,
     "refs": [
       {
@@ -23731,7 +22959,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CalibrationBins",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "A calibration bin\u0027s parent path is the relative path of the calibration bin\u0027s individual prediction.",
+    "rule": "A calibration bin's parent path is the relative path of the calibration bin's individual prediction.",
     "mechanical": false,
     "refs": [
       {
@@ -23756,7 +22984,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CalibrationBins",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A calibration bin\u0027s relative path is computed as the parent path, followed by the literal \u201C/bins/\u201D, followed by the calibration bin ID.",
+    "rule": "A calibration bin's relative path is computed as the parent path, followed by the literal “/bins/”, followed by the calibration bin ID.",
     "mechanical": false,
     "refs": [
       {
@@ -23776,7 +23004,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "CalibrationBins",
     "field": "BinAbsError",
     "kind": "formula",
-    "rule": "The calibration bin\u0027s bin abs error is determined by the following priority:\n1. the predicted probability band minus the observed event rate, if the predicted probability band is at least the observed event rate;\n2. otherwise the observed event rate minus the predicted probability band.",
+    "rule": "The calibration bin's bin abs error is determined by the following priority:\n1. the predicted probability band minus the observed event rate, if the predicted probability band is at least the observed event rate;\n2. otherwise the observed event rate minus the predicted probability band.",
     "mechanical": false,
     "refs": [
       {
@@ -23792,7 +23020,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The calibration bin\u0027s bin abs error is determined by the following priority:",
+      "headline": "The calibration bin's bin abs error is determined by the following priority:",
       "cases": [
         {
           "value": "the predicted probability band minus the observed event rate",
@@ -23829,7 +23057,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The calibration bin\u0027s is well calibrated bin is determined by the following priority:",
+      "headline": "The calibration bin's is well calibrated bin is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -23859,7 +23087,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "InterventionTargets",
     "field": "Name",
     "kind": "formula",
-    "rule": "An intervention target\u0027s name is computed as the target label.",
+    "rule": "An intervention target's name is computed as the target label.",
     "mechanical": false,
     "refs": [
       {
@@ -23874,7 +23102,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "InterventionTargets",
     "field": "ParentPath",
     "kind": "lookup",
-    "rule": "An intervention target\u0027s parent path is the relative path of the intervention target\u0027s causal mechanism.",
+    "rule": "An intervention target's parent path is the relative path of the intervention target's causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -23899,7 +23127,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "InterventionTargets",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An intervention target\u0027s relative path is computed as the parent path, followed by the literal \u201C/targets/\u201D, followed by the intervention target ID.",
+    "rule": "An intervention target's relative path is computed as the parent path, followed by the literal “/targets/”, followed by the intervention target ID.",
     "mechanical": false,
     "refs": [
       {
@@ -23919,7 +23147,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "InterventionTargets",
     "field": "CausalMechanismLabel",
     "kind": "formula",
-    "rule": "An intervention target\u0027s causal mechanism label is the mechanism label of the intervention target\u0027s causal mechanism.",
+    "rule": "An intervention target's causal mechanism label is the mechanism label of the intervention target's causal mechanism.",
     "mechanical": false,
     "refs": [
       {
@@ -23944,7 +23172,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "InterventionTargets",
     "field": "IsGeneBasedTherapy",
     "kind": "formula",
-    "rule": "An intervention target is considered a gene based therapy if the therapy class is the literal \u201CGene-based\u201D.",
+    "rule": "An intervention target is considered a gene based therapy if the therapy class is the literal “Gene-based”.",
     "mechanical": false,
     "refs": [
       {
@@ -23955,13 +23183,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The intervention target\u0027s is gene based therapy is determined by the following priority:",
+      "headline": "The intervention target's is gene based therapy is determined by the following priority:",
       "cases": [
         {
           "value": "true",
           "when": {
             "kind": "leaf",
-            "text": "the therapy class is the literal \u201CGene-based\u201D"
+            "text": "the therapy class is the literal “Gene-based”"
           }
         },
         {
@@ -23976,7 +23204,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "InterventionTargets",
     "field": "IsCellBasedTherapy",
     "kind": "formula",
-    "rule": "An intervention target is considered a cell based therapy if the therapy class is the literal \u201CCell-based\u201D.",
+    "rule": "An intervention target is considered a cell based therapy if the therapy class is the literal “Cell-based”.",
     "mechanical": false,
     "refs": [
       {
@@ -23987,13 +23215,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The intervention target\u0027s is cell based therapy is determined by the following priority:",
+      "headline": "The intervention target's is cell based therapy is determined by the following priority:",
       "cases": [
         {
           "value": "true",
           "when": {
             "kind": "leaf",
-            "text": "the therapy class is the literal \u201CCell-based\u201D"
+            "text": "the therapy class is the literal “Cell-based”"
           }
         },
         {
@@ -24008,7 +23236,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Axioms",
     "field": "Name",
     "kind": "formula",
-    "rule": "An axiom\u0027s name is computed as the statement.",
+    "rule": "An axiom's name is computed as the statement.",
     "mechanical": false,
     "refs": [
       {
@@ -24023,7 +23251,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Axioms",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An axiom\u0027s relative path is computed as the literal \u201C/admin/axioms/\u201D, followed by the axiom ID.",
+    "rule": "An axiom's relative path is computed as the literal “/admin/axioms/”, followed by the axiom ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24038,7 +23266,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "TestsForSuccess",
     "field": "Name",
     "kind": "formula",
-    "rule": "A tests for success\u0027s name is computed as the claim.",
+    "rule": "A tests for success's name is computed as the claim.",
     "mechanical": false,
     "refs": [
       {
@@ -24053,7 +23281,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "TestsForSuccess",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A tests for success\u0027s relative path is computed as the literal \u201C/admin/tests-for-success/\u201D, followed by the test for success ID.",
+    "rule": "A tests for success's relative path is computed as the literal “/admin/tests-for-success/”, followed by the test for success ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24068,7 +23296,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Features",
     "field": "Name",
     "kind": "formula",
-    "rule": "A feature\u0027s name is computed as the title.",
+    "rule": "A feature's name is computed as the title.",
     "mechanical": false,
     "refs": [
       {
@@ -24083,7 +23311,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "Features",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A feature\u0027s relative path is computed as the literal \u201C/admin/features/\u201D, followed by the feature ID.",
+    "rule": "A feature's relative path is computed as the literal “/admin/features/”, followed by the feature ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24098,7 +23326,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OpenQuestions",
     "field": "Name",
     "kind": "formula",
-    "rule": "An open question\u0027s name is computed as the question.",
+    "rule": "An open question's name is computed as the question.",
     "mechanical": false,
     "refs": [
       {
@@ -24113,7 +23341,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "OpenQuestions",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "An open question\u0027s relative path is computed as the literal \u201C/admin/open-questions/\u201D, followed by the open question ID.",
+    "rule": "An open question's relative path is computed as the literal “/admin/open-questions/”, followed by the open question ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24128,7 +23356,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "NonGoals",
     "field": "Name",
     "kind": "formula",
-    "rule": "A non goal\u0027s name is computed as the statement.",
+    "rule": "A non goal's name is computed as the statement.",
     "mechanical": false,
     "refs": [
       {
@@ -24143,7 +23371,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "NonGoals",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A non goal\u0027s relative path is computed as the literal \u201C/admin/non-goals/\u201D, followed by the non goal ID.",
+    "rule": "A non goal's relative path is computed as the literal “/admin/non-goals/”, followed by the non goal ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24158,7 +23386,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GlossaryTerms",
     "field": "Name",
     "kind": "formula",
-    "rule": "A glossary term\u0027s name is computed as the term.",
+    "rule": "A glossary term's name is computed as the term.",
     "mechanical": false,
     "refs": [
       {
@@ -24173,7 +23401,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "GlossaryTerms",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A glossary term\u0027s relative path is computed as the literal \u201C/admin/glossary/\u201D, followed by the glossary term ID.",
+    "rule": "A glossary term's relative path is computed as the literal “/admin/glossary/”, followed by the glossary term ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24188,7 +23416,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "LeopoldLoops",
     "field": "Name",
     "kind": "formula",
-    "rule": "A leopold loop\u0027s name is computed as the literal \u201CLoop \u201D, followed by the loop number, followed by the literal \u201C \u2014 \u201D, followed by the title.",
+    "rule": "A leopold loop's name is computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title.",
     "mechanical": false,
     "refs": [
       {
@@ -24208,7 +23436,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "LeopoldLoops",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A leopold loop\u0027s relative path is computed as the literal \u201C/admin/leopold-loops/\u201D, followed by the leopold loop ID.",
+    "rule": "A leopold loop's relative path is computed as the literal “/admin/leopold-loops/”, followed by the leopold loop ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24223,7 +23451,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "LeopoldLoops",
     "field": "Completedness",
     "kind": "formula",
-    "rule": "A leopold loop\u0027s completedness is computed as the status.",
+    "rule": "A leopold loop's completedness is computed as the status.",
     "mechanical": false,
     "refs": [
       {
@@ -24238,7 +23466,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "LeopoldLoops",
     "field": "IsInCurrentPlan",
     "kind": "formula",
-    "rule": "A leopold loop is considered in current plan if it is not the case that the status is the literal \u201Cdone\u201D.",
+    "rule": "A leopold loop is considered in current plan if it is not the case that the status is the literal “done”.",
     "mechanical": false,
     "refs": [
       {
@@ -24249,13 +23477,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The leopold loop\u0027s is in current plan is determined by the following priority:",
+      "headline": "The leopold loop's is in current plan is determined by the following priority:",
       "cases": [
         {
           "value": "the FALSE",
           "when": {
             "kind": "leaf",
-            "text": "the status is the literal \u201Cdone\u201D"
+            "text": "the status is the literal “done”"
           }
         },
         {
@@ -24270,7 +23498,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "Name",
     "kind": "formula",
-    "rule": "A routing and navigation\u0027s name is computed as the lower-cased display name with every a space replaced by a hyphen.",
+    "rule": "A routing and navigation's name is computed as the lower-cased display name with every a space replaced by a hyphen.",
     "mechanical": true,
     "refs": [
       {
@@ -24285,7 +23513,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "AdminCanCreate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can create if the admin CRUD mentions the literal \u201CC\u201D.",
+    "rule": "A routing and navigation is flagged admin can create if the admin CRUD mentions the literal “C”.",
     "mechanical": false,
     "refs": [
       {
@@ -24296,7 +23524,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s admin can create is determined by the following priority:",
+      "headline": "The routing and navigation's admin can create is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24306,7 +23534,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the admin CRUD mentions the literal \u201CC\u201D",
+          "value": "the admin CRUD mentions the literal “C”",
           "when": null
         }
       ],
@@ -24317,7 +23545,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "AdminCanRead",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can read if the admin CRUD mentions the literal \u201CR\u201D.",
+    "rule": "A routing and navigation is flagged admin can read if the admin CRUD mentions the literal “R”.",
     "mechanical": false,
     "refs": [
       {
@@ -24328,7 +23556,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s admin can read is determined by the following priority:",
+      "headline": "The routing and navigation's admin can read is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24338,7 +23566,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the admin CRUD mentions the literal \u201CR\u201D",
+          "value": "the admin CRUD mentions the literal “R”",
           "when": null
         }
       ],
@@ -24349,7 +23577,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "AdminCanUpdate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can update if the admin CRUD mentions the literal \u201CU\u201D.",
+    "rule": "A routing and navigation is flagged admin can update if the admin CRUD mentions the literal “U”.",
     "mechanical": false,
     "refs": [
       {
@@ -24360,7 +23588,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s admin can update is determined by the following priority:",
+      "headline": "The routing and navigation's admin can update is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24370,7 +23598,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the admin CRUD mentions the literal \u201CU\u201D",
+          "value": "the admin CRUD mentions the literal “U”",
           "when": null
         }
       ],
@@ -24381,7 +23609,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "AdminCanDelete",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged admin can delete if the admin CRUD mentions the literal \u201CD\u201D.",
+    "rule": "A routing and navigation is flagged admin can delete if the admin CRUD mentions the literal “D”.",
     "mechanical": false,
     "refs": [
       {
@@ -24392,7 +23620,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s admin can delete is determined by the following priority:",
+      "headline": "The routing and navigation's admin can delete is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24402,7 +23630,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the admin CRUD mentions the literal \u201CD\u201D",
+          "value": "the admin CRUD mentions the literal “D”",
           "when": null
         }
       ],
@@ -24413,7 +23641,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "IntakeClinicianCanCreate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions the literal \u201CC\u201D.",
+    "rule": "A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions the literal “C”.",
     "mechanical": false,
     "refs": [
       {
@@ -24424,7 +23652,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s intake clinician can create is determined by the following priority:",
+      "headline": "The routing and navigation's intake clinician can create is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24434,7 +23662,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the intake clinician CRUD mentions the literal \u201CC\u201D",
+          "value": "the intake clinician CRUD mentions the literal “C”",
           "when": null
         }
       ],
@@ -24445,7 +23673,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "IntakeClinicianCanRead",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions the literal \u201CR\u201D.",
+    "rule": "A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions the literal “R”.",
     "mechanical": false,
     "refs": [
       {
@@ -24456,7 +23684,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s intake clinician can read is determined by the following priority:",
+      "headline": "The routing and navigation's intake clinician can read is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24466,7 +23694,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the intake clinician CRUD mentions the literal \u201CR\u201D",
+          "value": "the intake clinician CRUD mentions the literal “R”",
           "when": null
         }
       ],
@@ -24477,7 +23705,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "IntakeClinicianCanUpdate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions the literal \u201CU\u201D.",
+    "rule": "A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions the literal “U”.",
     "mechanical": false,
     "refs": [
       {
@@ -24488,7 +23716,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s intake clinician can update is determined by the following priority:",
+      "headline": "The routing and navigation's intake clinician can update is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24498,7 +23726,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the intake clinician CRUD mentions the literal \u201CU\u201D",
+          "value": "the intake clinician CRUD mentions the literal “U”",
           "when": null
         }
       ],
@@ -24509,7 +23737,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "IntakeClinicianCanDelete",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions the literal \u201CD\u201D.",
+    "rule": "A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions the literal “D”.",
     "mechanical": false,
     "refs": [
       {
@@ -24520,7 +23748,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s intake clinician can delete is determined by the following priority:",
+      "headline": "The routing and navigation's intake clinician can delete is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24530,7 +23758,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the intake clinician CRUD mentions the literal \u201CD\u201D",
+          "value": "the intake clinician CRUD mentions the literal “D”",
           "when": null
         }
       ],
@@ -24541,7 +23769,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "DiagnosingDoctorCanCreate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions the literal \u201CC\u201D.",
+    "rule": "A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions the literal “C”.",
     "mechanical": false,
     "refs": [
       {
@@ -24552,7 +23780,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s diagnosing doctor can create is determined by the following priority:",
+      "headline": "The routing and navigation's diagnosing doctor can create is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24562,7 +23790,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the diagnosing doctor CRUD mentions the literal \u201CC\u201D",
+          "value": "the diagnosing doctor CRUD mentions the literal “C”",
           "when": null
         }
       ],
@@ -24573,7 +23801,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "DiagnosingDoctorCanRead",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions the literal \u201CR\u201D.",
+    "rule": "A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions the literal “R”.",
     "mechanical": false,
     "refs": [
       {
@@ -24584,7 +23812,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s diagnosing doctor can read is determined by the following priority:",
+      "headline": "The routing and navigation's diagnosing doctor can read is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24594,7 +23822,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the diagnosing doctor CRUD mentions the literal \u201CR\u201D",
+          "value": "the diagnosing doctor CRUD mentions the literal “R”",
           "when": null
         }
       ],
@@ -24605,7 +23833,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "DiagnosingDoctorCanUpdate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions the literal \u201CU\u201D.",
+    "rule": "A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions the literal “U”.",
     "mechanical": false,
     "refs": [
       {
@@ -24616,7 +23844,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s diagnosing doctor can update is determined by the following priority:",
+      "headline": "The routing and navigation's diagnosing doctor can update is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24626,7 +23854,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the diagnosing doctor CRUD mentions the literal \u201CU\u201D",
+          "value": "the diagnosing doctor CRUD mentions the literal “U”",
           "when": null
         }
       ],
@@ -24637,7 +23865,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "DiagnosingDoctorCanDelete",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions the literal \u201CD\u201D.",
+    "rule": "A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions the literal “D”.",
     "mechanical": false,
     "refs": [
       {
@@ -24648,7 +23876,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s diagnosing doctor can delete is determined by the following priority:",
+      "headline": "The routing and navigation's diagnosing doctor can delete is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24658,7 +23886,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the diagnosing doctor CRUD mentions the literal \u201CD\u201D",
+          "value": "the diagnosing doctor CRUD mentions the literal “D”",
           "when": null
         }
       ],
@@ -24669,7 +23897,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "ExternalLlmCanCreate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can create if the external llm CRUD mentions the literal \u201CC\u201D.",
+    "rule": "A routing and navigation is flagged external llm can create if the external llm CRUD mentions the literal “C”.",
     "mechanical": false,
     "refs": [
       {
@@ -24680,7 +23908,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s external llm can create is determined by the following priority:",
+      "headline": "The routing and navigation's external llm can create is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24690,7 +23918,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the external llm CRUD mentions the literal \u201CC\u201D",
+          "value": "the external llm CRUD mentions the literal “C”",
           "when": null
         }
       ],
@@ -24701,7 +23929,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "ExternalLlmCanRead",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can read if the external llm CRUD mentions the literal \u201CR\u201D.",
+    "rule": "A routing and navigation is flagged external llm can read if the external llm CRUD mentions the literal “R”.",
     "mechanical": false,
     "refs": [
       {
@@ -24712,7 +23940,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s external llm can read is determined by the following priority:",
+      "headline": "The routing and navigation's external llm can read is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24722,7 +23950,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the external llm CRUD mentions the literal \u201CR\u201D",
+          "value": "the external llm CRUD mentions the literal “R”",
           "when": null
         }
       ],
@@ -24733,7 +23961,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "ExternalLlmCanUpdate",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can update if the external llm CRUD mentions the literal \u201CU\u201D.",
+    "rule": "A routing and navigation is flagged external llm can update if the external llm CRUD mentions the literal “U”.",
     "mechanical": false,
     "refs": [
       {
@@ -24744,7 +23972,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s external llm can update is determined by the following priority:",
+      "headline": "The routing and navigation's external llm can update is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24754,7 +23982,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the external llm CRUD mentions the literal \u201CU\u201D",
+          "value": "the external llm CRUD mentions the literal “U”",
           "when": null
         }
       ],
@@ -24765,7 +23993,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "ExternalLlmCanDelete",
     "kind": "formula",
-    "rule": "A routing and navigation is flagged external llm can delete if the external llm CRUD mentions the literal \u201CD\u201D.",
+    "rule": "A routing and navigation is flagged external llm can delete if the external llm CRUD mentions the literal “D”.",
     "mechanical": false,
     "refs": [
       {
@@ -24776,7 +24004,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s external llm can delete is determined by the following priority:",
+      "headline": "The routing and navigation's external llm can delete is determined by the following priority:",
       "cases": [
         {
           "value": "no value",
@@ -24786,7 +24014,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the external llm CRUD mentions the literal \u201CD\u201D",
+          "value": "the external llm CRUD mentions the literal “D”",
           "when": null
         }
       ],
@@ -24797,7 +24025,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "Depth",
     "kind": "formula",
-    "rule": "The routing and navigation\u0027s depth is determined by the following priority:\n1. 0, if the parent route key is blank;\n2. otherwise the length of the route key minus the length of the route key with every a period replaced by an empty string.",
+    "rule": "The routing and navigation's depth is determined by the following priority:\n1. 0, if the parent route key is blank;\n2. otherwise the length of the route key minus the length of the route key with every a period replaced by an empty string.",
     "mechanical": true,
     "refs": [
       {
@@ -24813,7 +24041,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The routing and navigation\u0027s depth is determined by the following priority:",
+      "headline": "The routing and navigation's depth is determined by the following priority:",
       "cases": [
         {
           "value": "0",
@@ -24834,7 +24062,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "FullPath",
     "kind": "formula",
-    "rule": "A routing and navigation\u0027s full path is computed as the route.",
+    "rule": "A routing and navigation's full path is computed as the route.",
     "mechanical": false,
     "refs": [
       {
@@ -24849,7 +24077,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "HandlerBaseName",
     "kind": "formula",
-    "rule": "A routing and navigation\u0027s handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space.",
+    "rule": "A routing and navigation's handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space.",
     "mechanical": true,
     "refs": [
       {
@@ -24864,7 +24092,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "RoutingAndNavigation",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A routing and navigation\u0027s relative path is computed as the literal \u201C/admin/routing/\u201D, followed by the routing and navigation ID.",
+    "rule": "A routing and navigation's relative path is computed as the literal “/admin/routing/”, followed by the routing and navigation ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24879,7 +24107,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateMachines",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A state machine\u0027s relative path is computed as the literal \u201C/admin/state-machine/\u201D, followed by the state machine ID.",
+    "rule": "A state machine's relative path is computed as the literal “/admin/state-machine/”, followed by the state machine ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24894,7 +24122,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateMachines",
     "field": "StateCount",
     "kind": "rollup",
-    "rule": "A state machine\u0027s state count is the number of machine states related to the state machine.",
+    "rule": "A state machine's state count is the number of machine states related to the state machine.",
     "mechanical": false,
     "refs": [
       {
@@ -24914,7 +24142,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateMachines",
     "field": "TransitionRuleCount",
     "kind": "rollup",
-    "rule": "A state machine\u0027s transition rule count is the number of state transition rules related to the state machine.",
+    "rule": "A state machine's transition rule count is the number of state transition rules related to the state machine.",
     "mechanical": false,
     "refs": [
       {
@@ -24934,7 +24162,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "MachineStates",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A machine state\u0027s relative path is computed as the literal \u201C/admin/state-machine/states/\u201D, followed by the machine state ID.",
+    "rule": "A machine state's relative path is computed as the literal “/admin/state-machine/states/”, followed by the machine state ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24949,7 +24177,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateTransitionRules",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A state transition rule\u0027s relative path is computed as the literal \u201C/admin/state-machine/rules/\u201D, followed by the state transition rule ID.",
+    "rule": "A state transition rule's relative path is computed as the literal “/admin/state-machine/rules/”, followed by the state transition rule ID.",
     "mechanical": false,
     "refs": [
       {
@@ -24964,7 +24192,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateTransitionRules",
     "field": "FromStateKey",
     "kind": "lookup",
-    "rule": "A state transition rule\u0027s from state key is the state key of the state transition rule\u0027s from state.",
+    "rule": "A state transition rule's from state key is the state key of the state transition rule's from state.",
     "mechanical": false,
     "refs": [
       {
@@ -24989,7 +24217,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateTransitionRules",
     "field": "ToStateKey",
     "kind": "lookup",
-    "rule": "A state transition rule\u0027s to state key is the state key of the state transition rule\u0027s to state.",
+    "rule": "A state transition rule's to state key is the state key of the state transition rule's to state.",
     "mechanical": false,
     "refs": [
       {
@@ -25034,7 +24262,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateTransitions",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A state transition\u0027s relative path is computed as the literal \u201C/admin/state-machine/transitions/\u201D, followed by the state transition ID.",
+    "rule": "A state transition's relative path is computed as the literal “/admin/state-machine/transitions/”, followed by the state transition ID.",
     "mechanical": false,
     "refs": [
       {
@@ -25049,7 +24277,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "StateTransitions",
     "field": "IsForward",
     "kind": "formula",
-    "rule": "A state transition is considered a forward if it is not the case that the to state key is the literal \u201CIntake\u201D.",
+    "rule": "A state transition is considered a forward if it is not the case that the to state key is the literal “Intake”.",
     "mechanical": false,
     "refs": [
       {
@@ -25064,7 +24292,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SubjectStateInstances",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A subject state instance\u0027s relative path is computed as the literal \u201C/admin/state-machine/instances/\u201D, followed by the subject state instance ID.",
+    "rule": "A subject state instance's relative path is computed as the literal “/admin/state-machine/instances/”, followed by the subject state instance ID.",
     "mechanical": false,
     "refs": [
       {
@@ -25120,7 +24348,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The subject state instance\u0027s is long dwell is determined by the following priority:",
+      "headline": "The subject state instance's is long dwell is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -25141,7 +24369,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseDomainConcepts",
     "field": "Name",
     "kind": "formula",
-    "rule": "A disease domain concept\u0027s name is computed as the concept label.",
+    "rule": "A disease domain concept's name is computed as the concept label.",
     "mechanical": false,
     "refs": [
       {
@@ -25156,7 +24384,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseDomainConcepts",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A disease domain concept\u0027s relative path is computed as the literal \u201C/admin/disease-concepts/\u201D, followed by the disease domain concept ID.",
+    "rule": "A disease domain concept's relative path is computed as the literal “/admin/disease-concepts/”, followed by the disease domain concept ID.",
     "mechanical": false,
     "refs": [
       {
@@ -25171,7 +24399,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseDomainConcepts",
     "field": "IsDeeplyModeled",
     "kind": "formula",
-    "rule": "A disease domain concept is considered deeply modeled if the modeling status is the literal \u201Cdeep-dag\u201D.",
+    "rule": "A disease domain concept is considered deeply modeled if the modeling status is the literal “deep-dag”.",
     "mechanical": false,
     "refs": [
       {
@@ -25182,13 +24410,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The disease domain concept\u0027s is deeply modeled is determined by the following priority:",
+      "headline": "The disease domain concept's is deeply modeled is determined by the following priority:",
       "cases": [
         {
           "value": "true",
           "when": {
             "kind": "leaf",
-            "text": "the modeling status is the literal \u201Cdeep-dag\u201D"
+            "text": "the modeling status is the literal “deep-dag”"
           }
         },
         {
@@ -25203,7 +24431,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "DiseaseDomainConcepts",
     "field": "IsSchemaModeled",
     "kind": "formula",
-    "rule": "A disease domain concept is considered schema modeled if at least one of the following holds: the modeling status is the literal \u201Cdeep-dag\u201D or the modeling status is the literal \u201Cschema\u201D.",
+    "rule": "A disease domain concept is considered schema modeled if at least one of the following holds: the modeling status is the literal “deep-dag” or the modeling status is the literal “schema”.",
     "mechanical": false,
     "refs": [
       {
@@ -25214,7 +24442,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The disease domain concept\u0027s is schema modeled is determined by the following priority:",
+      "headline": "The disease domain concept's is schema modeled is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -25223,11 +24451,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
             "children": [
               {
                 "kind": "leaf",
-                "text": "the modeling status is the literal \u201Cdeep-dag\u201D"
+                "text": "the modeling status is the literal “deep-dag”"
               },
               {
                 "kind": "leaf",
-                "text": "the modeling status is the literal \u201Cschema\u201D"
+                "text": "the modeling status is the literal “schema”"
               }
             ]
           }
@@ -25244,7 +24472,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "PriorAntiDsDnaIU",
     "kind": "lookup",
-    "rule": "A serology observation\u0027s prior anti ds dna IU is the anti ds dna IU of the serology observation\u0027s prior observation.",
+    "rule": "A serology observation's prior anti ds dna IU is the anti ds dna IU of the serology observation's prior observation.",
     "mechanical": false,
     "refs": [
       {
@@ -25269,7 +24497,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "PriorC3",
     "kind": "lookup",
-    "rule": "A serology observation\u0027s prior c3 is the complement c3 of the serology observation\u0027s prior observation.",
+    "rule": "A serology observation's prior c3 is the complement c3 of the serology observation's prior observation.",
     "mechanical": false,
     "refs": [
       {
@@ -25294,7 +24522,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "PriorC4",
     "kind": "lookup",
-    "rule": "A serology observation\u0027s prior c4 is the complement c4 of the serology observation\u0027s prior observation.",
+    "rule": "A serology observation's prior c4 is the complement c4 of the serology observation's prior observation.",
     "mechanical": false,
     "refs": [
       {
@@ -25319,7 +24547,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "AntiDsDnaTrend",
     "kind": "formula",
-    "rule": "The serology observation\u0027s anti ds dna trend is determined by the following priority:\n1. the literal \u201CStable\u201D, if the prior anti ds dna IU is blank;\n2. the literal \u201CRising\u201D, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;\n3. the literal \u201CFalling\u201D, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;\n4. otherwise the literal \u201CStable\u201D.",
+    "rule": "The serology observation's anti ds dna trend is determined by the following priority:\n1. the literal “Stable”, if the prior anti ds dna IU is blank;\n2. the literal “Rising”, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;\n3. the literal “Falling”, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;\n4. otherwise the literal “Stable”.",
     "mechanical": false,
     "refs": [
       {
@@ -25335,31 +24563,31 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s anti ds dna trend is determined by the following priority:",
+      "headline": "The serology observation's anti ds dna trend is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CStable\u201D",
+          "value": "the literal “Stable”",
           "when": {
             "kind": "leaf",
             "text": "the prior anti ds dna IU is blank"
           }
         },
         {
-          "value": "the literal \u201CRising\u201D",
+          "value": "the literal “Rising”",
           "when": {
             "kind": "leaf",
             "text": "the anti ds dna IU is greater than the prior anti ds dna IU times 1.25"
           }
         },
         {
-          "value": "the literal \u201CFalling\u201D",
+          "value": "the literal “Falling”",
           "when": {
             "kind": "leaf",
             "text": "the anti ds dna IU is less than the prior anti ds dna IU times 0.8"
           }
         },
         {
-          "value": "the literal \u201CStable\u201D",
+          "value": "the literal “Stable”",
           "when": null
         }
       ],
@@ -25370,7 +24598,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "ComplementTrend",
     "kind": "formula",
-    "rule": "The serology observation\u0027s complement trend is determined by the following priority:\n1. the literal \u201CStable\u201D, if the prior c3 is blank;\n2. the literal \u201CFalling\u201D, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;\n3. the literal \u201CRising\u201D, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;\n4. otherwise the literal \u201CStable\u201D.",
+    "rule": "The serology observation's complement trend is determined by the following priority:\n1. the literal “Stable”, if the prior c3 is blank;\n2. the literal “Falling”, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;\n3. the literal “Rising”, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;\n4. otherwise the literal “Stable”.",
     "mechanical": false,
     "refs": [
       {
@@ -25396,31 +24624,31 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s complement trend is determined by the following priority:",
+      "headline": "The serology observation's complement trend is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CStable\u201D",
+          "value": "the literal “Stable”",
           "when": {
             "kind": "leaf",
             "text": "the prior c3 is blank"
           }
         },
         {
-          "value": "the literal \u201CFalling\u201D",
+          "value": "the literal “Falling”",
           "when": {
             "kind": "leaf",
             "text": "the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85"
           }
         },
         {
-          "value": "the literal \u201CRising\u201D",
+          "value": "the literal “Rising”",
           "when": {
             "kind": "leaf",
             "text": "the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15"
           }
         },
         {
-          "value": "the literal \u201CStable\u201D",
+          "value": "the literal “Stable”",
           "when": null
         }
       ],
@@ -25442,7 +24670,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s is significant proteinuria is determined by the following priority:",
+      "headline": "The serology observation's is significant proteinuria is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -25474,7 +24702,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s is nephrotic range proteinuria is determined by the following priority:",
+      "headline": "The serology observation's is nephrotic range proteinuria is determined by the following priority:",
       "cases": [
         {
           "value": "true",
@@ -25495,7 +24723,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "SledaiRenalPoints",
     "kind": "formula",
-    "rule": "The serology observation\u0027s sledai renal points is determined by the following priority:\n1. 8, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;\n2. 4, if the is significant proteinuria flag is set;\n3. otherwise 0.",
+    "rule": "The serology observation's sledai renal points is determined by the following priority:\n1. 8, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;\n2. 4, if the is significant proteinuria flag is set;\n3. otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -25516,7 +24744,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s sledai renal points is determined by the following priority:",
+      "headline": "The serology observation's sledai renal points is determined by the following priority:",
       "cases": [
         {
           "value": "8",
@@ -25553,7 +24781,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "SledaiSerologyPoints",
     "kind": "formula",
-    "rule": "The serology observation\u0027s sledai serology points is determined by the following priority:\n1. 4, if all of the following hold: the complement trend is the literal \u201CFalling\u201D and the anti ds dna trend is the literal \u201CRising\u201D;\n2. 2, if at least one of the following holds: the complement trend is the literal \u201CFalling\u201D or the anti ds dna trend is the literal \u201CRising\u201D;\n3. otherwise 0.",
+    "rule": "The serology observation's sledai serology points is determined by the following priority:\n1. 4, if all of the following hold: the complement trend is the literal “Falling” and the anti ds dna trend is the literal “Rising”;\n2. 2, if at least one of the following holds: the complement trend is the literal “Falling” or the anti ds dna trend is the literal “Rising”;\n3. otherwise 0.",
     "mechanical": false,
     "refs": [
       {
@@ -25569,7 +24797,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s sledai serology points is determined by the following priority:",
+      "headline": "The serology observation's sledai serology points is determined by the following priority:",
       "cases": [
         {
           "value": "4",
@@ -25578,11 +24806,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
             "children": [
               {
                 "kind": "leaf",
-                "text": "the complement trend is the literal \u201CFalling\u201D"
+                "text": "the complement trend is the literal “Falling”"
               },
               {
                 "kind": "leaf",
-                "text": "the anti ds dna trend is the literal \u201CRising\u201D"
+                "text": "the anti ds dna trend is the literal “Rising”"
               }
             ]
           }
@@ -25594,11 +24822,11 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
             "children": [
               {
                 "kind": "leaf",
-                "text": "the complement trend is the literal \u201CFalling\u201D"
+                "text": "the complement trend is the literal “Falling”"
               },
               {
                 "kind": "leaf",
-                "text": "the anti ds dna trend is the literal \u201CRising\u201D"
+                "text": "the anti ds dna trend is the literal “Rising”"
               }
             ]
           }
@@ -25615,7 +24843,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "SledaiScore",
     "kind": "formula",
-    "rule": "A serology observation\u0027s sledai score is computed as the sledai renal points plus the sledai serology points.",
+    "rule": "A serology observation's sledai score is computed as the sledai renal points plus the sledai serology points.",
     "mechanical": false,
     "refs": [
       {
@@ -25635,7 +24863,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "ProgressionStateKey",
     "kind": "formula",
-    "rule": "The serology observation\u0027s progression state key is determined by the following priority:\n1. the literal \u201CBiopsyIndicated\u201D, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;\n2. the literal \u201CRenalFlareRisk\u201D, if the proteinuria g per day is at least 1.0;\n3. the literal \u201CEarlyNephritis\u201D, if the is significant proteinuria flag is set;\n4. the literal \u201CSerologicActive\u201D, if all of the following hold: the anti ds dna trend is the literal \u201CRising\u201D and the complement trend is the literal \u201CFalling\u201D;\n5. otherwise the literal \u201CPresymptomaticAutoimmunity\u201D.",
+    "rule": "The serology observation's progression state key is determined by the following priority:\n1. the literal “BiopsyIndicated”, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;\n2. the literal “RenalFlareRisk”, if the proteinuria g per day is at least 1.0;\n3. the literal “EarlyNephritis”, if the is significant proteinuria flag is set;\n4. the literal “SerologicActive”, if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”;\n5. otherwise the literal “PresymptomaticAutoimmunity”.",
     "mechanical": false,
     "refs": [
       {
@@ -25671,10 +24899,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s progression state key is determined by the following priority:",
+      "headline": "The serology observation's progression state key is determined by the following priority:",
       "cases": [
         {
-          "value": "the literal \u201CBiopsyIndicated\u201D",
+          "value": "the literal “BiopsyIndicated”",
           "when": {
             "kind": "any",
             "children": [
@@ -25690,37 +24918,37 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
           }
         },
         {
-          "value": "the literal \u201CRenalFlareRisk\u201D",
+          "value": "the literal “RenalFlareRisk”",
           "when": {
             "kind": "leaf",
             "text": "the proteinuria g per day is at least 1.0"
           }
         },
         {
-          "value": "the literal \u201CEarlyNephritis\u201D",
+          "value": "the literal “EarlyNephritis”",
           "when": {
             "kind": "leaf",
             "text": "the is significant proteinuria flag is set"
           }
         },
         {
-          "value": "the literal \u201CSerologicActive\u201D",
+          "value": "the literal “SerologicActive”",
           "when": {
             "kind": "all",
             "children": [
               {
                 "kind": "leaf",
-                "text": "the anti ds dna trend is the literal \u201CRising\u201D"
+                "text": "the anti ds dna trend is the literal “Rising”"
               },
               {
                 "kind": "leaf",
-                "text": "the complement trend is the literal \u201CFalling\u201D"
+                "text": "the complement trend is the literal “Falling”"
               }
             ]
           }
         },
         {
-          "value": "the literal \u201CPresymptomaticAutoimmunity\u201D",
+          "value": "the literal “PresymptomaticAutoimmunity”",
           "when": null
         }
       ],
@@ -25731,7 +24959,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "ProgressionStateOrder",
     "kind": "formula",
-    "rule": "The serology observation\u0027s progression state order is determined by the following priority:\n1. 5, if the progression state key is the literal \u201CBiopsyIndicated\u201D;\n2. 4, if the progression state key is the literal \u201CRenalFlareRisk\u201D;\n3. 3, if the progression state key is the literal \u201CEarlyNephritis\u201D;\n4. 2, if the progression state key is the literal \u201CSerologicActive\u201D;\n5. otherwise 1.",
+    "rule": "The serology observation's progression state order is determined by the following priority:\n1. 5, if the progression state key is the literal “BiopsyIndicated”;\n2. 4, if the progression state key is the literal “RenalFlareRisk”;\n3. 3, if the progression state key is the literal “EarlyNephritis”;\n4. 2, if the progression state key is the literal “SerologicActive”;\n5. otherwise 1.",
     "mechanical": false,
     "refs": [
       {
@@ -25742,34 +24970,34 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": {
       "kind": "priority",
-      "headline": "The serology observation\u0027s progression state order is determined by the following priority:",
+      "headline": "The serology observation's progression state order is determined by the following priority:",
       "cases": [
         {
           "value": "5",
           "when": {
             "kind": "leaf",
-            "text": "the progression state key is the literal \u201CBiopsyIndicated\u201D"
+            "text": "the progression state key is the literal “BiopsyIndicated”"
           }
         },
         {
           "value": "4",
           "when": {
             "kind": "leaf",
-            "text": "the progression state key is the literal \u201CRenalFlareRisk\u201D"
+            "text": "the progression state key is the literal “RenalFlareRisk”"
           }
         },
         {
           "value": "3",
           "when": {
             "kind": "leaf",
-            "text": "the progression state key is the literal \u201CEarlyNephritis\u201D"
+            "text": "the progression state key is the literal “EarlyNephritis”"
           }
         },
         {
           "value": "2",
           "when": {
             "kind": "leaf",
-            "text": "the progression state key is the literal \u201CSerologicActive\u201D"
+            "text": "the progression state key is the literal “SerologicActive”"
           }
         },
         {
@@ -25784,7 +25012,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "SerologyObservations",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A serology observation\u0027s relative path is computed as the literal \u201C/admin/serology/\u201D, followed by the serology observation ID.",
+    "rule": "A serology observation's relative path is computed as the literal “/admin/serology/”, followed by the serology observation ID.",
     "mechanical": false,
     "refs": [
       {
@@ -25799,7 +25027,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "TherapyOptions",
     "field": "Name",
     "kind": "formula",
-    "rule": "A therapy option\u0027s name is computed as the therapy label.",
+    "rule": "A therapy option's name is computed as the therapy label.",
     "mechanical": false,
     "refs": [
       {
@@ -25814,7 +25042,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "table": "TherapyOptions",
     "field": "RelativePath",
     "kind": "formula",
-    "rule": "A therapy option\u0027s relative path is computed as the literal \u201C/admin/therapy-options/\u201D, followed by the therapy option ID.",
+    "rule": "A therapy option's relative path is computed as the literal “/admin/therapy-options/”, followed by the therapy option ID.",
     "mechanical": false,
     "refs": [
       {

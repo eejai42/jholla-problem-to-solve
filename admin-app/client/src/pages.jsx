@@ -1651,65 +1651,108 @@ export function CaseWalkBody({ predId }) {
 }
 
 // ===========================================================================
-//  STATE MACHINE VIEWER — states (ordered), edges, recent transitions.
+//  STATE MACHINE VIEWER — every machine on the polymorphic substrate, picked by
+//  ?machine. Both diagnosis-lifecycle AND lupus-nephritis-progression render
+//  here from the same generic /api/state-machines endpoints; nothing is
+//  hardcoded to one machine. Current state is DERIVED (IsCurrent occupancy).
 // ===========================================================================
+
+// Terminal-state colour: the diagnosis-lifecycle machine ends in an explicit
+// pass/fail (Actionable / NotActionable); a progression machine ends in a
+// "worst" clinical state (BiopsyIndicated). Treat a known-good terminal as pass,
+// otherwise terminal = the alarm colour, non-terminal = accent.
+const GOOD_TERMINAL = new Set(['Actionable']);
+const stateBorder = (s) => s.is_terminal ? (GOOD_TERMINAL.has(s.state_key) ? C.pass : C.fail) : C.accent;
+const toStateColor = (k) => k === 'Actionable' ? C.pass : (k === 'NotActionable' || k === 'BiopsyIndicated') ? C.fail : C.ink;
+
 export function StateMachineView() {
-  const { data, loading, error } = useFetch('/api/state-machines/diagnosis-lifecycle');
-  if (loading) return <div><h2 style={{ marginTop: 0 }}>Diagnosis Lifecycle</h2><p>Loading…</p></div>;
-  if (error) return <p style={{ color: C.fail }}>{error}</p>;
+  const { data: machines, loading: lLoad } = useFetch('/api/state-machines');
+  const list = Array.isArray(machines) ? machines : [];
+  const [picked, setPicked] = useQueryParam('machine', null);
+  const machineId = picked || list[0]?.state_machine_id || 'diagnosis-lifecycle';
+  const { data, loading, error } = useFetch(`/api/state-machines/${machineId}`, [machineId]);
+
   const { machine, states = [], rules = [], transitions = [] } = data || {};
-  const byState = Object.fromEntries(states.map((s) => [s.state_key, s]));
+
   return (
     <div>
-      <h2 style={{ marginTop: 0 }}>{machine?.title || 'Diagnosis Lifecycle'}</h2>
-      <p style={{ color: C.sub, fontSize: 13 }}>{machine?.description}</p>
-      <p style={{ color: C.sub, fontSize: 12 }}>Subject: <code>{machine?.subject_table_name}.{machine?.subject_state_column}</code> — the current state is DERIVED, never entered.</p>
+      <h2 style={{ marginTop: 0 }}>State machines</h2>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
+        Each is a state machine on the polymorphic substrate; the current state is <strong>DERIVED</strong>
+        from raw leaves (an occupancy / <code>IsCurrent</code> field), never entered.
+      </p>
 
-      <h3>States</h3>
-      <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
-        {states.map((s, i) => (
-          <React.Fragment key={s.state_key}>
-            <span style={{ padding: '6px 12px', borderRadius: 8, border: `2px solid ${s.is_terminal ? (s.state_key === 'Actionable' ? C.pass : C.fail) : C.accent}`, background: s.is_initial ? C.bgAccent : '#fff', fontWeight: 600, fontSize: 13 }}>
-              {s.title || s.state_key}
-              {s.is_initial ? <span style={{ color: C.sub, fontSize: 10 }}> ▸start</span> : null}
-              {s.is_terminal ? <span style={{ color: C.sub, fontSize: 10 }}> ◼end</span> : null}
-            </span>
-            {i < states.length - 1 && !s.is_terminal ? <span style={{ color: C.sub }}>→</span> : null}
-          </React.Fragment>
-        ))}
+      {/* machine picker — every machine in vw_state_machines */}
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
+        {lLoad ? <span style={{ color: C.sub, fontSize: 13 }}>Loading machines…</span> : list.map((m) => {
+          const active = m.state_machine_id === machineId;
+          return (
+            <button key={m.state_machine_id} onClick={() => setPicked(m.state_machine_id)}
+              style={{ padding: '6px 13px', borderRadius: 8, cursor: 'pointer', fontSize: 13,
+                border: `1px solid ${active ? C.accent : C.border}`, fontWeight: active ? 700 : 500,
+                background: active ? C.bgAccent : '#fff', color: active ? C.accent : C.ink }}>
+              {m.title || m.state_machine_id}
+              <span style={{ color: C.sub, fontSize: 11 }}> · {m.state_count} states</span>
+            </button>
+          );
+        })}
       </div>
 
-      <h3>Transition rules ({rules.length})</h3>
-      <table style={{ borderCollapse: 'collapse', fontSize: 13, marginBottom: 16 }}>
-        <thead><tr>{['From', 'To', 'Guard', 'Role'].map((h) => <th key={h} style={{ border: `1px solid ${C.border}`, padding: '4px 10px', background: '#f5f5f5', textAlign: 'left' }}>{h}</th>)}</tr></thead>
-        <tbody>
-          {rules.map((r) => (
-            <tr key={r.state_transition_rule_id}>
-              <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px' }}>{r.from_state_key}</td>
-              <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px', color: r.to_state_key === 'NotActionable' ? C.fail : r.to_state_key === 'Actionable' ? C.pass : C.ink }}>{r.to_state_key}</td>
-              <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px', color: C.sub }}>{r.guard_description}</td>
-              <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px', fontFamily: 'monospace', fontSize: 12 }}>{r.triggered_by_role}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {loading ? <p style={{ color: C.sub }}>Loading {machineId}…</p>
+        : error ? <p style={{ color: C.fail }}>{error}</p>
+          : (
+            <>
+              <h3 style={{ marginBottom: 4 }}>{machine?.title || machineId}</h3>
+              <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>{machine?.description}</p>
+              <p style={{ color: C.sub, fontSize: 12 }}>Subject: <code>{machine?.subject_table_name}.{machine?.subject_state_column}</code> — the current state is DERIVED, never entered.</p>
 
-      <h3>Recent transitions ({transitions.length})</h3>
-      <div style={{ maxHeight: 280, overflow: 'auto', border: `1px solid ${C.border}`, borderRadius: 6 }}>
-        <table style={{ borderCollapse: 'collapse', fontSize: 12.5, width: '100%' }}>
-          <thead><tr>{['Subject', 'From', 'To', 'Reason'].map((h) => <th key={h} style={{ border: `1px solid ${C.border}`, padding: '4px 8px', background: '#f5f5f5', textAlign: 'left', position: 'sticky', top: 0 }}>{h}</th>)}</tr></thead>
-          <tbody>
-            {transitions.map((t) => (
-              <tr key={t.state_transition_id || `${t.subject_id}-${t.to_state_key}`}>
-                <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px', fontFamily: 'monospace' }}>{t.subject_id}</td>
-                <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px' }}>{t.from_state_key || '—'}</td>
-                <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px', color: t.to_state_key === 'NotActionable' ? C.fail : t.to_state_key === 'Actionable' ? C.pass : C.ink }}>{t.to_state_key}</td>
-                <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px', color: C.sub }}>{t.reason}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              <h3>States</h3>
+              <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
+                {states.map((s, i) => (
+                  <React.Fragment key={s.state_key}>
+                    <span style={{ padding: '6px 12px', borderRadius: 8, border: `2px solid ${stateBorder(s)}`, background: s.is_initial ? C.bgAccent : '#fff', fontWeight: 600, fontSize: 13 }}>
+                      {s.title || s.state_key}
+                      {s.is_initial ? <span style={{ color: C.sub, fontSize: 10 }}> ▸start</span> : null}
+                      {s.is_terminal ? <span style={{ color: C.sub, fontSize: 10 }}> ◼end</span> : null}
+                    </span>
+                    {i < states.length - 1 && !s.is_terminal ? <span style={{ color: C.sub }}>→</span> : null}
+                  </React.Fragment>
+                ))}
+              </div>
+
+              <h3>Transition rules ({rules.length})</h3>
+              <table style={{ borderCollapse: 'collapse', fontSize: 13, marginBottom: 16 }}>
+                <thead><tr>{['From', 'To', 'Guard (raw leaf)', 'Role'].map((h) => <th key={h} style={{ border: `1px solid ${C.border}`, padding: '4px 10px', background: '#f5f5f5', textAlign: 'left' }}>{h}</th>)}</tr></thead>
+                <tbody>
+                  {rules.map((r) => (
+                    <tr key={r.state_transition_rule_id}>
+                      <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px' }}>{r.from_state_key}</td>
+                      <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px', color: toStateColor(r.to_state_key) }}>{r.to_state_key}</td>
+                      <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px', color: C.sub }}>{r.guard_description}</td>
+                      <td style={{ border: `1px solid ${C.border}`, padding: '4px 10px', fontFamily: 'monospace', fontSize: 12 }}>{r.triggered_by_role}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <h3>Recent transitions ({transitions.length})</h3>
+              <div style={{ maxHeight: 280, overflow: 'auto', border: `1px solid ${C.border}`, borderRadius: 6 }}>
+                <table style={{ borderCollapse: 'collapse', fontSize: 12.5, width: '100%' }}>
+                  <thead><tr>{['Subject', 'From', 'To', 'Reason'].map((h) => <th key={h} style={{ border: `1px solid ${C.border}`, padding: '4px 8px', background: '#f5f5f5', textAlign: 'left', position: 'sticky', top: 0 }}>{h}</th>)}</tr></thead>
+                  <tbody>
+                    {transitions.map((t) => (
+                      <tr key={t.state_transition_id || `${t.subject_id}-${t.to_state_key}`}>
+                        <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px', fontFamily: 'monospace' }}>{t.subject_id}</td>
+                        <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px' }}>{t.from_state_key || '—'}</td>
+                        <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px', color: toStateColor(t.to_state_key) }}>{t.to_state_key}</td>
+                        <td style={{ border: `1px solid ${C.border}`, padding: '4px 8px', color: C.sub }}>{t.reason}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
     </div>
   );
 }

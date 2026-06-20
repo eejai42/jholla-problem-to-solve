@@ -75,54 +75,49 @@ Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; 
 Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.
 
 - **Status:** done
-### [DONE] Loop 6 — Vocabulary completeness &#8212; every audit-named concept enters the hub
+### [DONE] Loop 6 — Vocabulary completeness - every audit-named concept enters the hub
 
-Answer the audit's breadth: bring every concept the physician named (lupus nephritis, NPSLE, cutaneous lupus, sero&#177;RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns, treatment lines, SLEDAI/DAS28) into the hub as DiseaseDomainConcepts, each with an honest ModelingStatus (deep-DAG / schema / vocabulary). Coverage becomes checkable by grep, not by trust.
+Answer the audit's breadth: bring every concept the physician named (lupus nephritis, NPSLE, cutaneous lupus, sero+/-RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns, treatment lines, SLEDAI/DAS28) into the hub as DiseaseDomainConcepts, each with an honest ModelingStatus (deep-DAG / schema / vocabulary). Coverage becomes checkable by grep, not by trust.
 
-- **Status:** done - rule `rule: DiseaseDomainConcepts &#8212; every audit-named concept in the hub with honest ModelingStatus`; state `state: v2 step1 &#8212; vocabulary completeness; coverage checkable by grep`
-### [DONE] Loop 7 — Disease-state simulator &#8212; the layer the audit said did not exist
+- **Status:** done - rule `rule: DiseaseDomainConcepts - every audit-named concept in the hub with honest ModelingStatus`; state `state: v2 step1 - vocabulary completeness; coverage checkable by grep`
+### [DONE] Loop 7 — Disease-state simulator - the layer the audit said did not exist
 
-Reframe: v1 was a per-patient evidence gate; v2 adds the disease-state layer. A disease progressing is a state machine (lupus-nephritis-progression: Presymptomatic &#8594; SerologicActive &#8594; EarlyNephritis &#8594; RenalFlareRisk &#8594; BiopsyIndicated) whose CURRENT state is DERIVED purely from raw serology leaves (rising anti-dsDNA + falling complement + proteinuria + sediment) &#8212; never hand-set. Bitemporal DwellDays answers the audit's 'how long in this state.' Same trust boundary: labs are the LLM's/clinician's, the state is the model's. Diego Santos's first worked example computes (derived SledaiScore 12, High/flare).
+Reframe: v1 was a per-patient evidence gate; v2 adds the disease-state layer. A disease progressing is a state machine (lupus-nephritis-progression: Presymptomatic then SerologicActive then EarlyNephritis then RenalFlareRisk then BiopsyIndicated) whose CURRENT state is DERIVED purely from raw serology leaves (rising anti-dsDNA + falling complement + proteinuria + sediment) - never hand-set. Bitemporal DwellDays answers the audit's 'how long in this state.' Same trust boundary: labs are the LLM's/clinician's, the state is the model's. Diego Santos's first worked example computes (derived SledaiScore 12, High/flare).
 
-- **Status:** done - rule `rule: lupus-nephritis-progression state machine &#8212; disease state DERIVED from raw serology`; state `state: v2 step3 &#8212; disease-state simulator; harness green, counter-example witnessed`
+- **Status:** done - rule `rule: lupus-nephritis-progression state machine - disease state DERIVED from raw serology`; state `state: v2 step3 - disease-state simulator; harness green, counter-example witnessed`
 ### [DONE] Loop 8 — Treatment-line recommendation + the disagreement counter-example
 
-The audit's second worked example, computed: a derived RecommendedTreatmentLine + single TreatmentLineDecidingFactor (mycophenolate for active nephritis, anifrolumab for type-I-IFN, belimumab for autoantibody-driven, secukinumab for IL-17/23) &#8212; differentiated by confirmed mechanism &#215; disease state, never by a label. The load-bearing proof: Diego is progression_vs_actionability_disagree = TRUE &#8212; the disease-state simulator says he IS progressing (BiopsyIndicated, high activity) while the actionability gate says NOT actionable (cryptic-relatedness leakage). A pure evidence gate could never produce that sentence; that it can is the proof v2 &#8800; v1 relabeled.
+The audit's second worked example, computed: a derived RecommendedTreatmentLine + single TreatmentLineDecidingFactor (mycophenolate for active nephritis, anifrolumab for type-I-IFN, belimumab for autoantibody-driven, secukinumab for IL-17/23) - differentiated by confirmed mechanism x disease state, never by a label. The load-bearing proof: Diego is progression_vs_actionability_disagree = TRUE - the disease-state simulator says he IS progressing (BiopsyIndicated, high activity) while the actionability gate says NOT actionable (cryptic-relatedness leakage). A pure evidence gate could never produce that sentence; that it can is the proof v2 != v1 relabeled.
 
-- **Status:** done - rule `rule: RecommendedTreatmentLine + progression_vs_actionability_disagree counter-example`; state `state: v2 &#8212; treatment-line + disagreement; the two layers proven independent`
-### [DONE] Loop 9 — Cohort discovery board &#8212; the corpus-level surface
+- **Status:** done - rule `rule: RecommendedTreatmentLine + progression_vs_actionability_disagree counter-example`; state `state: v2 - treatment-line + disagreement; the two layers proven independent`
+### [DONE] Loop 9 — Cohort discovery board - the corpus-level surface
 
-The doctor's deepest point: discovery is corpus-level &#8212; a single chart never discovers a mechanism, a pattern across many patients does. Build the top-level, all-roles Cohort discovery board over a 12-member claim-bearing cohort: the disease-state map, the emergent serology-signature scatter, the disease-vs-evidence disagreement board, and the treatment-line distribution &#8212; all reading derived fields. Per-patient progression + treatment-line tabs hang off the same model. The punchline, sorted to the top of the nav.
+The doctor's deepest point: discovery is corpus-level - a single chart never discovers a mechanism, a pattern across many patients does. Build the top-level, all-roles Cohort discovery board over a 12-member claim-bearing cohort: the disease-state map, the emergent serology-signature scatter, the disease-vs-evidence disagreement board, and the treatment-line distribution - all reading derived fields. Per-patient progression + treatment-line tabs hang off the same model. The punchline, sorted to the top of the nav.
 
-- **Status:** done - rule `rule: 12-member cohort expansion; corpus-level derived fields for the discovery board`; state `state: v2 steps9-10 &#8212; Cohort discovery is the top-level all-roles nav item`
+- **Status:** done - rule `rule: 12-member cohort expansion; corpus-level derived fields for the discovery board`; state `state: v2 steps9-10 - Cohort discovery is the top-level all-roles nav item`
 ### [NEXT] Loop 10 — Progression machine in the state-machine admin
 
 The one concrete unbuilt V2-UI item (per V2-UI-PLAN.md). StateMachineView is hardcoded to diagnosis-lifecycle; lupus-nephritis-progression already lives in vw_state_machines and is served by the same router. Make StateMachineView select the machine (a binding change, not a model change): render its states, the 5 raw-leaf-triggered transition rules, and a per-state cohort-occupancy strip. Closes the loop between the disease-state simulator and its admin witness.
 
-- **Status:** next - state `state: Loop 10 &#8212; progression machine bound into the state-machine admin`
-### [PLANNED] Loop 11 — Serology-signature discovery &#8212; emergent cluster, not a label
+- **Status:** next - state `state: Loop 10 - progression machine bound into the state-machine admin`
+### [PLANNED] Loop 11 — Serology-signature discovery - emergent cluster, not a label
 
-Make the discovery claim falsifiable at corpus scale. The serology signature that PRECEDES nephritis (the rising-anti-dsDNA / falling-complement trajectory) should surface as a DERIVED corpus-level cluster on the cohort scatter &#8212; emergent from the population's raw serology series, not a label anyone assigned. Derive the cluster membership / signature-strength field in the hub so the discovery is reproducible and witnessed, then surface it on the cohort board. This is the literal answer to 'discovery is corpus-level.'
+Make the discovery claim falsifiable at corpus scale. The serology signature that PRECEDES nephritis (the rising-anti-dsDNA / falling-complement trajectory) should surface as a DERIVED corpus-level cluster on the cohort scatter - emergent from the population's raw serology series, not a label anyone assigned. Derive the cluster membership / signature-strength field in the hub so the discovery is reproducible and witnessed, then surface it on the cohort board. This is the literal answer to 'discovery is corpus-level.'
 
 - **Status:** planned
-### [NEXT] Loop 6 — LLM intake clerk + synthetic lab
+### [PLANNED] Loop 12 — LLM intake clerk + synthetic lab
 
-Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.
+The trust-boundary payoff: wire the LLM to read a natural-language case and write ONLY leaf observations - intake facts + synthetic-but-transparent test results - with the three-panel witness (case text / extracted facts with per-fact provenance / derived diagnosis + gate trace). The LLM never computes a higher-order inference; every value it emits is an editable knob. Demotes the model to a replaceable, fully-overridable transcriber - the structural defeat of 'a hallucination laundered through a deterministic function.'
 
-- **Status:** next
-### [BACKLOG] Loop 8 — Cohort-level equity report
+- **Status:** planned
+### [BACKLOG] Loop 13 — Cohort-level equity report
 
-Calibration &amp; actionability rates by ancestry (ancestry-equity dashboard).
+Ancestry-equity made structural and corpus-level: calibration and actionability rates by ancestry (gates 2 and 4 of the keystone) as a derived dashboard, complementing the cohort discovery board. Equity is a checkable rate, not a promise.
 
 - **Status:** backlog
-### [BACKLOG] Loop 14 — Prune excess engineering &#8212; keep only what is load-bearing for the v2 audit response
+### [BACKLOG] Loop 14 — Prune excess engineering - keep only what is load-bearing for the v2 audit response
 
 A deliberate trimming pass (NOT a delete spree). Walk the model, the app, and the docs and find anything that was UPGRADED or SUPERSEDED and now lingers as a duplicate, plus any engineering that is not actually load-bearing toward the clearest pedagogical answer to the v1 audit. Candidates to scrutinise: superseded prediction types that don't earn their keep (e.g. a 4th parallel adverse-effect prediction once severity + treatment-response + treatment-line exist), redundant ontology slots that no longer carry a claim, and any view/endpoint with no consumer. Promotion rule inverted: if a thing is neither traceable to problem-to-solve.md nor load-bearing toward the keystone or the audit response, retire it. Goal: the clearest, most complete, DUPLICATE-FREE representation of the problem.
-
-- **Status:** backlog
-### [BACKLOG] Loop 7 — Adverse-effect prediction
-
-Wire adverse-effect prediction to observed treatment adverse-event rows.
 
 - **Status:** backlog
 
