@@ -54,27 +54,27 @@ Ship a witnessed inference harness asserting the entire DAG x 7 patients via the
 
 Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*.
 
-- **Status:** done
+- **Status:** done - rule `none - app-only loop, no rule change`; state `state: Loop 1 - read-only intake app surfaces the keystone`
 ### [DONE] Loop 2 — Patient intake (facts in)
 
 Form writes a new Individual + child observation rows to base tables, then re-reads the derived panel. The knob-editing payoff.
 
-- **Status:** done
+- **Status:** done - rule `rule (if any) for new intake field`; state `state: Loop 2 - facts-in to derived diagnosis works end to end`
 ### [DONE] Loop 3 — 3-panel witness &#8212; provenance back into the case text
 
 Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.
 
-- **Status:** done
+- **Status:** done - rule `rule: install explainer-dag`; state `state: Loop 3 - gate explainability`
 ### [DONE] Loop 4 — Second prediction type (severity)
 
 Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.
 
-- **Status:** done
+- **Status:** done - rule `rule: derive a severity prediction (IsSeverityActionable) chained to the onset gates`; state `state: Loop 4 - severity prediction (second prediction type) green`
 ### [DONE] Loop 5 — Treatment-response prediction
 
 Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.
 
-- **Status:** done
+- **Status:** done - rule `rule: derive a treatment-response prediction (IsTreatmentResponseActionable) via mechanism match`; state `state: Loop 5 - treatment-response prediction (third prediction type) green`
 ### [DONE] Loop 6 — Vocabulary completeness - every audit-named concept enters the hub
 
 Answer the audit's breadth: bring every concept the physician named (lupus nephritis, NPSLE, cutaneous lupus, sero+/-RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns, treatment lines, SLEDAI/DAS28) into the hub as DiseaseDomainConcepts, each with an honest ModelingStatus (deep-DAG / schema / vocabulary). Coverage becomes checkable by grep, not by trust.
