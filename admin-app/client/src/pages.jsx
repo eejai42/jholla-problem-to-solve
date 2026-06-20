@@ -994,7 +994,7 @@ const LEVELS = [
   { state: 'Intake', title: 'Intake — raw facts', endpoint: (p) => `/api/individuals/${p.individual}`,
     fields: [['ancestry_label', 'Ancestry'], ['age_years', 'Age'], ['is_ancestry_absent_from_training', 'Holdout ancestry'], ['has_cryptic_relatedness_flag', 'Cryptic relatedness']],
     blurb: 'The clinician transcribes the presenting facts. Nothing is inferred yet.' },
-  { state: 'EvidenceAssessed', title: 'Evidence assessed', endpoint: (p) => `/api/variants/${p.variant}`,
+  { state: 'EvidenceAssessed', title: 'Evidence assessed', endpoint: (p) => `/api/individuals/${p.individual}/variants`,
     fields: [['allele_frequency', 'Allele freq'], ['is_rare_variant', 'Rare variant'], ['has_allele_specific_expression', 'ASE'], ['is_causal_candidate', 'Causal candidate']],
     blurb: 'The variant is a candidate; per-evidence ZStats qualify the signal.' },
   { state: 'MechanismConfirmed', title: 'Mechanism confirmed?', endpoint: (p) => `/api/mechanisms/${p.mechanism}`,
@@ -1023,7 +1023,10 @@ function GateChip({ label, value }) {
 
 function WalkStep({ level, patient, reached, isDeciding, drillTo, drillTab }) {
   const { data } = useFetch(level.endpoint(patient), [patient.prediction, patient.individual]);
-  const row = data && !data.error ? data : {};
+  // Endpoints return either a single derived row or a list (e.g. an individual's
+  // variants); the walk shows the first qualifying row in either case.
+  const resolved = Array.isArray(data) ? data[0] : data;
+  const row = resolved && !resolved.error ? resolved : {};
   const dim = !reached;
   const Title = (
     <>
@@ -1075,7 +1078,6 @@ export function CaseWalkBody({ predId }) {
     prediction: predId,
     individual: pred.individual,
     mechanism: `cm-${predId.split('-')[1]}`,  // pred-a -> cm-a (oracle convention)
-    variant: null,
   };
   const visited = new Set(lc?.states || []);
   const terminal = lc?.terminal;

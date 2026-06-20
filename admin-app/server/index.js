@@ -209,6 +209,8 @@ app.get('/api/predictions/:id/calibration', many('vw_calibration_bins', 'individ
 
 // Per-person rollup + variant candidacy.
 app.get('/api/individuals/:id', one('vw_individuals', 'individual_id'));
+// All of an individual's candidate variants (the case walk reads the first).
+app.get('/api/individuals/:id/variants', many('vw_genomic_variants', 'individual', 'genomic_variant_id'));
 app.get('/api/variants/:id', one('vw_genomic_variants', 'genomic_variant_id'));
 
 // ---------------------------------------------------------------------------

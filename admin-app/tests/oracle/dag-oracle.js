@@ -48,18 +48,18 @@ export const byPrediction = (id) => PATIENTS.find((p) => p.prediction === id);
 // ---------------------------------------------------------------------------
 export const KEYSTONE = {
   'pred-a': {
-    rawFacts: 'European in-training; rare IRF5 variant w/ ASE; 3 qualified evidence (ZStat 4/3.5/3, 2 cross-modality); 3 replications (2 concordant, 2 cross-ancestry); 2 neg-controls both survive; 1 intervention target; 5 calibration bins coverage 30 absErr<=0.02.',
-    witness: 'IsHighConfidencePrediction (calibratedUncertainty 0.982>=0.7 AND NOT spurious) ∧ IsFalsifiabilityBacked (1 confirmed node) ∧ IsAncestryTransportSafe (in-training ⇒ vacuous) ∧ PredictedValue 3.02>0  ⇒  TRUE.',
+    rawFacts: 'European in-training; rare IRF5 variant w/ ASE; 3 qualified evidence (ZStat 4.55/3.84/3.22, 2 cross-modality); 3 replications (2 concordant, 2 cross-ancestry); 2 neg-controls both survive; 1 intervention target; 5 calibration bins coverage 29-34 absErr<=0.02.',
+    witness: 'IsHighConfidencePrediction (calibratedUncertainty 0.988>=0.7 AND NOT spurious) ∧ IsFalsifiabilityBacked (1 confirmed node) ∧ IsAncestryTransportSafe (in-training ⇒ vacuous) ∧ PredictedValue 3.02>0  ⇒  TRUE.',
     expected: { is_clinically_actionable: true },
   },
   'pred-b': {
-    rawFacts: 'Identical mechanism to A, but all 5 calibration bins have coverage 8 (<20).',
-    witness: 'CoverageCount 8<20 ⇒ 0 well-calibrated bins ⇒ WellCalibratedFraction 0 ⇒ CalibratedUncertainty 0<0.7 ⇒ IsHighConfidencePrediction FALSE  ⇒  KEYSTONE FALSE on the CALIBRATION gate alone (mechanism is fully confirmed).',
+    rawFacts: 'Same confirmed mechanism as A (own distinct effect sizes), but all 5 calibration bins are under-covered (coverage 7-14, each <20).',
+    witness: 'CoverageCount 7-14 each <20 ⇒ 0 well-calibrated bins ⇒ WellCalibratedFraction 0 ⇒ CalibratedUncertainty 0<0.7 ⇒ IsHighConfidencePrediction FALSE  ⇒  KEYSTONE FALSE on the CALIBRATION gate alone (mechanism is fully confirmed).',
     expected: { is_clinically_actionable: false },
   },
   'pred-c': {
-    rawFacts: 'STAT4 mechanism; replication signs +1/-1/+1 (1 concordant); one neg-control permutation 0.5 (>0.1 null).',
-    witness: 'Only 1 concordant replication (<2) ⇒ NOT ReplicatesAcrossCohorts; control 0.5>0.1 ⇒ NOT SurvivesNegativeControls ⇒ IsSpuriousDerived TRUE ⇒ NOT a node ⇒ 0 confirmed nodes ⇒ HasSpuriousCorrelationFlag TRUE  ⇒  KEYSTONE FALSE on the SPURIOUS-MECHANISM gate.',
+    rawFacts: 'STAT4 mechanism; replication signs +1/-1/+1 with rep-c-3 p=0.27 (>0.05) ⇒ 1 concordant; one neg-control permutation 0.46 (>0.1 null).',
+    witness: 'Only 1 concordant replication (<2) ⇒ NOT ReplicatesAcrossCohorts; control 0.46>0.1 ⇒ NOT SurvivesNegativeControls ⇒ IsSpuriousDerived TRUE ⇒ NOT a node ⇒ 0 confirmed nodes ⇒ HasSpuriousCorrelationFlag TRUE  ⇒  KEYSTONE FALSE on the SPURIOUS-MECHANISM gate.',
     expected: { is_clinically_actionable: false },
   },
   'pred-d': {
@@ -124,13 +124,13 @@ export const DECIDING_GATE = {
 //  L5 — PREDICTION-LEVEL derived scalars (lookups + PredictedValue + calibration).
 // ---------------------------------------------------------------------------
 export const PREDICTION_LEVEL = {
-  'pred-a': { individual_causal_mass: 0.7583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.0166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.982, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
+  'pred-a': { individual_causal_mass: 0.7583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.0166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.988, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
   'pred-b': { individual_causal_mass: 0.7583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.0166667, count_bins: 5, count_well_calibrated_bins: 0, well_calibrated_fraction: 0.0, calibrated_uncertainty: 0.0,   rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
-  'pred-c': { individual_causal_mass: 0.0,       individual_confirmed_node_count: 0, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 0.0,       count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.982, rests_on_confirmed_mechanism: false, has_spurious_correlation_flag: true,  is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
-  'pred-d': { individual_causal_mass: 0.7583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: true,  predicted_value: 3.0166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.982, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: true,  is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
-  'pred-e': { individual_causal_mass: 0.0,       individual_confirmed_node_count: 0, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 0.0,       count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.982, rests_on_confirmed_mechanism: false, has_spurious_correlation_flag: true,  is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
-  'pred-f': { individual_causal_mass: 0.8583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 3.2166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.982, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
-  'pred-g': { individual_causal_mass: 0.8583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.2166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.982, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: true,  patient_stratification_tier: 'Low-Risk Pathway' },
+  'pred-c': { individual_causal_mass: 0.0,       individual_confirmed_node_count: 0, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 0.0,       count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.984, rests_on_confirmed_mechanism: false, has_spurious_correlation_flag: true,  is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
+  'pred-d': { individual_causal_mass: 0.7583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: true,  predicted_value: 3.0166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.988, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: true,  is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
+  'pred-e': { individual_causal_mass: 0.0,       individual_confirmed_node_count: 0, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 0.0,       count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.988, rests_on_confirmed_mechanism: false, has_spurious_correlation_flag: true,  is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
+  'pred-f': { individual_causal_mass: 0.8583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 3.2166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.986, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
+  'pred-g': { individual_causal_mass: 0.8583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.2166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.984, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: true,  patient_stratification_tier: 'Low-Risk Pathway' },
 };
 
 export const PREDICTION_WITNESS = {
@@ -183,26 +183,26 @@ export const MECHANISM_WITNESS = {
 // ---------------------------------------------------------------------------
 export const EVIDENCE_ATOMS = {
   // mechanism -> the qualified-evidence count its rows produce, with the ZStat witness
-  'cm-a': { count_qualified: 3, witness: 'ZStat = |effect|/SE = 0.8/0.2 = 4 (and 3.5, 3) all >=2, high-quality assay, confound-controlled, not control-arm ⇒ all 3 qualify.' },
+  'cm-a': { count_qualified: 3, witness: 'ZStat = |effect|/SE = 0.91/0.20 = 4.55 (and 3.84, 3.22) all >=2, high-quality assay, confound-controlled, not control-arm ⇒ all 3 qualify.' },
   'cm-c': { count_qualified: 3, witness: 'Same evidence quality as A (3 qualify) — C\'s failure is at replication/control, NOT evidence.' },
   'cm-e': { count_qualified: 3, witness: 'Evidence qualifies (3) — E\'s failure is the missing intervention target, NOT evidence.' },
 };
 
 export const REPLICATION_ATOMS = {
   // the single deciding replication fact per transport-relevant mechanism
-  'cm-c': { count_cross_ancestry_concordant: 0, witness: 'rep-c-2 sign -1 (discordant) and rep-c-3 p=0.3 (>0.05) ⇒ only 1 concordant; cross-ancestry concordant 0.' },
+  'cm-c': { count_cross_ancestry_concordant: 0, witness: 'rep-c-2 sign -1 (discordant) and rep-c-3 p=0.27 (>0.05) ⇒ only 1 concordant; cross-ancestry concordant 0.' },
   'cm-f': { count_cross_ancestry_concordant: 0, witness: 'All 3 replications ran in Indigenous-American = mechanism ancestry ⇒ IsDifferentAncestryReplication FALSE for all ⇒ 0 cross-ancestry concordant.' },
-  'cm-g': { count_cross_ancestry_concordant: 2, witness: 'rep-g-1 (European, p=0.01,+1) and rep-g-2 (East Asian, p=0.02,+1) are sig + different-ancestry ⇒ 2 cross-ancestry concordant.' },
+  'cm-g': { count_cross_ancestry_concordant: 2, witness: 'rep-g-1 (European, p=0.004,+1) and rep-g-2 (East Asian, p=0.012,+1) are sig + different-ancestry ⇒ 2 cross-ancestry concordant.' },
 };
 
 export const CONTROL_ATOMS = {
-  'cm-a': { count_survived: 2, witness: 'nct-a-1 (0.01) and nct-a-2 (0.02) both within +/-0.1 null band ⇒ both survive ⇒ SurvivesNegativeControls.' },
-  'cm-c': { count_survived: 1, witness: 'nct-c-2 permutationEffectSize 0.5 > 0.1 null threshold ⇒ does NOT collapse ⇒ NOT survived ⇒ SurvivesNegativeControls FALSE.' },
+  'cm-a': { count_survived: 2, witness: 'nct-a-1 (0.012) and nct-a-2 (0.028) both within +/-0.1 null band ⇒ both survive ⇒ SurvivesNegativeControls.' },
+  'cm-c': { count_survived: 1, witness: 'nct-c-2 permutationEffectSize 0.46 > 0.1 null threshold ⇒ does NOT collapse ⇒ NOT survived ⇒ SurvivesNegativeControls FALSE.' },
 };
 
 export const CALIBRATION_ATOMS = {
-  'pred-a': { count_well_calibrated_bins: 5, witness: 'All 5 bins coverage 30 (>=20) and binAbsError<=0.02 (<=0.1) ⇒ all well-calibrated.' },
-  'pred-b': { count_well_calibrated_bins: 0, witness: 'All 5 bins coverage 8 (<20) ⇒ NONE well-calibrated, regardless of low abs error ⇒ the calibration gate fails here alone.' },
+  'pred-a': { count_well_calibrated_bins: 5, witness: 'All 5 bins coverage 29-34 (>=20) and binAbsError<=0.02 (<=0.1) ⇒ all well-calibrated.' },
+  'pred-b': { count_well_calibrated_bins: 0, witness: 'All 5 bins coverage 7-14 (<20) ⇒ NONE well-calibrated, regardless of low abs error ⇒ the calibration gate fails here alone.' },
 };
 
 // ---------------------------------------------------------------------------

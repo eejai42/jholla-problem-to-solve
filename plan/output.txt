@@ -62,7 +62,7 @@ Form writes a new Individual + child observation rows to base tables, then re-re
 - **Status:** done
 ### [DONE] Loop 3 — 3-panel witness &#8212; provenance back into the case text
 
-Make the README anti-laundering claim a real artifact: CaseNarrative (Panel 1) + per-leaf SourceQuote (Panel 2-&gt;1) so every extracted fact points back into the case text; surface the three panels in the diagnosis writeup and an interactive UI tab (hover a fact -&gt; its source span highlights). Gate explainability, grounded in raw text.
+Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.
 
 - **Status:** done
 ### [NEXT] Loop 4 — Second prediction type (severity)
