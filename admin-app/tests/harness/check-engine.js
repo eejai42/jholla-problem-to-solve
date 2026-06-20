@@ -36,6 +36,12 @@ import {
   VARIANT_WITNESS,
   LIFECYCLE_PATHS,
   ROUTING,
+  PROGRESSION_INDIVIDUALS,
+  DISEASE_STATE,
+  DISEASE_STATE_WITNESS,
+  PROGRESSION_PATHS,
+  TREATMENT_LINE,
+  TREATMENT_LINE_WITNESS,
   TOL,
 } from '../oracle/dag-oracle.js';
 import { CONTRACT } from './contract.js';
@@ -270,6 +276,49 @@ export async function runHarness(base) {
       judged = { status: ok ? 'pass' : 'fail', actual: tops, detail: ok ? '' : `expected top-level routes ${JSON.stringify(exp)}, got ${JSON.stringify(tops)}` };
     }
     checks.push(mk('L9 · Routing — role-based nav trees', 9, `role ${role} sees top-level: ${expectedTops.join(', ')}`, 'RoleVisibility filters the nav tree; admin sees all trees, each clinician role sees its own workflow.', ep, 'tree-tops', expectedTops, judged));
+  }
+
+  // ---- L11 DISEASE STATE — the v2 disease-state simulator (per individual) ----
+  const DISEASE_FIELDS = ['nephritis_progression_state_key', 'latest_sledai_score', 'activity_tier', 'is_disease_progressing'];
+  for (const e of PROGRESSION_INDIVIDUALS) {
+    const row = DISEASE_STATE[e.individual];
+    if (!row) continue;
+    const ep = CONTRACT.diseaseState.endpoint(e);
+    const r = await fetchJson(base, ep);
+    for (const f of DISEASE_FIELDS) {
+      checks.push(mk('L11 · Disease-state simulator — derived state + activity', 11, `${e.key} · ${e.name} · ${f} = ${row[f]}`, DISEASE_STATE_WITNESS[f], ep, f, row[f], judgeScalar(r, f, row[f])));
+    }
+  }
+
+  // ---- L11b PROGRESSION WALK — the lupus-nephritis machine path per individual ----
+  for (const e of PROGRESSION_INDIVIDUALS) {
+    const o = PROGRESSION_PATHS[e.individual];
+    if (!o) continue;
+    const ep = CONTRACT.progression.endpoint(e);
+    const r = await fetchJson(base, ep);
+    let judged;
+    if (r.status === 501) judged = { status: 'not_surfaced', actual: null, detail: 'endpoint returns 501 (not wired yet)' };
+    else if (r.status !== 200) judged = { status: 'fail', actual: null, detail: `HTTP ${r.status}` };
+    else {
+      const states = Array.isArray(r.body?.states) ? r.body.states : null;
+      const okPath = states && JSON.stringify(states) === JSON.stringify(o.states);
+      const okCurrent = r.body?.current === o.current;
+      const ok = okPath && okCurrent;
+      judged = { status: ok ? 'pass' : 'fail', actual: states, detail: ok ? '' : `expected path ${JSON.stringify(o.states)} (current ${o.current}), got ${JSON.stringify(states)} (current ${r.body?.current})` };
+    }
+    checks.push(mk('L11b · Disease progression — walk through the lupus-nephritis machine', 11, `${e.key} · ${e.name} · ${o.states.join(' → ')}`, `Derived from raw serology trajectories; current state ${o.current} is the IsCurrent occupancy, never hand-set.`, ep, 'states', o.states, judged));
+  }
+
+  // ---- L5d TREATMENT-LINE + the DISAGREEMENT counter-example (per prediction) ----
+  const TL_FIELDS = ['recommended_treatment_line', 'treatment_line_deciding_factor', 'progression_vs_actionability_disagree'];
+  for (const p of PATIENTS) {
+    const row = TREATMENT_LINE[p.prediction];
+    if (!row) continue;
+    const ep = CONTRACT.treatmentLine.endpoint(p);
+    const r = await fetchJson(base, ep);
+    for (const f of TL_FIELDS) {
+      checks.push(mk('L5d · Treatment-line selection + the disagreement counter-example', 5, `${p.key} · ${p.name} · ${f} = ${row[f]}`, TREATMENT_LINE_WITNESS[f], ep, f, row[f], judgeScalar(r, f, row[f])));
+    }
   }
 
   const summary = {

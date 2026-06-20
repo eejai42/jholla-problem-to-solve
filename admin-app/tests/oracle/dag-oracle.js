@@ -358,3 +358,79 @@ export const ROUTING = {
     'admin': ['intake', 'diagnosis', 'admin'],
   },
 };
+
+// ===========================================================================
+//  v2 — THE DISEASE-STATE SIMULATOR (the layer the v1 audit said didn't exist)
+// ===========================================================================
+//  v1 answered "is the evidence actionable?" (the gates). v2 answers "is the
+//  DISEASE progressing?" — a witnessed state machine whose current state is
+//  derived purely from raw serology leaves (anti-dsDNA trend, complement trend,
+//  proteinuria, sediment). Captured live from vw_individuals / vw_individual_
+//  predictions / vw_subject_state_instances; frozen here as the oracle.
+//
+//  ALL NINE individuals carry a disease state (the original 7 + 2 progression
+//  demos H,I). Only the original 7 have predictions (and thus a treatment line).
+// ===========================================================================
+
+// The full progression-demo cohort (the 7 oracle patients + 2 new ones).
+export const PROGRESSION_INDIVIDUALS = [
+  ...PATIENTS.map((p) => ({ key: p.key, individual: p.individual, name: p.name })),
+  { key: 'H', individual: 'ind-h-yamamoto', name: 'Hana Yamamoto' },
+  { key: 'I', individual: 'ind-i-conteh',   name: 'Ibrahim Conteh' },
+];
+
+// L11 — per-individual derived disease state (served by /api/individuals/:id).
+export const DISEASE_STATE = {
+  'ind-a-reyes':    { nephritis_progression_state_key: 'SerologicActive',            latest_sledai_score: 4, activity_tier: 'Mild',        is_disease_progressing: false },
+  'ind-b-okafor':   { nephritis_progression_state_key: 'PresymptomaticAutoimmunity', latest_sledai_score: 0, activity_tier: 'Quiescent',   is_disease_progressing: false },
+  'ind-c-chen':     { nephritis_progression_state_key: 'SerologicActive',            latest_sledai_score: 4, activity_tier: 'Mild',        is_disease_progressing: false },
+  // D — THE COUNTER-EXAMPLE: progressing to biopsy at HIGH activity (SLEDAI 12), yet the
+  //     prediction is NOT actionable (cryptic gate). Captured live from vw_individuals (:5432).
+  'ind-d-santos':   { nephritis_progression_state_key: 'BiopsyIndicated',            latest_sledai_score: 12, activity_tier: 'High / flare', is_disease_progressing: true  },
+  'ind-e-mensah':   { nephritis_progression_state_key: 'PresymptomaticAutoimmunity', latest_sledai_score: 0,  activity_tier: 'Quiescent',    is_disease_progressing: false },
+  'ind-f-haidar':   { nephritis_progression_state_key: 'PresymptomaticAutoimmunity', latest_sledai_score: 0,  activity_tier: 'Quiescent',    is_disease_progressing: false },
+  'ind-g-lin':      { nephritis_progression_state_key: 'PresymptomaticAutoimmunity', latest_sledai_score: 0,  activity_tier: 'Quiescent',    is_disease_progressing: false },
+  'ind-h-yamamoto': { nephritis_progression_state_key: 'EarlyNephritis',             latest_sledai_score: 8,  activity_tier: 'Moderate',     is_disease_progressing: true  },
+  'ind-i-conteh':   { nephritis_progression_state_key: 'RenalFlareRisk',             latest_sledai_score: 8,  activity_tier: 'Moderate',     is_disease_progressing: true  },
+};
+
+export const DISEASE_STATE_WITNESS = {
+  nephritis_progression_state_key: 'DERIVED from the highest progression-state order reached across the individual\'s raw serology panels (proteinuria/sediment ⇒ BiopsyIndicated; proteinuria≥1 ⇒ RenalFlareRisk; ≥0.5 ⇒ EarlyNephritis; rising-dsDNA+falling-complement ⇒ SerologicActive; else Presymptomatic). Never hand-set.',
+  latest_sledai_score:             'DERIVED peak SLEDAI-style activity = renal sub-score (0/4/8 from proteinuria+sediment) + serology sub-score (0/2/4 from low-complement+raised-dsDNA), MAXIFS across panels.',
+  activity_tier:                   'DERIVED tier from peak SLEDAI: ≥12 High/flare, ≥6 Moderate, ≥1 Mild, else Quiescent.',
+  is_disease_progressing:          'DERIVED: TRUE when the disease state is EarlyNephritis/RenalFlareRisk/BiopsyIndicated — INDEPENDENT of the actionability gate (that independence is the whole point).',
+};
+
+// L11b — per-individual progression WALK (served by /api/individuals/:id/progression).
+export const PROGRESSION_PATHS = {
+  'ind-a-reyes':    { states: ['PresymptomaticAutoimmunity', 'SerologicActive'], current: 'SerologicActive' },
+  'ind-b-okafor':   { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
+  'ind-c-chen':     { states: ['PresymptomaticAutoimmunity', 'SerologicActive'], current: 'SerologicActive' },
+  'ind-d-santos':   { states: ['PresymptomaticAutoimmunity', 'RenalFlareRisk', 'BiopsyIndicated'], current: 'BiopsyIndicated' },
+  'ind-e-mensah':   { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
+  'ind-f-haidar':   { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
+  'ind-g-lin':      { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
+  'ind-h-yamamoto': { states: ['PresymptomaticAutoimmunity', 'EarlyNephritis'], current: 'EarlyNephritis' },
+  'ind-i-conteh':   { states: ['EarlyNephritis', 'RenalFlareRisk'], current: 'RenalFlareRisk' },
+};
+
+// L5d — TREATMENT-LINE selection (served by /api/predictions/:id). The audit's
+// second worked example: MMF vs belimumab vs anifrolumab, with a single deciding
+// reason, derived from the confirmed-mechanism pathway + the disease state.
+export const TREATMENT_LINE = {
+  'pred-a': { recommended_treatment_line: 'Anifrolumab',                              treatment_line_deciding_factor: 'IFNSignature-Anifrolumab',    progression_vs_actionability_disagree: false },
+  'pred-b': { recommended_treatment_line: 'Anifrolumab',                              treatment_line_deciding_factor: 'IFNSignature-Anifrolumab',    progression_vs_actionability_disagree: false },
+  'pred-c': { recommended_treatment_line: 'No targeted line — mechanism unconfirmed', treatment_line_deciding_factor: 'MechanismUnconfirmed',        progression_vs_actionability_disagree: false },
+  // D — the counter-example: disease progressing (BiopsyIndicated) ⇒ MMF induction,
+  //     yet the keystone is NOT actionable (cryptic) ⇒ disagree = TRUE.
+  'pred-d': { recommended_treatment_line: 'Mycophenolate (induction)',                treatment_line_deciding_factor: 'ActiveNephritis-Induction',   progression_vs_actionability_disagree: true  },
+  'pred-e': { recommended_treatment_line: 'No targeted line — mechanism unconfirmed', treatment_line_deciding_factor: 'MechanismUnconfirmed',        progression_vs_actionability_disagree: false },
+  'pred-f': { recommended_treatment_line: 'Secukinumab',                              treatment_line_deciding_factor: 'IL17Axis-Secukinumab',        progression_vs_actionability_disagree: false },
+  'pred-g': { recommended_treatment_line: 'Secukinumab',                              treatment_line_deciding_factor: 'IL17Axis-Secukinumab',        progression_vs_actionability_disagree: false },
+};
+
+export const TREATMENT_LINE_WITNESS = {
+  recommended_treatment_line:            'DERIVED: if mechanism unconfirmed ⇒ no targeted line; else if disease is in RenalFlareRisk/BiopsyIndicated ⇒ MMF induction (state overrides pathway); else by confirmed-mechanism TargetPathway: IFN⇒Anifrolumab, B-cell⇒Belimumab, IL-17/23⇒Secukinumab.',
+  treatment_line_deciding_factor:        'the single reason for the line (mirrors DecidingGate): MechanismUnconfirmed | ActiveNephritis-Induction | IFNSignature-Anifrolumab | AutoantibodyDriven-Belimumab | IL17Axis-Secukinumab.',
+  progression_vs_actionability_disagree: 'THE COUNTER-EXAMPLE: TRUE when the disease-state simulator says the disease IS progressing while the actionability gate says the prediction is NOT actionable. Proves the two layers are independent and both real.',
+};

@@ -232,6 +232,46 @@ app.get('/api/individuals/:id', async (req, res) => {
   } catch (err) { res.status(500).json({ error: String(err) }); }
 });
 
+// v2 DISEASE-STATE SIMULATOR — an individual's walk through the lupus-nephritis
+// progression machine: the bitemporal occupancy chain + the derived current state.
+// Mirrors /predictions/:id/lifecycle but for the DISEASE course (subject = Individual),
+// whose current state is derived purely from raw serology leaves. This is the layer the
+// v1 audit said didn't exist: not "is the evidence actionable" but "is the disease
+// progressing" — and how long it has been in each state (DwellDays).
+app.get('/api/individuals/:id/progression', async (req, res) => {
+  try {
+    const indId = await resolveIndividualId(req.params.id);
+    if (!indId) return res.status(404).json({ error: 'not_found', id: req.params.id });
+    const ind = (await query(
+      `SELECT individual_id, nephritis_progression_state_key, latest_sledai_score,
+              activity_tier, is_disease_progressing, target_pathway
+       FROM vw_individuals WHERE individual_id = $1`, [indId]))[0];
+    const instances = await query(
+      `SELECT state_key, entered_at, exited_at, sequence_index::int AS sequence_index,
+              dwell_days, is_long_dwell, is_current, entered_via_transition, prior_instance
+       FROM vw_subject_state_instances
+       WHERE state_machine = 'lupus-nephritis-progression' AND subject_id = $1
+       ORDER BY sequence_index`, [indId]);
+    const transitions = await query(
+      `SELECT from_state_key, to_state_key, transition_at, triggered_by_role, reason
+       FROM vw_state_transitions
+       WHERE state_machine = 'lupus-nephritis-progression' AND subject_id = $1
+       ORDER BY transition_at`, [indId]);
+    res.json({
+      individual: indId,
+      states: instances.map((i) => i.state_key),
+      current: ind?.nephritis_progression_state_key ?? null,
+      terminal: instances.length ? instances[instances.length - 1].state_key : null,
+      latest_sledai_score: ind?.latest_sledai_score ?? null,
+      activity_tier: ind?.activity_tier ?? null,
+      is_disease_progressing: ind?.is_disease_progressing ?? null,
+      target_pathway: ind?.target_pathway ?? null,
+      instances,
+      transitions,
+    });
+  } catch (err) { res.status(500).json({ error: String(err) }); }
+});
+
 // An individual's leaf observation tables, each id-or-slug addressable. These
 // back the intake workspace's Variants / Assays panes (raw facts only — the
 // derived candidacy/quality flags ride along from the view).

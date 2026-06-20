@@ -93,4 +93,20 @@ export const CONTRACT = {
     endpoint: (role) => `/api/routing/tree?role=${role}`,
     plannedLoop: 'Loop 2',
   },
+  // ---- v2: the DISEASE-STATE SIMULATOR (the layer the audit asked for) ----
+  diseaseState: {
+    surfaces: 'L11 derived disease state + activity (served on /api/individuals/:id)',
+    endpoint: (e) => `/api/individuals/${e.individual}`,
+    plannedLoop: 'v2',
+  },
+  progression: {
+    surfaces: 'L11b the disease-progression walk (lupus-nephritis machine)',
+    endpoint: (e) => `/api/individuals/${e.individual}/progression`,
+    plannedLoop: 'v2',
+  },
+  treatmentLine: {
+    surfaces: 'L5d treatment-line selection + the disagreement counter-example (served on /api/predictions/:id)',
+    endpoint: (p) => `/api/predictions/${p.prediction}`,
+    plannedLoop: 'v2',
+  },
 };
