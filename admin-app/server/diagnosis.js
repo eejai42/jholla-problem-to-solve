@@ -20,6 +20,10 @@ import { query } from './db.js';
 const yn = (b) => (b === true ? 'YES' : b === false ? 'no' : '—');
 const passfail = (b) => (b === true ? 'PASS' : b === false ? 'FAIL' : 'unknown');
 const num = (n, d = 2) => (n == null ? '—' : Number(n).toFixed(d));
+// Panel 2→1 provenance pointer: render the literal span of the case narrative
+// this leaf's raw value was extracted from. Lets a reader check the EXTRACTION
+// was faithful, independently of trusting the derived verdict.
+const src = (q) => (q ? `\n  - ↳ _from the case:_ “${q}”` : '');
 // Honest three-state render of the transport gate (consumes the derived
 // TransportGateStatus). A vacuous in-training pass is shown as n/a, never PASS,
 // so the writeup never implies transport evidence the keystone never used.
@@ -61,6 +65,11 @@ export async function buildDiagnosis(predictionId) {
   if (!preds.length) return null;
   const p = preds[0];
 
+  // Panel 1 (the input case text) lives on the individual, not the prediction.
+  // Attach it onto p so the renderer can open with it.
+  const inds = await query('SELECT case_narrative FROM vw_individuals WHERE individual_id = $1', [p.individual]);
+  if (inds.length) p.case_narrative = inds[0].case_narrative;
+
   const mechs = await query('SELECT * FROM vw_causal_mechanisms WHERE individual = $1', [p.individual]);
   const variants = await query('SELECT * FROM vw_genomic_variants WHERE individual = $1', [p.individual]);
   const bins = await query('SELECT * FROM vw_calibration_bins WHERE individual_prediction = $1 ORDER BY calibration_bin_id', [predictionId]);
@@ -88,19 +97,36 @@ export function renderMarkdown(d) {
   L.push('');
   L.push('> **Demonstration of inference structure, not validated clinical decision support.**');
   L.push(`> Generated from the derived inference chain (\`vw_*\`). Conclusion is computed, never entered.`);
-  L.push('> 🧪-marked rows are **synthetic leaves** (LLM-produced transparent test results for this invented case); every other value is **derived** by formula. The trust boundary is a line in the DAG — see each leaf\'s _represents / valid-under_ provenance below.');
+  L.push('> 🧪-marked rows are **synthetic leaves** (LLM-produced transparent test results for this invented case); every other value is **derived** by formula. The trust boundary is a line in the DAG. Each leaf carries a ↳ pointer back into the **case text** (Panel 1) it was extracted from, so the extraction is checkable independently of the verdict.');
   L.push('');
   L.push(`**Prediction:** ${p.individual_prediction_id} · **Disease:** ${p.autoimmune_disease || '—'} · **Type:** ${p.prediction_type || '—'}`);
   L.push(`**Ancestry:** ${p.individual_ancestry_label} ${p.is_ancestry_holdout ? '(held out of training)' : '(in training)'}`);
   L.push('');
 
-  // ---- PRESENTATION (raw facts) ----
-  L.push('## Presentation (raw observations)');
+  // ---- PANEL 1: the input case text (what the LLM was handed) ----
+  // The whole point of the three-panel witness: this is the messy NL input.
+  // Every raw observation below is extracted from THIS text, and each carries a
+  // ↳ pointer back into it — so a human can check the extraction was faithful
+  // SEPARATELY from trusting the verdict. That is what stops the conclusion
+  // from being "a hallucination laundered through a deterministic function".
+  if (p.case_narrative) {
+    L.push('## Presenting case (Panel 1 — the LLM\'s raw input)');
+    L.push('');
+    L.push('> ' + String(p.case_narrative).replace(/\n+/g, '\n> '));
+    L.push('');
+    L.push('_Below, every extracted fact carries a ↳ pointer back into this text (Panel 2). '
+      + 'The extraction is checkable here; the derivation (the gates) is checkable in the Assessment. '
+      + 'The two halves are independent — which is the point._');
+    L.push('');
+  }
+
+  // ---- PANEL 2: PRESENTATION (raw facts extracted from the case) ----
+  L.push('## Presentation (raw observations — Panel 2)');
   if (variants.length) {
     for (const v of variants) {
       L.push(`- **Genomic variant ${v.genomic_variant_id}:** allele frequency ${num(v.allele_frequency, 4)} ` +
         `(${v.is_rare_variant ? 'rare' : 'common'}), allele-specific expression ${yn(v.has_allele_specific_expression)} ` +
-        `⇒ candidate causal variant: **${yn(v.is_causal_candidate)}**.`);
+        `⇒ candidate causal variant: **${yn(v.is_causal_candidate)}**.` + src(v.source_quote));
     }
   } else {
     L.push('- No genomic variants on record.');
@@ -119,7 +145,7 @@ export function renderMarkdown(d) {
         const leaf = e.is_synthetic_leaf ? ' 🧪_synthetic_' : '';
         L.push(`- ${e.evidence_item_id}:${leaf} ZStat ${num(e.z_stat)} ` +
           `(high-quality assay ${yn(e.assay_is_high_quality)}, confound-controlled ${yn(e.is_confound_controlled)}, ` +
-          `cross-modality ${yn(e.is_cross_modality)}) ⇒ qualified: **${yn(e.is_qualified_evidence)}**.`);
+          `cross-modality ${yn(e.is_cross_modality)}) ⇒ qualified: **${yn(e.is_qualified_evidence)}**.` + src(e.source_quote));
         if (e.represents_assay_modality)
           L.push(`  - _represents:_ ${e.represents_assay_modality}` +
             `${e.identification_assumption ? ` — _valid under:_ ${e.identification_assumption}` : ''}`);
@@ -131,13 +157,13 @@ export function renderMarkdown(d) {
     for (const r of reps) {
       L.push(`- ${r.cohort_replication_id}: ${r.replication_ancestry_label} cohort, ` +
         `p=${num(r.replication_p_value, 3)}, sign ${r.replication_effect_sign > 0 ? '+' : r.replication_effect_sign < 0 ? '−' : '0'} ⇒ ` +
-        `replicated@sig ${yn(r.replicated_at_nominal_sig)}, cross-ancestry-concordant **${yn(r.is_cross_ancestry_concordant)}**.`);
+        `replicated@sig ${yn(r.replicated_at_nominal_sig)}, cross-ancestry-concordant **${yn(r.is_cross_ancestry_concordant)}**.` + src(r.source_quote));
     }
     L.push(`- ⇒ ${m.count_concordant_replications}/${m.count_replications} concordant; ${m.count_cross_ancestry_concordant} cross-ancestry concordant ⇒ replicates-across-cohorts: **${yn(m.replicates_across_cohorts)}**.`);
     L.push('');
     L.push('**Negative controls:**');
     for (const c of controls) {
-      L.push(`- ${c.negative_control_test_id}: permutation effect ${num(c.permutation_effect_size, 3)} vs null ±${num(c.null_threshold, 2)} ⇒ survived: **${yn(c.is_survived)}**.`);
+      L.push(`- ${c.negative_control_test_id}: permutation effect ${num(c.permutation_effect_size, 3)} vs null ±${num(c.null_threshold, 2)} ⇒ survived: **${yn(c.is_survived)}**.` + src(c.source_quote));
     }
     L.push(`- ⇒ ${m.count_neg_control_survived}/${m.count_neg_control_tests} survived ⇒ survives-negative-controls: **${yn(m.survives_negative_controls)}**.`);
     L.push('');
@@ -152,7 +178,8 @@ export function renderMarkdown(d) {
   L.push('');
   L.push('**Calibration (reliability bins):** ' +
     `${p.count_well_calibrated_bins}/${p.count_bins} bins well-calibrated ` +
-    `(coverage≥20 & |gap|≤0.1) ⇒ CalibratedUncertainty **${num(p.calibrated_uncertainty)}** (threshold 0.70).`);
+    `(coverage≥20 & |gap|≤0.1) ⇒ CalibratedUncertainty **${num(p.calibrated_uncertainty)}** (threshold 0.70).` +
+    src(bins.find((b) => b.source_quote)?.source_quote));
   L.push('');
 
   // ---- ASSESSMENT (the four gates) ----
