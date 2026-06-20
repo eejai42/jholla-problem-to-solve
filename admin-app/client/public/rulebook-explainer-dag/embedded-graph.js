@@ -10623,16 +10623,16 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "LoopNumber": "12",
         "Title": "Prune excess engineering - keep only what is load-bearing for the v1 audit response",
         "Goal": "A deliberate trimming pass (NOT a delete spree). Walk the model, the app, and the docs and find anything that was UPGRADED or SUPERSEDED and now lingers as a duplicate, plus any engineering that is not actually load-bearing toward the clearest pedagogical answer to the v1 audit. Candidates to scrutinise: superseded prediction types that don't earn their keep (e.g. a 4th parallel adverse-effect prediction once severity + treatment-response + treatment-line exist), redundant ontology slots that no longer carry a claim, and any view/endpoint with no consumer. Promotion rule inverted: if a thing is neither traceable to problem-to-solve.md nor load-bearing toward the keystone or the audit response, retire it. Goal: the clearest, most complete, DUPLICATE-FREE representation of the problem - so the audit response is concise as well as complete.",
-        "Status": "next",
-        "RuleCommitMsg": "",
-        "StateCommitMsg": "",
+        "Status": "done",
+        "RuleCommitMsg": "none - verification loop, no rule change; inventory found nothing load-bearing to retire",
+        "StateCommitMsg": "state: Loop 12 - verified lean. Every endpoint is consumed (client or witnessed harness); no 4th adverse-effect prediction exists; the 3 zero-ref context tables (CounterfactualTrajectories/EnvironmentalExposures/TherapyOptions) are each named in problem-to-solve.md so they stay as honest schema coverage; no duplicate ontology slots or dead calc fields. The inverted promotion rule held: nothing is neither-traceable-nor-load-bearing.",
         "SortOrder": 13,
-        "StatusBadge": "[NEXT]",
-        "StatusLine": "",
+        "StatusBadge": "[DONE]",
+        "StatusLine": " - rule `none - verification loop, no rule change; inventory found nothing load-bearing to retire`; state `state: Loop 12 - verified lean. Every endpoint is consumed (client or witnessed harness); no 4th adverse-effect prediction exists; the 3 zero-ref context tables are each named in problem-to-solve.md so they stay as honest schema coverage; no duplicate ontology slots or dead calc fields.`",
         "Name": "Loop 12 — Prune excess engineering - keep only what is load-bearing for the v1 audit response",
         "RelativePath": "/admin/leopold-loops/loop-prune-nonloadbearing",
-        "Completedness": "next",
-        "IsInCurrentPlan": true
+        "Completedness": "done",
+        "IsInCurrentPlan": false
       },
       {
         "LeopoldLoopId": "loop-llm-intake",
