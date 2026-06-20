@@ -27,6 +27,11 @@ export const CONTRACT = {
     endpoint: (p) => `/api/predictions/${p.prediction}`,
     plannedLoop: 'Loop 1',
   },
+  severityLevel: {
+    surfaces: 'L5b severity prediction (max severity score, tier, severity-actionable gate chained to the onset mechanism gates)',
+    endpoint: (p) => `/api/predictions/${p.prediction}`,
+    plannedLoop: 'Loop 4',
+  },
   individualLevel: {
     surfaces: 'L4 individual rollups',
     endpoint: (p) => `/api/individuals/${p.individual}`,

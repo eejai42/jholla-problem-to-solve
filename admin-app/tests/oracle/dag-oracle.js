@@ -142,6 +142,41 @@ export const PREDICTION_WITNESS = {
 };
 
 // ---------------------------------------------------------------------------
+//  L5b — SEVERITY prediction (Loop 4). A SECOND derived prediction grounded in
+//  ClinicalPhenotypes.SeverityScore, GATED on the onset mechanism gates so it
+//  can never be actionable on a debunked/spurious mechanism. Purely additive —
+//  it does not touch the onset keystone (A,G actionable; B–F not).
+//
+//  IsSeverityActionable = HasHighSeverityPhenotype (max severity > 7)
+//                         ∧ RestsOnConfirmedMechanism ∧ NOT HasSpuriousCorrelationFlag.
+//  Threshold: tier Severe at >7 (matches ClinicalPhenotypes.IsHighSeverity), Moderate >=4, else Mild.
+// ---------------------------------------------------------------------------
+export const SEVERITY_LEVEL = {
+  // A: severe AND onset-actionable — the full pathway.
+  'pred-a': { individual_max_severity_score: 9, severity_tier: 'Severe',   is_severity_actionable: true,  severity_deciding_factor: 'HighSeverityOnConfirmedMechanism' },
+  // B (marquee): onset FAILS on calibration, yet severity is independently actionable —
+  //   the mechanism is confirmed/non-spurious, so the severity claim stands on its own.
+  'pred-b': { individual_max_severity_score: 8, severity_tier: 'Severe',   is_severity_actionable: true,  severity_deciding_factor: 'HighSeverityOnConfirmedMechanism' },
+  // C: high severity score, but mechanism is debunked ⇒ the chain blocks severity.
+  'pred-c': { individual_max_severity_score: 9, severity_tier: 'Severe',   is_severity_actionable: false, severity_deciding_factor: 'NoValidatedMechanism' },
+  // D: severe + confirmed mechanism, but a spurious (cryptic-relatedness) flag ⇒ blocked.
+  'pred-d': { individual_max_severity_score: 8, severity_tier: 'Severe',   is_severity_actionable: false, severity_deciding_factor: 'SpuriousFlag' },
+  // E: mild AND debunked — fails on severity (lower of the two reasons reported).
+  'pred-e': { individual_max_severity_score: 3, severity_tier: 'Mild',     is_severity_actionable: false, severity_deciding_factor: 'NotHighSeverity' },
+  // F: confirmed mechanism but mild ⇒ fails on severity alone.
+  'pred-f': { individual_max_severity_score: 2, severity_tier: 'Mild',     is_severity_actionable: false, severity_deciding_factor: 'NotHighSeverity' },
+  // G: onset-actionable but only Moderate severity ⇒ correctly NOT severity-actionable.
+  'pred-g': { individual_max_severity_score: 6, severity_tier: 'Moderate', is_severity_actionable: false, severity_deciding_factor: 'NotHighSeverity' },
+};
+
+export const SEVERITY_WITNESS = {
+  individual_max_severity_score: 'MaxSeverityScore = MAXIFS over the individual\'s ClinicalPhenotypes.SeverityScore (0 if none).',
+  severity_tier:                 'Severe at SeverityScore>7 (== IsHighSeverity), Moderate at >=4, else Mild.',
+  is_severity_actionable:        'high-severity phenotype AND rests-on-confirmed-mechanism AND NOT spurious — chained to the onset gates so severity can\'t fire on a debunked mechanism.',
+  severity_deciding_factor:      'the single deciding reason: HighSeverityOnConfirmedMechanism | NotHighSeverity | NoValidatedMechanism | SpuriousFlag.',
+};
+
+// ---------------------------------------------------------------------------
 //  L4 — INDIVIDUAL rollups.
 // ---------------------------------------------------------------------------
 export const INDIVIDUAL_LEVEL = {

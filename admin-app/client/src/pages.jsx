@@ -509,6 +509,38 @@ function GatesPane({ predId }) {
           </div>
         </div>
       </div>
+
+      {/* SECOND PREDICTION (Loop 4): severity, grounded in ClinicalPhenotypes and
+          chained to the SAME mechanism gates. Read off the same prediction row.
+          Independent of the onset keystone above — pred-b diverges (onset false,
+          severity true) precisely because the mechanism is confirmed. */}
+      {p.severity_tier != null && (() => {
+        const sevOk = p.is_severity_actionable === true;
+        return (
+          <div style={{ marginTop: 14 }}>
+            <p style={{ color: C.sub, fontSize: 13, margin: '0 0 6px' }}>
+              <strong>Second prediction — severity.</strong> Grounded in <code>ClinicalPhenotypes.SeverityScore</code>{' '}
+              and gated on the same mechanism gates (rests-on-confirmed-mechanism ∧ not-spurious), so a high severity
+              number alone is never actionable on a debunked mechanism. <em>It is independent of the onset keystone above.</em>
+            </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8,
+              background: sevOk ? C.bgPass : C.bgFail, border: `1px solid ${sevOk ? C.pass : C.fail}` }}>
+              <span style={{ fontSize: 18 }}>{sevOk ? '✅' : '⛔'}</span>
+              <div>
+                <div style={{ fontWeight: 700, color: sevOk ? C.pass : C.fail }}>
+                  Severity — actionable: {sevOk ? 'true' : 'false'}
+                  {' · '}<span style={{ color: C.ink }}>{p.severity_tier}</span>
+                  {' '}<span style={{ fontFamily: 'ui-monospace, monospace', color: C.sub }}>(max {p.individual_max_severity_score})</span>
+                </div>
+                <div style={{ fontSize: 12.5, color: C.sub }}>
+                  Deciding factor: <code>{p.severity_deciding_factor}</code>
+                  {sevOk && !keystone ? ' — actionable even though the onset prediction is not.' : ''}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

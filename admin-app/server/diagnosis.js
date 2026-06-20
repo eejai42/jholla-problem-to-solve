@@ -59,6 +59,25 @@ function decidingReason(p) {
   return 'Not actionable (deciding gate undetermined from surfaced fields).';
 }
 
+// Map the derived severity gate (chained to the onset mechanism gates) to a
+// plain-English deciding reason. Consumes the derived fields as opaque truth.
+function severityReason(p) {
+  switch (p.severity_deciding_factor) {
+    case 'HighSeverityOnConfirmedMechanism':
+      return p.is_clinically_actionable
+        ? 'A high-severity phenotype on a confirmed, non-spurious mechanism — and the onset prediction is itself actionable.'
+        : '**Severity is actionable even though the onset prediction is not:** the mechanism is confirmed and non-spurious, so the high-severity claim stands on its own (the onset verdict failed for a *different* reason).';
+    case 'NotHighSeverity':
+      return `Not severity-actionable: the maximum clinical severity (**${num(p.predicted_severity_value, 0)}**, tier ${p.severity_tier}) does not clear the high-severity threshold (>7).`;
+    case 'NoValidatedMechanism':
+      return '**Severity gate blocked by the mechanism chain:** the severity score is high, but it rests on no validated causal mechanism — so a high severity number alone is not actionable.';
+    case 'SpuriousFlag':
+      return '**Severity gate blocked by the mechanism chain:** severe and on a confirmed mechanism, but a spurious-correlation (cryptic-relatedness) flag means the prediction may be confounded.';
+    default:
+      return 'Severity actionability undetermined from surfaced fields.';
+  }
+}
+
 // Build a structured diagnosis object from live views (read-only, opaque truth).
 export async function buildDiagnosis(predictionId) {
   const preds = await query('SELECT * FROM vw_individual_predictions WHERE individual_prediction_id = $1', [predictionId]);
@@ -255,6 +274,25 @@ export function renderMarkdown(d) {
   L.push('');
   L.push(decidingReason(p));
   L.push('');
+
+  // ---- SECOND PREDICTION: severity (Loop 4) ----
+  // A separate derived prediction grounded in ClinicalPhenotypes.SeverityScore,
+  // chained to the onset mechanism gates so it can't fire on a debunked mechanism.
+  // It is independent of the onset verdict — pred-b is the marquee: onset FALSE,
+  // severity TRUE. Consumed as opaque truth from the view.
+  if (p.severity_tier != null) {
+    L.push('## Severity prediction (second derived prediction)');
+    L.push('');
+    L.push(`**Max clinical severity:** ${num(p.predicted_severity_value, 0)} ⇒ tier **${p.severity_tier}**`);
+    L.push('');
+    L.push(`### IsSeverityActionable: ${p.is_severity_actionable ? '✅ **TRUE**' : '⛔ **FALSE**'}  ·  _(${p.severity_deciding_factor})_`);
+    L.push('');
+    L.push(severityReason(p));
+    L.push('');
+    L.push('_Severity is grounded in `ClinicalPhenotypes.SeverityScore` and gated on the SAME mechanism gates as onset (rests-on-confirmed-mechanism ∧ not-spurious) — so a high severity number alone is never actionable on a debunked mechanism._');
+    L.push('');
+  }
+
   L.push('---');
   L.push('_This report is the output of the witnessed inference chain. Every value above is derived from raw observations through the DAG in `bootstrap/derivation-spec.md`; none of the conclusions were entered by hand._');
   return L.join('\n');

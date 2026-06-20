@@ -65,16 +65,16 @@ Form writes a new Individual + child observation rows to base tables, then re-re
 Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.
 
 - **Status:** done
-### [NEXT] Loop 4 — Second prediction type (severity)
+### [DONE] Loop 4 — Second prediction type (severity)
 
 Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.
 
-- **Status:** next
-### [PLANNED] Loop 5 — Treatment-response prediction
+- **Status:** done
+### [NEXT] Loop 5 — Treatment-response prediction
 
 Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.
 
-- **Status:** planned
+- **Status:** next
 ### [BACKLOG] Loop 6 — LLM intake clerk + synthetic lab
 
 Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.
