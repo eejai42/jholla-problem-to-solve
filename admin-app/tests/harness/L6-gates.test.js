@@ -101,7 +101,7 @@ describe('L6 · GATES · each of the four keystone gates, per patient', () => {
   }
 
   // Cohort-level: across the seven, every distinct failure mode is exercised.
-  test('COHORT · all four failure modes appear, and {A,G} alone pass', async () => {
+  test('COHORT · all four failure modes appear, and exactly the oracle-actionable set passes', async () => {
     const seen = new Set();
     const passers = [];
     for (const p of PATIENTS) {
@@ -113,8 +113,10 @@ describe('L6 · GATES · each of the four keystone gates, per patient', () => {
     for (const mode of ['Calibration', 'CrypticRelatedness', 'AncestryTransport', 'NoValidatedMechanism']) {
       if (!seen.has(mode)) throw new Error(`Failure mode '${mode}' is never exercised across the cohort.`);
     }
-    if (passers.sort().join(',') !== 'A,G') {
-      throw new Error(`Expected exactly {A,G} to pass all gates; got {${passers.join(',')}}.`);
+    // the actionable set is the oracle's own actionable PATIENTS (now {A,G,H,L})
+    const expected = PATIENTS.filter((p) => p.actionable).map((p) => p.key).sort().join(',');
+    if (passers.sort().join(',') !== expected) {
+      throw new Error(`Expected exactly {${expected}} to pass all gates; got {${passers.join(',')}}.`);
     }
   });
 });

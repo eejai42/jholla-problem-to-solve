@@ -38,6 +38,14 @@ export const PATIENTS = [
   { key: 'E', individual: 'ind-e-mensah', mechanism: 'cm-e', prediction: 'pred-e', variant: 'var-e-ctla4', name: 'Esi Mensah', ancestry: 'African',            holdout: false, decidingGate: 'falsifiability',     actionable: false },
   { key: 'F', individual: 'ind-f-haidar', mechanism: 'cm-f', prediction: 'pred-f', variant: 'var-f-il23r', name: 'Faisal Haidar', ancestry: 'Indigenous American', holdout: true,  decidingGate: 'ancestry-transport', actionable: false },
   { key: 'G', individual: 'ind-g-lin',   mechanism: 'cm-g', prediction: 'pred-g', variant: 'var-g-il23r', name: 'Grace Lin',  ancestry: 'Indigenous American', holdout: true,  decidingGate: 'transport-passes',   actionable: true  },
+  // v2 Step 10 — the cohort expanded to 12 full claim-bearing members (H..L), each
+  // cloned from a known-good template profile so its keystone derives correctly.
+  // Oracle values below were CAPTURED LIVE from vw_* (capture-new-members.mjs).
+  { key: 'H', individual: 'ind-h-yamamoto', mechanism: 'cm-h', prediction: 'pred-h', variant: 'var-h-irf5', name: 'Hana Yamamoto', ancestry: 'East Asian',        holdout: false, decidingGate: 'all-pass',           actionable: true  },
+  { key: 'I', individual: 'ind-i-conteh',  mechanism: 'cm-i', prediction: 'pred-i', variant: 'var-i-irf5', name: 'Ibrahim Conteh', ancestry: 'African',           holdout: false, decidingGate: 'cryptic-relatedness', actionable: false },
+  { key: 'J', individual: 'ind-j-brooks',  mechanism: 'cm-j', prediction: 'pred-j', variant: 'var-j-irf5', name: 'Jamal Brooks',  ancestry: 'Hispanic/Latino',   holdout: false, decidingGate: 'calibration',        actionable: false },
+  { key: 'K', individual: 'ind-k-nair',    mechanism: 'cm-k', prediction: 'pred-k', variant: 'var-k-il23r', name: 'Kavya Nair',   ancestry: 'South Asian',        holdout: true,  decidingGate: 'ancestry-transport', actionable: false },
+  { key: 'L', individual: 'ind-l-brandt',  mechanism: 'cm-l', prediction: 'pred-l', variant: 'var-l-il23r', name: 'Lena Brandt',  ancestry: 'Indigenous American', holdout: true,  decidingGate: 'transport-passes',   actionable: true  },
 ];
 
 export const byPrediction = (id) => PATIENTS.find((p) => p.prediction === id);
@@ -82,6 +90,32 @@ export const KEYSTONE = {
     witness: 'IL23R replicated in 2 DIFFERENT ancestries ⇒ CountCrossAncestryConcordant 2 ⇒ IsAncestryTransportable TRUE ⇒ IsTransportableToAbsentAncestry TRUE ⇒ IsAncestryTransportSafe TRUE; all other gates pass  ⇒  KEYSTONE TRUE — actionable despite holdout, on MEASURED transport, not holdout-status.',
     expected: { is_clinically_actionable: true },
   },
+  // v2 Step 10 — expanded cohort (cloned from the template profile noted on each).
+  'pred-h': {
+    rawFacts: 'Clone of A (all-pass): confirmed IFN-pathway mechanism, well-calibrated, in-training (East Asian). Serology rising-dsDNA + falling-complement + proteinuria 0.7 ⇒ EarlyNephritis.',
+    witness: 'All four gates pass exactly as A ⇒ TRUE; independently, the disease-state simulator places her at EarlyNephritis (actionable AND progressing).',
+    expected: { is_clinically_actionable: true },
+  },
+  'pred-i': {
+    rawFacts: 'Clone of D (cryptic-relatedness): mechanism confirmed + calibrated, but HasCrypticRelatednessFlag = TRUE. Serology proteinuria 1.5 ⇒ RenalFlareRisk.',
+    witness: 'Cryptic relatedness ⇒ HasSpuriousCorrelationFlag ⇒ IsHighConfidencePrediction FALSE ⇒ KEYSTONE FALSE — yet the disease IS progressing (RenalFlareRisk): the SECOND disease-vs-evidence disagreement.',
+    expected: { is_clinically_actionable: false },
+  },
+  'pred-j': {
+    rawFacts: 'Clone of B (calibration): confirmed mechanism, but all 5 calibration bins under-covered.',
+    witness: 'WellCalibratedFraction 0 ⇒ CalibratedUncertainty 0 ⇒ IsHighConfidencePrediction FALSE ⇒ KEYSTONE FALSE on the CALIBRATION gate.',
+    expected: { is_clinically_actionable: false },
+  },
+  'pred-k': {
+    rawFacts: 'Clone of F (ancestry-transport): South-Asian HOLDOUT; confirmed IL23R node, but all replications pinned to South Asian (mechanism ancestry) ⇒ 0 cross-ancestry concordant.',
+    witness: 'Holdout AND CountCrossAncestryConcordant 0 ⇒ IsTransportableToAbsentAncestry FALSE ⇒ IsAncestryTransportSafe FALSE ⇒ KEYSTONE FALSE on the ANCESTRY-TRANSPORT gate.',
+    expected: { is_clinically_actionable: false },
+  },
+  'pred-l': {
+    rawFacts: 'Clone of G (transport-passes): Indigenous-American HOLDOUT; IL23R node replicated cross-ancestry ⇒ 2 cross-ancestry concordant.',
+    witness: 'Holdout but transport passes (cross-ancestry replicated), all gates pass ⇒ TRUE — the positive holdout twin.',
+    expected: { is_clinically_actionable: true },
+  },
 };
 
 // ---------------------------------------------------------------------------
@@ -99,6 +133,11 @@ export const GATES = {
   'pred-e': { is_high_confidence_prediction: false, is_falsifiability_backed: false, is_ancestry_transport_safe: true,  predicted_value_positive: false },
   'pred-f': { is_high_confidence_prediction: true,  is_falsifiability_backed: true,  is_ancestry_transport_safe: false, predicted_value_positive: true  },
   'pred-g': { is_high_confidence_prediction: true,  is_falsifiability_backed: true,  is_ancestry_transport_safe: true,  predicted_value_positive: true  },
+  'pred-h': { is_high_confidence_prediction: true,  is_falsifiability_backed: true,  is_ancestry_transport_safe: true,  predicted_value_positive: true  },
+  'pred-i': { is_high_confidence_prediction: false, is_falsifiability_backed: true,  is_ancestry_transport_safe: true,  predicted_value_positive: true  },
+  'pred-j': { is_high_confidence_prediction: false, is_falsifiability_backed: true,  is_ancestry_transport_safe: true,  predicted_value_positive: true  },
+  'pred-k': { is_high_confidence_prediction: true,  is_falsifiability_backed: true,  is_ancestry_transport_safe: false, predicted_value_positive: true  },
+  'pred-l': { is_high_confidence_prediction: true,  is_falsifiability_backed: true,  is_ancestry_transport_safe: true,  predicted_value_positive: true  },
 };
 
 // ---------------------------------------------------------------------------
@@ -118,6 +157,11 @@ export const DECIDING_GATE = {
   'pred-e': 'NoValidatedMechanism',
   'pred-f': 'AncestryTransport',
   'pred-g': 'AllGatesPass',
+  'pred-h': 'AllGatesPass',
+  'pred-i': 'CrypticRelatedness',
+  'pred-j': 'Calibration',
+  'pred-k': 'AncestryTransport',
+  'pred-l': 'AllGatesPass',
 };
 
 // ---------------------------------------------------------------------------
@@ -131,6 +175,11 @@ export const PREDICTION_LEVEL = {
   'pred-e': { individual_causal_mass: 0.0,       individual_confirmed_node_count: 0, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 0.0,       count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.988, rests_on_confirmed_mechanism: false, has_spurious_correlation_flag: true,  is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
   'pred-f': { individual_causal_mass: 0.8583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 3.2166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.986, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: 'Low-Risk Pathway' },
   'pred-g': { individual_causal_mass: 0.8583333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.2166667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1.0, calibrated_uncertainty: 0.984, rests_on_confirmed_mechanism: true,  has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: true,  patient_stratification_tier: 'Low-Risk Pathway' },
+  'pred-h': { individual_causal_mass: 0.7583333333333333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.0166666666666666, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1, calibrated_uncertainty: 0.988, rests_on_confirmed_mechanism: true, has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: "Low-Risk Pathway" },
+  'pred-i': { individual_causal_mass: 0.7583333333333333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: true, predicted_value: 3.0166666666666666, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1, calibrated_uncertainty: 0.988, rests_on_confirmed_mechanism: true, has_spurious_correlation_flag: true, is_transportable_to_absent_ancestry: false, patient_stratification_tier: "Low-Risk Pathway" },
+  'pred-j': { individual_causal_mass: 0.7583333333333333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.0166666666666666, count_bins: 5, count_well_calibrated_bins: 0, well_calibrated_fraction: 0, calibrated_uncertainty: 0, rests_on_confirmed_mechanism: true, has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: "Low-Risk Pathway" },
+  'pred-k': { individual_causal_mass: 0.8583333333333333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 0, individual_has_cryptic_relatedness: false, predicted_value: 3.216666666666667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1, calibrated_uncertainty: 0.986, rests_on_confirmed_mechanism: true, has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: false, patient_stratification_tier: "Low-Risk Pathway" },
+  'pred-l': { individual_causal_mass: 0.8583333333333333, individual_confirmed_node_count: 1, individual_cross_ancestry_node_count: 1, individual_has_cryptic_relatedness: false, predicted_value: 3.216666666666667, count_bins: 5, count_well_calibrated_bins: 5, well_calibrated_fraction: 1, calibrated_uncertainty: 0.984, rests_on_confirmed_mechanism: true, has_spurious_correlation_flag: false, is_transportable_to_absent_ancestry: true, patient_stratification_tier: "Low-Risk Pathway" },
 };
 
 export const PREDICTION_WITNESS = {
@@ -167,6 +216,11 @@ export const SEVERITY_LEVEL = {
   'pred-f': { individual_max_severity_score: 2, severity_tier: 'Mild',     is_severity_actionable: false, severity_deciding_factor: 'NotHighSeverity' },
   // G: onset-actionable but only Moderate severity ⇒ correctly NOT severity-actionable.
   'pred-g': { individual_max_severity_score: 6, severity_tier: 'Moderate', is_severity_actionable: false, severity_deciding_factor: 'NotHighSeverity' },
+  'pred-h': { individual_max_severity_score: 9, severity_tier: "Severe", is_severity_actionable: true, severity_deciding_factor: "HighSeverityOnConfirmedMechanism" },
+  'pred-i': { individual_max_severity_score: 8, severity_tier: "Severe", is_severity_actionable: false, severity_deciding_factor: "SpuriousFlag" },
+  'pred-j': { individual_max_severity_score: 8, severity_tier: "Severe", is_severity_actionable: true, severity_deciding_factor: "HighSeverityOnConfirmedMechanism" },
+  'pred-k': { individual_max_severity_score: 2, severity_tier: "Mild", is_severity_actionable: false, severity_deciding_factor: "NotHighSeverity" },
+  'pred-l': { individual_max_severity_score: 6, severity_tier: "Moderate", is_severity_actionable: false, severity_deciding_factor: "NotHighSeverity" },
 };
 
 export const SEVERITY_WITNESS = {
@@ -203,6 +257,11 @@ export const TREATMENT_LEVEL = {
   'pred-f': { is_treatment_response_actionable: false, treatment_response_deciding_factor: 'NoEffectiveTreatmentOnMechanism' },
   // G: secukinumab targets confirmed cm-g, Partial, no AE ⇒ predicted.
   'pred-g': { is_treatment_response_actionable: true,  treatment_response_deciding_factor: 'EffectiveOnConfirmedMechanism' },
+  'pred-h': { is_treatment_response_actionable: true, treatment_response_deciding_factor: "EffectiveOnConfirmedMechanism" },
+  'pred-i': { is_treatment_response_actionable: false, treatment_response_deciding_factor: "NoEffectiveTreatmentOnMechanism" },
+  'pred-j': { is_treatment_response_actionable: true, treatment_response_deciding_factor: "EffectiveOnConfirmedMechanism" },
+  'pred-k': { is_treatment_response_actionable: false, treatment_response_deciding_factor: "NoEffectiveTreatmentOnMechanism" },
+  'pred-l': { is_treatment_response_actionable: true, treatment_response_deciding_factor: "EffectiveOnConfirmedMechanism" },
 };
 
 export const TREATMENT_WITNESS = {
@@ -221,6 +280,11 @@ export const INDIVIDUAL_LEVEL = {
   'ind-e-mensah': { count_confirmed_causal_nodes: 0, count_cross_ancestry_confirmed_nodes: 0, has_cryptic_relatedness_flag: false, is_ancestry_absent_from_training: false },
   'ind-f-haidar': { count_confirmed_causal_nodes: 1, count_cross_ancestry_confirmed_nodes: 0, has_cryptic_relatedness_flag: false, is_ancestry_absent_from_training: true  },
   'ind-g-lin':    { count_confirmed_causal_nodes: 1, count_cross_ancestry_confirmed_nodes: 1, has_cryptic_relatedness_flag: false, is_ancestry_absent_from_training: true  },
+  'ind-h-yamamoto': { count_confirmed_causal_nodes: 1, count_cross_ancestry_confirmed_nodes: 1, has_cryptic_relatedness_flag: false, is_ancestry_absent_from_training: false },
+  'ind-i-conteh': { count_confirmed_causal_nodes: 1, count_cross_ancestry_confirmed_nodes: 1, has_cryptic_relatedness_flag: true, is_ancestry_absent_from_training: false },
+  'ind-j-brooks': { count_confirmed_causal_nodes: 1, count_cross_ancestry_confirmed_nodes: 1, has_cryptic_relatedness_flag: false, is_ancestry_absent_from_training: false },
+  'ind-k-nair': { count_confirmed_causal_nodes: 1, count_cross_ancestry_confirmed_nodes: 0, has_cryptic_relatedness_flag: false, is_ancestry_absent_from_training: true },
+  'ind-l-brandt': { count_confirmed_causal_nodes: 1, count_cross_ancestry_confirmed_nodes: 1, has_cryptic_relatedness_flag: false, is_ancestry_absent_from_training: true },
 };
 
 // ---------------------------------------------------------------------------
@@ -235,6 +299,11 @@ export const MECHANISM_LEVEL = {
   'cm-e': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 0, is_experimentally_falsifiable: false, count_replications: 3, count_concordant_replications: 2, count_cross_ancestry_concordant: 2, replicates_across_cohorts: true,  count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true,  is_spurious_derived: false, causal_confidence: 0.7583333, variant_is_causal_candidate: true, is_causal_architecture_node: false, is_ancestry_transportable: false },
   'cm-f': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 1, is_experimentally_falsifiable: true,  count_replications: 3, count_concordant_replications: 3, count_cross_ancestry_concordant: 0, replicates_across_cohorts: true,  count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true,  is_spurious_derived: false, causal_confidence: 0.8583333, variant_is_causal_candidate: true, is_causal_architecture_node: true,  is_ancestry_transportable: false },
   'cm-g': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 1, is_experimentally_falsifiable: true,  count_replications: 3, count_concordant_replications: 3, count_cross_ancestry_concordant: 2, replicates_across_cohorts: true,  count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true,  is_spurious_derived: false, causal_confidence: 0.8583333, variant_is_causal_candidate: true, is_causal_architecture_node: true,  is_ancestry_transportable: true  },
+  'cm-h': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 1, is_experimentally_falsifiable: true, count_replications: 3, count_concordant_replications: 2, count_cross_ancestry_concordant: 1, replicates_across_cohorts: true, count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true, is_spurious_derived: false, causal_confidence: 0.7583333333333333, variant_is_causal_candidate: true, is_causal_architecture_node: true, is_ancestry_transportable: true },
+  'cm-i': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 1, is_experimentally_falsifiable: true, count_replications: 3, count_concordant_replications: 2, count_cross_ancestry_concordant: 1, replicates_across_cohorts: true, count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true, is_spurious_derived: false, causal_confidence: 0.7583333333333333, variant_is_causal_candidate: true, is_causal_architecture_node: true, is_ancestry_transportable: true },
+  'cm-j': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 1, is_experimentally_falsifiable: true, count_replications: 3, count_concordant_replications: 2, count_cross_ancestry_concordant: 2, replicates_across_cohorts: true, count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true, is_spurious_derived: false, causal_confidence: 0.7583333333333333, variant_is_causal_candidate: true, is_causal_architecture_node: true, is_ancestry_transportable: true },
+  'cm-k': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 1, is_experimentally_falsifiable: true, count_replications: 3, count_concordant_replications: 3, count_cross_ancestry_concordant: 0, replicates_across_cohorts: true, count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true, is_spurious_derived: false, causal_confidence: 0.8583333333333333, variant_is_causal_candidate: true, is_causal_architecture_node: true, is_ancestry_transportable: false },
+  'cm-l': { count_qualified_evidence: 3, count_modalities_supporting: 2, count_intervention_targets: 1, is_experimentally_falsifiable: true, count_replications: 3, count_concordant_replications: 3, count_cross_ancestry_concordant: 2, replicates_across_cohorts: true, count_neg_control_tests: 2, count_neg_control_survived: 2, survives_negative_controls: true, is_spurious_derived: false, causal_confidence: 0.8583333333333333, variant_is_causal_candidate: true, is_causal_architecture_node: true, is_ancestry_transportable: true },
 };
 
 export const MECHANISM_WITNESS = {
@@ -282,6 +351,11 @@ export const VARIANT_LEVEL = {
   'var-a-irf5':  { allele_frequency: 0.006, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
   'var-c-stat4': { allele_frequency: 0.008, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
   'var-f-il23r': { allele_frequency: 0.009, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
+  'var-h-irf5': { allele_frequency: 0.006, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
+  'var-i-irf5': { allele_frequency: 0.006, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
+  'var-j-irf5': { allele_frequency: 0.006, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
+  'var-k-il23r': { allele_frequency: 0.009, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
+  'var-l-il23r': { allele_frequency: 0.009, is_rare_variant: true, has_allele_specific_expression: true, is_causal_candidate: true },
 };
 
 export const VARIANT_WITNESS =
@@ -375,8 +449,8 @@ export const ROUTING = {
 // The full progression-demo cohort (the 7 oracle patients + 2 new ones).
 export const PROGRESSION_INDIVIDUALS = [
   ...PATIENTS.map((p) => ({ key: p.key, individual: p.individual, name: p.name })),
-  { key: 'H', individual: 'ind-h-yamamoto', name: 'Hana Yamamoto' },
-  { key: 'I', individual: 'ind-i-conteh',   name: 'Ibrahim Conteh' },
+  // H..L now live in PATIENTS (full members), so PATIENTS.map above already
+  // includes them — no separate rows needed.
 ];
 
 // L11 — per-individual derived disease state (served by /api/individuals/:id).
@@ -392,6 +466,9 @@ export const DISEASE_STATE = {
   'ind-g-lin':      { nephritis_progression_state_key: 'PresymptomaticAutoimmunity', latest_sledai_score: 0,  activity_tier: 'Quiescent',    is_disease_progressing: false },
   'ind-h-yamamoto': { nephritis_progression_state_key: 'EarlyNephritis',             latest_sledai_score: 8,  activity_tier: 'Moderate',     is_disease_progressing: true  },
   'ind-i-conteh':   { nephritis_progression_state_key: 'RenalFlareRisk',             latest_sledai_score: 8,  activity_tier: 'Moderate',     is_disease_progressing: true  },
+  'ind-j-brooks':   { nephritis_progression_state_key: 'SerologicActive',            latest_sledai_score: 4,  activity_tier: 'Mild',         is_disease_progressing: false },
+  'ind-k-nair':     { nephritis_progression_state_key: 'PresymptomaticAutoimmunity', latest_sledai_score: 0,  activity_tier: 'Quiescent',    is_disease_progressing: false },
+  'ind-l-brandt':   { nephritis_progression_state_key: 'PresymptomaticAutoimmunity', latest_sledai_score: 0,  activity_tier: 'Quiescent',    is_disease_progressing: false },
 };
 
 export const DISEASE_STATE_WITNESS = {
@@ -412,6 +489,9 @@ export const PROGRESSION_PATHS = {
   'ind-g-lin':      { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
   'ind-h-yamamoto': { states: ['PresymptomaticAutoimmunity', 'EarlyNephritis'], current: 'EarlyNephritis' },
   'ind-i-conteh':   { states: ['EarlyNephritis', 'RenalFlareRisk'], current: 'RenalFlareRisk' },
+  'ind-j-brooks':   { states: ['PresymptomaticAutoimmunity', 'SerologicActive'], current: 'SerologicActive' },
+  'ind-k-nair':     { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
+  'ind-l-brandt':   { states: ['PresymptomaticAutoimmunity'], current: 'PresymptomaticAutoimmunity' },
 };
 
 // L5d — TREATMENT-LINE selection (served by /api/predictions/:id). The audit's
@@ -427,6 +507,11 @@ export const TREATMENT_LINE = {
   'pred-e': { recommended_treatment_line: 'No targeted line — mechanism unconfirmed', treatment_line_deciding_factor: 'MechanismUnconfirmed',        progression_vs_actionability_disagree: false },
   'pred-f': { recommended_treatment_line: 'Secukinumab',                              treatment_line_deciding_factor: 'IL17Axis-Secukinumab',        progression_vs_actionability_disagree: false },
   'pred-g': { recommended_treatment_line: 'Secukinumab',                              treatment_line_deciding_factor: 'IL17Axis-Secukinumab',        progression_vs_actionability_disagree: false },
+  'pred-h': { recommended_treatment_line: "Anifrolumab", treatment_line_deciding_factor: "IFNSignature-Anifrolumab", progression_vs_actionability_disagree: false },
+  'pred-i': { recommended_treatment_line: "Mycophenolate (induction)", treatment_line_deciding_factor: "ActiveNephritis-Induction", progression_vs_actionability_disagree: true },
+  'pred-j': { recommended_treatment_line: "Anifrolumab", treatment_line_deciding_factor: "IFNSignature-Anifrolumab", progression_vs_actionability_disagree: false },
+  'pred-k': { recommended_treatment_line: "Secukinumab", treatment_line_deciding_factor: "IL17Axis-Secukinumab", progression_vs_actionability_disagree: false },
+  'pred-l': { recommended_treatment_line: "Secukinumab", treatment_line_deciding_factor: "IL17Axis-Secukinumab", progression_vs_actionability_disagree: false },
 };
 
 export const TREATMENT_LINE_WITNESS = {

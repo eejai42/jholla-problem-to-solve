@@ -142,10 +142,19 @@ INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label,
 VALUES ('ind-g-lin', 'Grace', 'Lin', 'Indigenous American', 36, TRUE, 'fed-amazon', '2025-02-03', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.') ON CONFLICT (individual_id) DO NOTHING;
 
 INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
-VALUES ('ind-h-yamamoto', 'Hana', 'Yamamoto', 'East Asian', 33, FALSE, NULL, '2025-07-01', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '33yo East Asian woman; rising anti-dsDNA with falling complement and new significant proteinuria (0.7 g/day) over one quarter — early lupus nephritis. Progression-demo case (no v1 keystone mechanism attached).') ON CONFLICT (individual_id) DO NOTHING;
+VALUES ('ind-h-yamamoto', 'Hana', 'Yamamoto', 'East Asian', 33, FALSE, 'fed-europe', '2023-04-10', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '33yo East Asian woman; confirmed IFN-pathway mechanism, well-calibrated; rising anti-dsDNA with falling complement and new significant proteinuria (0.7 g/day) — early lupus nephritis. Actionable AND progressing.') ON CONFLICT (individual_id) DO NOTHING;
 
 INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
-VALUES ('ind-i-conteh', 'Ibrahim', 'Conteh', 'African', 45, FALSE, NULL, '2025-06-01', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '45yo African man; brisk serologic activity and proteinuria climbing to 1.5 g/day — at risk of renal flare. Progression-demo case (no v1 keystone mechanism attached).') ON CONFLICT (individual_id) DO NOTHING;
+VALUES ('ind-i-conteh', 'Ibrahim', 'Conteh', 'African', 45, FALSE, 'fed-europe', '2024-01-20', TRUE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '45yo African man; brisk serologic activity and proteinuria climbing to 1.5 g/day — at renal-flare risk. A cryptic-relatedness flag makes the prediction NOT actionable: a second disease-vs-evidence disagreement.') ON CONFLICT (individual_id) DO NOTHING;
+
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-j-brooks', 'Jamal', 'Brooks', 'Hispanic/Latino', 52, FALSE, 'fed-europe', '2023-05-12', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '52yo Hispanic/Latino man; the targeted mechanism is confirmed but the calibration bins are under-covered — uncertainty collapses, so NOT actionable on the calibration gate.') ON CONFLICT (individual_id) DO NOTHING;
+
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-k-nair', 'Kavya', 'Nair', 'South Asian', 39, TRUE, 'fed-amazon', '2025-02-01', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '39yo South Asian woman, ancestry absent from training; confirmed mechanism but all replications ran in one ancestry — fails ancestry transport, NOT actionable.') ON CONFLICT (individual_id) DO NOTHING;
+
+INSERT INTO individuals (individual_id, given_name, family_name, ancestry_label, age_years, is_ancestry_absent_from_training, federated_dataset, enrollment_date, has_cryptic_relatedness_flag, genomic_variants, omics_assays, environmental_exposures, treatments, clinical_phenotypes, causal_mechanisms, epistatic_interactions, counterfactual_trajectories, individual_predictions, case_narrative)
+VALUES ('ind-l-brandt', 'Lena', 'Brandt', 'Indigenous American', 28, TRUE, 'fed-amazon', '2025-02-03', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '28yo Indigenous-American woman, holdout ancestry; the positive twin — the IL23R node replicated cross-ancestry, so transport passes and she is actionable.') ON CONFLICT (individual_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- GenomicVariants: Genomic variant calls per individual spanning regulatory, coding, structural, HLA haplotypes, de novo mutations, somatic mosaicism, and mitochondrial variation.
@@ -170,6 +179,21 @@ VALUES ('var-f-il23r', 'IL23R regulatory (rs11209026)', 'ind-f-haidar', 'regulat
 
 INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
 VALUES ('var-g-il23r', 'IL23R regulatory (rs11209026)', 'ind-g-lin', 'regulatory', 0.009, TRUE, 'IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
+
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-h-irf5', 'IRF5 regulatory (rs2004640)', 'ind-h-yamamoto', 'regulatory', 0.006, TRUE, 'IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present') ON CONFLICT (genomic_variant_id) DO NOTHING;
+
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-i-irf5', 'IRF5 regulatory (rs2004640)', 'ind-i-conteh', 'regulatory', 0.006, TRUE, 'IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
+
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-j-irf5', 'IRF5 regulatory (rs2004640)', 'ind-j-brooks', 'regulatory', 0.006, TRUE, 'IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
+
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-k-il23r', 'IL23R regulatory (rs11209026)', 'ind-k-nair', 'regulatory', 0.009, TRUE, 'IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
+
+INSERT INTO genomic_variants (genomic_variant_id, variant_label, individual, variant_type, allele_frequency, has_allele_specific_expression, source_quote)
+VALUES ('var-l-il23r', 'IL23R regulatory (rs11209026)', 'ind-l-brandt', 'regulatory', 0.009, TRUE, 'IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present') ON CONFLICT (genomic_variant_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- OmicsAssays: Omics assay instances linking individuals to modalities and tissues; captures batch effects, measurement error, and missing tissues.
@@ -237,6 +261,51 @@ VALUES ('assay-g-atac', 'assay-g-atac', 'ind-g-lin', 'atac-seq', 'blood', '', 'b
 INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
 VALUES ('assay-g-prot', 'assay-g-prot', 'ind-g-lin', 'proteomics', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
 
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-h-rna', 'assay-h-rna', 'ind-h-yamamoto', 'rna-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-h-atac', 'assay-h-atac', 'ind-h-yamamoto', 'atac-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-h-prot', 'assay-h-prot', 'ind-h-yamamoto', 'proteomics', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-i-rna', 'assay-i-rna', 'ind-i-conteh', 'rna-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-i-atac', 'assay-i-atac', 'ind-i-conteh', 'atac-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-i-prot', 'assay-i-prot', 'ind-i-conteh', 'proteomics', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-j-rna', 'assay-j-rna', 'ind-j-brooks', 'rna-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-j-atac', 'assay-j-atac', 'ind-j-brooks', 'atac-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-j-prot', 'assay-j-prot', 'ind-j-brooks', 'proteomics', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-k-rna', 'assay-k-rna', 'ind-k-nair', 'rna-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-k-atac', 'assay-k-atac', 'ind-k-nair', 'atac-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-k-prot', 'assay-k-prot', 'ind-k-nair', 'proteomics', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-l-rna', 'assay-l-rna', 'ind-l-brandt', 'rna-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-l-atac', 'assay-l-atac', 'ind-l-brandt', 'atac-seq', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
+INSERT INTO omics_assays (omics_assay_id, assay_label, individual, omics_modality, tissue, federated_dataset, batch_id, measurement_error_score, has_cell_state_specific_effect, evidence_items)
+VALUES ('assay-l-prot', 'assay-l-prot', 'ind-l-brandt', 'proteomics', 'blood', '', 'b1', 0.05, TRUE, NULL) ON CONFLICT (omics_assay_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- EvidenceItems: One observed support signal for a causal mechanism, measured by one omics assay. Mechanism confidence is an aggregation over these rows.
 -- ----------------------------------------------------------------------------
@@ -302,6 +371,51 @@ VALUES ('ev-g-2', 'ev-g-2', 'cm-g', 'assay-g-atac', 0.88, 0.21, TRUE, FALSE, TRU
 
 INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
 VALUES ('ev-g-3', 'ev-g-3', 'cm-g', 'assay-g-prot', 0.69, 0.205, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.69 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-h-1', 'ev-h-1', 'cm-h', 'assay-h-rna', 0.91, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-h-2', 'ev-h-2', 'cm-h', 'assay-h-atac', 0.73, 0.19, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.73 (SE 0.19)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-h-3', 'ev-h-3', 'cm-h', 'assay-h-prot', 0.66, 0.205, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.66 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-i-1', 'ev-i-1', 'cm-i', 'assay-i-rna', 0.88, 0.205, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-i-2', 'ev-i-2', 'cm-i', 'assay-i-atac', 0.95, 0.21, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.95 (SE 0.21)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-i-3', 'ev-i-3', 'cm-i', 'assay-i-prot', 0.62, 0.205, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.62 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-j-1', 'ev-j-1', 'cm-j', 'assay-j-rna', 0.84, 0.21, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-j-2', 'ev-j-2', 'cm-j', 'assay-j-atac', 0.79, 0.205, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.79 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-j-3', 'ev-j-3', 'cm-j', 'assay-j-prot', 0.58, 0.205, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.58 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-k-1', 'ev-k-1', 'cm-k', 'assay-k-rna', 1.07, 0.205, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-k-2', 'ev-k-2', 'cm-k', 'assay-k-atac', 0.83, 0.21, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.83 (SE 0.21)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-k-3', 'ev-k-3', 'cm-k', 'assay-k-prot', 0.74, 0.205, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.74 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-l-1', 'ev-l-1', 'cm-l', 'assay-l-rna', 0.96, 0.2, FALSE, FALSE, TRUE, TRUE, TRUE, 'cis-eQTL, blood RNA-seq', 'colocalization PP4>0.8; no horizontal pleiotropy on the eQTL instrument', 'cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-l-2', 'ev-l-2', 'cm-l', 'assay-l-atac', 0.88, 0.21, TRUE, FALSE, TRUE, TRUE, TRUE, 'caQTL, blood ATAC-seq', 'open-chromatin peak maps to the credible set; cell-state confounding adjusted', 'caQTL in blood ATAC-seq with effect 0.88 (SE 0.21)') ON CONFLICT (evidence_item_id) DO NOTHING;
+
+INSERT INTO evidence_items (evidence_item_id, evidence_label, causal_mechanism, omics_assay, effect_size, standard_error, is_cross_modality, is_negative_control_arm, is_adjusted_for_ancestry_pcs, is_adjusted_for_batch, is_synthetic_leaf, represents_assay_modality, identification_assumption, source_quote)
+VALUES ('ev-l-3', 'ev-l-3', 'cm-l', 'assay-l-prot', 0.69, 0.205, TRUE, FALSE, TRUE, TRUE, TRUE, 'pQTL, blood mass-spec proteomics', 'cis-pQTL within 1Mb; aptamer/epitope-binding artifact excluded', 'pQTL in blood proteomics with effect 0.69 (SE 0.20)') ON CONFLICT (evidence_item_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CohortReplications: One re-test of a causal mechanism in another federated cohort. Replication and cross-ancestry transport are aggregations over these rows.
@@ -369,6 +483,51 @@ VALUES ('rep-g-2', 'rep-g-2', 'cm-g', 'fed-east-asia', 1, 0.012, 'East Asian', '
 INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
 VALUES ('rep-g-3', 'rep-g-3', 'cm-g', 'fed-amazon', 1, 0.029, 'Indigenous American', 'positive in an Indigenous American cohort (p=0.029)') ON CONFLICT (cohort_replication_id) DO NOTHING;
 
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-h-1', 'rep-h-1', 'cm-h', 'fed-east-asia', 1, 0.004, 'East Asian', 'positive effect sign in an East Asian cohort (p=0.004)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-h-2', 'rep-h-2', 'cm-h', 'fed-west-africa', 1, 0.013, 'African', 'in an African cohort (p=0.013)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-h-3', 'rep-h-3', 'cm-h', 'fed-europe', 1, 0.18, 'European', 'European replication is directionally consistent but not significant (p=0.18)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-i-1', 'rep-i-1', 'cm-i', 'fed-east-asia', 1, 0.003, 'East Asian', 'replicates positive in an East Asian cohort (p=0.003)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-i-2', 'rep-i-2', 'cm-i', 'fed-west-africa', 1, 0.019, 'African', 'an African cohort (p=0.019)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-i-3', 'rep-i-3', 'cm-i', 'fed-europe', 1, 0.16, 'European', 'non-significant European replication (p=0.16)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-j-1', 'rep-j-1', 'cm-j', 'fed-east-asia', 1, 0.006, 'East Asian', 'replicates positive in an East Asian cohort (p=0.006)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-j-2', 'rep-j-2', 'cm-j', 'fed-west-africa', 1, 0.017, 'African', 'an African cohort (p=0.017)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-j-3', 'rep-j-3', 'cm-j', 'fed-europe', 1, 0.22, 'European', 'non-significant European replication (p=0.22)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-k-1', 'rep-k-1', 'cm-k', 'fed-amazon', 1, 0.005, 'South Asian', 'run in an Indigenous American cohort: p=0.005') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-k-2', 'rep-k-2', 'cm-k', 'fed-amazon', 1, 0.015, 'South Asian', 'p=0.015') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-k-3', 'rep-k-3', 'cm-k', 'fed-amazon', 1, 0.034, 'South Asian', 'p=0.034, all positive, all in the SAME ancestry') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-l-1', 'rep-l-1', 'cm-l', 'fed-europe', 1, 0.004, 'European', 'positive in a European cohort (p=0.004)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-l-2', 'rep-l-2', 'cm-l', 'fed-east-asia', 1, 0.012, 'East Asian', 'positive in an East Asian cohort (p=0.012)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
+INSERT INTO cohort_replications (cohort_replication_id, replication_label, causal_mechanism, federated_dataset, replication_effect_sign, replication_p_value, replication_ancestry_label, source_quote)
+VALUES ('rep-l-3', 'rep-l-3', 'cm-l', 'fed-amazon', 1, 0.029, 'Indigenous American', 'positive in an Indigenous American cohort (p=0.029)') ON CONFLICT (cohort_replication_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- NegativeControlTests: One stratification / permutation control on a causal mechanism. A true causal signal collapses under the control.
 -- ----------------------------------------------------------------------------
@@ -414,6 +573,36 @@ VALUES ('nct-c-1', 'nct-c-1', 'cm-c', 'ancestry-permutation', 0.013, 0.1, 'one a
 INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
 VALUES ('nct-c-2', 'nct-c-2', 'cm-c', 'ancestry-permutation', 0.46, 0.1, 'its permutation effect is 0.46, far outside the +/-0.1 null band') ON CONFLICT (negative_control_test_id) DO NOTHING;
 
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-h-1', 'nct-h-1', 'cm-h', 'ancestry-permutation', 0.012, 0.1, 'permutation effect 0.012 and 0.028 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-h-2', 'nct-h-2', 'cm-h', 'ancestry-permutation', 0.028, 0.1, 'permutation effect 0.012 and 0.028 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-i-1', 'nct-i-1', 'cm-i', 'ancestry-permutation', 0.009, 0.1, 'permutation effect 0.009 and 0.031 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-i-2', 'nct-i-2', 'cm-i', 'ancestry-permutation', 0.031, 0.1, 'permutation effect 0.009 and 0.031 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-j-1', 'nct-j-1', 'cm-j', 'ancestry-permutation', 0.015, 0.1, 'permutation effect 0.015 and 0.024 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-j-2', 'nct-j-2', 'cm-j', 'ancestry-permutation', 0.024, 0.1, 'permutation effect 0.015 and 0.024 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-k-1', 'nct-k-1', 'cm-k', 'ancestry-permutation', 0.008, 0.1, 'permutation effect 0.008 and 0.022 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-k-2', 'nct-k-2', 'cm-k', 'ancestry-permutation', 0.022, 0.1, 'permutation effect 0.008 and 0.022 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-l-1', 'nct-l-1', 'cm-l', 'ancestry-permutation', 0.007, 0.1, 'permutation effect 0.007 and 0.019 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
+INSERT INTO negative_control_tests (negative_control_test_id, control_label, causal_mechanism, test_kind, permutation_effect_size, null_threshold, source_quote)
+VALUES ('nct-l-2', 'nct-l-2', 'cm-l', 'ancestry-permutation', 0.019, 0.1, 'permutation effect 0.007 and 0.019 inside +/-0.1') ON CONFLICT (negative_control_test_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- EnvironmentalExposures: Longitudinal environmental exposures contributing to gene-environment-microbiome interactions and shifting environments.
 -- ----------------------------------------------------------------------------
@@ -444,6 +633,21 @@ VALUES ('tx-f', 'Secukinumab (anti-IL-17)', 'ind-f-haidar', 'psa', 'cm-f', 'None
 INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
 VALUES ('tx-g', 'Secukinumab (anti-IL-17)', 'ind-g-lin', 'psa', 'cm-g', 'Partial', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
 
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-h', 'Anifrolumab (anti-IFNAR1)', 'ind-h-yamamoto', 'sle', 'cm-h', 'Partial', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-i', 'Anifrolumab (anti-IFNAR1)', 'ind-i-conteh', 'sle', 'cm-i', 'Complete', TRUE, TRUE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-j', 'Anifrolumab (anti-IFNAR1)', 'ind-j-brooks', 'sle', 'cm-j', 'Complete', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-k', 'Secukinumab (anti-IL-17)', 'ind-k-nair', 'psa', 'cm-k', 'None', FALSE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-l', 'Secukinumab (anti-IL-17)', 'ind-l-brandt', 'psa', 'cm-l', 'Partial', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- ClinicalPhenotypes: Clinical phenotypes including severity, immune dysfunction markers, and feedback from disease progression.
 -- ----------------------------------------------------------------------------
@@ -468,6 +672,21 @@ VALUES ('ph-sev-f', 'PsA — minimal joint involvement, mild', 'ind-f-haidar', '
 INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
 VALUES ('ph-sev-g', 'PsA — moderate plaque + oligoarthritis', 'ind-g-lin', 'psa', 'psa-active', 'skin', 6, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
 
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-h', 'Active SLE — high disease-activity (SLEDAI-equiv) severity', 'ind-h-yamamoto', 'sle', 'sle-active', 'blood', 9, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-i', 'Active SLE — biopsy-confirmed nephritis (high severity)', 'ind-i-conteh', 'sle', 'sle-active', 'kidney', 8, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-j', 'Active SLE — serositis + high disease activity', 'ind-j-brooks', 'sle', 'sle-active', 'blood', 8, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-k', 'PsA — minimal joint involvement, mild', 'ind-k-nair', 'psa', 'psa-active', 'synovium', 2, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
+INSERT INTO clinical_phenotypes (clinical_phenotype_id, phenotype_label, individual, autoimmune_disease, disease_stage, tissue, severity_score, measurement_date, has_immune_dysfunction)
+VALUES ('ph-sev-l', 'PsA — moderate plaque + oligoarthritis', 'ind-l-brandt', 'psa', 'psa-active', 'skin', 6, '2024-03-01', TRUE) ON CONFLICT (clinical_phenotype_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- CausalMechanisms: Inferred causal mechanisms linking variants, exposures, and molecular state to clinical phenotypes; must be experimentally falsifiable.
 -- ----------------------------------------------------------------------------
@@ -491,6 +710,21 @@ VALUES ('cm-f', 'IL23R regulatory -> IL-17 axis -> PsA risk', 'ind-f-haidar', 'v
 
 INSERT INTO causal_mechanisms (causal_mechanism_id, mechanism_label, individual, genomic_variant, environmental_exposure, mechanism_type, target_pathway, has_pleiotropy, intervention_targets, evidence_items, cohort_replications, negative_control_tests)
 VALUES ('cm-g', 'IL23R regulatory -> IL-17 axis -> PsA risk', 'ind-g-lin', 'var-g-il23r', '', 'regulatory', 'IL-17/23', FALSE, NULL, NULL, NULL, NULL) ON CONFLICT (causal_mechanism_id) DO NOTHING;
+
+INSERT INTO causal_mechanisms (causal_mechanism_id, mechanism_label, individual, genomic_variant, environmental_exposure, mechanism_type, target_pathway, has_pleiotropy, intervention_targets, evidence_items, cohort_replications, negative_control_tests)
+VALUES ('cm-h', 'IRF5 regulatory -> type-I IFN -> SLE risk', 'ind-h-yamamoto', 'var-h-irf5', '', 'regulatory', 'type-I-IFN', FALSE, NULL, NULL, NULL, NULL) ON CONFLICT (causal_mechanism_id) DO NOTHING;
+
+INSERT INTO causal_mechanisms (causal_mechanism_id, mechanism_label, individual, genomic_variant, environmental_exposure, mechanism_type, target_pathway, has_pleiotropy, intervention_targets, evidence_items, cohort_replications, negative_control_tests)
+VALUES ('cm-i', 'IRF5 regulatory -> type-I IFN -> SLE risk', 'ind-i-conteh', 'var-i-irf5', '', 'regulatory', 'B-cell/autoantibody', FALSE, NULL, NULL, NULL, NULL) ON CONFLICT (causal_mechanism_id) DO NOTHING;
+
+INSERT INTO causal_mechanisms (causal_mechanism_id, mechanism_label, individual, genomic_variant, environmental_exposure, mechanism_type, target_pathway, has_pleiotropy, intervention_targets, evidence_items, cohort_replications, negative_control_tests)
+VALUES ('cm-j', 'IRF5 regulatory -> type-I IFN -> SLE risk', 'ind-j-brooks', 'var-j-irf5', '', 'regulatory', 'type-I-IFN', FALSE, NULL, NULL, NULL, NULL) ON CONFLICT (causal_mechanism_id) DO NOTHING;
+
+INSERT INTO causal_mechanisms (causal_mechanism_id, mechanism_label, individual, genomic_variant, environmental_exposure, mechanism_type, target_pathway, has_pleiotropy, intervention_targets, evidence_items, cohort_replications, negative_control_tests)
+VALUES ('cm-k', 'IL23R regulatory -> IL-17 axis -> PsA risk', 'ind-k-nair', 'var-k-il23r', '', 'regulatory', 'IL-17/23', FALSE, NULL, NULL, NULL, NULL) ON CONFLICT (causal_mechanism_id) DO NOTHING;
+
+INSERT INTO causal_mechanisms (causal_mechanism_id, mechanism_label, individual, genomic_variant, environmental_exposure, mechanism_type, target_pathway, has_pleiotropy, intervention_targets, evidence_items, cohort_replications, negative_control_tests)
+VALUES ('cm-l', 'IL23R regulatory -> IL-17 axis -> PsA risk', 'ind-l-brandt', 'var-l-il23r', '', 'regulatory', 'IL-17/23', FALSE, NULL, NULL, NULL, NULL) ON CONFLICT (causal_mechanism_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- EpistaticInteractions: Higher-order epistasis and pleiotropy interactions between genomic variants.
@@ -527,6 +761,21 @@ VALUES ('pred-f', 'pred-f', 'ind-f-haidar', 'psa', 'Onset', NULL) ON CONFLICT (i
 
 INSERT INTO individual_predictions (individual_prediction_id, prediction_label, individual, autoimmune_disease, prediction_type, calibration_bins)
 VALUES ('pred-g', 'pred-g', 'ind-g-lin', 'psa', 'Onset', NULL) ON CONFLICT (individual_prediction_id) DO NOTHING;
+
+INSERT INTO individual_predictions (individual_prediction_id, prediction_label, individual, autoimmune_disease, prediction_type, calibration_bins)
+VALUES ('pred-h', 'pred-h', 'ind-h-yamamoto', 'sle', 'Onset', NULL) ON CONFLICT (individual_prediction_id) DO NOTHING;
+
+INSERT INTO individual_predictions (individual_prediction_id, prediction_label, individual, autoimmune_disease, prediction_type, calibration_bins)
+VALUES ('pred-i', 'pred-i', 'ind-i-conteh', 'sle', 'Onset', NULL) ON CONFLICT (individual_prediction_id) DO NOTHING;
+
+INSERT INTO individual_predictions (individual_prediction_id, prediction_label, individual, autoimmune_disease, prediction_type, calibration_bins)
+VALUES ('pred-j', 'pred-j', 'ind-j-brooks', 'sle', 'Onset', NULL) ON CONFLICT (individual_prediction_id) DO NOTHING;
+
+INSERT INTO individual_predictions (individual_prediction_id, prediction_label, individual, autoimmune_disease, prediction_type, calibration_bins)
+VALUES ('pred-k', 'pred-k', 'ind-k-nair', 'psa', 'Onset', NULL) ON CONFLICT (individual_prediction_id) DO NOTHING;
+
+INSERT INTO individual_predictions (individual_prediction_id, prediction_label, individual, autoimmune_disease, prediction_type, calibration_bins)
+VALUES ('pred-l', 'pred-l', 'ind-l-brandt', 'psa', 'Onset', NULL) ON CONFLICT (individual_prediction_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- CalibrationBins: Per-prediction reliability-curve bins, seeded from the held-out coverage of this individual's own ancestry x disease. Calibration is an aggregation over these rows.
@@ -636,6 +885,81 @@ VALUES ('cb-b-3', 'cb-b-3', 'pred-b', 0.7, 0.66, 7, 'coverage of 7-14 held-out i
 INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
 VALUES ('cb-b-4', 'cb-b-4', 'pred-b', 0.9, 0.93, 12, 'coverage of 7-14 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
 
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-h-0', 'cb-h-0', 'pred-h', 0.1, 0.09, 34, 'coverage of 29-34 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-h-1', 'cb-h-1', 'pred-h', 0.3, 0.31, 31, 'coverage of 29-34 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-h-2', 'cb-h-2', 'pred-h', 0.5, 0.49, 29, 'coverage of 29-34 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-h-3', 'cb-h-3', 'pred-h', 0.7, 0.71, 33, 'coverage of 29-34 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-h-4', 'cb-h-4', 'pred-h', 0.9, 0.88, 30, 'coverage of 29-34 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-i-0', 'cb-i-0', 'pred-i', 0.1, 0.08, 36, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-i-1', 'cb-i-1', 'pred-i', 0.3, 0.32, 33, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-i-2', 'cb-i-2', 'pred-i', 0.5, 0.5, 35, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-i-3', 'cb-i-3', 'pred-i', 0.7, 0.69, 30, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-i-4', 'cb-i-4', 'pred-i', 0.9, 0.91, 34, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-j-0', 'cb-j-0', 'pred-j', 0.1, 0.07, 11, 'coverage of 7-14 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-j-1', 'cb-j-1', 'pred-j', 0.3, 0.33, 9, 'coverage of 7-14 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-j-2', 'cb-j-2', 'pred-j', 0.5, 0.55, 14, 'coverage of 7-14 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-j-3', 'cb-j-3', 'pred-j', 0.7, 0.66, 7, 'coverage of 7-14 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-j-4', 'cb-j-4', 'pred-j', 0.9, 0.93, 12, 'coverage of 7-14 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-k-0', 'cb-k-0', 'pred-k', 0.1, 0.12, 32, 'coverage of 30-35 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-k-1', 'cb-k-1', 'pred-k', 0.3, 0.3, 35, 'coverage of 30-35 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-k-2', 'cb-k-2', 'pred-k', 0.5, 0.48, 31, 'coverage of 30-35 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-k-3', 'cb-k-3', 'pred-k', 0.7, 0.7, 34, 'coverage of 30-35 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-k-4', 'cb-k-4', 'pred-k', 0.9, 0.93, 30, 'coverage of 30-35 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-l-0', 'cb-l-0', 'pred-l', 0.1, 0.09, 33, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-l-1', 'cb-l-1', 'pred-l', 0.3, 0.31, 36, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-l-2', 'cb-l-2', 'pred-l', 0.5, 0.52, 30, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-l-3', 'cb-l-3', 'pred-l', 0.7, 0.68, 35, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
+INSERT INTO calibration_bins (calibration_bin_id, bin_label, individual_prediction, predicted_probability_band, observed_event_rate, coverage_count, source_quote)
+VALUES ('cb-l-4', 'cb-l-4', 'pred-l', 0.9, 0.92, 32, 'coverage of 30-36 held-out individuals per reliability bin') ON CONFLICT (calibration_bin_id) DO NOTHING;
+
 -- ----------------------------------------------------------------------------
 -- InterventionTargets: Validated intervention targets for gene-based and cell-based therapies derived from falsifiable causal mechanisms.
 -- ----------------------------------------------------------------------------
@@ -656,6 +980,21 @@ VALUES ('it-f', 'IL-17 Pathway Blockade (secukinumab)', 'cm-f', 'psa', 'Cell-bas
 
 INSERT INTO intervention_targets (intervention_target_id, target_label, causal_mechanism, autoimmune_disease, therapy_class, is_validated)
 VALUES ('it-g', 'IL-17 Pathway Blockade (secukinumab)', 'cm-g', 'psa', 'Cell-based', TRUE) ON CONFLICT (intervention_target_id) DO NOTHING;
+
+INSERT INTO intervention_targets (intervention_target_id, target_label, causal_mechanism, autoimmune_disease, therapy_class, is_validated)
+VALUES ('it-h', 'IRF5 Regulatory Modulation', 'cm-h', 'sle', 'Gene-based', TRUE) ON CONFLICT (intervention_target_id) DO NOTHING;
+
+INSERT INTO intervention_targets (intervention_target_id, target_label, causal_mechanism, autoimmune_disease, therapy_class, is_validated)
+VALUES ('it-i', 'IRF5 Regulatory Modulation', 'cm-i', 'sle', 'Gene-based', TRUE) ON CONFLICT (intervention_target_id) DO NOTHING;
+
+INSERT INTO intervention_targets (intervention_target_id, target_label, causal_mechanism, autoimmune_disease, therapy_class, is_validated)
+VALUES ('it-j', 'IRF5 Regulatory Modulation', 'cm-j', 'sle', 'Gene-based', TRUE) ON CONFLICT (intervention_target_id) DO NOTHING;
+
+INSERT INTO intervention_targets (intervention_target_id, target_label, causal_mechanism, autoimmune_disease, therapy_class, is_validated)
+VALUES ('it-k', 'IL-17 Pathway Blockade (secukinumab)', 'cm-k', 'psa', 'Cell-based', TRUE) ON CONFLICT (intervention_target_id) DO NOTHING;
+
+INSERT INTO intervention_targets (intervention_target_id, target_label, causal_mechanism, autoimmune_disease, therapy_class, is_validated)
+VALUES ('it-l', 'IL-17 Pathway Blockade (secukinumab)', 'cm-l', 'psa', 'Cell-based', TRUE) ON CONFLICT (intervention_target_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- Axioms: Non-negotiable invariants the platform must obey. Load-bearing constraints, not per-loop work. Captured from the gauntlet conversation.
@@ -1162,16 +1501,109 @@ INSERT INTO state_transitions (state_transition_id, state_machine, subject_table
 VALUES ('st-ind-g-lin-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-g-lin', NULL, 'PresymptomaticAutoimmunity', '2025-09-05T00:00:00Z', 'system', 'Serology-derived transition to PresymptomaticAutoimmunity', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
 
 INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
-VALUES ('st-ind-h-yamamoto-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', NULL, 'PresymptomaticAutoimmunity', '2025-07-20T00:00:00Z', 'system', 'Serology-derived transition to PresymptomaticAutoimmunity', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+VALUES ('st-ind-h-yamamoto-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', NULL, 'PresymptomaticAutoimmunity', '2025-07-20T00:00:00Z', 'system', 'Serology-derived transition to PresymptomaticAutoimmunity', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
 
 INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
-VALUES ('st-ind-h-yamamoto-earlynephritis-2', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', 'PresymptomaticAutoimmunity', 'EarlyNephritis', '2025-10-20T00:00:00Z', 'system', 'Serology-derived transition to EarlyNephritis', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+VALUES ('st-ind-h-yamamoto-earlynephritis-2', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', 'PresymptomaticAutoimmunity', 'EarlyNephritis', '2025-10-20T00:00:00Z', 'system', 'Serology-derived transition to EarlyNephritis', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
 
 INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
-VALUES ('st-ind-i-conteh-earlynephritis-1', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', NULL, 'EarlyNephritis', '2025-06-15T00:00:00Z', 'system', 'Serology-derived transition to EarlyNephritis', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+VALUES ('st-pred-h-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', NULL, 'Intake', '2026-06-02T09:00:00Z', 'system', 'Lifecycle transition to Intake', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
 
 INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
-VALUES ('st-ind-i-conteh-renalflarerisk-2', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', 'EarlyNephritis', 'RenalFlareRisk', '2025-09-15T00:00:00Z', 'system', 'Serology-derived transition to RenalFlareRisk', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+VALUES ('st-pred-h-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'Intake', 'EvidenceAssessed', '2026-06-03T09:00:00Z', 'system', 'Lifecycle transition to EvidenceAssessed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-h-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-04T09:00:00Z', 'system', 'Lifecycle transition to MechanismConfirmed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-h-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-05T09:00:00Z', 'system', 'Lifecycle transition to CalibrationChecked', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-h-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'CalibrationChecked', 'TransportChecked', '2026-06-06T09:00:00Z', 'system', 'Lifecycle transition to TransportChecked', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-h-actionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'TransportChecked', 'Actionable', '2026-06-07T09:00:00Z', 'system', 'Lifecycle transition to Actionable', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-ind-i-conteh-earlynephritis-1', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', NULL, 'EarlyNephritis', '2025-06-15T00:00:00Z', 'system', 'Serology-derived transition to EarlyNephritis', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-ind-i-conteh-renalflarerisk-2', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', 'EarlyNephritis', 'RenalFlareRisk', '2025-09-15T00:00:00Z', 'system', 'Serology-derived transition to RenalFlareRisk', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-i-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', NULL, 'Intake', '2026-06-02T09:00:00Z', 'system', 'Lifecycle transition to Intake', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-i-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', 'Intake', 'EvidenceAssessed', '2026-06-03T09:00:00Z', 'system', 'Lifecycle transition to EvidenceAssessed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-i-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-04T09:00:00Z', 'system', 'Lifecycle transition to MechanismConfirmed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-i-notactionable-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', 'MechanismConfirmed', 'NotActionable', '2026-06-05T09:00:00Z', 'system', 'Lifecycle transition to NotActionable', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-ind-j-brooks-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-j-brooks', NULL, 'PresymptomaticAutoimmunity', '2025-08-01T00:00:00Z', 'system', 'Serology-derived transition to PresymptomaticAutoimmunity', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-ind-j-brooks-serologicactive-2', 'lupus-nephritis-progression', 'Individuals', 'ind-j-brooks', 'PresymptomaticAutoimmunity', 'SerologicActive', '2025-11-01T00:00:00Z', 'system', 'Serology-derived transition to SerologicActive', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-j-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', NULL, 'Intake', '2026-06-02T09:00:00Z', 'system', 'Lifecycle transition to Intake', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-j-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'Intake', 'EvidenceAssessed', '2026-06-03T09:00:00Z', 'system', 'Lifecycle transition to EvidenceAssessed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-j-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-04T09:00:00Z', 'system', 'Lifecycle transition to MechanismConfirmed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-j-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-05T09:00:00Z', 'system', 'Lifecycle transition to CalibrationChecked', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-j-notactionable-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'CalibrationChecked', 'NotActionable', '2026-06-06T09:00:00Z', 'system', 'Lifecycle transition to NotActionable', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-ind-k-nair-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-k-nair', NULL, 'PresymptomaticAutoimmunity', '2025-07-05T00:00:00Z', 'system', 'Serology-derived transition to PresymptomaticAutoimmunity', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-k-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', NULL, 'Intake', '2026-06-02T09:00:00Z', 'system', 'Lifecycle transition to Intake', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-k-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'Intake', 'EvidenceAssessed', '2026-06-03T09:00:00Z', 'system', 'Lifecycle transition to EvidenceAssessed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-k-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-04T09:00:00Z', 'system', 'Lifecycle transition to MechanismConfirmed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-k-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-05T09:00:00Z', 'system', 'Lifecycle transition to CalibrationChecked', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-k-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'CalibrationChecked', 'TransportChecked', '2026-06-06T09:00:00Z', 'system', 'Lifecycle transition to TransportChecked', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-k-notactionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'TransportChecked', 'NotActionable', '2026-06-07T09:00:00Z', 'system', 'Lifecycle transition to NotActionable', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-ind-l-brandt-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-l-brandt', NULL, 'PresymptomaticAutoimmunity', '2025-09-05T00:00:00Z', 'system', 'Serology-derived transition to PresymptomaticAutoimmunity', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-l-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', NULL, 'Intake', '2026-06-02T09:00:00Z', 'system', 'Lifecycle transition to Intake', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-l-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'Intake', 'EvidenceAssessed', '2026-06-03T09:00:00Z', 'system', 'Lifecycle transition to EvidenceAssessed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-l-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'EvidenceAssessed', 'MechanismConfirmed', '2026-06-04T09:00:00Z', 'system', 'Lifecycle transition to MechanismConfirmed', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-l-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'MechanismConfirmed', 'CalibrationChecked', '2026-06-05T09:00:00Z', 'system', 'Lifecycle transition to CalibrationChecked', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-l-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'CalibrationChecked', 'TransportChecked', '2026-06-06T09:00:00Z', 'system', 'Lifecycle transition to TransportChecked', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
+
+INSERT INTO state_transitions (state_transition_id, state_machine, subject_table_name, subject_id, from_state_key, to_state_key, transition_at, triggered_by_role, reason, created_at, created_by, modified_at, modified_by, modified_by_model)
+VALUES ('st-pred-l-actionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'TransportChecked', 'Actionable', '2026-06-07T09:00:00Z', 'system', 'Lifecycle transition to Actionable', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8') ON CONFLICT (state_transition_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- SubjectStateInstances: Per-subject state occupancy records; current state has blank ExitedAt.
@@ -1309,16 +1741,109 @@ INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, s
 VALUES ('ssi-ind-g-lin-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-g-lin', 'PresymptomaticAutoimmunity', '2025-09-05T00:00:00Z', NULL, 1, NULL, 'st-ind-g-lin-presymptomaticautoimmunity-1', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
 
 INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
-VALUES ('ssi-ind-h-yamamoto-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', 'PresymptomaticAutoimmunity', '2025-07-20T00:00:00Z', '2025-10-20T00:00:00Z', 1, NULL, 'st-ind-h-yamamoto-presymptomaticautoimmunity-1', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8', 90) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+VALUES ('ssi-ind-h-yamamoto-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', 'PresymptomaticAutoimmunity', '2025-07-20T00:00:00Z', '2025-10-20T00:00:00Z', 1, NULL, 'st-ind-h-yamamoto-presymptomaticautoimmunity-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 90) ON CONFLICT (subject_state_instance_id) DO NOTHING;
 
 INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
-VALUES ('ssi-ind-h-yamamoto-earlynephritis-2', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', 'EarlyNephritis', '2025-10-20T00:00:00Z', NULL, 2, 'ssi-ind-h-yamamoto-presymptomaticautoimmunity-1', 'st-ind-h-yamamoto-earlynephritis-2', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+VALUES ('ssi-ind-h-yamamoto-earlynephritis-2', 'lupus-nephritis-progression', 'Individuals', 'ind-h-yamamoto', 'EarlyNephritis', '2025-10-20T00:00:00Z', NULL, 2, 'ssi-ind-h-yamamoto-presymptomaticautoimmunity-1', 'st-ind-h-yamamoto-earlynephritis-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
 
 INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
-VALUES ('ssi-ind-i-conteh-earlynephritis-1', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', 'EarlyNephritis', '2025-06-15T00:00:00Z', '2025-09-15T00:00:00Z', 1, NULL, 'st-ind-i-conteh-earlynephritis-1', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8', 90) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+VALUES ('ssi-pred-h-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'Intake', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 1, NULL, 'st-pred-h-intake-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
 
 INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
-VALUES ('ssi-ind-i-conteh-renalflarerisk-2', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', 'RenalFlareRisk', '2025-09-15T00:00:00Z', NULL, 2, 'ssi-ind-i-conteh-earlynephritis-1', 'st-ind-i-conteh-renalflarerisk-2', '2026-06-20T00:00:00Z', 'v2-step3', '2026-06-20T00:00:00Z', 'v2-step3', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+VALUES ('ssi-pred-h-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'EvidenceAssessed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 2, 'ssi-pred-h-intake-1', 'st-pred-h-evidenceassessed-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-h-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'MechanismConfirmed', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 3, 'ssi-pred-h-evidenceassessed-2', 'st-pred-h-mechanismconfirmed-3', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-h-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'CalibrationChecked', '2026-06-05T09:00:00Z', '2026-06-06T09:00:00Z', 4, 'ssi-pred-h-mechanismconfirmed-3', 'st-pred-h-calibrationchecked-4', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-h-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'TransportChecked', '2026-06-06T09:00:00Z', '2026-06-07T09:00:00Z', 5, 'ssi-pred-h-calibrationchecked-4', 'st-pred-h-transportchecked-5', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-h-actionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-h', 'Actionable', '2026-06-07T09:00:00Z', NULL, 6, 'ssi-pred-h-transportchecked-5', 'st-pred-h-actionable-6', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-ind-i-conteh-earlynephritis-1', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', 'EarlyNephritis', '2025-06-15T00:00:00Z', '2025-09-15T00:00:00Z', 1, NULL, 'st-ind-i-conteh-earlynephritis-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 90) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-ind-i-conteh-renalflarerisk-2', 'lupus-nephritis-progression', 'Individuals', 'ind-i-conteh', 'RenalFlareRisk', '2025-09-15T00:00:00Z', NULL, 2, 'ssi-ind-i-conteh-earlynephritis-1', 'st-ind-i-conteh-renalflarerisk-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-i-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', 'Intake', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 1, NULL, 'st-pred-i-intake-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-i-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', 'EvidenceAssessed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 2, 'ssi-pred-i-intake-1', 'st-pred-i-evidenceassessed-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-i-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', 'MechanismConfirmed', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 3, 'ssi-pred-i-evidenceassessed-2', 'st-pred-i-mechanismconfirmed-3', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-i-notactionable-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-i', 'NotActionable', '2026-06-05T09:00:00Z', NULL, 4, 'ssi-pred-i-mechanismconfirmed-3', 'st-pred-i-notactionable-4', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-ind-j-brooks-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-j-brooks', 'PresymptomaticAutoimmunity', '2025-08-01T00:00:00Z', '2025-11-01T00:00:00Z', 1, NULL, 'st-ind-j-brooks-presymptomaticautoimmunity-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 90) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-ind-j-brooks-serologicactive-2', 'lupus-nephritis-progression', 'Individuals', 'ind-j-brooks', 'SerologicActive', '2025-11-01T00:00:00Z', NULL, 2, 'ssi-ind-j-brooks-presymptomaticautoimmunity-1', 'st-ind-j-brooks-serologicactive-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-j-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'Intake', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 1, NULL, 'st-pred-j-intake-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-j-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'EvidenceAssessed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 2, 'ssi-pred-j-intake-1', 'st-pred-j-evidenceassessed-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-j-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'MechanismConfirmed', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 3, 'ssi-pred-j-evidenceassessed-2', 'st-pred-j-mechanismconfirmed-3', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-j-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'CalibrationChecked', '2026-06-05T09:00:00Z', '2026-06-06T09:00:00Z', 4, 'ssi-pred-j-mechanismconfirmed-3', 'st-pred-j-calibrationchecked-4', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-j-notactionable-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-j', 'NotActionable', '2026-06-06T09:00:00Z', NULL, 5, 'ssi-pred-j-calibrationchecked-4', 'st-pred-j-notactionable-5', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-ind-k-nair-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-k-nair', 'PresymptomaticAutoimmunity', '2025-07-05T00:00:00Z', NULL, 1, NULL, 'st-ind-k-nair-presymptomaticautoimmunity-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-k-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'Intake', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 1, NULL, 'st-pred-k-intake-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-k-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'EvidenceAssessed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 2, 'ssi-pred-k-intake-1', 'st-pred-k-evidenceassessed-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-k-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'MechanismConfirmed', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 3, 'ssi-pred-k-evidenceassessed-2', 'st-pred-k-mechanismconfirmed-3', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-k-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'CalibrationChecked', '2026-06-05T09:00:00Z', '2026-06-06T09:00:00Z', 4, 'ssi-pred-k-mechanismconfirmed-3', 'st-pred-k-calibrationchecked-4', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-k-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'TransportChecked', '2026-06-06T09:00:00Z', '2026-06-07T09:00:00Z', 5, 'ssi-pred-k-calibrationchecked-4', 'st-pred-k-transportchecked-5', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-k-notactionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-k', 'NotActionable', '2026-06-07T09:00:00Z', NULL, 6, 'ssi-pred-k-transportchecked-5', 'st-pred-k-notactionable-6', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-ind-l-brandt-presymptomaticautoimmunity-1', 'lupus-nephritis-progression', 'Individuals', 'ind-l-brandt', 'PresymptomaticAutoimmunity', '2025-09-05T00:00:00Z', NULL, 1, NULL, 'st-ind-l-brandt-presymptomaticautoimmunity-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 120) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-l-intake-1', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'Intake', '2026-06-02T09:00:00Z', '2026-06-03T09:00:00Z', 1, NULL, 'st-pred-l-intake-1', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-l-evidenceassessed-2', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'EvidenceAssessed', '2026-06-03T09:00:00Z', '2026-06-04T09:00:00Z', 2, 'ssi-pred-l-intake-1', 'st-pred-l-evidenceassessed-2', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-l-mechanismconfirmed-3', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'MechanismConfirmed', '2026-06-04T09:00:00Z', '2026-06-05T09:00:00Z', 3, 'ssi-pred-l-evidenceassessed-2', 'st-pred-l-mechanismconfirmed-3', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-l-calibrationchecked-4', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'CalibrationChecked', '2026-06-05T09:00:00Z', '2026-06-06T09:00:00Z', 4, 'ssi-pred-l-mechanismconfirmed-3', 'st-pred-l-calibrationchecked-4', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-l-transportchecked-5', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'TransportChecked', '2026-06-06T09:00:00Z', '2026-06-07T09:00:00Z', 5, 'ssi-pred-l-calibrationchecked-4', 'st-pred-l-transportchecked-5', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
+
+INSERT INTO subject_state_instances (subject_state_instance_id, state_machine, subject_table_name, subject_id, state_key, entered_at, exited_at, sequence_index, prior_instance, entered_via_transition, created_at, created_by, modified_at, modified_by, modified_by_model, dwell_days)
+VALUES ('ssi-pred-l-actionable-6', 'diagnosis-lifecycle', 'IndividualPredictions', 'pred-l', 'Actionable', '2026-06-07T09:00:00Z', NULL, 6, 'ssi-pred-l-transportchecked-5', 'st-pred-l-actionable-6', '2026-06-20T00:00:00Z', 'v2-step10', '2026-06-20T00:00:00Z', 'v2-step10', 'claude-opus-4-8', 1) ON CONFLICT (subject_state_instance_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- DiseaseDomainConcepts: v2 vocabulary completeness: every disease-domain concept the v1 audit named, with its modeling status and the challenge-stressor TYPE it instantiates. Makes the coverage claim checkable by grep, not by trust.
@@ -1460,6 +1985,24 @@ VALUES ('sero-ind-i-conteh-1', 'ind-i-conteh', '2025-06-15T00:00:00Z', 1, 70, 90
 
 INSERT INTO serology_observations (serology_observation_id, individual, observed_at, sequence_index, anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day, egfr_ml_min, has_active_urinary_sediment, prior_observation)
 VALUES ('sero-ind-i-conteh-2', 'ind-i-conteh', '2025-09-15T00:00:00Z', 2, 150, 55, 8, 1.5, 76, FALSE, 'sero-ind-i-conteh-1') ON CONFLICT (serology_observation_id) DO NOTHING;
+
+INSERT INTO serology_observations (serology_observation_id, individual, observed_at, sequence_index, anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day, egfr_ml_min, has_active_urinary_sediment, prior_observation)
+VALUES ('sero-ind-j-brooks-1', 'ind-j-brooks', '2025-08-01T00:00:00Z', 1, 48, 100, 20, 0.2, 92, FALSE, NULL) ON CONFLICT (serology_observation_id) DO NOTHING;
+
+INSERT INTO serology_observations (serology_observation_id, individual, observed_at, sequence_index, anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day, egfr_ml_min, has_active_urinary_sediment, prior_observation)
+VALUES ('sero-ind-j-brooks-2', 'ind-j-brooks', '2025-11-01T00:00:00Z', 2, 115, 70, 10, 0.3, 90, FALSE, 'sero-ind-j-brooks-1') ON CONFLICT (serology_observation_id) DO NOTHING;
+
+INSERT INTO serology_observations (serology_observation_id, individual, observed_at, sequence_index, anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day, egfr_ml_min, has_active_urinary_sediment, prior_observation)
+VALUES ('sero-ind-k-nair-1', 'ind-k-nair', '2025-07-05T00:00:00Z', 1, 30, 120, 25, 0.05, 99, FALSE, NULL) ON CONFLICT (serology_observation_id) DO NOTHING;
+
+INSERT INTO serology_observations (serology_observation_id, individual, observed_at, sequence_index, anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day, egfr_ml_min, has_active_urinary_sediment, prior_observation)
+VALUES ('sero-ind-k-nair-2', 'ind-k-nair', '2025-10-05T00:00:00Z', 2, 33, 118, 24, 0.08, 98, FALSE, 'sero-ind-k-nair-1') ON CONFLICT (serology_observation_id) DO NOTHING;
+
+INSERT INTO serology_observations (serology_observation_id, individual, observed_at, sequence_index, anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day, egfr_ml_min, has_active_urinary_sediment, prior_observation)
+VALUES ('sero-ind-l-brandt-1', 'ind-l-brandt', '2025-09-05T00:00:00Z', 1, 22, 130, 28, 0.0, 100, FALSE, NULL) ON CONFLICT (serology_observation_id) DO NOTHING;
+
+INSERT INTO serology_observations (serology_observation_id, individual, observed_at, sequence_index, anti_ds_dna_iu, complement_c3, complement_c4, proteinuria_g_per_day, egfr_ml_min, has_active_urinary_sediment, prior_observation)
+VALUES ('sero-ind-l-brandt-2', 'ind-l-brandt', '2025-12-05T00:00:00Z', 2, 24, 128, 27, 0.0, 100, FALSE, 'sero-ind-l-brandt-1') ON CONFLICT (serology_observation_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- TherapyOptions: Therapy lookup for the treatment-line-selection DAG (MMF/belimumab/anifrolumab/secukinumab).

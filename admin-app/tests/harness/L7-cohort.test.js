@@ -13,7 +13,7 @@ describe('L7 · COHORT · the keystone list (intake home screen)', () => {
   before(startServer);
   after(stopServer);
 
-  test('cohort lists all 7 patients with exactly {A,G} actionable', async () => {
+  test('cohort lists all patients with exactly the oracle-actionable set actionable', async () => {
     const { status, body } = await getJson(CONTRACT.cohort.endpoint());
     if (status !== 200) {
       throw new Error(
