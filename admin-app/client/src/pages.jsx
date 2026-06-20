@@ -277,6 +277,24 @@ export function DiagnosisView() {
         Each patient below is a real, linkable thing. Open one to walk its case up the inference DAG —
         every conclusion is <strong>derived</strong> from raw observations, none entered by hand.
       </p>
+
+      {/* Corpus-level entry point — the v2 surface where disease-state patterns emerge
+          ACROSS the cohort (vs the per-patient cases below). */}
+      <Link to="/admin/cohort" query={{ panel: 'map' }}
+        style={{ display: 'block', border: `1px solid ${C.accent}`, borderRadius: 10, padding: '14px 18px',
+          background: C.bgAccent, marginBottom: 18 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            <div style={{ fontWeight: 800, fontSize: 16, color: C.accent }}>▦ Cohort discovery →</div>
+            <div style={{ color: C.sub, fontSize: 12.5, marginTop: 3, maxWidth: 640 }}>
+              See the whole cohort at once: the disease-state map, the emergent serology signature,
+              the disease-vs-evidence disagreement board, and treatment-line distribution. Discovery is
+              a <strong>corpus-level</strong> act — this is the layer above the per-patient cases.
+            </div>
+          </div>
+          <span style={{ color: C.accent, fontSize: 22 }}>›</span>
+        </div>
+      </Link>
       {!list.length ? <p style={{ color: C.sub }}>Loading patients…</p> : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 10 }}>
           {list.map((p) => (

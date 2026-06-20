@@ -11629,7 +11629,7 @@
         "DisplayName": "Cohort discovery",
         "Route": "/admin/cohort",
         "Description": "All 7 cases and their keystone verdicts.",
-        "SortOrder": 91.5,
+        "SortOrder": 90.5,
         "ParentRouteKey": "admin",
         "RouteKey": "admin.cohort",
         "NavLevel": "sub",

@@ -37,7 +37,7 @@ WHERE causal_mechanism_id IN ('cm-a','cm-b','cm-c','cm-d','cm-e','cm-f','cm-g');
 -- discovery'); this just makes a reseeded DB match it.
 -- ============================================================================
 UPDATE routing_and_navigation
-   SET sort_order = 91.5, display_name = 'Cohort discovery'
+   SET sort_order = 90.5, display_name = 'Cohort discovery'
  WHERE route_key = 'admin.cohort';
 
 -- ============================================================================
