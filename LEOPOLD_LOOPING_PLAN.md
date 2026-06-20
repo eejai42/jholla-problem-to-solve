@@ -45,26 +45,26 @@ surface the new rule. 6. **Update the rulebook** `LeopoldLoops` rows (tick done,
 Convert 7 hand-entered answers to derived; add evidence/replication/control/calibration tables; wire raw observations to keystone.
 
 - **Status:** done - rule `rule: keystone IsClinicallyActionable now derived from observations`; state `state: Loop 0 - Postgres solve-by-inference verified`
-### [NEXT] Loop 0.5 — Test Harness First (the red contract)
+### [DONE] Loop 0.5 — Test Harness First (the red contract)
 
 Ship a witnessed inference harness asserting the entire DAG x 7 patients via the app API; red on arrival, load-bearing.
 
-- **Status:** next - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app's contract`
-### [PLANNED] Loop 1 — Intake app skeleton
+- **Status:** done - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app's contract`
+### [DONE] Loop 1 — Intake app skeleton
 
 Turn keystone-level red tests green: wire cohort + prediction-panel endpoints reading vw_*.
 
-- **Status:** planned
-### [PLANNED] Loop 2 — Patient intake (facts in)
+- **Status:** done
+### [DONE] Loop 2 — Patient intake (facts in)
 
 Form writes a new Individual + child observation rows to base tables, then re-reads the derived panel. The knob-editing payoff.
 
-- **Status:** planned
-### [PLANNED] Loop 3 — Gate explainability in the UI
+- **Status:** done
+### [NEXT] Loop 3 — Gate explainability in the UI
 
 Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.
 
-- **Status:** planned
+- **Status:** next
 ### [PLANNED] Loop 4 — Second prediction type (severity)
 
 Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.
