@@ -916,6 +916,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT mechanism_type FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_causal_mechanisms_target_pathway
+-- Helper function: Get TargetPathway from CausalMechanisms by CausalMechanismId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_causal_mechanisms_target_pathway(p_causal_mechanism_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT target_pathway FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_causal_mechanisms_has_pleiotropy
 -- Helper function: Get HasPleiotropy from CausalMechanisms by CausalMechanismId
 -- Used for join-free cross-table references in aggregations
@@ -1157,6 +1166,96 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_individuals_has_predicted_treatment_response(p_individual_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (calc_individuals_count_predicted_treatment_responses(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_count_serology_panels
+-- Field: Individuals.CountSerologyPanels
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_count_serology_panels(p_individual_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COUNT(*) FROM serology_observations WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_max_progression_state_order
+-- Field: Individuals.MaxProgressionStateOrder
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_max_progression_state_order(p_individual_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_serology_observations_progression_state_order(serology_observation_id))::numeric), 0) FROM serology_observations WHERE individual = p_individual_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_latest_sledai_score
+-- Field: Individuals.LatestSledaiScore
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_latest_sledai_score(p_individual_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_serology_observations_sledai_score(serology_observation_id))::numeric), 0) FROM serology_observations WHERE individual = p_individual_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_nephritis_progression_state_key
+-- Field: Individuals.NephritisProgressionStateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_nephritis_progression_state_key(p_individual_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_individuals_max_progression_state_order(p_individual_id))::NUMERIC >= 5 THEN ('BiopsyIndicated')::text ELSE (CASE WHEN (calc_individuals_max_progression_state_order(p_individual_id))::NUMERIC >= 4 THEN ('RenalFlareRisk')::text ELSE (CASE WHEN (calc_individuals_max_progression_state_order(p_individual_id))::NUMERIC >= 3 THEN ('EarlyNephritis')::text ELSE (CASE WHEN (calc_individuals_max_progression_state_order(p_individual_id))::NUMERIC >= 2 THEN ('SerologicActive')::text ELSE ('PresymptomaticAutoimmunity')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_activity_tier
+-- Field: Individuals.ActivityTier
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_activity_tier(p_individual_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_individuals_latest_sledai_score(p_individual_id))::NUMERIC >= 12 THEN ('High / flare')::text ELSE (CASE WHEN (calc_individuals_latest_sledai_score(p_individual_id))::NUMERIC >= 6 THEN ('Moderate')::text ELSE (CASE WHEN (calc_individuals_latest_sledai_score(p_individual_id))::NUMERIC >= 1 THEN ('Mild')::text ELSE ('Quiescent')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_is_high_disease_activity
+-- Field: Individuals.IsHighDiseaseActivity
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_is_high_disease_activity(p_individual_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_individuals_latest_sledai_score(p_individual_id))::NUMERIC >= 12 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_is_disease_progressing
+-- Field: Individuals.IsDiseaseProgressing
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_is_disease_progressing(p_individual_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_individuals_nephritis_progression_state_key(p_individual_id) = 'EarlyNephritis' OR calc_individuals_nephritis_progression_state_key(p_individual_id) = 'RenalFlareRisk' OR calc_individuals_nephritis_progression_state_key(p_individual_id) = 'BiopsyIndicated') THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_target_pathway_code
+-- Field: Individuals.TargetPathwayCode
+-- Type: aggregation | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_target_pathway_code(p_individual_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((SELECT COALESCE(MAX((calc_causal_mechanisms_target_pathway_code(causal_mechanism_id))::numeric), 0) FROM causal_mechanisms WHERE individual = p_individual_id))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_target_pathway
+-- Field: Individuals.TargetPathway
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_target_pathway(p_individual_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 1 THEN ('type-I-IFN')::text ELSE (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 2 THEN ('B-cell/autoantibody')::text ELSE (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 3 THEN ('T-cell-costim')::text ELSE (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 4 THEN ('IL-17/23')::text ELSE ('')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_genomic_variants_parent_path
@@ -1920,6 +2019,16 @@ RETURNS TEXT AS $$
   SELECT (SELECT source_quote FROM negative_control_tests WHERE negative_control_test_id = p_negative_control_test_id);
 $$ LANGUAGE sql STABLE;
 
+-- calc_causal_mechanisms_target_pathway_code
+-- Field: CausalMechanisms.TargetPathwayCode
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_causal_mechanisms_target_pathway_code(p_causal_mechanism_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'type-I-IFN' THEN (1)::text ELSE (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'B-cell/autoantibody' THEN (2)::text ELSE (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'T-cell-costim' THEN (3)::text ELSE (CASE WHEN (SELECT NULLIF(target_pathway, '') FROM causal_mechanisms WHERE causal_mechanism_id = p_causal_mechanism_id) = 'IL-17/23' THEN (4)::text ELSE (0)::text END)::text END)::text END)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
 -- calc_causal_mechanisms_name
 -- Field: CausalMechanisms.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -2303,6 +2412,39 @@ RETURNS BOOLEAN AS $$
   SELECT calc_individuals_has_predicted_treatment_response((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_individual_predictions_individual_target_pathway
+-- Field: IndividualPredictions.IndividualTargetPathway
+-- Type: lookup | DataType: string | Returns: TEXT
+-- Lookup: TargetPathway from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_target_pathway(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_target_pathway((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_individual_progression_state_key
+-- Field: IndividualPredictions.IndividualProgressionStateKey
+-- Type: lookup | DataType: lookup | Returns: TEXT
+-- Lookup: NephritisProgressionStateKey from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT calc_individuals_nephritis_progression_state_key((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_individual_is_disease_progressing
+-- Field: IndividualPredictions.IndividualIsDiseaseProgressing
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsDiseaseProgressing from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_is_disease_progressing(p_individual_prediction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_individuals_is_disease_progressing((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_calibration_bins_bin_label
 -- Helper function: Get BinLabel from CalibrationBins by CalibrationBinId
 -- Used for join-free cross-table references in aggregations
@@ -2615,6 +2757,36 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_individual_predictions_deciding_gate(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id) THEN ('AllGatesPass')::text ELSE (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN calc_individual_predictions_individual_has_cryptic_relatedness(p_individual_prediction_id) THEN ('CrypticRelatedness')::text ELSE (CASE WHEN (calc_individual_predictions_calibrated_uncertainty(p_individual_prediction_id))::NUMERIC < 0.7 THEN ('Calibration')::text ELSE (CASE WHEN NOT (calc_individual_predictions_is_ancestry_transport_safe(p_individual_prediction_id)) THEN ('AncestryTransport')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_recommended_treatment_line
+-- Field: IndividualPredictions.RecommendedTreatmentLine
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_recommended_treatment_line(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('No targeted line — mechanism unconfirmed')::text ELSE (CASE WHEN (calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) = 'RenalFlareRisk' OR calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) = 'BiopsyIndicated') THEN ('Mycophenolate (induction)')::text ELSE (CASE WHEN calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) = 'type-I-IFN' THEN ('Anifrolumab')::text ELSE (CASE WHEN calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) = 'B-cell/autoantibody' THEN ('Belimumab')::text ELSE (CASE WHEN calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) = 'IL-17/23' THEN ('Secukinumab')::text ELSE ('Standard-of-care (no mechanism-matched targeted line)')::text END)::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_treatment_line_deciding_factor
+-- Field: IndividualPredictions.TreatmentLineDecidingFactor
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_treatment_line_deciding_factor(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('MechanismUnconfirmed')::text ELSE (CASE WHEN (calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) = 'RenalFlareRisk' OR calc_individual_predictions_individual_progression_state_key(p_individual_prediction_id) = 'BiopsyIndicated') THEN ('ActiveNephritis-Induction')::text ELSE (CASE WHEN calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) = 'type-I-IFN' THEN ('IFNSignature-Anifrolumab')::text ELSE (CASE WHEN calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) = 'B-cell/autoantibody' THEN ('AutoantibodyDriven-Belimumab')::text ELSE (CASE WHEN calc_individual_predictions_individual_target_pathway(p_individual_prediction_id) = 'IL-17/23' THEN ('IL17Axis-Secukinumab')::text ELSE ('NoMechanismMatch')::text END)::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_progression_vs_actionability_disagr
+-- Field: IndividualPredictions.ProgressionVsActionabilityDisagree
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_progression_vs_actionability_disagr(p_individual_prediction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_individual_predictions_individual_is_disease_progressing(p_individual_prediction_id) AND NOT (calc_individual_predictions_is_clinically_actionable(p_individual_prediction_id))) THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
 -- calc_calibration_bins_parent_path
@@ -3683,6 +3855,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT modified_by_model FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_subject_state_instances_dwell_days
+-- Helper function: Get DwellDays from SubjectStateInstances by SubjectStateInstanceId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_subject_state_instances_dwell_days(p_subject_state_instance_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT dwell_days FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id);
+$$ LANGUAGE sql STABLE;
+
 -- calc_subject_state_instances_name
 -- Field: SubjectStateInstances.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -3723,6 +3904,16 @@ RETURNS BOOLEAN AS $$
   SELECT (((SELECT sequence_index FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC >= 1)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_subject_state_instances_is_long_dwell
+-- Field: SubjectStateInstances.IsLongDwell
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_subject_state_instances_is_long_dwell(p_subject_state_instance_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN ((SELECT dwell_days FROM subject_state_instances WHERE subject_state_instance_id = p_subject_state_instance_id))::NUMERIC >= 90 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_disease_domain_concepts_name
 -- Field: DiseaseDomainConcepts.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -3761,6 +3952,241 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_disease_domain_concepts_is_schema_modeled(p_disease_domain_concept_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN ((SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'deep-dag' OR (SELECT NULLIF(modeling_status, '') FROM disease_domain_concepts WHERE disease_domain_concept_id = p_disease_domain_concept_id) = 'schema') THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_prior_anti_ds_dna_iu
+-- Field: SerologyObservations.PriorAntiDsDnaIU
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: AntiDsDnaIU from related SerologyObservations
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT anti_ds_dna_iu::numeric FROM serology_observations WHERE serology_observation_id = (SELECT prior_observation FROM serology_observations WHERE serology_observation_id = p_serology_observation_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_prior_c3
+-- Field: SerologyObservations.PriorC3
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: ComplementC3 from related SerologyObservations
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_prior_c3(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT complement_c3::numeric FROM serology_observations WHERE serology_observation_id = (SELECT prior_observation FROM serology_observations WHERE serology_observation_id = p_serology_observation_id));
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_prior_c4
+-- Field: SerologyObservations.PriorC4
+-- Type: lookup | DataType: number | Returns: NUMERIC
+-- Lookup: ComplementC4 from related SerologyObservations
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_prior_c4(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT complement_c4::numeric FROM serology_observations WHERE serology_observation_id = (SELECT prior_observation FROM serology_observations WHERE serology_observation_id = p_serology_observation_id));
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_observed_at
+-- Helper function: Get ObservedAt from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_observed_at(p_serology_observation_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT observed_at FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_sequence_index
+-- Helper function: Get SequenceIndex from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_sequence_index(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT sequence_index FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_anti_ds_dna_iu
+-- Helper function: Get AntiDsDnaIU from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_anti_ds_dna_iu(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT anti_ds_dna_iu FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_complement_c3
+-- Helper function: Get ComplementC3 from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_complement_c3(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_complement_c4
+-- Helper function: Get ComplementC4 from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_complement_c4(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_proteinuria_g_per_day
+-- Helper function: Get ProteinuriaGPerDay from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_proteinuria_g_per_day(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_egfr_ml_min
+-- Helper function: Get EgfrMlMin from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_egfr_ml_min(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT egfr_ml_min FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_serology_observations_has_active_urinary_sediment
+-- Helper function: Get HasActiveUrinarySediment from SerologyObservations by SerologyObservationId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_serology_observations_has_active_urinary_sediment(p_serology_observation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT has_active_urinary_sediment FROM serology_observations WHERE serology_observation_id = p_serology_observation_id);
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_anti_ds_dna_trend
+-- Field: SerologyObservations.AntiDsDnaTrend
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN ((calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id)) IS NULL OR (calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id))::text = '') THEN ('Stable')::text ELSE (CASE WHEN (SELECT anti_ds_dna_iu FROM serology_observations WHERE serology_observation_id = p_serology_observation_id) > (COALESCE(CASE WHEN (calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id))::numeric ELSE NULL END, 0) * COALESCE(1.25, 0)) THEN ('Rising')::text ELSE (CASE WHEN (SELECT anti_ds_dna_iu FROM serology_observations WHERE serology_observation_id = p_serology_observation_id) < (COALESCE(CASE WHEN (calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_anti_ds_dna_iu(p_serology_observation_id))::numeric ELSE NULL END, 0) * COALESCE(0.8, 0)) THEN ('Falling')::text ELSE ('Stable')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_complement_trend
+-- Field: SerologyObservations.ComplementTrend
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_complement_trend(p_serology_observation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN ((calc_serology_observations_prior_c3(p_serology_observation_id)) IS NULL OR (calc_serology_observations_prior_c3(p_serology_observation_id))::text = '') THEN ('Stable')::text ELSE (CASE WHEN (COALESCE(CASE WHEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0)) < (COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) * COALESCE(0.85, 0)) THEN ('Falling')::text ELSE (CASE WHEN (COALESCE(CASE WHEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c3 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((SELECT complement_c4 FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::numeric ELSE NULL END, 0)) > (COALESCE(CASE WHEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN ((COALESCE(CASE WHEN (calc_serology_observations_prior_c3(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c3(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_prior_c4(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_prior_c4(p_serology_observation_id))::numeric ELSE NULL END, 0)))::numeric ELSE NULL END, 0) * COALESCE(1.15, 0)) THEN ('Rising')::text ELSE ('Stable')::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_is_significant_proteinuria
+-- Field: SerologyObservations.IsSignificantProteinuria
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_is_significant_proteinuria(p_serology_observation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN ((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC >= 0.5 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_is_nephrotic_range_proteinuria
+-- Field: SerologyObservations.IsNephroticRangeProteinuria
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN ((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC >= 3.0 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_sledai_renal_points
+-- Field: SerologyObservations.SledaiRenalPoints
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_sledai_renal_points(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id) OR COALESCE((SELECT has_active_urinary_sediment FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), FALSE)) THEN (8)::text ELSE (CASE WHEN calc_serology_observations_is_significant_proteinuria(p_serology_observation_id) THEN (4)::text ELSE (0)::text END)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_sledai_serology_points
+-- Field: SerologyObservations.SledaiSerologyPoints
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_sledai_serology_points(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN (calc_serology_observations_complement_trend(p_serology_observation_id) = 'Falling' AND calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) = 'Rising') THEN (4)::text ELSE (CASE WHEN (calc_serology_observations_complement_trend(p_serology_observation_id) = 'Falling' OR calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) = 'Rising') THEN (2)::text ELSE (0)::text END)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_sledai_score
+-- Field: SerologyObservations.SledaiScore
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_sledai_score(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT ((COALESCE(CASE WHEN (calc_serology_observations_sledai_renal_points(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_sledai_renal_points(p_serology_observation_id))::numeric ELSE NULL END, 0) + COALESCE(CASE WHEN (calc_serology_observations_sledai_serology_points(p_serology_observation_id))::text ~ '^-?[0-9]*\.?[0-9]+$' THEN (calc_serology_observations_sledai_serology_points(p_serology_observation_id))::numeric ELSE NULL END, 0)))::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_progression_state_key
+-- Field: SerologyObservations.ProgressionStateKey
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_progression_state_key(p_serology_observation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN (calc_serology_observations_is_nephrotic_range_proteinuria(p_serology_observation_id) OR COALESCE((SELECT has_active_urinary_sediment FROM serology_observations WHERE serology_observation_id = p_serology_observation_id), FALSE)) THEN ('BiopsyIndicated')::text ELSE (CASE WHEN ((SELECT proteinuria_g_per_day FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::NUMERIC >= 1.0 THEN ('RenalFlareRisk')::text ELSE (CASE WHEN calc_serology_observations_is_significant_proteinuria(p_serology_observation_id) THEN ('EarlyNephritis')::text ELSE (CASE WHEN (calc_serology_observations_anti_ds_dna_trend(p_serology_observation_id) = 'Rising' AND calc_serology_observations_complement_trend(p_serology_observation_id) = 'Falling') THEN ('SerologicActive')::text ELSE ('PresymptomaticAutoimmunity')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_progression_state_order
+-- Field: SerologyObservations.ProgressionStateOrder
+-- Type: calculated | DataType: number | Returns: NUMERIC
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_progression_state_order(p_serology_observation_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (CASE WHEN calc_serology_observations_progression_state_key(p_serology_observation_id) = 'BiopsyIndicated' THEN (5)::text ELSE (CASE WHEN calc_serology_observations_progression_state_key(p_serology_observation_id) = 'RenalFlareRisk' THEN (4)::text ELSE (CASE WHEN calc_serology_observations_progression_state_key(p_serology_observation_id) = 'EarlyNephritis' THEN (3)::text ELSE (CASE WHEN calc_serology_observations_progression_state_key(p_serology_observation_id) = 'SerologicActive' THEN (2)::text ELSE (1)::text END)::text END)::text END)::text END)::numeric;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_name
+-- Field: SerologyObservations.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_name(p_serology_observation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(serology_observation_id, '') FROM serology_observations WHERE serology_observation_id = p_serology_observation_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_serology_observations_relative_path
+-- Field: SerologyObservations.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_serology_observations_relative_path(p_serology_observation_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/serology/', (SELECT NULLIF(serology_observation_id, '') FROM serology_observations WHERE serology_observation_id = p_serology_observation_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_therapy_options_name
+-- Field: TherapyOptions.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_therapy_options_name(p_therapy_option_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(therapy_label, '') FROM therapy_options WHERE therapy_option_id = p_therapy_option_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_therapy_options_relative_path
+-- Field: TherapyOptions.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_therapy_options_relative_path(p_therapy_option_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/therapy-options/', (SELECT NULLIF(therapy_option_id, '') FROM therapy_options WHERE therapy_option_id = p_therapy_option_id)))::text;
 $$ LANGUAGE sql STABLE;
 
 -- ============================================================================

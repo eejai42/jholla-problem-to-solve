@@ -193,14 +193,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "type": "calculated",
         "nullable": true,
         "Description": "Display label combining disease and stage.",
-        "formula": "={{AutoimmuneDiseaseDiseaseLabel}} & \" — \" & {{StageLabel}}"
+        "formula": "={{AutoimmuneDiseaseDiseaseLabel}} & \" \u2014 \" & {{StageLabel}}"
       },
       {
         "name": "ParentPath",
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: AutoimmuneDiseases.RelativePath via AutoimmuneDisease — used to chain this entity's path under its parent.",
+        "Description": "Lookup: AutoimmuneDiseases.RelativePath via AutoimmuneDisease \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "AutoimmuneDiseases",
         "LookupField": "RelativePath",
         "ViaField": "AutoimmuneDisease",
@@ -237,7 +237,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StageLabel": "Presymptomatic",
         "SortOrder": 1,
         "AutoimmuneDisease": "sle",
-        "Name": "Systemic Lupus Erythematosus — Presymptomatic",
+        "Name": "Systemic Lupus Erythematosus \u2014 Presymptomatic",
         "ParentPath": "/diseases/sle",
         "RelativePath": "/diseases/sle/stages/sle-presymptomatic",
         "AutoimmuneDiseaseDiseaseLabel": "Systemic Lupus Erythematosus",
@@ -248,7 +248,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StageLabel": "Active",
         "SortOrder": 2,
         "AutoimmuneDisease": "sle",
-        "Name": "Systemic Lupus Erythematosus — Active",
+        "Name": "Systemic Lupus Erythematosus \u2014 Active",
         "ParentPath": "/diseases/sle",
         "RelativePath": "/diseases/sle/stages/sle-active",
         "AutoimmuneDiseaseDiseaseLabel": "Systemic Lupus Erythematosus",
@@ -259,7 +259,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StageLabel": "Remission",
         "SortOrder": 3,
         "AutoimmuneDisease": "sle",
-        "Name": "Systemic Lupus Erythematosus — Remission",
+        "Name": "Systemic Lupus Erythematosus \u2014 Remission",
         "ParentPath": "/diseases/sle",
         "RelativePath": "/diseases/sle/stages/sle-remission",
         "AutoimmuneDiseaseDiseaseLabel": "Systemic Lupus Erythematosus",
@@ -270,7 +270,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StageLabel": "Active",
         "SortOrder": 1,
         "AutoimmuneDisease": "ra",
-        "Name": "Rheumatoid Arthritis — Active",
+        "Name": "Rheumatoid Arthritis \u2014 Active",
         "ParentPath": "/diseases/ra",
         "RelativePath": "/diseases/ra/stages/ra-active",
         "AutoimmuneDiseaseDiseaseLabel": "Rheumatoid Arthritis",
@@ -281,7 +281,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StageLabel": "Remission",
         "SortOrder": 2,
         "AutoimmuneDisease": "ra",
-        "Name": "Rheumatoid Arthritis — Remission",
+        "Name": "Rheumatoid Arthritis \u2014 Remission",
         "ParentPath": "/diseases/ra",
         "RelativePath": "/diseases/ra/stages/ra-remission",
         "AutoimmuneDiseaseDiseaseLabel": "Rheumatoid Arthritis",
@@ -292,7 +292,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StageLabel": "Active",
         "SortOrder": 1,
         "AutoimmuneDisease": "psa",
-        "Name": "Psoriatic Arthritis — Active",
+        "Name": "Psoriatic Arthritis \u2014 Active",
         "ParentPath": "/diseases/psa",
         "RelativePath": "/diseases/psa/stages/psa-active",
         "AutoimmuneDiseaseDiseaseLabel": "Psoriatic Arthritis",
@@ -968,7 +968,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "integer",
         "type": "aggregation",
         "nullable": true,
-        "Description": "Count of this individual's treatments predicted to respond (effective ∧ mechanism-matched).",
+        "Description": "Count of this individual's treatments predicted to respond (effective \u2227 mechanism-matched).",
         "formula": "=COUNTIFS(Treatments!{{Individual}}, {{IndividualId}}, Treatments!{{IsTreatmentResponsePredicted}}, TRUE())"
       },
       {
@@ -1056,7 +1056,79 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "PANEL 1 of the witness (raw leaf, read by nothing downstream): the natural-language intake case the LLM was handed. Every raw observation below is extracted from THIS text; each leaf's SourceQuote points back into it so the extraction is human-checkable independently of the verdict. Synthetic but transparent — invented case, literature-aligned loci/thresholds."
+        "Description": "PANEL 1 of the witness (raw leaf, read by nothing downstream): the natural-language intake case the LLM was handed. Every raw observation below is extracted from THIS text; each leaf's SourceQuote points back into it so the extraction is human-checkable independently of the verdict. Synthetic but transparent \u2014 invented case, literature-aligned loci/thresholds."
+      },
+      {
+        "name": "CountSerologyPanels",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Number of serology panels for this individual.",
+        "formula": "=COUNTIFS(SerologyObservations!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "MaxProgressionStateOrder",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Highest progression-state order reached across this individual's serology panels (worst/current state).",
+        "formula": "=MAXIFS(SerologyObservations!{{ProgressionStateOrder}}, SerologyObservations!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "LatestSledaiScore",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Peak SLEDAI activity score across this individual's panels (derived).",
+        "formula": "=MAXIFS(SerologyObservations!{{SledaiScore}}, SerologyObservations!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "NephritisProgressionStateKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "DERIVED current disease state for the lupus-nephritis-progression machine: decoded from the highest state order reached. The subject- state column of the state machine; never hand-set.",
+        "formula": "=IF({{MaxProgressionStateOrder}}>=5,\"BiopsyIndicated\",IF({{MaxProgressionStateOrder}}>=4,\"RenalFlareRisk\",IF({{MaxProgressionStateOrder}}>=3,\"EarlyNephritis\",IF({{MaxProgressionStateOrder}}>=2,\"SerologicActive\",\"PresymptomaticAutoimmunity\"))))"
+      },
+      {
+        "name": "ActivityTier",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived disease-activity tier from peak SLEDAI score.",
+        "formula": "=IF({{LatestSledaiScore}}>=12,\"High / flare\",IF({{LatestSledaiScore}}>=6,\"Moderate\",IF({{LatestSledaiScore}}>=1,\"Mild\",\"Quiescent\")))"
+      },
+      {
+        "name": "IsHighDiseaseActivity",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when peak SLEDAI >= 12.",
+        "formula": "=IF({{LatestSledaiScore}}>=12,TRUE(),FALSE())"
+      },
+      {
+        "name": "IsDiseaseProgressing",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when the disease-state simulator places the patient in an active/worsening renal state (independent of the actionability gate).",
+        "formula": "=IF(OR({{NephritisProgressionStateKey}}=\"EarlyNephritis\",{{NephritisProgressionStateKey}}=\"RenalFlareRisk\",{{NephritisProgressionStateKey}}=\"BiopsyIndicated\"),TRUE(),FALSE())"
+      },
+      {
+        "name": "TargetPathwayCode",
+        "datatype": "number",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Resolved pathway code from this individual's causal mechanism (MAXIFS).",
+        "formula": "=MAXIFS(CausalMechanisms!{{TargetPathwayCode}}, CausalMechanisms!{{Individual}}, {{IndividualId}})"
+      },
+      {
+        "name": "TargetPathway",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Decoded druggable pathway implicated by this individual's mechanism.",
+        "formula": "=IF({{TargetPathwayCode}}=1,\"type-I-IFN\",IF({{TargetPathwayCode}}=2,\"B-cell/autoantibody\",IF({{TargetPathwayCode}}=3,\"T-cell-costim\",IF({{TargetPathwayCode}}=4,\"IL-17/23\",\"\"))))"
       }
     ],
     "data": [
@@ -1093,7 +1165,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged.",
+        "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) \u2014 three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged.",
         "MaxSeverityScore": 9,
         "CountHighSeverityPhenotypes": 1,
         "HasHighSeverityPhenotype": true,
@@ -1133,7 +1205,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged.",
+        "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's \u2014 but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 8,
         "CountHighSeverityPhenotypes": 1,
         "HasHighSeverityPhenotype": true,
@@ -1173,7 +1245,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged.",
+        "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) \u2014 only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 9,
         "CountHighSeverityPhenotypes": 1,
         "HasHighSeverityPhenotype": true,
@@ -1253,7 +1325,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.71 (SE 0.20), and a pQTL in blood proteomics with effect 0.41 (SE 0.20), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.007) and a European cohort (p=0.021), with a non-significant African replication (p=0.19). Two ancestry-permutation controls collapse to the null (permutation effect 0.011 and 0.026 inside +/-0.1), and reliability bins carry coverage of 27-33 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated.",
+        "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.71 (SE 0.20), and a pQTL in blood proteomics with effect 0.41 (SE 0.20), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.007) and a European cohort (p=0.021), with a non-significant African replication (p=0.19). Two ancestry-permutation controls collapse to the null (permutation effect 0.011 and 0.026 inside +/-0.1), and reliability bins carry coverage of 27-33 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge \u2014 there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated.",
         "MaxSeverityScore": 3,
         "CountHighSeverityPhenotypes": 0,
         "HasHighSeverityPhenotype": false,
@@ -1293,7 +1365,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.83 (SE 0.21), and a pQTL in blood proteomics with effect 0.74 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.008 and 0.022 inside +/-0.1), and reliability bins carry coverage of 30-35 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.005, p=0.015, and p=0.034, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged.",
+        "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry \u2014 an ancestry deliberately HELD OUT of the training set \u2014 presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.83 (SE 0.21), and a pQTL in blood proteomics with effect 0.74 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.008 and 0.022 inside +/-0.1), and reliability bins carry coverage of 30-35 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.005, p=0.015, and p=0.034, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect \u2014 so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 2,
         "CountHighSeverityPhenotypes": 0,
         "HasHighSeverityPhenotype": false,
@@ -1333,12 +1405,50 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "EpistaticInteractions": null,
         "CounterfactualTrajectories": null,
         "IndividualPredictions": null,
-        "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.",
+        "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry \u2014 again an ancestry HELD OUT of the training set \u2014 presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially \u2014 and unlike Faisal \u2014 this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 6,
         "CountHighSeverityPhenotypes": 0,
         "HasHighSeverityPhenotype": false,
         "CountPredictedTreatmentResponses": 1,
         "HasPredictedTreatmentResponse": true
+      },
+      {
+        "IndividualId": "ind-h-yamamoto",
+        "GivenName": "Hana",
+        "FamilyName": "Yamamoto",
+        "AncestryLabel": "East Asian",
+        "AgeYears": 33,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": null,
+        "EnrollmentDate": "2025-07-01",
+        "HasCrypticRelatednessFlag": false,
+        "CaseNarrative": "33yo East Asian woman; rising anti-dsDNA with falling complement and new significant proteinuria (0.7 g/day) over one quarter \u2014 early lupus nephritis. Progression-demo case (no v1 keystone mechanism attached).",
+        "Name": "Hana Yamamoto",
+        "Slug": "ind-h-yamamoto",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "IndividualId": "ind-i-conteh",
+        "GivenName": "Ibrahim",
+        "FamilyName": "Conteh",
+        "AncestryLabel": "African",
+        "AgeYears": 45,
+        "IsAncestryAbsentFromTraining": false,
+        "FederatedDataset": null,
+        "EnrollmentDate": "2025-06-01",
+        "HasCrypticRelatednessFlag": false,
+        "CaseNarrative": "45yo African man; brisk serologic activity and proteinuria climbing to 1.5 g/day \u2014 at risk of renal flare. Progression-demo case (no v1 keystone mechanism attached).",
+        "Name": "Ibrahim Conteh",
+        "Slug": "ind-i-conteh",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -1400,7 +1510,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -1459,7 +1569,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this variant's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this variant's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis \u2014 which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -1663,7 +1773,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -2229,7 +2339,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "CausalMechanisms",
         "LookupField": "RelativePath",
         "ViaField": "CausalMechanism",
@@ -2280,7 +2390,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this evidence assay's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this evidence assay's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis \u2014 which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -2836,7 +2946,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "CausalMechanisms",
         "LookupField": "RelativePath",
         "ViaField": "CausalMechanism",
@@ -2887,7 +2997,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this replication's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this replication's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis \u2014 which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -3309,7 +3419,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "CausalMechanisms",
         "LookupField": "RelativePath",
         "ViaField": "CausalMechanism",
@@ -3336,7 +3446,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this negative control's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this negative control's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis \u2014 which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -3582,7 +3692,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -3708,7 +3818,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -3759,7 +3869,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Why response is/ isn't predicted — the single deciding reason.",
+        "Description": "Why response is/ isn't predicted \u2014 the single deciding reason.",
         "formula": "=IF({{IsTreatmentResponsePredicted}}, \"EffectiveOnConfirmedMechanism\", IF(NOT({{IsMechanismMatched}}), \"NoConfirmedMechanism\", IF({{HasAdverseEffect}}, \"AdverseEffect\", IF(OR({{TreatmentResponse}} = \"None\", {{TreatmentResponse}} = \"Adverse\"), \"NoResponse\", \"Undetermined\"))))"
       }
     ],
@@ -3978,7 +4088,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -4020,7 +4130,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "data": [
       {
         "ClinicalPhenotypeId": "ph-sev-a",
-        "PhenotypeLabel": "Active SLE — high disease-activity (SLEDAI-equiv) severity",
+        "PhenotypeLabel": "Active SLE \u2014 high disease-activity (SLEDAI-equiv) severity",
         "Individual": "ind-a-reyes",
         "AutoimmuneDisease": "sle",
         "DiseaseStage": "sle-active",
@@ -4028,7 +4138,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeverityScore": 9,
         "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "Active SLE — high disease-activity (SLEDAI-equiv) severity",
+        "Name": "Active SLE \u2014 high disease-activity (SLEDAI-equiv) severity",
         "ParentPath": "/intake/new-patient/reyes-ana",
         "RelativePath": "/intake/new-patient/reyes-ana/phenotypes/ph-sev-a",
         "DiseaseStageLabel": "Active",
@@ -4037,7 +4147,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "ClinicalPhenotypeId": "ph-sev-b",
-        "PhenotypeLabel": "Active SLE — serositis + high disease activity",
+        "PhenotypeLabel": "Active SLE \u2014 serositis + high disease activity",
         "Individual": "ind-b-okafor",
         "AutoimmuneDisease": "sle",
         "DiseaseStage": "sle-active",
@@ -4045,7 +4155,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeverityScore": 8,
         "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "Active SLE — serositis + high disease activity",
+        "Name": "Active SLE \u2014 serositis + high disease activity",
         "ParentPath": "/intake/new-patient/okafor-bili",
         "RelativePath": "/intake/new-patient/okafor-bili/phenotypes/ph-sev-b",
         "DiseaseStageLabel": "Active",
@@ -4054,7 +4164,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "ClinicalPhenotypeId": "ph-sev-c",
-        "PhenotypeLabel": "Active SLE — arthritis + anti-dsDNA high activity",
+        "PhenotypeLabel": "Active SLE \u2014 arthritis + anti-dsDNA high activity",
         "Individual": "ind-c-chen",
         "AutoimmuneDisease": "sle",
         "DiseaseStage": "sle-active",
@@ -4062,7 +4172,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeverityScore": 9,
         "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "Active SLE — arthritis + anti-dsDNA high activity",
+        "Name": "Active SLE \u2014 arthritis + anti-dsDNA high activity",
         "ParentPath": "/intake/new-patient/wei-chen",
         "RelativePath": "/intake/new-patient/wei-chen/phenotypes/ph-sev-c",
         "DiseaseStageLabel": "Active",
@@ -4071,7 +4181,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "ClinicalPhenotypeId": "ph-sev-d",
-        "PhenotypeLabel": "Active SLE — biopsy-confirmed nephritis (high severity)",
+        "PhenotypeLabel": "Active SLE \u2014 biopsy-confirmed nephritis (high severity)",
         "Individual": "ind-d-santos",
         "AutoimmuneDisease": "sle",
         "DiseaseStage": "sle-active",
@@ -4079,7 +4189,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeverityScore": 8,
         "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "Active SLE — biopsy-confirmed nephritis (high severity)",
+        "Name": "Active SLE \u2014 biopsy-confirmed nephritis (high severity)",
         "ParentPath": "/intake/new-patient/santos-diego",
         "RelativePath": "/intake/new-patient/santos-diego/phenotypes/ph-sev-d",
         "DiseaseStageLabel": "Active",
@@ -4088,7 +4198,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "ClinicalPhenotypeId": "ph-sev-e",
-        "PhenotypeLabel": "SLE — mild cytopenias, low disease activity",
+        "PhenotypeLabel": "SLE \u2014 mild cytopenias, low disease activity",
         "Individual": "ind-e-mensah",
         "AutoimmuneDisease": "sle",
         "DiseaseStage": "sle-active",
@@ -4096,7 +4206,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeverityScore": 3,
         "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "SLE — mild cytopenias, low disease activity",
+        "Name": "SLE \u2014 mild cytopenias, low disease activity",
         "ParentPath": "/intake/new-patient/mensah-esi",
         "RelativePath": "/intake/new-patient/mensah-esi/phenotypes/ph-sev-e",
         "DiseaseStageLabel": "Active",
@@ -4105,7 +4215,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "ClinicalPhenotypeId": "ph-sev-f",
-        "PhenotypeLabel": "PsA — minimal joint involvement, mild",
+        "PhenotypeLabel": "PsA \u2014 minimal joint involvement, mild",
         "Individual": "ind-f-haidar",
         "AutoimmuneDisease": "psa",
         "DiseaseStage": "psa-active",
@@ -4113,7 +4223,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeverityScore": 2,
         "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "PsA — minimal joint involvement, mild",
+        "Name": "PsA \u2014 minimal joint involvement, mild",
         "ParentPath": "/intake/new-patient/haidar-faisal",
         "RelativePath": "/intake/new-patient/haidar-faisal/phenotypes/ph-sev-f",
         "DiseaseStageLabel": "Active",
@@ -4122,7 +4232,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "ClinicalPhenotypeId": "ph-sev-g",
-        "PhenotypeLabel": "PsA — moderate plaque + oligoarthritis",
+        "PhenotypeLabel": "PsA \u2014 moderate plaque + oligoarthritis",
         "Individual": "ind-g-lin",
         "AutoimmuneDisease": "psa",
         "DiseaseStage": "psa-active",
@@ -4130,7 +4240,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SeverityScore": 6,
         "MeasurementDate": "2024-03-01",
         "HasImmuneDysfunction": true,
-        "Name": "PsA — moderate plaque + oligoarthritis",
+        "Name": "PsA \u2014 moderate plaque + oligoarthritis",
         "ParentPath": "/intake/new-patient/lin-grace",
         "RelativePath": "/intake/new-patient/lin-grace/phenotypes/ph-sev-g",
         "DiseaseStageLabel": "Active",
@@ -4185,6 +4295,21 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Description": "Type: regulatory, coding, gene-environment-microbiome, epigenetic-inheritance, enhancer-promoter, feedback."
       },
       {
+        "name": "TargetPathway",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "NEW RAW LEAF: druggable pathway this confirmed mechanism implicates (type-I-IFN / B-cell/autoantibody / T-cell-costim / IL-17/23). Drives treatment-line selection. An observation about the mechanism, not derived."
+      },
+      {
+        "name": "TargetPathwayCode",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Numeric encoding of TargetPathway so the individual can resolve it via a MAXIFS aggregation (transpiler-friendly). 1=type-I-IFN 2=B-cell 3=T-cell 4=IL-17/23.",
+        "formula": "=IF({{TargetPathway}}=\"type-I-IFN\",1,IF({{TargetPathway}}=\"B-cell/autoantibody\",2,IF({{TargetPathway}}=\"T-cell-costim\",3,IF({{TargetPathway}}=\"IL-17/23\",4,0))))"
+      },
+      {
         "name": "HasPleiotropy",
         "datatype": "boolean",
         "type": "raw",
@@ -4204,7 +4329,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -4428,7 +4553,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null
+        "NegativeControlTests": null,
+        "TargetPathway": "type-I-IFN"
       },
       {
         "CausalMechanismId": "cm-b",
@@ -4462,7 +4588,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null
+        "NegativeControlTests": null,
+        "TargetPathway": "type-I-IFN"
       },
       {
         "CausalMechanismId": "cm-c",
@@ -4496,7 +4623,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null
+        "NegativeControlTests": null,
+        "TargetPathway": "B-cell/autoantibody"
       },
       {
         "CausalMechanismId": "cm-d",
@@ -4530,7 +4658,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null
+        "NegativeControlTests": null,
+        "TargetPathway": "B-cell/autoantibody"
       },
       {
         "CausalMechanismId": "cm-e",
@@ -4564,7 +4693,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null
+        "NegativeControlTests": null,
+        "TargetPathway": "T-cell-costim"
       },
       {
         "CausalMechanismId": "cm-f",
@@ -4598,7 +4728,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null
+        "NegativeControlTests": null,
+        "TargetPathway": "IL-17/23"
       },
       {
         "CausalMechanismId": "cm-g",
@@ -4632,7 +4763,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "InterventionTargets": null,
         "EvidenceItems": null,
         "CohortReplications": null,
-        "NegativeControlTests": null
+        "NegativeControlTests": null,
+        "TargetPathway": "IL-17/23"
       }
     ]
   },
@@ -4701,7 +4833,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -4805,7 +4937,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -4904,7 +5036,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.",
+        "Description": "Lookup: Individuals.RelativePath via Individual \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "Individuals",
         "LookupField": "RelativePath",
         "ViaField": "Individual",
@@ -5139,7 +5271,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "calculated",
         "nullable": true,
-        "Description": "Why severity is/ isn't actionable — the single deciding reason.",
+        "Description": "Why severity is/ isn't actionable \u2014 the single deciding reason.",
         "formula": "=IF({{IsSeverityActionable}}, \"HighSeverityOnConfirmedMechanism\", IF(NOT({{IndividualHasHighSeverityPhenotype}}), \"NotHighSeverity\", IF(NOT({{RestsOnConfirmedMechanism}}), \"NoValidatedMechanism\", IF({{HasSpuriousCorrelationFlag}}, \"SpuriousFlag\", \"Undetermined\"))))"
       },
       {
@@ -5147,7 +5279,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "Derived: the individual has a treatment predicted to respond (effective therapy on a confirmed mechanism). The third prediction type — independent of onset/severity.",
+        "Description": "Derived: the individual has a treatment predicted to respond (effective therapy on a confirmed mechanism). The third prediction type \u2014 independent of onset/severity.",
         "formula": "=IF({{IndividualHasPredictedTreatmentResponse}}, TRUE(), FALSE())"
       },
       {
@@ -5189,6 +5321,59 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Reliability bins for this prediction.",
         "RelatedTo": "CalibrationBins"
+      },
+      {
+        "name": "IndividualTargetPathway",
+        "datatype": "string",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "Individuals",
+        "LookupField": "TargetPathway",
+        "ViaField": "Individual",
+        "Description": "TargetPathway resolved on the individual (decoded from the mechanism).",
+        "formula": "=INDEX(Individuals!{{TargetPathway}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "IndividualProgressionStateKey",
+        "datatype": "lookup",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "Individuals",
+        "Description": "Lookup: the individual's derived disease state.",
+        "formula": "=INDEX(Individuals!{{NephritisProgressionStateKey}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "IndividualIsDiseaseProgressing",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "RelatedTo": "Individuals",
+        "Description": "Lookup: is the individual's disease progressing (simulator).",
+        "formula": "=INDEX(Individuals!{{IsDiseaseProgressing}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0))"
+      },
+      {
+        "name": "RecommendedTreatmentLine",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "DERIVED treatment-line recommendation from confirmed-mechanism TargetPathway + disease state. The audit's MMF/belimumab/anifrolumab example.",
+        "formula": "=IF(NOT({{RestsOnConfirmedMechanism}}),\"No targeted line \u2014 mechanism unconfirmed\",IF(OR({{IndividualProgressionStateKey}}=\"RenalFlareRisk\",{{IndividualProgressionStateKey}}=\"BiopsyIndicated\"),\"Mycophenolate (induction)\",IF({{IndividualTargetPathway}}=\"type-I-IFN\",\"Anifrolumab\",IF({{IndividualTargetPathway}}=\"B-cell/autoantibody\",\"Belimumab\",IF({{IndividualTargetPathway}}=\"IL-17/23\",\"Secukinumab\",\"Standard-of-care (no mechanism-matched targeted line)\")))))"
+      },
+      {
+        "name": "TreatmentLineDecidingFactor",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "The single deciding reason for the recommended line (mirrors DecidingGate style).",
+        "formula": "=IF(NOT({{RestsOnConfirmedMechanism}}),\"MechanismUnconfirmed\",IF(OR({{IndividualProgressionStateKey}}=\"RenalFlareRisk\",{{IndividualProgressionStateKey}}=\"BiopsyIndicated\"),\"ActiveNephritis-Induction\",IF({{IndividualTargetPathway}}=\"type-I-IFN\",\"IFNSignature-Anifrolumab\",IF({{IndividualTargetPathway}}=\"B-cell/autoantibody\",\"AutoantibodyDriven-Belimumab\",IF({{IndividualTargetPathway}}=\"IL-17/23\",\"IL17Axis-Secukinumab\",\"NoMechanismMatch\")))))"
+      },
+      {
+        "name": "ProgressionVsActionabilityDisagree",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "THE COUNTER-EXAMPLE FLAG: TRUE when disease is progressing (simulator) but the prediction is NOT clinically actionable (gate). Proves the two layers are independent.",
+        "formula": "=IF(AND({{IndividualIsDiseaseProgressing}},NOT({{IsClinicallyActionable}})),TRUE(),FALSE())"
       }
     ],
     "data": [
@@ -5561,7 +5746,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: IndividualPredictions.RelativePath via IndividualPrediction — used to chain this entity's path under its parent.",
+        "Description": "Lookup: IndividualPredictions.RelativePath via IndividualPrediction \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "IndividualPredictions",
         "LookupField": "RelativePath",
         "ViaField": "IndividualPrediction",
@@ -5596,7 +5781,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this calibration bin's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis — which is exactly what defeats 'a hallucination laundered through a deterministic function'."
+        "Description": "PANEL 2->1 provenance pointer (raw leaf, read by nothing downstream): the literal span of the patient's CaseNarrative from which this calibration bin's raw value was extracted. A human verifies the EXTRACTION was faithful here, separately from trusting the derived diagnosis \u2014 which is exactly what defeats 'a hallucination laundered through a deterministic function'."
       }
     ],
     "data": [
@@ -6150,7 +6335,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "lookup",
         "nullable": true,
-        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism — used to chain this entity's path under its parent.",
+        "Description": "Lookup: CausalMechanisms.RelativePath via CausalMechanism \u2014 used to chain this entity's path under its parent.",
         "RelatedTo": "CausalMechanisms",
         "LookupField": "RelativePath",
         "ViaField": "CausalMechanism",
@@ -6352,7 +6537,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "AxiomId": "ax-llm-leaves-only",
         "Statement": "The LLM does exactly two things, both at the leaf layer: interpret intake facts, and produce synthetic-but-transparent test results.",
-        "Rationale": "Intake clerk + lab — the un-alarming medical roles. It computes no higher-order inference.",
+        "Rationale": "Intake clerk + lab \u2014 the un-alarming medical roles. It computes no higher-order inference.",
         "Category": "trust-boundary",
         "Name": "The LLM does exactly two things, both at the leaf layer: interpret intake facts, and produce synthetic-but-transparent test results.",
         "RelativePath": "/admin/axioms/ax-llm-leaves-only"
@@ -6432,7 +6617,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "AxiomId": "ax-report-reuse-global-phrases",
         "Statement": "Common, reusable language lives once in the __meta settings table and is referenced by fragments; it is not re-implemented per case.",
-        "Rationale": "Literal global phrases (\"The patient presented with…\") and shared banding vocabulary belong in __meta so they are authored and corrected in one place. Fragments reference them; the per-row logic stays contextual while the wording stays DRY.",
+        "Rationale": "Literal global phrases (\"The patient presented with\u2026\") and shared banding vocabulary belong in __meta so they are authored and corrected in one place. Fragments reference them; the per-row logic stays contextual while the wording stays DRY.",
         "Category": "report-derivation",
         "Name": "Common, reusable language lives once in the __meta settings table and is referenced by fragments; it is not re-implemented per case.",
         "RelativePath": "/admin/axioms/ax-report-reuse-global-phrases"
@@ -6440,7 +6625,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "AxiomId": "ax-schema-rulespeak-report-derived",
         "Statement": "The schema may be expressed in RuleSpeak-style language, but the diagnosis report itself is derived (rendered), not declared.",
-        "Rationale": "RuleSpeak documents the rules; it is not the patient-facing artifact. The report is a rendered projection of each patient's row values through the fragment fields — generated by a thin renderer that only concatenates already-derived, predicate-gated fragments in order.",
+        "Rationale": "RuleSpeak documents the rules; it is not the patient-facing artifact. The report is a rendered projection of each patient's row values through the fragment fields \u2014 generated by a thin renderer that only concatenates already-derived, predicate-gated fragments in order.",
         "Category": "report-derivation",
         "Name": "The schema may be expressed in RuleSpeak-style language, but the diagnosis report itself is derived (rendered), not declared.",
         "RelativePath": "/admin/axioms/ax-schema-rulespeak-report-derived"
@@ -6703,7 +6888,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "FeatureId": "feat-report-meta-phrasebook",
         "Title": "Global phrasebook in __meta__",
-        "Description": "Reusable, contextual language atoms stored once in the __meta__ settings table — literal global phrases ('The patient presented with…') and shared banding vocabulary — referenced by fragment fields so common language is authored/corrected in one place, never re-implemented per case.",
+        "Description": "Reusable, contextual language atoms stored once in the __meta__ settings table \u2014 literal global phrases ('The patient presented with\u2026') and shared banding vocabulary \u2014 referenced by fragment fields so common language is authored/corrected in one place, never re-implemented per case.",
         "AssignedLoop": "",
         "Name": "Global phrasebook in __meta__",
         "RelativePath": "/admin/features/feat-report-meta-phrasebook"
@@ -6795,7 +6980,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "OpenQuestionId": "oq-extract-vs-invent",
         "Question": "Does the LLM extract facts present in the case, or invent plausible facts for a described case?",
         "Context": "Mode #1 (extract) vs mode #2 (invent) changes how strong the claim is.",
-        "Resolution": "Mode #1 at intake (extract/interpret), and synthetic-but-transparent test results for the invented case — every number visible, sourced, editable.",
+        "Resolution": "Mode #1 at intake (extract/interpret), and synthetic-but-transparent test results for the invented case \u2014 every number visible, sourced, editable.",
         "IsResolved": true,
         "Name": "Does the LLM extract facts present in the case, or invent plausible facts for a described case?",
         "RelativePath": "/admin/open-questions/oq-extract-vs-invent"
@@ -6811,17 +6996,17 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       },
       {
         "OpenQuestionId": "oq-fragment-fields-where",
-        "Question": "On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report — section order, headers, grouping?",
-        "Context": "Decision is 'pure derived fields': sentence wording is per-row calculated fields (cell-simple, predicate-gated), reusable atoms in __meta__. Still open: do fragments hang off the patient/IndividualPredictions row and reference sibling facts, or off each evidence/gate row and roll up as text? And the renderer owns only ordering/concatenation — confirm it never composes wording. This is the next loop's design.",
+        "Question": "On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report \u2014 section order, headers, grouping?",
+        "Context": "Decision is 'pure derived fields': sentence wording is per-row calculated fields (cell-simple, predicate-gated), reusable atoms in __meta__. Still open: do fragments hang off the patient/IndividualPredictions row and reference sibling facts, or off each evidence/gate row and roll up as text? And the renderer owns only ordering/concatenation \u2014 confirm it never composes wording. This is the next loop's design.",
         "Resolution": "",
         "IsResolved": false,
-        "Name": "On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report — section order, headers, grouping?",
+        "Name": "On which tables do the narrative fragment fields live, and how are per-case fragments composed up into one report \u2014 section order, headers, grouping?",
         "RelativePath": "/admin/open-questions/oq-fragment-fields-where"
       }
     ]
   },
   "NonGoals": {
-    "Description": "Explicit out-of-scope statements — the positive twin of the anti-hallucination ledger. Stops scope creep.",
+    "Description": "Explicit out-of-scope statements \u2014 the positive twin of the anti-hallucination ledger. Stops scope creep.",
     "schema": [
       {
         "name": "NonGoalId",
@@ -6965,7 +7150,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "GlossaryTermId": "gt-three-panel-witness",
         "Term": "three-panel witness",
-        "Definition": "Input case text | extracted facts with per-fact provenance | deterministic diagnosis + gate trace — the two halves checkable independently.",
+        "Definition": "Input case text | extracted facts with per-fact provenance | deterministic diagnosis + gate trace \u2014 the two halves checkable independently.",
         "Name": "three-panel witness",
         "RelativePath": "/admin/glossary/gt-three-panel-witness"
       },
@@ -6986,7 +7171,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "GlossaryTermId": "gt-disease-state-simulator",
         "Term": "disease state simulator",
-        "Definition": "The v2 layer the audit asked for: disease modeled as a WITNESSED state machine whose transitions fire only on raw longitudinal observations (rising anti-dsDNA, falling C3/C4, proteinuria). Current state and dwell-time are derived & bitemporal — the contrast the audit drew with an 'evidence gate'.",
+        "Definition": "The v2 layer the audit asked for: disease modeled as a WITNESSED state machine whose transitions fire only on raw longitudinal observations (rising anti-dsDNA, falling C3/C4, proteinuria). Current state and dwell-time are derived & bitemporal \u2014 the contrast the audit drew with an 'evidence gate'.",
         "Name": "disease state simulator",
         "RelativePath": "/admin/glossary/gt-disease-state-simulator"
       },
@@ -7007,7 +7192,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "GlossaryTermId": "gt-dwell-time",
         "Term": "dwell time",
-        "Definition": "Bitemporal derivation: how long a subject has been in a disease state (now - EnteredAt while current; ExitedAt - EnteredAt once left). The audit asked for 'how long has the patient/disease been in a state' — this is that, as a formula.",
+        "Definition": "Bitemporal derivation: how long a subject has been in a disease state (now - EnteredAt while current; ExitedAt - EnteredAt once left). The audit asked for 'how long has the patient/disease been in a state' \u2014 this is that, as a formula.",
         "Name": "dwell time",
         "RelativePath": "/admin/glossary/gt-dwell-time"
       },
@@ -7077,7 +7262,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": true,
-        "Description": "The rule commit message (or \"none — app-only loop\")."
+        "Description": "The rule commit message (or \"none \u2014 app-only loop\")."
       },
       {
         "name": "StateCommitMsg",
@@ -7099,7 +7284,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "type": "calculated",
         "nullable": true,
         "Description": "Display label.",
-        "formula": "=CONCATENATE(\"Loop \", {{LoopNumber}}, \" — \", {{Title}})"
+        "formula": "=CONCATENATE(\"Loop \", {{LoopNumber}}, \" \u2014 \", {{Title}})"
       },
       {
         "name": "RelativePath",
@@ -7152,7 +7337,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 0,
         "StatusBadge": "[DONE]",
         "StatusLine": " - rule `rule: keystone IsClinicallyActionable now derived from observations`; state `state: Loop 0 - Postgres solve-by-inference verified`",
-        "Name": "Loop 0 — Solve-by-inference rulebook",
+        "Name": "Loop 0 \u2014 Solve-by-inference rulebook",
         "RelativePath": "/admin/leopold-loops/loop-0",
         "Completedness": "done",
         "IsInCurrentPlan": false
@@ -7168,7 +7353,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 1,
         "StatusBadge": "[DONE]",
         "StatusLine": " - rule `none - app-only loop, test-harness-first, no rule change`; state `state: Loop 0.5 - red witnessed-inference harness is the app's contract`",
-        "Name": "Loop 0.5 — Test Harness First (the red contract)",
+        "Name": "Loop 0.5 \u2014 Test Harness First (the red contract)",
         "RelativePath": "/admin/leopold-loops/loop-0-5",
         "Completedness": "done",
         "IsInCurrentPlan": false
@@ -7184,7 +7369,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 2,
         "StatusBadge": "[DONE]",
         "StatusLine": "",
-        "Name": "Loop 1 — Intake app skeleton",
+        "Name": "Loop 1 \u2014 Intake app skeleton",
         "RelativePath": "/admin/leopold-loops/loop-1",
         "Completedness": "done",
         "IsInCurrentPlan": false
@@ -7200,7 +7385,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 3,
         "StatusBadge": "[DONE]",
         "StatusLine": "",
-        "Name": "Loop 2 — Patient intake (facts in)",
+        "Name": "Loop 2 \u2014 Patient intake (facts in)",
         "RelativePath": "/admin/leopold-loops/loop-2",
         "Completedness": "done",
         "IsInCurrentPlan": false
@@ -7208,7 +7393,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "LeopoldLoopId": "loop-3",
         "LoopNumber": "3",
-        "Title": "3-panel witness — provenance back into the case text",
+        "Title": "3-panel witness \u2014 provenance back into the case text",
         "Goal": "Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.",
         "Status": "done",
         "RuleCommitMsg": "rule: install explainer-dag",
@@ -7216,7 +7401,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 4,
         "StatusBadge": "[DONE]",
         "StatusLine": "",
-        "Name": "Loop 3 — 3-panel witness — provenance back into the case text",
+        "Name": "Loop 3 \u2014 3-panel witness \u2014 provenance back into the case text",
         "RelativePath": "/admin/leopold-loops/loop-3",
         "Completedness": "done",
         "IsInCurrentPlan": false
@@ -7232,7 +7417,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 5,
         "StatusBadge": "[DONE]",
         "StatusLine": "",
-        "Name": "Loop 4 — Second prediction type (severity)",
+        "Name": "Loop 4 \u2014 Second prediction type (severity)",
         "RelativePath": "/admin/leopold-loops/loop-4",
         "Completedness": "done",
         "IsInCurrentPlan": false
@@ -7248,7 +7433,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 6,
         "StatusBadge": "[DONE]",
         "StatusLine": "",
-        "Name": "Loop 5 — Treatment-response prediction",
+        "Name": "Loop 5 \u2014 Treatment-response prediction",
         "RelativePath": "/admin/leopold-loops/loop-5",
         "Completedness": "done",
         "IsInCurrentPlan": false
@@ -7264,7 +7449,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 7,
         "StatusBadge": "[NEXT]",
         "StatusLine": "",
-        "Name": "Loop 6 — LLM intake clerk + synthetic lab",
+        "Name": "Loop 6 \u2014 LLM intake clerk + synthetic lab",
         "RelativePath": "/admin/leopold-loops/loop-llm-intake",
         "Completedness": "next",
         "IsInCurrentPlan": true
@@ -7280,7 +7465,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 8,
         "StatusBadge": "[BACKLOG]",
         "StatusLine": "",
-        "Name": "Loop 7 — Adverse-effect prediction",
+        "Name": "Loop 7 \u2014 Adverse-effect prediction",
         "RelativePath": "/admin/leopold-loops/loop-adverse",
         "Completedness": "backlog",
         "IsInCurrentPlan": true
@@ -7296,7 +7481,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "SortOrder": 9,
         "StatusBadge": "[BACKLOG]",
         "StatusLine": "",
-        "Name": "Loop 8 — Cohort-level equity report",
+        "Name": "Loop 8 \u2014 Cohort-level equity report",
         "RelativePath": "/admin/leopold-loops/loop-equity",
         "Completedness": "backlog",
         "IsInCurrentPlan": true
@@ -7641,7 +7826,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RoutingAndNavigationId": "nav-intake",
         "DisplayName": "Intake",
         "Route": "/intake",
-        "Description": "Clinician intake workspace — bring a new patient case in.",
+        "Description": "Clinician intake workspace \u2014 bring a new patient case in.",
         "SortOrder": 10,
         "ParentRouteKey": "",
         "RouteKey": "intake",
@@ -7917,7 +8102,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RoutingAndNavigationId": "nav-diagnosis",
         "DisplayName": "Diagnosis",
         "Route": "/diagnosis",
-        "Description": "Diagnosing doctor workspace — walk a case to its keystone.",
+        "Description": "Diagnosing doctor workspace \u2014 walk a case to its keystone.",
         "SortOrder": 20,
         "ParentRouteKey": "",
         "RouteKey": "diagnosis",
@@ -8101,7 +8286,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RoutingAndNavigationId": "nav-diagnosis-replication",
         "DisplayName": "Replication",
         "Route": "/diagnosis/case/:predictionId/replication",
-        "Description": "Cross-cohort / cross-ancestry replication — the transport atoms.",
+        "Description": "Cross-cohort / cross-ancestry replication \u2014 the transport atoms.",
         "SortOrder": 24,
         "ParentRouteKey": "diagnosis.case",
         "RouteKey": "diagnosis.case.replication",
@@ -8147,7 +8332,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RoutingAndNavigationId": "nav-diagnosis-controls",
         "DisplayName": "Neg Controls",
         "Route": "/diagnosis/case/:predictionId/controls",
-        "Description": "Permutation / stratification controls — the anti-spurious atoms.",
+        "Description": "Permutation / stratification controls \u2014 the anti-spurious atoms.",
         "SortOrder": 25,
         "ParentRouteKey": "diagnosis.case",
         "RouteKey": "diagnosis.case.controls",
@@ -8193,7 +8378,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RoutingAndNavigationId": "nav-diagnosis-calibration",
         "DisplayName": "Calibration",
         "Route": "/diagnosis/case/:predictionId/calibration",
-        "Description": "Per-bin reliability coverage — the calibration atoms.",
+        "Description": "Per-bin reliability coverage \u2014 the calibration atoms.",
         "SortOrder": 26,
         "ParentRouteKey": "diagnosis.case",
         "RouteKey": "diagnosis.case.calibration",
@@ -8285,7 +8470,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RoutingAndNavigationId": "nav-diagnosis-keystone",
         "DisplayName": "Keystone",
         "Route": "/diagnosis/case/:predictionId/keystone",
-        "Description": "IsClinicallyActionable — the derived conclusion.",
+        "Description": "IsClinicallyActionable \u2014 the derived conclusion.",
         "SortOrder": 28,
         "ParentRouteKey": "diagnosis.case",
         "RouteKey": "diagnosis.case.keystone",
@@ -8855,6 +9040,20 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CreatedAt": null,
         "ModifiedAt": null,
         "ModifiedByModel": null
+      },
+      {
+        "StateMachineId": "lupus-nephritis-progression",
+        "Name": "lupus-nephritis-progression",
+        "RelativePath": "/admin/state-machine/lupus-nephritis-progression",
+        "Title": "Lupus-Nephritis Progression",
+        "Description": "Disease-state simulator: a patient's lupus-nephritis course derived from raw serology trajectories. Presymptomatic -> SerologicActive -> EarlyNephritis -> RenalFlareRisk -> BiopsyIndicated (+ Quiescent). Current state is the derived Individuals.NephritisProgressionStateKey; never hand-set.",
+        "SubjectTableName": "Individuals",
+        "SubjectStateColumn": "NephritisProgressionStateKey",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -9114,6 +9313,102 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CreatedAt": null,
         "ModifiedAt": null,
         "ModifiedByModel": null
+      },
+      {
+        "MachineStateId": "lupus-nephritis-progression--quiescent",
+        "Name": "lupus-nephritis-progression--quiescent",
+        "RelativePath": "/admin/state-machine/states/lupus-nephritis-progression--quiescent",
+        "StateMachine": "lupus-nephritis-progression",
+        "StateKey": "Quiescent",
+        "Title": "Quiescent / in remission",
+        "OrderIndex": 0,
+        "IsInitial": false,
+        "IsTerminal": true,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "MachineStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "Name": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "RelativePath": "/admin/state-machine/states/lupus-nephritis-progression--presymptomaticautoimmunity",
+        "StateMachine": "lupus-nephritis-progression",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "Title": "Presymptomatic autoimmunity (serology only)",
+        "OrderIndex": 1,
+        "IsInitial": true,
+        "IsTerminal": false,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "MachineStateId": "lupus-nephritis-progression--serologicactive",
+        "Name": "lupus-nephritis-progression--serologicactive",
+        "RelativePath": "/admin/state-machine/states/lupus-nephritis-progression--serologicactive",
+        "StateMachine": "lupus-nephritis-progression",
+        "StateKey": "SerologicActive",
+        "Title": "Serologically active (rising dsDNA / falling complement)",
+        "OrderIndex": 2,
+        "IsInitial": false,
+        "IsTerminal": false,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "MachineStateId": "lupus-nephritis-progression--earlynephritis",
+        "Name": "lupus-nephritis-progression--earlynephritis",
+        "RelativePath": "/admin/state-machine/states/lupus-nephritis-progression--earlynephritis",
+        "StateMachine": "lupus-nephritis-progression",
+        "StateKey": "EarlyNephritis",
+        "Title": "Early nephritis (significant proteinuria)",
+        "OrderIndex": 3,
+        "IsInitial": false,
+        "IsTerminal": false,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "MachineStateId": "lupus-nephritis-progression--renalflarerisk",
+        "Name": "lupus-nephritis-progression--renalflarerisk",
+        "RelativePath": "/admin/state-machine/states/lupus-nephritis-progression--renalflarerisk",
+        "StateMachine": "lupus-nephritis-progression",
+        "StateKey": "RenalFlareRisk",
+        "Title": "At risk of renal flare",
+        "OrderIndex": 4,
+        "IsInitial": false,
+        "IsTerminal": false,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "MachineStateId": "lupus-nephritis-progression--biopsyindicated",
+        "Name": "lupus-nephritis-progression--biopsyindicated",
+        "RelativePath": "/admin/state-machine/states/lupus-nephritis-progression--biopsyindicated",
+        "StateMachine": "lupus-nephritis-progression",
+        "StateKey": "BiopsyIndicated",
+        "Title": "Biopsy indicated",
+        "OrderIndex": 5,
+        "IsInitial": false,
+        "IsTerminal": true,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -9356,7 +9651,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "StateMachine": "diagnosis-lifecycle",
         "FromState": "diagnosis-lifecycle--mechanismconfirmed",
         "ToState": "diagnosis-lifecycle--notactionable",
-        "GuardDescription": "Cryptic-relatedness leakage ⇒ HasSpuriousCorrelationFlag.",
+        "GuardDescription": "Cryptic-relatedness leakage \u21d2 HasSpuriousCorrelationFlag.",
         "TriggeredByRole": "system",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
@@ -9450,6 +9745,91 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CreatedAt": null,
         "ModifiedAt": null,
         "ModifiedByModel": null
+      },
+      {
+        "StateTransitionRuleId": "lupus-nephritis-progression--presymptomaticautoimmunity->serologicactive",
+        "Name": "lupus-nephritis-progression--presymptomaticautoimmunity->serologicactive",
+        "RelativePath": "/admin/state-machine/rules/lupus-nephritis-progression--presymptomaticautoimmunity->serologicactive",
+        "StateMachine": "lupus-nephritis-progression",
+        "FromState": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ToState": "lupus-nephritis-progression--serologicactive",
+        "GuardDescription": "anti-dsDNA Rising AND complement Falling",
+        "RuleRefs": "SERO-ACTIVE",
+        "TriggerEndpoint": "/api/individuals/:id/serology",
+        "TriggeredByRole": "system",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionRuleId": "lupus-nephritis-progression--serologicactive->earlynephritis",
+        "Name": "lupus-nephritis-progression--serologicactive->earlynephritis",
+        "RelativePath": "/admin/state-machine/rules/lupus-nephritis-progression--serologicactive->earlynephritis",
+        "StateMachine": "lupus-nephritis-progression",
+        "FromState": "lupus-nephritis-progression--serologicactive",
+        "ToState": "lupus-nephritis-progression--earlynephritis",
+        "GuardDescription": "proteinuria >= 0.5 g/day",
+        "RuleRefs": "NEPH-ONSET",
+        "TriggerEndpoint": "/api/individuals/:id/serology",
+        "TriggeredByRole": "system",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionRuleId": "lupus-nephritis-progression--earlynephritis->renalflarerisk",
+        "Name": "lupus-nephritis-progression--earlynephritis->renalflarerisk",
+        "RelativePath": "/admin/state-machine/rules/lupus-nephritis-progression--earlynephritis->renalflarerisk",
+        "StateMachine": "lupus-nephritis-progression",
+        "FromState": "lupus-nephritis-progression--earlynephritis",
+        "ToState": "lupus-nephritis-progression--renalflarerisk",
+        "GuardDescription": "proteinuria >= 1.0 g/day",
+        "RuleRefs": "FLARE-RISK",
+        "TriggerEndpoint": "/api/individuals/:id/serology",
+        "TriggeredByRole": "system",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionRuleId": "lupus-nephritis-progression--renalflarerisk->biopsyindicated",
+        "Name": "lupus-nephritis-progression--renalflarerisk->biopsyindicated",
+        "RelativePath": "/admin/state-machine/rules/lupus-nephritis-progression--renalflarerisk->biopsyindicated",
+        "StateMachine": "lupus-nephritis-progression",
+        "FromState": "lupus-nephritis-progression--renalflarerisk",
+        "ToState": "lupus-nephritis-progression--biopsyindicated",
+        "GuardDescription": "nephrotic-range proteinuria OR active urinary sediment",
+        "RuleRefs": "BIOPSY-IND",
+        "TriggerEndpoint": "/api/individuals/:id/serology",
+        "TriggeredByRole": "system",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionRuleId": "lupus-nephritis-progression--serologicactive->quiescent",
+        "Name": "lupus-nephritis-progression--serologicactive->quiescent",
+        "RelativePath": "/admin/state-machine/rules/lupus-nephritis-progression--serologicactive->quiescent",
+        "StateMachine": "lupus-nephritis-progression",
+        "FromState": "lupus-nephritis-progression--serologicactive",
+        "ToState": "lupus-nephritis-progression--quiescent",
+        "GuardDescription": "dsDNA Falling AND complement Rising AND proteinuria < 0.5",
+        "RuleRefs": "REMISSION",
+        "TriggerEndpoint": "/api/individuals/:id/serology",
+        "TriggeredByRole": "system",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -9593,7 +9973,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "EvidenceAssessed",
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "Intake → EvidenceAssessed.",
+        "Reason": "Intake \u2192 EvidenceAssessed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-a-02-intake-to-evidenceassessed",
@@ -9612,7 +9992,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "MechanismConfirmed",
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "Reason": "EvidenceAssessed \u2192 MechanismConfirmed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-a-03-evidenceassessed-to-mechanismconfirmed",
@@ -9631,7 +10011,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "CalibrationChecked",
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "Reason": "MechanismConfirmed \u2192 CalibrationChecked.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-a-04-mechanismconfirmed-to-calibrationchecked",
@@ -9650,7 +10030,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "TransportChecked",
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "CalibrationChecked → TransportChecked.",
+        "Reason": "CalibrationChecked \u2192 TransportChecked.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-a-05-calibrationchecked-to-transportchecked",
@@ -9688,7 +10068,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "EvidenceAssessed",
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "Intake → EvidenceAssessed.",
+        "Reason": "Intake \u2192 EvidenceAssessed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-b-02-intake-to-evidenceassessed",
@@ -9707,7 +10087,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "MechanismConfirmed",
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "Reason": "EvidenceAssessed \u2192 MechanismConfirmed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-b-03-evidenceassessed-to-mechanismconfirmed",
@@ -9726,7 +10106,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "CalibrationChecked",
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "Reason": "MechanismConfirmed \u2192 CalibrationChecked.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-b-04-mechanismconfirmed-to-calibrationchecked",
@@ -9764,7 +10144,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "EvidenceAssessed",
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "Intake → EvidenceAssessed.",
+        "Reason": "Intake \u2192 EvidenceAssessed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-c-02-intake-to-evidenceassessed",
@@ -9802,7 +10182,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "EvidenceAssessed",
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "Intake → EvidenceAssessed.",
+        "Reason": "Intake \u2192 EvidenceAssessed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-d-02-intake-to-evidenceassessed",
@@ -9821,7 +10201,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "MechanismConfirmed",
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "Reason": "EvidenceAssessed \u2192 MechanismConfirmed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-d-03-evidenceassessed-to-mechanismconfirmed",
@@ -9859,7 +10239,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "EvidenceAssessed",
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "Intake → EvidenceAssessed.",
+        "Reason": "Intake \u2192 EvidenceAssessed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-e-02-intake-to-evidenceassessed",
@@ -9897,7 +10277,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "EvidenceAssessed",
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "Intake → EvidenceAssessed.",
+        "Reason": "Intake \u2192 EvidenceAssessed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-f-02-intake-to-evidenceassessed",
@@ -9916,7 +10296,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "MechanismConfirmed",
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "Reason": "EvidenceAssessed \u2192 MechanismConfirmed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-f-03-evidenceassessed-to-mechanismconfirmed",
@@ -9935,7 +10315,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "CalibrationChecked",
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "Reason": "MechanismConfirmed \u2192 CalibrationChecked.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-f-04-mechanismconfirmed-to-calibrationchecked",
@@ -9954,7 +10334,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "TransportChecked",
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "CalibrationChecked → TransportChecked.",
+        "Reason": "CalibrationChecked \u2192 TransportChecked.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-f-05-calibrationchecked-to-transportchecked",
@@ -9992,7 +10372,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "EvidenceAssessed",
         "TransitionAt": "2026-06-02T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "Intake → EvidenceAssessed.",
+        "Reason": "Intake \u2192 EvidenceAssessed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-g-02-intake-to-evidenceassessed",
@@ -10011,7 +10391,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "MechanismConfirmed",
         "TransitionAt": "2026-06-03T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "EvidenceAssessed → MechanismConfirmed.",
+        "Reason": "EvidenceAssessed \u2192 MechanismConfirmed.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-g-03-evidenceassessed-to-mechanismconfirmed",
@@ -10030,7 +10410,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "CalibrationChecked",
         "TransitionAt": "2026-06-04T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "MechanismConfirmed → CalibrationChecked.",
+        "Reason": "MechanismConfirmed \u2192 CalibrationChecked.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-g-04-mechanismconfirmed-to-calibrationchecked",
@@ -10049,7 +10429,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "TransportChecked",
         "TransitionAt": "2026-06-05T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "CalibrationChecked → TransportChecked.",
+        "Reason": "CalibrationChecked \u2192 TransportChecked.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-g-05-calibrationchecked-to-transportchecked",
@@ -10068,7 +10448,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToStateKey": "Actionable",
         "TransitionAt": "2026-06-06T09:00:00Z",
         "TriggeredByRole": "system",
-        "Reason": "transport passes — actionable despite holdout.",
+        "Reason": "transport passes \u2014 actionable despite holdout.",
         "CreatedBy": "build-seed",
         "ModifiedBy": "build-seed",
         "Name": "st-g-06-transportchecked-to-actionable",
@@ -10077,6 +10457,276 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CreatedAt": null,
         "ModifiedAt": null,
         "ModifiedByModel": null
+      },
+      {
+        "StateTransitionId": "st-ind-a-reyes-presymptomaticautoimmunity-1",
+        "Name": "st-ind-a-reyes-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-a-reyes-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-a-reyes",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-09-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-a-reyes-serologicactive-2",
+        "Name": "st-ind-a-reyes-serologicactive-2",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-a-reyes-serologicactive-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-a-reyes",
+        "FromStateKey": "PresymptomaticAutoimmunity",
+        "ToStateKey": "SerologicActive",
+        "TransitionAt": "2025-12-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to SerologicActive",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-b-okafor-presymptomaticautoimmunity-1",
+        "Name": "st-ind-b-okafor-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-b-okafor-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-b-okafor",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-08-15T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-c-chen-presymptomaticautoimmunity-1",
+        "Name": "st-ind-c-chen-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-c-chen-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-c-chen",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-07-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-c-chen-serologicactive-2",
+        "Name": "st-ind-c-chen-serologicactive-2",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-c-chen-serologicactive-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-c-chen",
+        "FromStateKey": "PresymptomaticAutoimmunity",
+        "ToStateKey": "SerologicActive",
+        "TransitionAt": "2025-10-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to SerologicActive",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-d-santos-presymptomaticautoimmunity-1",
+        "Name": "st-ind-d-santos-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-d-santos-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-d-santos",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-06-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-d-santos-renalflarerisk-2",
+        "Name": "st-ind-d-santos-renalflarerisk-2",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-d-santos-renalflarerisk-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-d-santos",
+        "FromStateKey": "PresymptomaticAutoimmunity",
+        "ToStateKey": "RenalFlareRisk",
+        "TransitionAt": "2025-09-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to RenalFlareRisk",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-d-santos-biopsyindicated-3",
+        "Name": "st-ind-d-santos-biopsyindicated-3",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-d-santos-biopsyindicated-3",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-d-santos",
+        "FromStateKey": "RenalFlareRisk",
+        "ToStateKey": "BiopsyIndicated",
+        "TransitionAt": "2025-12-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to BiopsyIndicated",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-e-mensah-presymptomaticautoimmunity-1",
+        "Name": "st-ind-e-mensah-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-e-mensah-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-e-mensah",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-08-01T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-f-haidar-presymptomaticautoimmunity-1",
+        "Name": "st-ind-f-haidar-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-f-haidar-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-f-haidar",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-09-10T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-g-lin-presymptomaticautoimmunity-1",
+        "Name": "st-ind-g-lin-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-g-lin-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-g-lin",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-09-05T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "Name": "st-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-h-yamamoto",
+        "FromStateKey": null,
+        "ToStateKey": "PresymptomaticAutoimmunity",
+        "TransitionAt": "2025-07-20T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to PresymptomaticAutoimmunity",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-h-yamamoto-earlynephritis-2",
+        "Name": "st-ind-h-yamamoto-earlynephritis-2",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-h-yamamoto-earlynephritis-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-h-yamamoto",
+        "FromStateKey": "PresymptomaticAutoimmunity",
+        "ToStateKey": "EarlyNephritis",
+        "TransitionAt": "2025-10-20T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to EarlyNephritis",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-i-conteh-earlynephritis-1",
+        "Name": "st-ind-i-conteh-earlynephritis-1",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-i-conteh-earlynephritis-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-i-conteh",
+        "FromStateKey": null,
+        "ToStateKey": "EarlyNephritis",
+        "TransitionAt": "2025-06-15T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to EarlyNephritis",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "StateTransitionId": "st-ind-i-conteh-renalflarerisk-2",
+        "Name": "st-ind-i-conteh-renalflarerisk-2",
+        "RelativePath": "/admin/state-machine/transitions/st-ind-i-conteh-renalflarerisk-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-i-conteh",
+        "FromStateKey": "EarlyNephritis",
+        "ToStateKey": "RenalFlareRisk",
+        "TransitionAt": "2025-09-15T00:00:00Z",
+        "TriggeredByRole": "system",
+        "Reason": "Serology-derived transition to RenalFlareRisk",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
@@ -10186,7 +10836,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "boolean",
         "type": "calculated",
         "nullable": true,
-        "Description": "TRUE when ExitedAt IS NULL — the subject's active state.",
+        "Description": "TRUE when ExitedAt IS NULL \u2014 the subject's active state.",
         "formula": "=ISBLANK({{ExitedAt}})"
       },
       {
@@ -10231,6 +10881,21 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "type": "raw",
         "nullable": true,
         "Description": "Audit: AI model credited on last save, if any."
+      },
+      {
+        "name": "DwellDays",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Bitemporal dwell: days the subject occupied this state (transparent raw value; transpiler lacks date-diff). Witnessed + editable, like any leaf."
+      },
+      {
+        "name": "IsLongDwell",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "TRUE when DwellDays >= 90 (a season).",
+        "formula": "=IF({{DwellDays}}>=90,TRUE(),FALSE())"
       }
     ],
     "data": [
@@ -10926,11 +11591,311 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CreatedAt": null,
         "ModifiedAt": null,
         "ModifiedByModel": null
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-a-reyes-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-a-reyes-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-a-reyes-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-a-reyes",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-09-01T00:00:00Z",
+        "ExitedAt": "2025-12-01T00:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-a-reyes-presymptomaticautoimmunity-1",
+        "DwellDays": 90,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-a-reyes-serologicactive-2",
+        "Name": "ssi-ind-a-reyes-serologicactive-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-a-reyes-serologicactive-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-a-reyes",
+        "StateKey": "SerologicActive",
+        "EnteredAt": "2025-12-01T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-ind-a-reyes-presymptomaticautoimmunity-1",
+        "EnteredViaTransition": "st-ind-a-reyes-serologicactive-2",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-b-okafor-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-b-okafor-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-b-okafor-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-b-okafor",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-08-15T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-b-okafor-presymptomaticautoimmunity-1",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-c-chen-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-c-chen-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-c-chen-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-c-chen",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-07-01T00:00:00Z",
+        "ExitedAt": "2025-10-01T00:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-c-chen-presymptomaticautoimmunity-1",
+        "DwellDays": 90,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-c-chen-serologicactive-2",
+        "Name": "ssi-ind-c-chen-serologicactive-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-c-chen-serologicactive-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-c-chen",
+        "StateKey": "SerologicActive",
+        "EnteredAt": "2025-10-01T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-ind-c-chen-presymptomaticautoimmunity-1",
+        "EnteredViaTransition": "st-ind-c-chen-serologicactive-2",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-d-santos-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-d-santos-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-d-santos-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-d-santos",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-06-01T00:00:00Z",
+        "ExitedAt": "2025-09-01T00:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-d-santos-presymptomaticautoimmunity-1",
+        "DwellDays": 90,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-d-santos-renalflarerisk-2",
+        "Name": "ssi-ind-d-santos-renalflarerisk-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-d-santos-renalflarerisk-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-d-santos",
+        "StateKey": "RenalFlareRisk",
+        "EnteredAt": "2025-09-01T00:00:00Z",
+        "ExitedAt": "2025-12-01T00:00:00Z",
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-ind-d-santos-presymptomaticautoimmunity-1",
+        "EnteredViaTransition": "st-ind-d-santos-renalflarerisk-2",
+        "DwellDays": 90,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-d-santos-biopsyindicated-3",
+        "Name": "ssi-ind-d-santos-biopsyindicated-3",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-d-santos-biopsyindicated-3",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-d-santos",
+        "StateKey": "BiopsyIndicated",
+        "EnteredAt": "2025-12-01T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 3,
+        "PriorInstance": "ssi-ind-d-santos-renalflarerisk-2",
+        "EnteredViaTransition": "st-ind-d-santos-biopsyindicated-3",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-e-mensah-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-e-mensah-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-e-mensah-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-e-mensah",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-08-01T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-e-mensah-presymptomaticautoimmunity-1",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-f-haidar-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-f-haidar-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-f-haidar-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-f-haidar",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-09-10T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-f-haidar-presymptomaticautoimmunity-1",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-g-lin-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-g-lin-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-g-lin-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-g-lin",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-09-05T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-g-lin-presymptomaticautoimmunity-1",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "Name": "ssi-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-h-yamamoto",
+        "StateKey": "PresymptomaticAutoimmunity",
+        "EnteredAt": "2025-07-20T00:00:00Z",
+        "ExitedAt": "2025-10-20T00:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "DwellDays": 90,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-h-yamamoto-earlynephritis-2",
+        "Name": "ssi-ind-h-yamamoto-earlynephritis-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-h-yamamoto-earlynephritis-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-h-yamamoto",
+        "StateKey": "EarlyNephritis",
+        "EnteredAt": "2025-10-20T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-ind-h-yamamoto-presymptomaticautoimmunity-1",
+        "EnteredViaTransition": "st-ind-h-yamamoto-earlynephritis-2",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-i-conteh-earlynephritis-1",
+        "Name": "ssi-ind-i-conteh-earlynephritis-1",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-i-conteh-earlynephritis-1",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-i-conteh",
+        "StateKey": "EarlyNephritis",
+        "EnteredAt": "2025-06-15T00:00:00Z",
+        "ExitedAt": "2025-09-15T00:00:00Z",
+        "SequenceIndex": 1,
+        "PriorInstance": null,
+        "EnteredViaTransition": "st-ind-i-conteh-earlynephritis-1",
+        "DwellDays": 90,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SubjectStateInstanceId": "ssi-ind-i-conteh-renalflarerisk-2",
+        "Name": "ssi-ind-i-conteh-renalflarerisk-2",
+        "RelativePath": "/admin/state-machine/instances/ssi-ind-i-conteh-renalflarerisk-2",
+        "StateMachine": "lupus-nephritis-progression",
+        "SubjectTableName": "Individuals",
+        "SubjectId": "ind-i-conteh",
+        "StateKey": "RenalFlareRisk",
+        "EnteredAt": "2025-09-15T00:00:00Z",
+        "ExitedAt": null,
+        "SequenceIndex": 2,
+        "PriorInstance": "ssi-ind-i-conteh-earlynephritis-1",
+        "EnteredViaTransition": "st-ind-i-conteh-renalflarerisk-2",
+        "DwellDays": 120,
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   },
   "__meta__": {
-    "Description": "General-purpose, global name/value settings ENTITY — deliberately transpiler-IGNORED (leading underscore). The one place for random/global/third-party/configuration values, choices, parameters, thresholds, and the reusable phrase atoms the derived report draws on. Just global key/value configuration data; that's it. Distinct from the `_meta` conversion-metadata section, and NOT a domain table (no FKs in, nothing aggregates over it, not in the DAG). Each row is one key/value setting. Narrative fragment fields on domain rows reference these keys so common language and shared numbers are authored and corrected once, never re-implemented per case. NOTE: banding-threshold rows (e.g. the temperature bands) are the numeric atoms; the per-case decision of which band applies lives in a calculated fragment field on the patient row, not here — this table holds the reusable pieces, not the case logic. See the effortless-meta-table skill.",
+    "Description": "General-purpose, global name/value settings ENTITY \u2014 deliberately transpiler-IGNORED (leading underscore). The one place for random/global/third-party/configuration values, choices, parameters, thresholds, and the reusable phrase atoms the derived report draws on. Just global key/value configuration data; that's it. Distinct from the `_meta` conversion-metadata section, and NOT a domain table (no FKs in, nothing aggregates over it, not in the DAG). Each row is one key/value setting. Narrative fragment fields on domain rows reference these keys so common language and shared numbers are authored and corrected once, never re-implemented per case. NOTE: banding-threshold rows (e.g. the temperature bands) are the numeric atoms; the per-case decision of which band applies lives in a calculated fragment field on the patient row, not here \u2014 this table holds the reusable pieces, not the case logic. See the effortless-meta-table skill.",
     "schema": [
       {
         "name": "MetaKey",
@@ -11161,7 +12126,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "deep-dag | schema | vocabulary — how deeply v2 models this concept."
+        "Description": "deep-dag | schema | vocabulary \u2014 how deeply v2 models this concept."
       },
       {
         "name": "Definition",
@@ -11336,7 +12301,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ConceptLabel": "Dactylitis",
         "RelatedDisease": "PsA",
         "ModelingStatus": "schema",
-        "Definition": "'Sausage digit' — whole-digit swelling. PsA phenotype subtype.",
+        "Definition": "'Sausage digit' \u2014 whole-digit swelling. PsA phenotype subtype.",
         "ChallengeStressorType": "tissue-specific effects",
         "Name": "Dactylitis",
         "RelativePath": "/admin/disease-concepts/dactylitis",
@@ -11522,6 +12487,713 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RelativePath": "/admin/disease-concepts/workflow-outcomes",
         "IsDeeplyModeled": false,
         "IsSchemaModeled": false
+      }
+    ]
+  },
+  "SerologyObservations": {
+    "Description": "RAW longitudinal serology panels (the lab/LLM layer) + derived trend, SLEDAI sub-scores, and the disease state IMPLIED by each panel. The leaves that drive the lupus-nephritis progression machine.",
+    "schema": [
+      {
+        "name": "SerologyObservationId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK: sero-{ind}-{seq}."
+      },
+      {
+        "name": "Individual",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": false,
+        "Description": "FK -> Individuals.IndividualId.",
+        "RelatedTo": "Individuals",
+        "prefersSingleRecordLink": true,
+        "isReversed": false,
+        "InverseField": ""
+      },
+      {
+        "name": "ObservedAt",
+        "datatype": "datetime",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Valid-time of this serology panel (RAW leaf)."
+      },
+      {
+        "name": "SequenceIndex",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "1-based order within the individual's panel series (RAW)."
+      },
+      {
+        "name": "AntiDsDnaIU",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "anti-dsDNA titre IU/mL (RAW lab)."
+      },
+      {
+        "name": "ComplementC3",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "C3 mg/dL (RAW lab)."
+      },
+      {
+        "name": "ComplementC4",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "C4 mg/dL (RAW lab)."
+      },
+      {
+        "name": "ProteinuriaGPerDay",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "urine protein g/day (RAW lab)."
+      },
+      {
+        "name": "EgfrMlMin",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "eGFR mL/min (RAW lab)."
+      },
+      {
+        "name": "HasActiveUrinarySediment",
+        "datatype": "boolean",
+        "type": "raw",
+        "nullable": true,
+        "Description": "active casts/hematuria (RAW observation)."
+      },
+      {
+        "name": "PriorObservation",
+        "datatype": "string",
+        "type": "relationship",
+        "nullable": true,
+        "Description": "Self-FK -> the prior panel in this individual's series (seq-1). NULL for the first.",
+        "RelatedTo": "SerologyObservations",
+        "prefersSingleRecordLink": true,
+        "isReversed": false,
+        "InverseField": ""
+      },
+      {
+        "name": "PriorAntiDsDnaIU",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Prior panel's dsDNA via PriorObservation FK, for trend.",
+        "RelatedTo": "SerologyObservations",
+        "LookupField": "AntiDsDnaIU",
+        "ViaField": "PriorObservation",
+        "formula": "=INDEX(SerologyObservations!{{AntiDsDnaIU}}, MATCH({{PriorObservation}}, SerologyObservations!{{SerologyObservationId}}, 0))"
+      },
+      {
+        "name": "PriorC3",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Prior C3 via PriorObservation FK.",
+        "RelatedTo": "SerologyObservations",
+        "LookupField": "ComplementC3",
+        "ViaField": "PriorObservation",
+        "formula": "=INDEX(SerologyObservations!{{ComplementC3}}, MATCH({{PriorObservation}}, SerologyObservations!{{SerologyObservationId}}, 0))"
+      },
+      {
+        "name": "PriorC4",
+        "datatype": "number",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Prior C4 via PriorObservation FK.",
+        "RelatedTo": "SerologyObservations",
+        "LookupField": "ComplementC4",
+        "ViaField": "PriorObservation",
+        "formula": "=INDEX(SerologyObservations!{{ComplementC4}}, MATCH({{PriorObservation}}, SerologyObservations!{{SerologyObservationId}}, 0))"
+      },
+      {
+        "name": "AntiDsDnaTrend",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Rising/Falling/Stable vs prior panel (derived from raw).",
+        "formula": "=IF(ISBLANK({{PriorAntiDsDnaIU}}),\"Stable\",IF({{AntiDsDnaIU}}>{{PriorAntiDsDnaIU}}*1.25,\"Rising\",IF({{AntiDsDnaIU}}<{{PriorAntiDsDnaIU}}*0.8,\"Falling\",\"Stable\")))"
+      },
+      {
+        "name": "ComplementTrend",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Rising/Falling/Stable on C3+C4 vs prior (derived).",
+        "formula": "=IF(ISBLANK({{PriorC3}}),\"Stable\",IF(({{ComplementC3}}+{{ComplementC4}})<({{PriorC3}}+{{PriorC4}})*0.85,\"Falling\",IF(({{ComplementC3}}+{{ComplementC4}})>({{PriorC3}}+{{PriorC4}})*1.15,\"Rising\",\"Stable\")))"
+      },
+      {
+        "name": "IsSignificantProteinuria",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "proteinuria >= 0.5 g/day.",
+        "formula": "=IF({{ProteinuriaGPerDay}}>=0.5,TRUE(),FALSE())"
+      },
+      {
+        "name": "IsNephroticRangeProteinuria",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "proteinuria >= 3.0 g/day.",
+        "formula": "=IF({{ProteinuriaGPerDay}}>=3.0,TRUE(),FALSE())"
+      },
+      {
+        "name": "SledaiRenalPoints",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "SLEDAI-style renal sub-score (0/4/8) from proteinuria + sediment.",
+        "formula": "=IF(OR({{IsNephroticRangeProteinuria}},{{HasActiveUrinarySediment}}),8,IF({{IsSignificantProteinuria}},4,0))"
+      },
+      {
+        "name": "SledaiSerologyPoints",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "SLEDAI-style serology sub-score (0/2/4) from low-complement + raised dsDNA.",
+        "formula": "=IF(AND({{ComplementTrend}}=\"Falling\",{{AntiDsDnaTrend}}=\"Rising\"),4,IF(OR({{ComplementTrend}}=\"Falling\",{{AntiDsDnaTrend}}=\"Rising\"),2,0))"
+      },
+      {
+        "name": "SledaiScore",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived SLEDAI-style activity score = renal + serology points.",
+        "formula": "={{SledaiRenalPoints}}+{{SledaiSerologyPoints}}"
+      },
+      {
+        "name": "ProgressionStateKey",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Disease state IMPLIED by THIS panel (derived purely from raw leaves).",
+        "formula": "=IF(OR({{IsNephroticRangeProteinuria}},{{HasActiveUrinarySediment}}),\"BiopsyIndicated\",IF({{ProteinuriaGPerDay}}>=1.0,\"RenalFlareRisk\",IF({{IsSignificantProteinuria}},\"EarlyNephritis\",IF(AND({{AntiDsDnaTrend}}=\"Rising\",{{ComplementTrend}}=\"Falling\"),\"SerologicActive\",\"PresymptomaticAutoimmunity\"))))"
+      },
+      {
+        "name": "ProgressionStateOrder",
+        "datatype": "number",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Numeric severity order of THIS panel's implied state (0..5). Lets the individual's current state be a MAXIFS over panels (highest state reached).",
+        "formula": "=IF({{ProgressionStateKey}}=\"BiopsyIndicated\",5,IF({{ProgressionStateKey}}=\"RenalFlareRisk\",4,IF({{ProgressionStateKey}}=\"EarlyNephritis\",3,IF({{ProgressionStateKey}}=\"SerologicActive\",2,1))))"
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Echoes id.",
+        "formula": "={{SerologyObservationId}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path.",
+        "formula": "=\"/admin/serology/\" & {{SerologyObservationId}}"
+      }
+    ],
+    "data": [
+      {
+        "SerologyObservationId": "sero-ind-a-reyes-1",
+        "Individual": "ind-a-reyes",
+        "ObservedAt": "2025-09-01T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 40,
+        "ComplementC3": 110,
+        "ComplementC4": 22,
+        "ProteinuriaGPerDay": 0.1,
+        "EgfrMlMin": 95,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-a-reyes-1",
+        "RelativePath": "/admin/serology/sero-ind-a-reyes-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-a-reyes-2",
+        "Individual": "ind-a-reyes",
+        "ObservedAt": "2025-12-01T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 95,
+        "ComplementC3": 78,
+        "ComplementC4": 12,
+        "ProteinuriaGPerDay": 0.2,
+        "EgfrMlMin": 94,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-a-reyes-1",
+        "Name": "sero-ind-a-reyes-2",
+        "RelativePath": "/admin/serology/sero-ind-a-reyes-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-b-okafor-1",
+        "Individual": "ind-b-okafor",
+        "ObservedAt": "2025-08-15T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 30,
+        "ComplementC3": 120,
+        "ComplementC4": 25,
+        "ProteinuriaGPerDay": 0.05,
+        "EgfrMlMin": 99,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-b-okafor-1",
+        "RelativePath": "/admin/serology/sero-ind-b-okafor-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-b-okafor-2",
+        "Individual": "ind-b-okafor",
+        "ObservedAt": "2025-11-15T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 33,
+        "ComplementC3": 118,
+        "ComplementC4": 24,
+        "ProteinuriaGPerDay": 0.08,
+        "EgfrMlMin": 98,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-b-okafor-1",
+        "Name": "sero-ind-b-okafor-2",
+        "RelativePath": "/admin/serology/sero-ind-b-okafor-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-c-chen-1",
+        "Individual": "ind-c-chen",
+        "ObservedAt": "2025-07-01T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 50,
+        "ComplementC3": 100,
+        "ComplementC4": 20,
+        "ProteinuriaGPerDay": 0.2,
+        "EgfrMlMin": 92,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-c-chen-1",
+        "RelativePath": "/admin/serology/sero-ind-c-chen-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-c-chen-2",
+        "Individual": "ind-c-chen",
+        "ObservedAt": "2025-10-01T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 120,
+        "ComplementC3": 70,
+        "ComplementC4": 10,
+        "ProteinuriaGPerDay": 0.3,
+        "EgfrMlMin": 90,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-c-chen-1",
+        "Name": "sero-ind-c-chen-2",
+        "RelativePath": "/admin/serology/sero-ind-c-chen-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-d-santos-1",
+        "Individual": "ind-d-santos",
+        "ObservedAt": "2025-06-01T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 60,
+        "ComplementC3": 95,
+        "ComplementC4": 18,
+        "ProteinuriaGPerDay": 0.4,
+        "EgfrMlMin": 88,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-d-santos-1",
+        "RelativePath": "/admin/serology/sero-ind-d-santos-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-d-santos-2",
+        "Individual": "ind-d-santos",
+        "ObservedAt": "2025-09-01T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 140,
+        "ComplementC3": 60,
+        "ComplementC4": 9,
+        "ProteinuriaGPerDay": 1.2,
+        "EgfrMlMin": 80,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-d-santos-1",
+        "Name": "sero-ind-d-santos-2",
+        "RelativePath": "/admin/serology/sero-ind-d-santos-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-d-santos-3",
+        "Individual": "ind-d-santos",
+        "ObservedAt": "2025-12-01T00:00:00Z",
+        "SequenceIndex": 3,
+        "AntiDsDnaIU": 180,
+        "ComplementC3": 45,
+        "ComplementC4": 6,
+        "ProteinuriaGPerDay": 3.6,
+        "EgfrMlMin": 68,
+        "HasActiveUrinarySediment": true,
+        "PriorObservation": "sero-ind-d-santos-2",
+        "Name": "sero-ind-d-santos-3",
+        "RelativePath": "/admin/serology/sero-ind-d-santos-3",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-e-mensah-1",
+        "Individual": "ind-e-mensah",
+        "ObservedAt": "2025-08-01T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 25,
+        "ComplementC3": 125,
+        "ComplementC4": 26,
+        "ProteinuriaGPerDay": 0.05,
+        "EgfrMlMin": 100,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-e-mensah-1",
+        "RelativePath": "/admin/serology/sero-ind-e-mensah-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-e-mensah-2",
+        "Individual": "ind-e-mensah",
+        "ObservedAt": "2025-11-01T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 24,
+        "ComplementC3": 124,
+        "ComplementC4": 27,
+        "ProteinuriaGPerDay": 0.04,
+        "EgfrMlMin": 101,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-e-mensah-1",
+        "Name": "sero-ind-e-mensah-2",
+        "RelativePath": "/admin/serology/sero-ind-e-mensah-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-f-haidar-1",
+        "Individual": "ind-f-haidar",
+        "ObservedAt": "2025-09-10T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 20,
+        "ComplementC3": 130,
+        "ComplementC4": 28,
+        "ProteinuriaGPerDay": 0.0,
+        "EgfrMlMin": 100,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-f-haidar-1",
+        "RelativePath": "/admin/serology/sero-ind-f-haidar-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-f-haidar-2",
+        "Individual": "ind-f-haidar",
+        "ObservedAt": "2025-12-10T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 22,
+        "ComplementC3": 128,
+        "ComplementC4": 27,
+        "ProteinuriaGPerDay": 0.0,
+        "EgfrMlMin": 99,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-f-haidar-1",
+        "Name": "sero-ind-f-haidar-2",
+        "RelativePath": "/admin/serology/sero-ind-f-haidar-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-g-lin-1",
+        "Individual": "ind-g-lin",
+        "ObservedAt": "2025-09-05T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 18,
+        "ComplementC3": 132,
+        "ComplementC4": 29,
+        "ProteinuriaGPerDay": 0.0,
+        "EgfrMlMin": 100,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-g-lin-1",
+        "RelativePath": "/admin/serology/sero-ind-g-lin-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-g-lin-2",
+        "Individual": "ind-g-lin",
+        "ObservedAt": "2025-12-05T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 19,
+        "ComplementC3": 131,
+        "ComplementC4": 28,
+        "ProteinuriaGPerDay": 0.0,
+        "EgfrMlMin": 100,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-g-lin-1",
+        "Name": "sero-ind-g-lin-2",
+        "RelativePath": "/admin/serology/sero-ind-g-lin-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-h-yamamoto-1",
+        "Individual": "ind-h-yamamoto",
+        "ObservedAt": "2025-07-20T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 55,
+        "ComplementC3": 98,
+        "ComplementC4": 19,
+        "ProteinuriaGPerDay": 0.3,
+        "EgfrMlMin": 90,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-h-yamamoto-1",
+        "RelativePath": "/admin/serology/sero-ind-h-yamamoto-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-h-yamamoto-2",
+        "Individual": "ind-h-yamamoto",
+        "ObservedAt": "2025-10-20T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 110,
+        "ComplementC3": 72,
+        "ComplementC4": 11,
+        "ProteinuriaGPerDay": 0.7,
+        "EgfrMlMin": 85,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-h-yamamoto-1",
+        "Name": "sero-ind-h-yamamoto-2",
+        "RelativePath": "/admin/serology/sero-ind-h-yamamoto-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-i-conteh-1",
+        "Individual": "ind-i-conteh",
+        "ObservedAt": "2025-06-15T00:00:00Z",
+        "SequenceIndex": 1,
+        "AntiDsDnaIU": 70,
+        "ComplementC3": 90,
+        "ComplementC4": 16,
+        "ProteinuriaGPerDay": 0.5,
+        "EgfrMlMin": 84,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": null,
+        "Name": "sero-ind-i-conteh-1",
+        "RelativePath": "/admin/serology/sero-ind-i-conteh-1",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "SerologyObservationId": "sero-ind-i-conteh-2",
+        "Individual": "ind-i-conteh",
+        "ObservedAt": "2025-09-15T00:00:00Z",
+        "SequenceIndex": 2,
+        "AntiDsDnaIU": 150,
+        "ComplementC3": 55,
+        "ComplementC4": 8,
+        "ProteinuriaGPerDay": 1.5,
+        "EgfrMlMin": 76,
+        "HasActiveUrinarySediment": false,
+        "PriorObservation": "sero-ind-i-conteh-1",
+        "Name": "sero-ind-i-conteh-2",
+        "RelativePath": "/admin/serology/sero-ind-i-conteh-2",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      }
+    ]
+  },
+  "TherapyOptions": {
+    "Description": "Therapy lookup for the treatment-line-selection DAG (MMF/belimumab/anifrolumab/secukinumab).",
+    "schema": [
+      {
+        "name": "TherapyOptionId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Slug PK."
+      },
+      {
+        "name": "TherapyLabel",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Therapy name."
+      },
+      {
+        "name": "TargetsPathway",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Pathway this therapy targets (matches CausalMechanisms.TargetPathway)."
+      },
+      {
+        "name": "LineOrdinal",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Treatment-line ordinal (1=first-line/induction)."
+      },
+      {
+        "name": "PreferredWhen",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Clinical context where preferred."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "={{TherapyLabel}}",
+        "Description": "Echo."
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "formula": "=\"/admin/therapy-options/\" & {{TherapyOptionId}}",
+        "Description": "Path."
+      }
+    ],
+    "data": [
+      {
+        "TherapyOptionId": "mmf",
+        "TherapyLabel": "Mycophenolate (MMF)",
+        "TargetsPathway": "organ-induction",
+        "LineOrdinal": 1,
+        "PreferredWhen": "active nephritis (proteinuria-driven)",
+        "Name": "Mycophenolate (MMF)",
+        "RelativePath": "/admin/therapy-options/mmf",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "TherapyOptionId": "belimumab",
+        "TherapyLabel": "Belimumab (anti-BLyS)",
+        "TargetsPathway": "B-cell/autoantibody",
+        "LineOrdinal": 2,
+        "PreferredWhen": "serologically active, autoantibody-driven",
+        "Name": "Belimumab (anti-BLyS)",
+        "RelativePath": "/admin/therapy-options/belimumab",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "TherapyOptionId": "anifrolumab",
+        "TherapyLabel": "Anifrolumab (anti-IFNAR1)",
+        "TargetsPathway": "type-I-IFN",
+        "LineOrdinal": 2,
+        "PreferredWhen": "type-I-IFN-signature mechanism",
+        "Name": "Anifrolumab (anti-IFNAR1)",
+        "RelativePath": "/admin/therapy-options/anifrolumab",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
+      },
+      {
+        "TherapyOptionId": "secukinumab",
+        "TherapyLabel": "Secukinumab (anti-IL-17)",
+        "TargetsPathway": "IL-17/23",
+        "LineOrdinal": 2,
+        "PreferredWhen": "IL-17/23-axis disease (PsA/SpA)",
+        "Name": "Secukinumab (anti-IL-17)",
+        "RelativePath": "/admin/therapy-options/secukinumab",
+        "CreatedBy": "v2-step3",
+        "CreatedAt": "2026-06-20T00:00:00Z",
+        "ModifiedBy": "v2-step3",
+        "ModifiedAt": "2026-06-20T00:00:00Z",
+        "ModifiedByModel": "claude-opus-4-8"
       }
     ]
   }
@@ -12414,6 +14086,330 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         },
         {
           "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Individuals.CountSerologyPanels": {
+    "table": "Individuals",
+    "field": "CountSerologyPanels",
+    "kind": "rollup",
+    "rule": "An individual\u0027s count serology panels is the number of serology observations related to the individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.MaxProgressionStateOrder": {
+    "table": "Individuals",
+    "field": "MaxProgressionStateOrder",
+    "kind": "rollup",
+    "rule": "An individual\u0027s max progression state order is the largest progression state order across the serology observations related to the individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "ProgressionStateOrder",
+        "label": "progression state order"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.LatestSledaiScore": {
+    "table": "Individuals",
+    "field": "LatestSledaiScore",
+    "kind": "rollup",
+    "rule": "An individual\u0027s latest sledai score is the largest sledai score across the serology observations related to the individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "SledaiScore",
+        "label": "sledai score"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.NephritisProgressionStateKey": {
+    "table": "Individuals",
+    "field": "NephritisProgressionStateKey",
+    "kind": "formula",
+    "rule": "The individual\u0027s nephritis progression state key is determined by the following priority:\n1. the literal \u201CBiopsyIndicated\u201D, if the max progression state order is at least 5;\n2. the literal \u201CRenalFlareRisk\u201D, if the max progression state order is at least 4;\n3. the literal \u201CEarlyNephritis\u201D, if the max progression state order is at least 3;\n4. the literal \u201CSerologicActive\u201D, if the max progression state order is at least 2;\n5. otherwise the literal \u201CPresymptomaticAutoimmunity\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "MaxProgressionStateOrder",
+        "label": "max progression state order"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s nephritis progression state key is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CBiopsyIndicated\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the max progression state order is at least 5"
+          }
+        },
+        {
+          "value": "the literal \u201CRenalFlareRisk\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the max progression state order is at least 4"
+          }
+        },
+        {
+          "value": "the literal \u201CEarlyNephritis\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the max progression state order is at least 3"
+          }
+        },
+        {
+          "value": "the literal \u201CSerologicActive\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the max progression state order is at least 2"
+          }
+        },
+        {
+          "value": "the literal \u201CPresymptomaticAutoimmunity\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Individuals.ActivityTier": {
+    "table": "Individuals",
+    "field": "ActivityTier",
+    "kind": "formula",
+    "rule": "The individual\u0027s activity tier is determined by the following priority:\n1. the literal \u201CHigh / flare\u201D, if the latest sledai score is at least 12;\n2. the literal \u201CModerate\u201D, if the latest sledai score is at least 6;\n3. the literal \u201CMild\u201D, if the latest sledai score is at least 1;\n4. otherwise the literal \u201CQuiescent\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "LatestSledaiScore",
+        "label": "latest sledai score"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s activity tier is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CHigh / flare\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the latest sledai score is at least 12"
+          }
+        },
+        {
+          "value": "the literal \u201CModerate\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the latest sledai score is at least 6"
+          }
+        },
+        {
+          "value": "the literal \u201CMild\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the latest sledai score is at least 1"
+          }
+        },
+        {
+          "value": "the literal \u201CQuiescent\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Individuals.IsHighDiseaseActivity": {
+    "table": "Individuals",
+    "field": "IsHighDiseaseActivity",
+    "kind": "formula",
+    "rule": "An individual is considered a high disease activity if the latest sledai score is at least 12.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "LatestSledaiScore",
+        "label": "latest sledai score"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s is high disease activity is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the latest sledai score is at least 12"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Individuals.IsDiseaseProgressing": {
+    "table": "Individuals",
+    "field": "IsDiseaseProgressing",
+    "kind": "formula",
+    "rule": "An individual is considered disease progressing if at least one of the following holds: the nephritis progression state key is the literal \u201CEarlyNephritis\u201D; the nephritis progression state key is the literal \u201CRenalFlareRisk\u201D; or the nephritis progression state key is the literal \u201CBiopsyIndicated\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "NephritisProgressionStateKey",
+        "label": "nephritis progression state key"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s is disease progressing is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "any",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the nephritis progression state key is the literal \u201CEarlyNephritis\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the nephritis progression state key is the literal \u201CRenalFlareRisk\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the nephritis progression state key is the literal \u201CBiopsyIndicated\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Individuals.TargetPathwayCode": {
+    "table": "Individuals",
+    "field": "TargetPathwayCode",
+    "kind": "rollup",
+    "rule": "An individual\u0027s target pathway code is the largest target pathway code across the causal mechanisms related to the individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "CausalMechanisms",
+        "field": "TargetPathwayCode",
+        "label": "target pathway code"
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.TargetPathway": {
+    "table": "Individuals",
+    "field": "TargetPathway",
+    "kind": "formula",
+    "rule": "The individual\u0027s target pathway is determined by the following priority:\n1. the literal \u201Ctype-I-IFN\u201D, if the target pathway code is 1;\n2. the literal \u201CB-cell/autoantibody\u201D, if the target pathway code is 2;\n3. the literal \u201CT-cell-costim\u201D, if the target pathway code is 3;\n4. the literal \u201CIL-17/23\u201D, if the target pathway code is 4;\n5. otherwise an empty string.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "TargetPathwayCode",
+        "label": "target pathway code"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s target pathway is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201Ctype-I-IFN\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway code is 1"
+          }
+        },
+        {
+          "value": "the literal \u201CB-cell/autoantibody\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway code is 2"
+          }
+        },
+        {
+          "value": "the literal \u201CT-cell-costim\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway code is 3"
+          }
+        },
+        {
+          "value": "the literal \u201CIL-17/23\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway code is 4"
+          }
+        },
+        {
+          "value": "an empty string",
           "when": null
         }
       ],
@@ -13977,6 +15973,59 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         },
         {
           "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "CausalMechanisms.TargetPathwayCode": {
+    "table": "CausalMechanisms",
+    "field": "TargetPathwayCode",
+    "kind": "formula",
+    "rule": "The causal mechanism\u0027s target pathway code is determined by the following priority:\n1. 1, if the target pathway is the literal \u201Ctype-I-IFN\u201D;\n2. 2, if the target pathway is the literal \u201CB-cell/autoantibody\u201D;\n3. 3, if the target pathway is the literal \u201CT-cell-costim\u201D;\n4. 4, if the target pathway is the literal \u201CIL-17/23\u201D;\n5. otherwise 0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "CausalMechanisms",
+        "field": "TargetPathway",
+        "label": "target pathway"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The causal mechanism\u0027s target pathway code is determined by the following priority:",
+      "cases": [
+        {
+          "value": "1",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway is the literal \u201Ctype-I-IFN\u201D"
+          }
+        },
+        {
+          "value": "2",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway is the literal \u201CB-cell/autoantibody\u201D"
+          }
+        },
+        {
+          "value": "3",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway is the literal \u201CT-cell-costim\u201D"
+          }
+        },
+        {
+          "value": "4",
+          "when": {
+            "kind": "leaf",
+            "text": "the target pathway is the literal \u201CIL-17/23\u201D"
+          }
+        },
+        {
+          "value": "0",
           "when": null
         }
       ],
@@ -16368,6 +18417,285 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "children": null
     }
   },
+  "IndividualPredictions.IndividualTargetPathway": {
+    "table": "IndividualPredictions",
+    "field": "IndividualTargetPathway",
+    "kind": "lookup",
+    "rule": "An individual prediction\u0027s individual target pathway is the target pathway of the individual prediction\u0027s individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "TargetPathway",
+        "label": "target pathway"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "IndividualPredictions.IndividualProgressionStateKey": {
+    "table": "IndividualPredictions",
+    "field": "IndividualProgressionStateKey",
+    "kind": "lookup",
+    "rule": "An individual prediction\u0027s individual progression state key is the nephritis progression state key of the individual prediction\u0027s individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "NephritisProgressionStateKey",
+        "label": "nephritis progression state key"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "IndividualPredictions.IndividualIsDiseaseProgressing": {
+    "table": "IndividualPredictions",
+    "field": "IndividualIsDiseaseProgressing",
+    "kind": "lookup",
+    "rule": "An individual prediction\u0027s individual is disease progressing is true when the individual prediction\u0027s individual is disease progressing.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "IsDiseaseProgressing",
+        "label": "is disease progressing"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": null
+  },
+  "IndividualPredictions.RecommendedTreatmentLine": {
+    "table": "IndividualPredictions",
+    "field": "RecommendedTreatmentLine",
+    "kind": "formula",
+    "rule": "The individual prediction\u0027s recommended treatment line is determined by the following priority:\n1. the literal \u201CNo targeted line \u2014 mechanism unconfirmed\u201D, if it is not the case that the rests on confirmed mechanism flag is set;\n2. the literal \u201CMycophenolate (induction)\u201D, if at least one of the following holds: the individual progression state key is the literal \u201CRenalFlareRisk\u201D or the individual progression state key is the literal \u201CBiopsyIndicated\u201D;\n3. the literal \u201CAnifrolumab\u201D, if the individual target pathway is the literal \u201Ctype-I-IFN\u201D;\n4. the literal \u201CBelimumab\u201D, if the individual target pathway is the literal \u201CB-cell/autoantibody\u201D;\n5. the literal \u201CSecukinumab\u201D, if the individual target pathway is the literal \u201CIL-17/23\u201D;\n6. otherwise the literal \u201CStandard-of-care (no mechanism-matched targeted line)\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "RestsOnConfirmedMechanism",
+        "label": "rests on confirmed mechanism"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualProgressionStateKey",
+        "label": "individual progression state key"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualTargetPathway",
+        "label": "individual target pathway"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s recommended treatment line is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CNo targeted line \u2014 mechanism unconfirmed\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "it is not the case that the rests on confirmed mechanism flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CMycophenolate (induction)\u201D",
+          "when": {
+            "kind": "any",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the individual progression state key is the literal \u201CRenalFlareRisk\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the individual progression state key is the literal \u201CBiopsyIndicated\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "the literal \u201CAnifrolumab\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual target pathway is the literal \u201Ctype-I-IFN\u201D"
+          }
+        },
+        {
+          "value": "the literal \u201CBelimumab\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual target pathway is the literal \u201CB-cell/autoantibody\u201D"
+          }
+        },
+        {
+          "value": "the literal \u201CSecukinumab\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual target pathway is the literal \u201CIL-17/23\u201D"
+          }
+        },
+        {
+          "value": "the literal \u201CStandard-of-care (no mechanism-matched targeted line)\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.TreatmentLineDecidingFactor": {
+    "table": "IndividualPredictions",
+    "field": "TreatmentLineDecidingFactor",
+    "kind": "formula",
+    "rule": "The individual prediction\u0027s treatment line deciding factor is determined by the following priority:\n1. the literal \u201CMechanismUnconfirmed\u201D, if it is not the case that the rests on confirmed mechanism flag is set;\n2. the literal \u201CActiveNephritis-Induction\u201D, if at least one of the following holds: the individual progression state key is the literal \u201CRenalFlareRisk\u201D or the individual progression state key is the literal \u201CBiopsyIndicated\u201D;\n3. the literal \u201CIFNSignature-Anifrolumab\u201D, if the individual target pathway is the literal \u201Ctype-I-IFN\u201D;\n4. the literal \u201CAutoantibodyDriven-Belimumab\u201D, if the individual target pathway is the literal \u201CB-cell/autoantibody\u201D;\n5. the literal \u201CIL17Axis-Secukinumab\u201D, if the individual target pathway is the literal \u201CIL-17/23\u201D;\n6. otherwise the literal \u201CNoMechanismMatch\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "RestsOnConfirmedMechanism",
+        "label": "rests on confirmed mechanism"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualProgressionStateKey",
+        "label": "individual progression state key"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualTargetPathway",
+        "label": "individual target pathway"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s treatment line deciding factor is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CMechanismUnconfirmed\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "it is not the case that the rests on confirmed mechanism flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CActiveNephritis-Induction\u201D",
+          "when": {
+            "kind": "any",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the individual progression state key is the literal \u201CRenalFlareRisk\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the individual progression state key is the literal \u201CBiopsyIndicated\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "the literal \u201CIFNSignature-Anifrolumab\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual target pathway is the literal \u201Ctype-I-IFN\u201D"
+          }
+        },
+        {
+          "value": "the literal \u201CAutoantibodyDriven-Belimumab\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual target pathway is the literal \u201CB-cell/autoantibody\u201D"
+          }
+        },
+        {
+          "value": "the literal \u201CIL17Axis-Secukinumab\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual target pathway is the literal \u201CIL-17/23\u201D"
+          }
+        },
+        {
+          "value": "the literal \u201CNoMechanismMatch\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.ProgressionVsActionabilityDisagree": {
+    "table": "IndividualPredictions",
+    "field": "ProgressionVsActionabilityDisagree",
+    "kind": "formula",
+    "rule": "An individual prediction is flagged progression vs actionability disagree if all of the following hold: the individual is disease progressing flag is set and it is not the case that the is clinically actionable flag is set.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualIsDiseaseProgressing",
+        "label": "individual is disease progressing"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "IsClinicallyActionable",
+        "label": "is clinically actionable"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s progression vs actionability disagree is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "all",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the individual is disease progressing flag is set"
+              },
+              {
+                "kind": "leaf",
+                "text": "it is not the case that the is clinically actionable flag is set"
+              }
+            ]
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
   "CalibrationBins.Name": {
     "table": "CalibrationBins",
     "field": "Name",
@@ -17761,6 +20089,38 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": null
   },
+  "SubjectStateInstances.IsLongDwell": {
+    "table": "SubjectStateInstances",
+    "field": "IsLongDwell",
+    "kind": "formula",
+    "rule": "A subject state instance is considered a long dwell if the dwell days is at least 90.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SubjectStateInstances",
+        "field": "DwellDays",
+        "label": "dwell days"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The subject state instance\u0027s is long dwell is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the dwell days is at least 90"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
   "DiseaseDomainConcepts.Name": {
     "table": "DiseaseDomainConcepts",
     "field": "Name",
@@ -17863,6 +20223,591 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       ],
       "children": null
     }
+  },
+  "SerologyObservations.PriorAntiDsDnaIU": {
+    "table": "SerologyObservations",
+    "field": "PriorAntiDsDnaIU",
+    "kind": "lookup",
+    "rule": "A serology observation\u0027s prior anti ds dna IU is the anti ds dna IU of the serology observation\u0027s prior observation.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "AntiDsDnaIU",
+        "label": "anti ds dna IU"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "PriorObservation",
+        "label": "prior observation"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "SerologyObservationId",
+        "label": "serology observation ID"
+      }
+    ],
+    "structure": null
+  },
+  "SerologyObservations.PriorC3": {
+    "table": "SerologyObservations",
+    "field": "PriorC3",
+    "kind": "lookup",
+    "rule": "A serology observation\u0027s prior c3 is the complement c3 of the serology observation\u0027s prior observation.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementC3",
+        "label": "complement c3"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "PriorObservation",
+        "label": "prior observation"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "SerologyObservationId",
+        "label": "serology observation ID"
+      }
+    ],
+    "structure": null
+  },
+  "SerologyObservations.PriorC4": {
+    "table": "SerologyObservations",
+    "field": "PriorC4",
+    "kind": "lookup",
+    "rule": "A serology observation\u0027s prior c4 is the complement c4 of the serology observation\u0027s prior observation.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementC4",
+        "label": "complement c4"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "PriorObservation",
+        "label": "prior observation"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "SerologyObservationId",
+        "label": "serology observation ID"
+      }
+    ],
+    "structure": null
+  },
+  "SerologyObservations.AntiDsDnaTrend": {
+    "table": "SerologyObservations",
+    "field": "AntiDsDnaTrend",
+    "kind": "formula",
+    "rule": "The serology observation\u0027s anti ds dna trend is determined by the following priority:\n1. the literal \u201CStable\u201D, if the prior anti ds dna IU is blank;\n2. the literal \u201CRising\u201D, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;\n3. the literal \u201CFalling\u201D, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;\n4. otherwise the literal \u201CStable\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "PriorAntiDsDnaIU",
+        "label": "prior anti ds dna IU"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "AntiDsDnaIU",
+        "label": "anti ds dna IU"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s anti ds dna trend is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CStable\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the prior anti ds dna IU is blank"
+          }
+        },
+        {
+          "value": "the literal \u201CRising\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the anti ds dna IU is greater than the prior anti ds dna IU times 1.25"
+          }
+        },
+        {
+          "value": "the literal \u201CFalling\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the anti ds dna IU is less than the prior anti ds dna IU times 0.8"
+          }
+        },
+        {
+          "value": "the literal \u201CStable\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.ComplementTrend": {
+    "table": "SerologyObservations",
+    "field": "ComplementTrend",
+    "kind": "formula",
+    "rule": "The serology observation\u0027s complement trend is determined by the following priority:\n1. the literal \u201CStable\u201D, if the prior c3 is blank;\n2. the literal \u201CFalling\u201D, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;\n3. the literal \u201CRising\u201D, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;\n4. otherwise the literal \u201CStable\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "PriorC3",
+        "label": "prior c3"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementC3",
+        "label": "complement c3"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementC4",
+        "label": "complement c4"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "PriorC4",
+        "label": "prior c4"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s complement trend is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CStable\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the prior c3 is blank"
+          }
+        },
+        {
+          "value": "the literal \u201CFalling\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85"
+          }
+        },
+        {
+          "value": "the literal \u201CRising\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15"
+          }
+        },
+        {
+          "value": "the literal \u201CStable\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.IsSignificantProteinuria": {
+    "table": "SerologyObservations",
+    "field": "IsSignificantProteinuria",
+    "kind": "formula",
+    "rule": "A serology observation is considered a significant proteinuria if the proteinuria g per day is at least 0.5.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "ProteinuriaGPerDay",
+        "label": "proteinuria g per day"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s is significant proteinuria is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the proteinuria g per day is at least 0.5"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.IsNephroticRangeProteinuria": {
+    "table": "SerologyObservations",
+    "field": "IsNephroticRangeProteinuria",
+    "kind": "formula",
+    "rule": "A serology observation is considered a nephrotic range proteinuria if the proteinuria g per day is at least 3.0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "ProteinuriaGPerDay",
+        "label": "proteinuria g per day"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s is nephrotic range proteinuria is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the proteinuria g per day is at least 3.0"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.SledaiRenalPoints": {
+    "table": "SerologyObservations",
+    "field": "SledaiRenalPoints",
+    "kind": "formula",
+    "rule": "The serology observation\u0027s sledai renal points is determined by the following priority:\n1. 8, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;\n2. 4, if the is significant proteinuria flag is set;\n3. otherwise 0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "IsNephroticRangeProteinuria",
+        "label": "is nephrotic range proteinuria"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "HasActiveUrinarySediment",
+        "label": "has active urinary sediment"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "IsSignificantProteinuria",
+        "label": "is significant proteinuria"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s sledai renal points is determined by the following priority:",
+      "cases": [
+        {
+          "value": "8",
+          "when": {
+            "kind": "any",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the is nephrotic range proteinuria flag is set"
+              },
+              {
+                "kind": "leaf",
+                "text": "the has active urinary sediment flag is set"
+              }
+            ]
+          }
+        },
+        {
+          "value": "4",
+          "when": {
+            "kind": "leaf",
+            "text": "the is significant proteinuria flag is set"
+          }
+        },
+        {
+          "value": "0",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.SledaiSerologyPoints": {
+    "table": "SerologyObservations",
+    "field": "SledaiSerologyPoints",
+    "kind": "formula",
+    "rule": "The serology observation\u0027s sledai serology points is determined by the following priority:\n1. 4, if all of the following hold: the complement trend is the literal \u201CFalling\u201D and the anti ds dna trend is the literal \u201CRising\u201D;\n2. 2, if at least one of the following holds: the complement trend is the literal \u201CFalling\u201D or the anti ds dna trend is the literal \u201CRising\u201D;\n3. otherwise 0.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementTrend",
+        "label": "complement trend"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "AntiDsDnaTrend",
+        "label": "anti ds dna trend"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s sledai serology points is determined by the following priority:",
+      "cases": [
+        {
+          "value": "4",
+          "when": {
+            "kind": "all",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the complement trend is the literal \u201CFalling\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the anti ds dna trend is the literal \u201CRising\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "2",
+          "when": {
+            "kind": "any",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the complement trend is the literal \u201CFalling\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the anti ds dna trend is the literal \u201CRising\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "0",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.SledaiScore": {
+    "table": "SerologyObservations",
+    "field": "SledaiScore",
+    "kind": "formula",
+    "rule": "A serology observation\u0027s sledai score is computed as the sledai renal points plus the sledai serology points.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "SledaiRenalPoints",
+        "label": "sledai renal points"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "SledaiSerologyPoints",
+        "label": "sledai serology points"
+      }
+    ],
+    "structure": null
+  },
+  "SerologyObservations.ProgressionStateKey": {
+    "table": "SerologyObservations",
+    "field": "ProgressionStateKey",
+    "kind": "formula",
+    "rule": "The serology observation\u0027s progression state key is determined by the following priority:\n1. the literal \u201CBiopsyIndicated\u201D, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;\n2. the literal \u201CRenalFlareRisk\u201D, if the proteinuria g per day is at least 1.0;\n3. the literal \u201CEarlyNephritis\u201D, if the is significant proteinuria flag is set;\n4. the literal \u201CSerologicActive\u201D, if all of the following hold: the anti ds dna trend is the literal \u201CRising\u201D and the complement trend is the literal \u201CFalling\u201D;\n5. otherwise the literal \u201CPresymptomaticAutoimmunity\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "IsNephroticRangeProteinuria",
+        "label": "is nephrotic range proteinuria"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "HasActiveUrinarySediment",
+        "label": "has active urinary sediment"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ProteinuriaGPerDay",
+        "label": "proteinuria g per day"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "IsSignificantProteinuria",
+        "label": "is significant proteinuria"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "AntiDsDnaTrend",
+        "label": "anti ds dna trend"
+      },
+      {
+        "table": "SerologyObservations",
+        "field": "ComplementTrend",
+        "label": "complement trend"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s progression state key is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CBiopsyIndicated\u201D",
+          "when": {
+            "kind": "any",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the is nephrotic range proteinuria flag is set"
+              },
+              {
+                "kind": "leaf",
+                "text": "the has active urinary sediment flag is set"
+              }
+            ]
+          }
+        },
+        {
+          "value": "the literal \u201CRenalFlareRisk\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the proteinuria g per day is at least 1.0"
+          }
+        },
+        {
+          "value": "the literal \u201CEarlyNephritis\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the is significant proteinuria flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CSerologicActive\u201D",
+          "when": {
+            "kind": "all",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the anti ds dna trend is the literal \u201CRising\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the complement trend is the literal \u201CFalling\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "the literal \u201CPresymptomaticAutoimmunity\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.ProgressionStateOrder": {
+    "table": "SerologyObservations",
+    "field": "ProgressionStateOrder",
+    "kind": "formula",
+    "rule": "The serology observation\u0027s progression state order is determined by the following priority:\n1. 5, if the progression state key is the literal \u201CBiopsyIndicated\u201D;\n2. 4, if the progression state key is the literal \u201CRenalFlareRisk\u201D;\n3. 3, if the progression state key is the literal \u201CEarlyNephritis\u201D;\n4. 2, if the progression state key is the literal \u201CSerologicActive\u201D;\n5. otherwise 1.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "ProgressionStateKey",
+        "label": "progression state key"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The serology observation\u0027s progression state order is determined by the following priority:",
+      "cases": [
+        {
+          "value": "5",
+          "when": {
+            "kind": "leaf",
+            "text": "the progression state key is the literal \u201CBiopsyIndicated\u201D"
+          }
+        },
+        {
+          "value": "4",
+          "when": {
+            "kind": "leaf",
+            "text": "the progression state key is the literal \u201CRenalFlareRisk\u201D"
+          }
+        },
+        {
+          "value": "3",
+          "when": {
+            "kind": "leaf",
+            "text": "the progression state key is the literal \u201CEarlyNephritis\u201D"
+          }
+        },
+        {
+          "value": "2",
+          "when": {
+            "kind": "leaf",
+            "text": "the progression state key is the literal \u201CSerologicActive\u201D"
+          }
+        },
+        {
+          "value": "1",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "SerologyObservations.RelativePath": {
+    "table": "SerologyObservations",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A serology observation\u0027s relative path is computed as the literal \u201C/admin/serology/\u201D, followed by the serology observation ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "SerologyObservations",
+        "field": "SerologyObservationId",
+        "label": "serology observation ID"
+      }
+    ],
+    "structure": null
+  },
+  "TherapyOptions.Name": {
+    "table": "TherapyOptions",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "A therapy option\u0027s name is computed as the therapy label.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "TherapyOptions",
+        "field": "TherapyLabel",
+        "label": "therapy label"
+      }
+    ],
+    "structure": null
+  },
+  "TherapyOptions.RelativePath": {
+    "table": "TherapyOptions",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "A therapy option\u0027s relative path is computed as the literal \u201C/admin/therapy-options/\u201D, followed by the therapy option ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "TherapyOptions",
+        "field": "TherapyOptionId",
+        "label": "therapy option ID"
+      }
+    ],
+    "structure": null
   }
 }, rulespeakObligations: [], rulespeakStructural: {
   "AutoimmuneDiseases": [
@@ -17971,5 +20916,12 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
   ],
   "DiseaseDomainConcepts": [
     "A disease domain concept **must** have a concept label and a modeling status."
+  ],
+  "SerologyObservations": [
+    "A serology observation **must** reference exactly one individual.",
+    "A serology observation **must** have an observed at and a sequence index."
+  ],
+  "TherapyOptions": [
+    "A therapy option **must** have a therapy label."
   ]
 } };

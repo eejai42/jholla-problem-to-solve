@@ -309,4 +309,12 @@ ALTER TABLE subject_state_instances DROP CONSTRAINT IF EXISTS fk_subject_state_i
 ALTER TABLE subject_state_instances ADD CONSTRAINT fk_subject_state_instances_entered_via_transition
   FOREIGN KEY (entered_via_transition) REFERENCES state_transitions (state_transition_id);
 
--- 81 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- SerologyObservations
+ALTER TABLE serology_observations DROP CONSTRAINT IF EXISTS fk_serology_observations_individual;
+ALTER TABLE serology_observations ADD CONSTRAINT fk_serology_observations_individual
+  FOREIGN KEY (individual) REFERENCES individuals (individual_id);
+ALTER TABLE serology_observations DROP CONSTRAINT IF EXISTS fk_serology_observations_prior_observation;
+ALTER TABLE serology_observations ADD CONSTRAINT fk_serology_observations_prior_observation
+  FOREIGN KEY (prior_observation) REFERENCES serology_observations (serology_observation_id);
+
+-- 83 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
