@@ -165,6 +165,9 @@ ALTER TABLE treatments ADD CONSTRAINT fk_treatments_individual
 ALTER TABLE treatments DROP CONSTRAINT IF EXISTS fk_treatments_autoimmune_disease;
 ALTER TABLE treatments ADD CONSTRAINT fk_treatments_autoimmune_disease
   FOREIGN KEY (autoimmune_disease) REFERENCES autoimmune_diseases (autoimmune_disease_id);
+ALTER TABLE treatments DROP CONSTRAINT IF EXISTS fk_treatments_targets_mechanism;
+ALTER TABLE treatments ADD CONSTRAINT fk_treatments_targets_mechanism
+  FOREIGN KEY (targets_mechanism) REFERENCES causal_mechanisms (causal_mechanism_id);
 
 -- ClinicalPhenotypes
 ALTER TABLE clinical_phenotypes DROP CONSTRAINT IF EXISTS fk_clinical_phenotypes_individual;
@@ -306,4 +309,4 @@ ALTER TABLE subject_state_instances DROP CONSTRAINT IF EXISTS fk_subject_state_i
 ALTER TABLE subject_state_instances ADD CONSTRAINT fk_subject_state_instances_entered_via_transition
   FOREIGN KEY (entered_via_transition) REFERENCES state_transitions (state_transition_id);
 
--- 80 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).
+-- 81 FK constraint(s) declared (off unless EFFORTLESS_ENFORCE_FKS=true).

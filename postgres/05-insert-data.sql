@@ -417,8 +417,26 @@ VALUES ('exp-context', 'Smoking pack-years (context only)', 'ind-a-reyes', 3, '2
 -- ----------------------------------------------------------------------------
 -- Treatments: Treatment histories capturing treatment-induced changes, treatment response, and adverse effects.
 -- ----------------------------------------------------------------------------
-INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
-VALUES ('tx-context', 'Anifrolumab (context only)', 'ind-a-reyes', 'sle', 'Partial', TRUE, FALSE, '2024-01-01') ON CONFLICT (treatment_id) DO NOTHING;
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-a', 'Anifrolumab (anti-IFNAR1)', 'ind-a-reyes', 'sle', 'cm-a', 'Partial', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-b', 'Anifrolumab (anti-IFNAR1)', 'ind-b-okafor', 'sle', 'cm-b', 'Complete', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-c', 'STAT4-pathway inhibitor (trial)', 'ind-c-chen', 'sle', 'cm-c', 'Partial', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-d', 'Anifrolumab (anti-IFNAR1)', 'ind-d-santos', 'sle', 'cm-d', 'Complete', TRUE, TRUE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-e', 'CTLA4-Ig (abatacept, off-target)', 'ind-e-mensah', 'sle', 'cm-e', 'None', FALSE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-f', 'Secukinumab (anti-IL-17)', 'ind-f-haidar', 'psa', 'cm-f', 'None', FALSE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
+
+INSERT INTO treatments (treatment_id, treatment_label, individual, autoimmune_disease, targets_mechanism, treatment_response, has_treatment_induced_change, has_adverse_effect, start_date)
+VALUES ('tx-g', 'Secukinumab (anti-IL-17)', 'ind-g-lin', 'psa', 'cm-g', 'Partial', TRUE, FALSE, '2024-04-01') ON CONFLICT (treatment_id) DO NOTHING;
 
 -- ----------------------------------------------------------------------------
 -- ClinicalPhenotypes: Clinical phenotypes including severity, immune dysfunction markers, and feedback from disease progression.
@@ -820,10 +838,10 @@ INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, ru
 VALUES ('loop-3', '3', '3-panel witness — provenance back into the case text', 'Show why each gate passed/failed one level down; consider installing the explainer-DAG transpiler.', 'done', 'rule: install explainer-dag', 'state: Loop 3 - gate explainability', 4, '[DONE]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
 INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
-VALUES ('loop-4', '4', 'Second prediction type (severity)', 'Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.', 'next', 'rule: severity prediction derived from clinical-activity evidence', 'state: Loop 4 - severity prediction', 5, '[NEXT]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
+VALUES ('loop-4', '4', 'Second prediction type (severity)', 'Add a derived severity prediction grounded in ClinicalPhenotypes.SeverityScore; pull one context table onto the load-bearing path.', 'done', 'rule: derive a severity prediction (IsSeverityActionable) chained to the onset gates', 'state: Loop 4 - severity prediction (second prediction type) green', 5, '[DONE]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
 INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
-VALUES ('loop-5', '5', 'Treatment-response prediction', 'Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.', 'planned', 'rule: treatment-response prediction', 'state: Loop 5 - treatment-response prediction', 6, '[PLANNED]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
+VALUES ('loop-5', '5', 'Treatment-response prediction', 'Derive a treatment-response prediction from Treatments + mechanism match; surface in the panel.', 'next', 'rule: treatment-response prediction', 'state: Loop 5 - treatment-response prediction', 6, '[NEXT]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;
 
 INSERT INTO leopold_loops (leopold_loop_id, loop_number, title, goal, status, rule_commit_msg, state_commit_msg, sort_order, status_badge, status_line)
 VALUES ('loop-llm-intake', '6', 'LLM intake clerk + synthetic lab', 'Wire the LLM to read a NL case and write leaf observations (intake + synthetic-but-transparent test results), with three-panel witness and per-fact provenance.', 'backlog', 'rule (if any) for provenance fields', 'state: Loop 6 - LLM intake clerk, everything-is-a-knob', 7, '[BACKLOG]', '') ON CONFLICT (leopold_loop_id) DO NOTHING;

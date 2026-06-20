@@ -1,5 +1,5 @@
 {
-  "applied_at": "2026-06-20T02:52:11Z",
+  "applied_at": "2026-06-20T03:34:05Z",
   "target": "postgresql://postgres@localhost:5432/causal_autoimmune",
   "files_run": ["00-bootstrap.sql","01-drop-and-create-tables.sql","01b-customize-schema.sql","02-create-functions.sql","02b-customize-functions.sql","03-create-views.sql","03b-customize-views.sql","04-create-policies.sql","04b-customize-policies.sql","05-insert-data.sql","05b-customize-data.sql"],
   "files_skipped": ["99-fk-constraints.sql"]

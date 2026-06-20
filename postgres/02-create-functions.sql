@@ -72,6 +72,15 @@ RETURNS TEXT AS $$
   SELECT (SELECT autoimmune_disease FROM treatments WHERE treatment_id = p_treatment_id);
 $$ LANGUAGE sql STABLE;
 
+-- get_treatments_targets_mechanism
+-- Helper function: Get TargetsMechanism from Treatments by TreatmentId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_treatments_targets_mechanism(p_treatment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT targets_mechanism FROM treatments WHERE treatment_id = p_treatment_id);
+$$ LANGUAGE sql STABLE;
+
 -- get_treatments_treatment_response
 -- Helper function: Get TreatmentResponse from Treatments by TreatmentId
 -- Used for join-free cross-table references in aggregations
@@ -1130,6 +1139,26 @@ RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (calc_individuals_count_high_severity_phenotypes(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
 $$ LANGUAGE sql STABLE;
 
+-- calc_individuals_count_predicted_treatment_responses
+-- Field: Individuals.CountPredictedTreatmentResponses
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_count_predicted_treatment_responses(p_individual_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM treatments WHERE individual = (SELECT NULLIF(individual_id, '') FROM individuals WHERE individual_id = p_individual_id) AND calc_treatments_is_treatment_response_predicted(treatment_id) = TRUE))::integer;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_has_predicted_treatment_response
+-- Field: Individuals.HasPredictedTreatmentResponse
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_has_predicted_treatment_response(p_individual_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_individuals_count_predicted_treatment_responses(p_individual_id))::NUMERIC >= 1 THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
 -- calc_genomic_variants_parent_path
 -- Field: GenomicVariants.ParentPath
 -- Type: lookup | DataType: string | Returns: TEXT
@@ -1681,6 +1710,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT disease_label::text FROM autoimmune_diseases WHERE autoimmune_disease_id = (SELECT autoimmune_disease FROM treatments WHERE treatment_id = p_treatment_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_treatments_is_mechanism_matched
+-- Field: Treatments.IsMechanismMatched
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: IsCausalArchitectureNode from related CausalMechanisms
+
+
+CREATE OR REPLACE FUNCTION calc_treatments_is_mechanism_matched(p_treatment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_causal_mechanisms_is_causal_architecture_node((SELECT targets_mechanism FROM treatments WHERE treatment_id = p_treatment_id));
+$$ LANGUAGE sql STABLE;
+
 -- calc_treatments_name
 -- Field: Treatments.Name
 -- Type: calculated | DataType: string | Returns: TEXT
@@ -1709,6 +1749,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_treatments_is_effective_treatment(p_treatment_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (CASE WHEN (((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Complete' OR (SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Partial') AND NOT (COALESCE((SELECT has_adverse_effect FROM treatments WHERE treatment_id = p_treatment_id), FALSE))) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatments_is_treatment_response_predicted
+-- Field: Treatments.IsTreatmentResponsePredicted
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_treatments_is_treatment_response_predicted(p_treatment_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_treatments_is_effective_treatment(p_treatment_id) AND calc_treatments_is_mechanism_matched(p_treatment_id)) THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_treatments_treatment_response_deciding_factor
+-- Field: Treatments.TreatmentResponseDecidingFactor
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_treatments_treatment_response_deciding_factor(p_treatment_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_treatments_is_treatment_response_predicted(p_treatment_id) THEN ('EffectiveOnConfirmedMechanism')::text ELSE (CASE WHEN NOT (calc_treatments_is_mechanism_matched(p_treatment_id)) THEN ('NoConfirmedMechanism')::text ELSE (CASE WHEN COALESCE((SELECT has_adverse_effect FROM treatments WHERE treatment_id = p_treatment_id), FALSE) THEN ('AdverseEffect')::text ELSE (CASE WHEN ((SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'None' OR (SELECT NULLIF(treatment_response, '') FROM treatments WHERE treatment_id = p_treatment_id) = 'Adverse') THEN ('NoResponse')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_clinical_phenotypes_parent_path
@@ -2232,6 +2292,17 @@ RETURNS BOOLEAN AS $$
   SELECT calc_individuals_has_high_severity_phenotype((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_individual_predictions_individual_has_predicted_treatment_
+-- Field: IndividualPredictions.IndividualHasPredictedTreatmentResponse
+-- Type: lookup | DataType: boolean | Returns: BOOLEAN
+-- Lookup: HasPredictedTreatmentResponse from related Individuals
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_individual_has_predicted_treatment_(p_individual_prediction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT calc_individuals_has_predicted_treatment_response((SELECT individual FROM individual_predictions WHERE individual_prediction_id = p_individual_prediction_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_calibration_bins_bin_label
 -- Helper function: Get BinLabel from CalibrationBins by CalibrationBinId
 -- Used for join-free cross-table references in aggregations
@@ -2494,6 +2565,26 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_individual_predictions_severity_deciding_factor(p_individual_prediction_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN calc_individual_predictions_is_severity_actionable(p_individual_prediction_id) THEN ('HighSeverityOnConfirmedMechanism')::text ELSE (CASE WHEN NOT ((calc_individual_predictions_individual_has_high_severity_phenot(p_individual_prediction_id) = 'true')) THEN ('NotHighSeverity')::text ELSE (CASE WHEN NOT (calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id)) THEN ('NoValidatedMechanism')::text ELSE (CASE WHEN calc_individual_predictions_has_spurious_correlation_flag(p_individual_prediction_id) THEN ('SpuriousFlag')::text ELSE ('Undetermined')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_is_treatment_response_actionable
+-- Field: IndividualPredictions.IsTreatmentResponseActionable
+-- Type: calculated | DataType: boolean | Returns: BOOLEAN
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_is_treatment_response_actionable(p_individual_prediction_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (CASE WHEN (calc_individual_predictions_individual_has_predicted_treatment_(p_individual_prediction_id) = 'true') THEN TRUE ELSE FALSE END)::boolean;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individual_predictions_treatment_response_deciding_factor
+-- Field: IndividualPredictions.TreatmentResponseDecidingFactor
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individual_predictions_treatment_response_deciding_factor(p_individual_prediction_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CASE WHEN calc_individual_predictions_is_treatment_response_actionable(p_individual_prediction_id) THEN ('EffectiveOnConfirmedMechanism')::text ELSE (CASE WHEN calc_individual_predictions_rests_on_confirmed_mechanism(p_individual_prediction_id) THEN ('NoEffectiveTreatmentOnMechanism')::text ELSE ('NoConfirmedMechanism')::text END)::text END)::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_individual_predictions_is_clinically_actionable

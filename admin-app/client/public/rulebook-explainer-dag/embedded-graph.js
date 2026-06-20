@@ -964,6 +964,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=IF({{CountHighSeverityPhenotypes}} >= 1, TRUE(), FALSE())"
       },
       {
+        "name": "CountPredictedTreatmentResponses",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "Description": "Count of this individual's treatments predicted to respond (effective ∧ mechanism-matched).",
+        "formula": "=COUNTIFS(Treatments!{{Individual}}, {{IndividualId}}, Treatments!{{IsTreatmentResponsePredicted}}, TRUE())"
+      },
+      {
+        "name": "HasPredictedTreatmentResponse",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "True when the individual has at least one treatment predicted to respond.",
+        "formula": "=IF({{CountPredictedTreatmentResponses}} >= 1, TRUE(), FALSE())"
+      },
+      {
         "name": "GenomicVariants",
         "datatype": "string",
         "type": "relationship",
@@ -1080,7 +1096,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CaseNarrative": "Ana Reyes, a 34-year-old woman of European ancestry (cohort is in the training set), presents with photosensitive malar rash, arthralgia, and a positive ANA, raising concern for SLE onset. Family history is notable for lupus in a maternal aunt. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), and allele-specific expression is present at the locus. Functional workup of the IRF5 -> type-I interferon -> SLE-risk edge returns a cis-eQTL in blood RNA-seq with effect 0.91 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.73 (SE 0.19), and a pQTL in blood proteomics with effect 0.66 (SE 0.20) — three assays across two omics modalities, all ancestry-PC and batch adjusted. The edge replicates with a positive effect sign in an East Asian cohort (p=0.004) and in an African cohort (p=0.013), while a European replication is directionally consistent but not significant (p=0.18). Two ancestry-permutation negative controls collapse to the null (permutation effect 0.012 and 0.028, well inside the +/-0.1 null band). The IL-interferon target is druggable (anifrolumab, anti-IFNAR1), giving a perturbable intervention target. For SLE-onset risk, the model's reliability bins each carry coverage of 29-34 held-out individuals, with observed event rates tracking predicted bands closely (e.g. 0.09 observed at the 0.1 band, 0.88 at the 0.9 band). No cryptic-relatedness or assortative-mating leakage was flagged.",
         "MaxSeverityScore": 9,
         "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true
       },
       {
         "IndividualId": "ind-b-okafor",
@@ -1118,7 +1136,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CaseNarrative": "Bili Okafor, a 41-year-old man of European ancestry (in the training set), presents with serositis, fatigue, and a high-titre ANA suggestive of SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is supported by a cis-eQTL in blood RNA-seq with effect 0.84 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.79 (SE 0.20), and a pQTL in blood proteomics with effect 0.58 (SE 0.20), spanning two omics modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.006) and an African cohort (p=0.017), with a non-significant European replication (p=0.22). Two ancestry-permutation controls collapse to the null (permutation effect 0.015 and 0.024 inside +/-0.1). The interferon target is druggable. The mechanism is as solid as Ana's — but the calibration substrate is thin: this site only accrued coverage of 7-14 held-out individuals per reliability bin, far below the 20-count floor needed to trust the predicted-vs-observed match. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 8,
         "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true
       },
       {
         "IndividualId": "ind-c-chen",
@@ -1156,7 +1176,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CaseNarrative": "Chen Wei, a 47-year-old woman of East Asian ancestry (in the training set), presents with arthritis, oral ulcers, and anti-dsDNA positivity concerning for SLE onset. Genotyping finds the STAT4 regulatory variant rs7574865 at an allele frequency of 0.008 (rare), with allele-specific expression present. The STAT4 -> Th1/IFN -> SLE-risk edge shows a cis-eQTL in blood RNA-seq with effect 1.02 (SE 0.23), a caQTL in blood ATAC-seq with effect 0.61 (SE 0.20), and a pQTL in blood proteomics with effect 0.55 (SE 0.21), across two modalities, ancestry-PC and batch adjusted. Replication is troubling: the effect is positive in an East Asian cohort (p=0.009) but the SIGN FLIPS to negative in an African cohort (p=0.024), and the European replication is non-significant (p=0.27) — only one concordant cohort. Worse, while one ancestry-permutation control collapses (permutation effect 0.013), a second negative control does NOT collapse: its permutation effect is 0.46, far outside the +/-0.1 null band, so the signal is not separable from permuted noise. Reliability bins carry coverage of 28-32 per bin. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 9,
         "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false
       },
       {
         "IndividualId": "ind-d-santos",
@@ -1194,7 +1216,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CaseNarrative": "Diego Santos, a 29-year-old man of European ancestry (in the training set), presents with nephritis and a malar rash concerning for SLE onset. Genotyping finds the IRF5 regulatory variant rs2004640 at an allele frequency of 0.006 (rare), with allele-specific expression present. The IRF5 -> type-I interferon -> SLE-risk edge is fully supported: a cis-eQTL in blood RNA-seq with effect 0.88 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.95 (SE 0.21), and a pQTL in blood proteomics with effect 0.62 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. It replicates positive in an East Asian cohort (p=0.003) and an African cohort (p=0.019), with a non-significant European replication (p=0.16). Two ancestry-permutation controls collapse to the null (permutation effect 0.009 and 0.031 inside +/-0.1). The interferon target is druggable, and reliability bins carry coverage of 30-36 per bin. However, sample QC raised a cryptic-relatedness / assortative-mating flag for this participant: kinship estimates indicate undeclared relatives inside the cohort, so the prediction may be confounded by leakage rather than the mechanism alone.",
         "MaxSeverityScore": 8,
         "CountHighSeverityPhenotypes": 1,
-        "HasHighSeverityPhenotype": true
+        "HasHighSeverityPhenotype": true,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false
       },
       {
         "IndividualId": "ind-e-mensah",
@@ -1232,7 +1256,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CaseNarrative": "Esi Mensah, a 38-year-old woman of African ancestry (in the training set), presents with arthralgia and cytopenias concerning for SLE onset. Genotyping finds the CTLA4 enhancer variant rs3087243 at an allele frequency of 0.007 (rare), with allele-specific expression present. The CTLA4 -> T-cell costimulation -> SLE-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.79 (SE 0.21), a caQTL in blood ATAC-seq with effect 0.71 (SE 0.20), and a pQTL in blood proteomics with effect 0.41 (SE 0.20), across two modalities, ancestry-PC and batch adjusted. It replicates positive in an East Asian cohort (p=0.007) and a European cohort (p=0.021), with a non-significant African replication (p=0.19). Two ancestry-permutation controls collapse to the null (permutation effect 0.011 and 0.026 inside +/-0.1), and reliability bins carry coverage of 27-33 per bin. The gap is experimental: no perturbable intervention target has been mapped for this edge — there is no agent or assay that could knock the costimulation node down to test it, so the mechanism is not experimentally falsifiable as stated.",
         "MaxSeverityScore": 3,
         "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false
       },
       {
         "IndividualId": "ind-f-haidar",
@@ -1270,7 +1296,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CaseNarrative": "Faisal Haidar, a 31-year-old man of Indigenous American ancestry — an ancestry deliberately HELD OUT of the training set — presents with dactylitis, enthesitis, and nail pitting concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 1.07 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.83 (SE 0.21), and a pQTL in blood proteomics with effect 0.74 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.008 and 0.022 inside +/-0.1), and reliability bins carry coverage of 30-35 per bin. But every replication of this edge was run in an Indigenous American cohort: p=0.005, p=0.015, and p=0.034, all positive, all in the SAME ancestry. There is no cohort in a DIFFERENT ancestry confirming the effect — so for a patient whose ancestry is absent from training, nothing demonstrates the mechanism transports. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 2,
         "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 0,
+        "HasPredictedTreatmentResponse": false
       },
       {
         "IndividualId": "ind-g-lin",
@@ -1308,7 +1336,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "CaseNarrative": "Grace Lin, a 36-year-old woman of Indigenous American ancestry — again an ancestry HELD OUT of the training set — presents with plaque psoriasis and asymmetric oligoarthritis concerning for psoriatic-arthritis (PsA) onset. Genotyping finds the IL23R regulatory variant rs11209026 at an allele frequency of 0.009 (rare), with allele-specific expression present. The IL23R -> IL-17 axis -> PsA-risk edge is well supported: a cis-eQTL in blood RNA-seq with effect 0.96 (SE 0.20), a caQTL in blood ATAC-seq with effect 0.88 (SE 0.21), and a pQTL in blood proteomics with effect 0.69 (SE 0.20), across two modalities and adjusted for ancestry PCs and batch. The IL-17 target is druggable (secukinumab). Two ancestry-permutation controls collapse to the null (permutation effect 0.007 and 0.019 inside +/-0.1), and reliability bins carry coverage of 30-36 per bin. Crucially — and unlike Faisal — this edge was MEASURED to replicate ACROSS ancestries: positive in a European cohort (p=0.004), positive in an East Asian cohort (p=0.012), and positive in an Indigenous American cohort (p=0.029). Because the mechanism demonstrably holds in ancestries other than the held-out one, the prediction transports. No cryptic-relatedness leakage was flagged.",
         "MaxSeverityScore": 6,
         "CountHighSeverityPhenotypes": 0,
-        "HasHighSeverityPhenotype": false
+        "HasHighSeverityPhenotype": false,
+        "CountPredictedTreatmentResponses": 1,
+        "HasPredictedTreatmentResponse": true
       }
     ]
   },
@@ -3631,6 +3661,13 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "Description": "Target autoimmune disease."
       },
       {
+        "name": "TargetsMechanism",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "FK to the CausalMechanism this treatment acts on (the drug's target mechanism). Raw leaf: which mechanism the clinician/LLM says this therapy targets."
+      },
+      {
         "name": "TreatmentResponse",
         "datatype": "string",
         "type": "raw",
@@ -3700,23 +3737,165 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "True for Complete or Partial response without adverse effects.",
         "formula": "=IF(AND(OR({{TreatmentResponse}} = \"Complete\", {{TreatmentResponse}} = \"Partial\"), NOT({{HasAdverseEffect}})), TRUE(), FALSE())"
+      },
+      {
+        "name": "IsMechanismMatched",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "True when the treatment's target mechanism is a CONFIRMED causal-architecture node (empty-guarded). This is the 'mechanism match'.",
+        "formula": "=IF({{TargetsMechanism}} = \"\", FALSE(), INDEX(CausalMechanisms!{{IsCausalArchitectureNode}}, MATCH({{TargetsMechanism}}, CausalMechanisms!{{CausalMechanismId}}, 0)))"
+      },
+      {
+        "name": "IsTreatmentResponsePredicted",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: the treatment is effective AND targets a confirmed mechanism. A drug aimed at a debunked mechanism, or one that didn't respond / was adverse, is NOT predicted.",
+        "formula": "=IF(AND({{IsEffectiveTreatment}}, {{IsMechanismMatched}}), TRUE(), FALSE())"
+      },
+      {
+        "name": "TreatmentResponseDecidingFactor",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Why response is/ isn't predicted — the single deciding reason.",
+        "formula": "=IF({{IsTreatmentResponsePredicted}}, \"EffectiveOnConfirmedMechanism\", IF(NOT({{IsMechanismMatched}}), \"NoConfirmedMechanism\", IF({{HasAdverseEffect}}, \"AdverseEffect\", IF(OR({{TreatmentResponse}} = \"None\", {{TreatmentResponse}} = \"Adverse\"), \"NoResponse\", \"Undetermined\"))))"
       }
     ],
     "data": [
       {
-        "TreatmentId": "tx-context",
-        "TreatmentLabel": "Anifrolumab (context only)",
+        "TreatmentId": "tx-a",
+        "TreatmentLabel": "Anifrolumab (anti-IFNAR1)",
         "Individual": "ind-a-reyes",
         "AutoimmuneDisease": "sle",
+        "TargetsMechanism": "cm-a",
         "TreatmentResponse": "Partial",
         "HasTreatmentInducedChange": true,
         "HasAdverseEffect": false,
-        "StartDate": "2024-01-01",
-        "Name": "Anifrolumab (context only)",
+        "StartDate": "2024-04-01",
+        "Name": "Anifrolumab (anti-IFNAR1)",
         "ParentPath": "/intake/new-patient/reyes-ana",
-        "RelativePath": "/intake/new-patient/reyes-ana/treatments/tx-context",
+        "RelativePath": "/intake/new-patient/reyes-ana/treatments/tx-a",
         "AutoimmuneDiseaseLabel": "Systemic Lupus Erythematosus",
-        "IsEffectiveTreatment": true
+        "IsEffectiveTreatment": true,
+        "IsMechanismMatched": true,
+        "IsTreatmentResponsePredicted": true,
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
+      },
+      {
+        "TreatmentId": "tx-b",
+        "TreatmentLabel": "Anifrolumab (anti-IFNAR1)",
+        "Individual": "ind-b-okafor",
+        "AutoimmuneDisease": "sle",
+        "TargetsMechanism": "cm-b",
+        "TreatmentResponse": "Complete",
+        "HasTreatmentInducedChange": true,
+        "HasAdverseEffect": false,
+        "StartDate": "2024-04-01",
+        "Name": "Anifrolumab (anti-IFNAR1)",
+        "ParentPath": "/intake/new-patient/okafor-bili",
+        "RelativePath": "/intake/new-patient/okafor-bili/treatments/tx-b",
+        "AutoimmuneDiseaseLabel": "Systemic Lupus Erythematosus",
+        "IsEffectiveTreatment": true,
+        "IsMechanismMatched": true,
+        "IsTreatmentResponsePredicted": true,
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
+      },
+      {
+        "TreatmentId": "tx-c",
+        "TreatmentLabel": "STAT4-pathway inhibitor (trial)",
+        "Individual": "ind-c-chen",
+        "AutoimmuneDisease": "sle",
+        "TargetsMechanism": "cm-c",
+        "TreatmentResponse": "Partial",
+        "HasTreatmentInducedChange": true,
+        "HasAdverseEffect": false,
+        "StartDate": "2024-04-01",
+        "Name": "STAT4-pathway inhibitor (trial)",
+        "ParentPath": "/intake/new-patient/wei-chen",
+        "RelativePath": "/intake/new-patient/wei-chen/treatments/tx-c",
+        "AutoimmuneDiseaseLabel": "Systemic Lupus Erythematosus",
+        "IsEffectiveTreatment": true,
+        "IsMechanismMatched": false,
+        "IsTreatmentResponsePredicted": false,
+        "TreatmentResponseDecidingFactor": "NoConfirmedMechanism"
+      },
+      {
+        "TreatmentId": "tx-d",
+        "TreatmentLabel": "Anifrolumab (anti-IFNAR1)",
+        "Individual": "ind-d-santos",
+        "AutoimmuneDisease": "sle",
+        "TargetsMechanism": "cm-d",
+        "TreatmentResponse": "Complete",
+        "HasTreatmentInducedChange": true,
+        "HasAdverseEffect": true,
+        "StartDate": "2024-04-01",
+        "Name": "Anifrolumab (anti-IFNAR1)",
+        "ParentPath": "/intake/new-patient/santos-diego",
+        "RelativePath": "/intake/new-patient/santos-diego/treatments/tx-d",
+        "AutoimmuneDiseaseLabel": "Systemic Lupus Erythematosus",
+        "IsEffectiveTreatment": false,
+        "IsMechanismMatched": true,
+        "IsTreatmentResponsePredicted": false,
+        "TreatmentResponseDecidingFactor": "AdverseEffect"
+      },
+      {
+        "TreatmentId": "tx-e",
+        "TreatmentLabel": "CTLA4-Ig (abatacept, off-target)",
+        "Individual": "ind-e-mensah",
+        "AutoimmuneDisease": "sle",
+        "TargetsMechanism": "cm-e",
+        "TreatmentResponse": "None",
+        "HasTreatmentInducedChange": false,
+        "HasAdverseEffect": false,
+        "StartDate": "2024-04-01",
+        "Name": "CTLA4-Ig (abatacept, off-target)",
+        "ParentPath": "/intake/new-patient/mensah-esi",
+        "RelativePath": "/intake/new-patient/mensah-esi/treatments/tx-e",
+        "AutoimmuneDiseaseLabel": "Systemic Lupus Erythematosus",
+        "IsEffectiveTreatment": false,
+        "IsMechanismMatched": false,
+        "IsTreatmentResponsePredicted": false,
+        "TreatmentResponseDecidingFactor": "NoConfirmedMechanism"
+      },
+      {
+        "TreatmentId": "tx-f",
+        "TreatmentLabel": "Secukinumab (anti-IL-17)",
+        "Individual": "ind-f-haidar",
+        "AutoimmuneDisease": "psa",
+        "TargetsMechanism": "cm-f",
+        "TreatmentResponse": "None",
+        "HasTreatmentInducedChange": false,
+        "HasAdverseEffect": false,
+        "StartDate": "2024-04-01",
+        "Name": "Secukinumab (anti-IL-17)",
+        "ParentPath": "/intake/new-patient/haidar-faisal",
+        "RelativePath": "/intake/new-patient/haidar-faisal/treatments/tx-f",
+        "AutoimmuneDiseaseLabel": "Psoriatic Arthritis",
+        "IsEffectiveTreatment": false,
+        "IsMechanismMatched": true,
+        "IsTreatmentResponsePredicted": false,
+        "TreatmentResponseDecidingFactor": "NoResponse"
+      },
+      {
+        "TreatmentId": "tx-g",
+        "TreatmentLabel": "Secukinumab (anti-IL-17)",
+        "Individual": "ind-g-lin",
+        "AutoimmuneDisease": "psa",
+        "TargetsMechanism": "cm-g",
+        "TreatmentResponse": "Partial",
+        "HasTreatmentInducedChange": true,
+        "HasAdverseEffect": false,
+        "StartDate": "2024-04-01",
+        "Name": "Secukinumab (anti-IL-17)",
+        "ParentPath": "/intake/new-patient/lin-grace",
+        "RelativePath": "/intake/new-patient/lin-grace/treatments/tx-g",
+        "AutoimmuneDiseaseLabel": "Psoriatic Arthritis",
+        "IsEffectiveTreatment": true,
+        "IsMechanismMatched": true,
+        "IsTreatmentResponsePredicted": true,
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
       }
     ]
   },
@@ -4804,6 +4983,14 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=IF({{Individual}} = \"\", FALSE(), INDEX(Individuals!{{HasHighSeverityPhenotype}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
       },
       {
+        "name": "IndividualHasPredictedTreatmentResponse",
+        "datatype": "boolean",
+        "type": "lookup",
+        "nullable": true,
+        "Description": "Whether this individual has a treatment predicted to respond (empty-guarded).",
+        "formula": "=IF({{Individual}} = \"\", FALSE(), INDEX(Individuals!{{HasPredictedTreatmentResponse}}, MATCH({{Individual}}, Individuals!{{IndividualId}}, 0)))"
+      },
+      {
         "name": "PredictedValue",
         "datatype": "number",
         "type": "calculated",
@@ -4956,6 +5143,22 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "formula": "=IF({{IsSeverityActionable}}, \"HighSeverityOnConfirmedMechanism\", IF(NOT({{IndividualHasHighSeverityPhenotype}}), \"NotHighSeverity\", IF(NOT({{RestsOnConfirmedMechanism}}), \"NoValidatedMechanism\", IF({{HasSpuriousCorrelationFlag}}, \"SpuriousFlag\", \"Undetermined\"))))"
       },
       {
+        "name": "IsTreatmentResponseActionable",
+        "datatype": "boolean",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Derived: the individual has a treatment predicted to respond (effective therapy on a confirmed mechanism). The third prediction type — independent of onset/severity.",
+        "formula": "=IF({{IndividualHasPredictedTreatmentResponse}}, TRUE(), FALSE())"
+      },
+      {
+        "name": "TreatmentResponseDecidingFactor",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Why treatment-response is/ isn't actionable for this individual.",
+        "formula": "=IF({{IsTreatmentResponseActionable}}, \"EffectiveOnConfirmedMechanism\", IF({{RestsOnConfirmedMechanism}}, \"NoEffectiveTreatmentOnMechanism\", \"NoConfirmedMechanism\"))"
+      },
+      {
         "name": "IsClinicallyActionable",
         "datatype": "boolean",
         "type": "calculated",
@@ -5028,7 +5231,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "PredictedSeverityValue": 9,
         "SeverityTier": "Severe",
         "IsSeverityActionable": true,
-        "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism"
+        "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism",
+        "IndividualHasPredictedTreatmentResponse": true,
+        "IsTreatmentResponseActionable": true,
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
       },
       {
         "IndividualPredictionId": "pred-b",
@@ -5069,7 +5275,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "PredictedSeverityValue": 8,
         "SeverityTier": "Severe",
         "IsSeverityActionable": true,
-        "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism"
+        "SeverityDecidingFactor": "HighSeverityOnConfirmedMechanism",
+        "IndividualHasPredictedTreatmentResponse": true,
+        "IsTreatmentResponseActionable": true,
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
       },
       {
         "IndividualPredictionId": "pred-c",
@@ -5110,7 +5319,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "PredictedSeverityValue": 9,
         "SeverityTier": "Severe",
         "IsSeverityActionable": false,
-        "SeverityDecidingFactor": "NoValidatedMechanism"
+        "SeverityDecidingFactor": "NoValidatedMechanism",
+        "IndividualHasPredictedTreatmentResponse": false,
+        "IsTreatmentResponseActionable": false,
+        "TreatmentResponseDecidingFactor": "NoConfirmedMechanism"
       },
       {
         "IndividualPredictionId": "pred-d",
@@ -5151,7 +5363,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "PredictedSeverityValue": 8,
         "SeverityTier": "Severe",
         "IsSeverityActionable": false,
-        "SeverityDecidingFactor": "SpuriousFlag"
+        "SeverityDecidingFactor": "SpuriousFlag",
+        "IndividualHasPredictedTreatmentResponse": false,
+        "IsTreatmentResponseActionable": false,
+        "TreatmentResponseDecidingFactor": "NoEffectiveTreatmentOnMechanism"
       },
       {
         "IndividualPredictionId": "pred-e",
@@ -5192,7 +5407,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "PredictedSeverityValue": 3,
         "SeverityTier": "Mild",
         "IsSeverityActionable": false,
-        "SeverityDecidingFactor": "NotHighSeverity"
+        "SeverityDecidingFactor": "NotHighSeverity",
+        "IndividualHasPredictedTreatmentResponse": false,
+        "IsTreatmentResponseActionable": false,
+        "TreatmentResponseDecidingFactor": "NoConfirmedMechanism"
       },
       {
         "IndividualPredictionId": "pred-f",
@@ -5233,7 +5451,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "PredictedSeverityValue": 2,
         "SeverityTier": "Mild",
         "IsSeverityActionable": false,
-        "SeverityDecidingFactor": "NotHighSeverity"
+        "SeverityDecidingFactor": "NotHighSeverity",
+        "IndividualHasPredictedTreatmentResponse": false,
+        "IsTreatmentResponseActionable": false,
+        "TreatmentResponseDecidingFactor": "NoEffectiveTreatmentOnMechanism"
       },
       {
         "IndividualPredictionId": "pred-g",
@@ -5274,7 +5495,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "PredictedSeverityValue": 6,
         "SeverityTier": "Moderate",
         "IsSeverityActionable": false,
-        "SeverityDecidingFactor": "NotHighSeverity"
+        "SeverityDecidingFactor": "NotHighSeverity",
+        "IndividualHasPredictedTreatmentResponse": true,
+        "IsTreatmentResponseActionable": true,
+        "TreatmentResponseDecidingFactor": "EffectiveOnConfirmedMechanism"
       }
     ]
   },
@@ -11697,6 +11921,63 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "children": null
     }
   },
+  "Individuals.CountPredictedTreatmentResponses": {
+    "table": "Individuals",
+    "field": "CountPredictedTreatmentResponses",
+    "kind": "rollup",
+    "rule": "An individual\u0027s count predicted treatment responses is the number of the individual\u0027s treatments that are treatment response predicted.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Treatments",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      },
+      {
+        "table": "Treatments",
+        "field": "IsTreatmentResponsePredicted",
+        "label": "is treatment response predicted"
+      }
+    ],
+    "structure": null
+  },
+  "Individuals.HasPredictedTreatmentResponse": {
+    "table": "Individuals",
+    "field": "HasPredictedTreatmentResponse",
+    "kind": "formula",
+    "rule": "An individual is considered to have a predicted treatment response if the count predicted treatment responses is at least 1.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Individuals",
+        "field": "CountPredictedTreatmentResponses",
+        "label": "count predicted treatment responses"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual\u0027s has predicted treatment response is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the count predicted treatment responses is at least 1"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
   "GenomicVariants.Name": {
     "table": "GenomicVariants",
     "field": "Name",
@@ -12923,6 +13204,171 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         },
         {
           "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Treatments.IsMechanismMatched": {
+    "table": "Treatments",
+    "field": "IsMechanismMatched",
+    "kind": "lookup",
+    "rule": "A treatment\u0027s is mechanism matched is false if the targets mechanism is blank, otherwise the is causal architecture node of the treatment\u0027s targets mechanism.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Treatments",
+        "field": "TargetsMechanism",
+        "label": "targets mechanism"
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "IsCausalArchitectureNode",
+        "label": "is causal architecture node"
+      },
+      {
+        "table": "CausalMechanisms",
+        "field": "CausalMechanismId",
+        "label": "causal mechanism ID"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The treatment\u0027s is mechanism matched is determined by the following priority:",
+      "cases": [
+        {
+          "value": "false",
+          "when": {
+            "kind": "leaf",
+            "text": "the targets mechanism is blank"
+          }
+        },
+        {
+          "value": "the is causal architecture node of the treatment\u0027s targets mechanism",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Treatments.IsTreatmentResponsePredicted": {
+    "table": "Treatments",
+    "field": "IsTreatmentResponsePredicted",
+    "kind": "formula",
+    "rule": "A treatment is considered treatment response predicted if all of the following hold: the is effective treatment flag is set and the is mechanism matched flag is set.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Treatments",
+        "field": "IsEffectiveTreatment",
+        "label": "is effective treatment"
+      },
+      {
+        "table": "Treatments",
+        "field": "IsMechanismMatched",
+        "label": "is mechanism matched"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The treatment\u0027s is treatment response predicted is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "all",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the is effective treatment flag is set"
+              },
+              {
+                "kind": "leaf",
+                "text": "the is mechanism matched flag is set"
+              }
+            ]
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "Treatments.TreatmentResponseDecidingFactor": {
+    "table": "Treatments",
+    "field": "TreatmentResponseDecidingFactor",
+    "kind": "formula",
+    "rule": "The treatment\u0027s treatment response deciding factor is determined by the following priority:\n1. the literal \u201CEffectiveOnConfirmedMechanism\u201D, if the is treatment response predicted flag is set;\n2. the literal \u201CNoConfirmedMechanism\u201D, if it is not the case that the is mechanism matched flag is set;\n3. the literal \u201CAdverseEffect\u201D, if the has adverse effect flag is set;\n4. the literal \u201CNoResponse\u201D, if at least one of the following holds: the treatment response is the literal \u201CNone\u201D or the treatment response is the literal \u201CAdverse\u201D;\n5. otherwise the literal \u201CUndetermined\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "Treatments",
+        "field": "IsTreatmentResponsePredicted",
+        "label": "is treatment response predicted"
+      },
+      {
+        "table": "Treatments",
+        "field": "IsMechanismMatched",
+        "label": "is mechanism matched"
+      },
+      {
+        "table": "Treatments",
+        "field": "HasAdverseEffect",
+        "label": "has adverse effect"
+      },
+      {
+        "table": "Treatments",
+        "field": "TreatmentResponse",
+        "label": "treatment response"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The treatment\u0027s treatment response deciding factor is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CEffectiveOnConfirmedMechanism\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the is treatment response predicted flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CNoConfirmedMechanism\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "it is not the case that the is mechanism matched flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CAdverseEffect\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the has adverse effect flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CNoResponse\u201D",
+          "when": {
+            "kind": "any",
+            "children": [
+              {
+                "kind": "leaf",
+                "text": "the treatment response is the literal \u201CNone\u201D"
+              },
+              {
+                "kind": "leaf",
+                "text": "the treatment response is the literal \u201CAdverse\u201D"
+              }
+            ]
+          }
+        },
+        {
+          "value": "the literal \u201CUndetermined\u201D",
           "when": null
         }
       ],
@@ -14393,6 +14839,48 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "children": null
     }
   },
+  "IndividualPredictions.IndividualHasPredictedTreatmentResponse": {
+    "table": "IndividualPredictions",
+    "field": "IndividualHasPredictedTreatmentResponse",
+    "kind": "lookup",
+    "rule": "An individual prediction\u0027s individual has predicted treatment response is false if the individual is blank, otherwise the has predicted treatment response of the individual prediction\u0027s individual.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "Individual",
+        "label": "individual"
+      },
+      {
+        "table": "Individuals",
+        "field": "HasPredictedTreatmentResponse",
+        "label": "has predicted treatment response"
+      },
+      {
+        "table": "Individuals",
+        "field": "IndividualId",
+        "label": "individual ID"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s individual has predicted treatment response is determined by the following priority:",
+      "cases": [
+        {
+          "value": "false",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual is blank"
+          }
+        },
+        {
+          "value": "the has predicted treatment response of the individual prediction\u0027s individual",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
   "IndividualPredictions.PredictedValue": {
     "table": "IndividualPredictions",
     "field": "PredictedValue",
@@ -15096,6 +15584,82 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         },
         {
           "value": "the literal \u201CUndetermined\u201D",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.IsTreatmentResponseActionable": {
+    "table": "IndividualPredictions",
+    "field": "IsTreatmentResponseActionable",
+    "kind": "formula",
+    "rule": "An individual prediction is considered a treatment response actionable if the individual has predicted treatment response flag is set.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "IndividualHasPredictedTreatmentResponse",
+        "label": "individual has predicted treatment response"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s is treatment response actionable is determined by the following priority:",
+      "cases": [
+        {
+          "value": "true",
+          "when": {
+            "kind": "leaf",
+            "text": "the individual has predicted treatment response flag is set"
+          }
+        },
+        {
+          "value": "false",
+          "when": null
+        }
+      ],
+      "children": null
+    }
+  },
+  "IndividualPredictions.TreatmentResponseDecidingFactor": {
+    "table": "IndividualPredictions",
+    "field": "TreatmentResponseDecidingFactor",
+    "kind": "formula",
+    "rule": "The individual prediction\u0027s treatment response deciding factor is determined by the following priority:\n1. the literal \u201CEffectiveOnConfirmedMechanism\u201D, if the is treatment response actionable flag is set;\n2. the literal \u201CNoEffectiveTreatmentOnMechanism\u201D, if the rests on confirmed mechanism flag is set;\n3. otherwise the literal \u201CNoConfirmedMechanism\u201D.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "IndividualPredictions",
+        "field": "IsTreatmentResponseActionable",
+        "label": "is treatment response actionable"
+      },
+      {
+        "table": "IndividualPredictions",
+        "field": "RestsOnConfirmedMechanism",
+        "label": "rests on confirmed mechanism"
+      }
+    ],
+    "structure": {
+      "kind": "priority",
+      "headline": "The individual prediction\u0027s treatment response deciding factor is determined by the following priority:",
+      "cases": [
+        {
+          "value": "the literal \u201CEffectiveOnConfirmedMechanism\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the is treatment response actionable flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CNoEffectiveTreatmentOnMechanism\u201D",
+          "when": {
+            "kind": "leaf",
+            "text": "the rests on confirmed mechanism flag is set"
+          }
+        },
+        {
+          "value": "the literal \u201CNoConfirmedMechanism\u201D",
           "when": null
         }
       ],

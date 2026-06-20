@@ -184,6 +184,8 @@ SELECT
   calc_individuals_max_severity_score(t.individual_id) AS max_severity_score,   -- Highest SeverityScore across this individual's clinical phenotypes (0 if none).
   calc_individuals_count_high_severity_phenotypes(t.individual_id) AS count_high_severity_phenotypes,-- Count of this individual's high-severity phenotypes (SeverityScore > 7).
   calc_individuals_has_high_severity_phenotype(t.individual_id) AS has_high_severity_phenotype,-- True when the individual has at least one high-severity phenotype.
+  calc_individuals_count_predicted_treatment_responses(t.individual_id) AS count_predicted_treatment_responses,-- Count of this individual's treatments predicted to respond (effective ∧ mechanism-matched).
+  calc_individuals_has_predicted_treatment_response(t.individual_id) AS has_predicted_treatment_response,-- True when the individual has at least one treatment predicted to respond.
   t.genomic_variants,                                                           -- Genomic variants for this individual.
   t.omics_assays,                                                               -- Omics assays for this individual.
   t.environmental_exposures,                                                    -- Longitudinal environmental exposures.
@@ -351,6 +353,7 @@ SELECT
   t.treatment_label,                                                            -- Therapy name.
   t.individual,                                                                 -- Treated individual.
   t.autoimmune_disease,                                                         -- Target autoimmune disease.
+  t.targets_mechanism,                                                          -- FK to the CausalMechanism this treatment acts on (the drug's target mechanism). Raw leaf: which mechanism the clinician/LLM says this therapy targets.
   t.treatment_response,                                                         -- Response category: Complete, Partial, None, Adverse.
   t.has_treatment_induced_change,                                               -- True when molecular state shifted due to therapy.
   t.has_adverse_effect,                                                         -- True when adverse effects observed.
@@ -359,7 +362,10 @@ SELECT
   calc_treatments_parent_path(t.treatment_id) AS parent_path,                   -- Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent.
   calc_treatments_relative_path(t.treatment_id) AS relative_path,               -- Path to this Treatment page, chained under its Individual parent.
   calc_treatments_autoimmune_disease_label(t.treatment_id) AS autoimmune_disease_label,-- Disease label lookup.
-  calc_treatments_is_effective_treatment(t.treatment_id) AS is_effective_treatment-- True for Complete or Partial response without adverse effects.
+  calc_treatments_is_effective_treatment(t.treatment_id) AS is_effective_treatment,-- True for Complete or Partial response without adverse effects.
+  calc_treatments_is_mechanism_matched(t.treatment_id) AS is_mechanism_matched, -- True when the treatment's target mechanism is a CONFIRMED causal-architecture node (empty-guarded). This is the 'mechanism match'.
+  calc_treatments_is_treatment_response_predicted(t.treatment_id) AS is_treatment_response_predicted,-- Derived: the treatment is effective AND targets a confirmed mechanism. A drug aimed at a debunked mechanism, or one that didn't respond / was adverse, is NOT predicted.
+  calc_treatments_treatment_response_deciding_factor(t.treatment_id) AS treatment_response_deciding_factor-- Why response is/ isn't predicted — the single deciding reason.
 FROM treatments t;
 
 -- ----------------------------------------------------------------------------
@@ -491,6 +497,7 @@ SELECT
   calc_individual_predictions_individual_has_cryptic_relatedness(t.individual_prediction_id) AS individual_has_cryptic_relatedness,-- Whether this individual carries a cryptic-relatedness leakage flag (empty-guarded).
   calc_individual_predictions_individual_max_severity_score(t.individual_prediction_id) AS individual_max_severity_score,-- This individual's max clinical SeverityScore (empty-guarded).
   calc_individual_predictions_individual_has_high_severity_phenot(t.individual_prediction_id) AS individual_has_high_severity_phenotype,-- Whether this individual has a high-severity phenotype (empty-guarded).
+  calc_individual_predictions_individual_has_predicted_treatment_(t.individual_prediction_id) AS individual_has_predicted_treatment_response,-- Whether this individual has a treatment predicted to respond (empty-guarded).
   calc_individual_predictions_predicted_value(t.individual_prediction_id) AS predicted_value,-- Derived risk magnitude (0-10), a monotone function of validated causal mass only - rides mechanism, not ancestry correlation.
   calc_individual_predictions_count_bins(t.individual_prediction_id) AS count_bins,-- Total reliability bins for this prediction.
   calc_individual_predictions_count_well_calibrated_bins(t.individual_prediction_id) AS count_well_calibrated_bins,-- Bins passing coverage and accuracy.
@@ -510,6 +517,8 @@ SELECT
   calc_individual_predictions_severity_tier(t.individual_prediction_id) AS severity_tier,-- Derived severity band from the predicted severity value.
   calc_individual_predictions_is_severity_actionable(t.individual_prediction_id) AS is_severity_actionable,-- Derived: a high-severity phenotype on a confirmed, non-spurious mechanism. Chained to the onset gates so severity can never be actionable on a debunked mechanism.
   calc_individual_predictions_severity_deciding_factor(t.individual_prediction_id) AS severity_deciding_factor,-- Why severity is/ isn't actionable — the single deciding reason.
+  calc_individual_predictions_is_treatment_response_actionable(t.individual_prediction_id) AS is_treatment_response_actionable,-- Derived: the individual has a treatment predicted to respond (effective therapy on a confirmed mechanism). The third prediction type — independent of onset/severity.
+  calc_individual_predictions_treatment_response_deciding_factor(t.individual_prediction_id) AS treatment_response_deciding_factor,-- Why treatment-response is/ isn't actionable for this individual.
   calc_individual_predictions_is_clinically_actionable(t.individual_prediction_id) AS is_clinically_actionable,-- KEYSTONE: TRUE only when the prediction is high-confidence (calibrated + not spurious), falsifiability-backed, ancestry-transport-safe, and rests on a non-null derived magnitude.
   calc_individual_predictions_lifecycle_state_key(t.individual_prediction_id) AS lifecycle_state_key,-- DERIVED current lifecycle state (never entered): the single deciding gate determines whether the case lands on Actionable or NotActionable. Subject-state column of the diagnosis-lifecycle machine.
   calc_individual_predictions_deciding_gate(t.individual_prediction_id) AS deciding_gate,-- DERIVED single primary deciding gate (never entered), named in keystone-AND priority order. 'AllGatesPass' when actionable. When the case rests on no validated mechanism (no confirmed causal node), Falsifiability, Confidence, and Magnitude are one and the same finding, reported as 'NoValidatedMechanism' rather than split across three gates. Otherwise the lone failing gate is named: CrypticRelatedness, Calibration, AncestryTransport.
