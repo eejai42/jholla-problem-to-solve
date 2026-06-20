@@ -11,11 +11,17 @@
 #      # → open http://localhost:6347
 #
 #  Flags:
-#      ./run-docker.sh            build (if needed) + run, foreground logs
-#      ./run-docker.sh --rebuild  force a fresh image build first
-#      ./run-docker.sh --persist  keep DB data across runs (named volume)
-#      ./run-docker.sh --detach   run in the background, print the URL, exit
-#      PORT=8080 ./run-docker.sh  publish on a different host port
+#      ./run-docker.sh              rebuild a fresh image + run, foreground logs
+#      ./run-docker.sh --rebuild    (default; kept for compatibility / clarity)
+#      ./run-docker.sh --no-rebuild reuse the existing image, skip the build
+#      ./run-docker.sh --persist    keep DB data across runs (named volume)
+#      ./run-docker.sh --detach     run in the background, print the URL, exit
+#      PORT=8080 ./run-docker.sh    publish on a different host port
+#
+#  NOTE: rebuild is the DEFAULT. The image bakes in the app + seed SQL at build
+#  time, so a stale image silently runs OLD code (this is exactly the "Docker is
+#  30 min behind" symptom). We rebuild every run so the container always matches
+#  the working tree; pass --no-rebuild for a fast re-run when nothing changed.
 #
 #  Stop a detached run:  docker rm -f causal-autoimmune
 # ============================================================================
@@ -28,12 +34,15 @@ NAME="causal-autoimmune"
 HOST_PORT="${PORT:-6347}"   # host port to publish; container always serves :6347
 CONTAINER_PORT=6347
 
-REBUILD=false
+# Rebuild by default: the image bakes in app + seed at build time, so reusing a
+# stale image silently runs old code. --no-rebuild opts out for a fast re-run.
+REBUILD=true
 PERSIST=false
 DETACH=false
 for arg in "$@"; do
   case "$arg" in
     --rebuild) REBUILD=true ;;
+    --no-rebuild|--reuse) REBUILD=false ;;
     --persist) PERSIST=true ;;
     --detach|-d) DETACH=true ;;
     -h|--help)
@@ -47,12 +56,14 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-# --- Build the image (skip if it already exists and --rebuild not given). ----
+# --- Build the image. Rebuild by default (so the container matches the working
+#     tree); --no-rebuild reuses an existing image. If none exists yet we must
+#     build regardless of the flag. -----------------------------------------
 if $REBUILD || [ -z "$(docker images -q "$IMAGE" 2>/dev/null)" ]; then
-  echo "[run-docker] building image '$IMAGE' (first build pulls Postgres + Node; a few minutes)…"
+  echo "[run-docker] building image '$IMAGE' (Docker layer cache makes re-builds fast)…"
   docker build -t "$IMAGE" .
 else
-  echo "[run-docker] reusing existing image '$IMAGE' (pass --rebuild to force a rebuild)."
+  echo "[run-docker] --no-rebuild: reusing existing image '$IMAGE' (may be stale!)."
 fi
 
 # --- Replace any previous container with the same name. ----------------------

@@ -11,7 +11,7 @@
 ## ----------------------------------------------------------------------------
 ##  Build context is the repo root. Two stages:
 ##    1) builder  — Node 20, `vite build` produces admin-app/dist
-##    2) runtime  — postgres:16 + Node 20 + app + seed SQL + entrypoint
+##    2) runtime  — postgres:18 + Node 20 + app + seed SQL + entrypoint
 ## ============================================================================
 
 # ---- Stage 1: build the React client -------------------------------------
@@ -29,7 +29,15 @@ RUN npm run build
 
 
 # ---- Stage 2: runtime (Postgres + Node + app) ----------------------------
-FROM postgres:16-bookworm AS runtime
+# Postgres 18 (matches localhost / Postgres.app). NOT 16: this project's calc
+# fields are a deep tree of nested STABLE functions where top-level keystone
+# columns (is_clinically_actionable, predicted_value, lifecycle_state_key,
+# deciding_gate) each re-derive shared sub-results. PG18's planner collapses
+# those repeated calls; PG16 re-executes every one, making a single `SELECT *`
+# of one prediction row take ~6.4s vs ~33ms on PG18. Measured, both engines,
+# same schema+data. Keep this at 18 unless the calc DAG is flattened to not
+# depend on the optimizer (see the calc functions in postgres/02-*.sql).
+FROM postgres:18-bookworm AS runtime
 
 # Postgres image is Debian bookworm; add Node 20 from NodeSource and the few
 # tools the entrypoint needs. (psql already ships in the postgres image.)
