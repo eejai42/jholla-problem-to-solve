@@ -14,6 +14,155 @@ const STATUS_LABEL = { pass: '✓ green', fail: '✗ FAIL', not_surfaced: '○ n
 // Shared value formatter (booleans, nulls, arrays → display strings).
 const fmtVal = (v) => (v === true ? 'true' : v === false ? 'false' : v == null ? '—' : Array.isArray(v) ? `[${v.join(', ')}]` : String(v));
 
+// ===========================================================================
+//  VISUAL PRIMITIVES — purely presentational. They re-render the SAME raw
+//  numbers (no fabrication, no transformation of the data) as little gauges so
+//  the leaf tables read like a lab report rather than a spreadsheet. Every
+//  primitive takes a value and a scale and draws a proportional bar/marker; the
+//  exact number is always still printed alongside.
+// ===========================================================================
+
+const num = (v) => (v == null || v === '' || Number.isNaN(Number(v)) ? null : Number(v));
+const clamp01 = (x) => Math.max(0, Math.min(1, x));
+const lerpColor = (t) => {
+  // red(0) → amber(0.5) → green(1), for "good"-scaled meters
+  const stops = [[192, 40, 45], [176, 106, 0], [10, 125, 40]];
+  const seg = t < 0.5 ? 0 : 1;
+  const f = t < 0.5 ? t / 0.5 : (t - 0.5) / 0.5;
+  const [a, b] = [stops[seg], stops[seg + 1]];
+  const c = a.map((x, i) => Math.round(x + (b[i] - x) * f));
+  return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
+};
+
+// A horizontal proportional bar. `frac` in [0,1]; `color` optional (else inked).
+function Bar({ frac, color, width = 70, title }) {
+  const f = clamp01(frac);
+  return (
+    <span title={title} style={{ display: 'inline-block', width, height: 8, background: '#eee', borderRadius: 4, overflow: 'hidden', verticalAlign: 'middle' }}>
+      <span style={{ display: 'block', width: `${f * 100}%`, height: '100%', background: color || C.accent }} />
+    </span>
+  );
+}
+
+// Numeric value + its proportional bar, side by side. `max` sets the scale;
+// `good` (optional) means "bigger is better" → color ramps red→green.
+function MeterCell({ value, max, good, suffix = '', digits = 2 }) {
+  const v = num(value);
+  if (v == null) return <span style={{ color: C.sub }}>—</span>;
+  const frac = max ? clamp01(v / max) : 0;
+  const color = good ? lerpColor(frac) : C.accent;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+      <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12.5, minWidth: 34, textAlign: 'right' }}>{v.toFixed(digits)}{suffix}</span>
+      <Bar frac={frac} color={color} title={`${v}${suffix} of ${max}${suffix}`} />
+    </span>
+  );
+}
+
+// A Z-statistic gauge: marks where z sits on a 0..6 scale, with the 1.96
+// significance threshold drawn in. Green right of threshold, red left.
+function ZGauge({ z, threshold = 1.96, max = 6 }) {
+  const v = num(z);
+  if (v == null) return <span style={{ color: C.sub }}>—</span>;
+  const pos = clamp01(v / max);
+  const thr = clamp01(threshold / max);
+  const ok = v >= threshold;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+      <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12.5, minWidth: 28, textAlign: 'right', color: ok ? C.pass : C.fail, fontWeight: 700 }}>{v.toFixed(2)}</span>
+      <span style={{ position: 'relative', display: 'inline-block', width: 80, height: 9, background: '#eee', borderRadius: 4, verticalAlign: 'middle' }}>
+        <span style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: `${thr * 100}%`, background: C.bgFail, borderRadius: '4px 0 0 4px' }} />
+        <span style={{ position: 'absolute', left: `${thr * 100}%`, top: -2, bottom: -2, width: 2, background: C.sub }} title={`z=${threshold}`} />
+        <span style={{ position: 'absolute', left: `calc(${pos * 100}% - 4px)`, top: -2, width: 8, height: 13, borderRadius: 2, background: ok ? C.pass : C.fail, border: '1px solid #fff' }} />
+      </span>
+    </span>
+  );
+}
+
+// A p-value scale (log-ish): smaller is "more significant". We draw on a
+// -log10(p) axis up to p=0.001, with the 0.05 line marked. Green = significant.
+function PValueScale({ p, alpha = 0.05 }) {
+  const v = num(p);
+  if (v == null) return <span style={{ color: C.sub }}>—</span>;
+  const axis = (x) => clamp01(-Math.log10(Math.max(x, 1e-4)) / 4); // 0 at p=1, 1 at p=1e-4
+  const pos = axis(v);
+  const thr = axis(alpha);
+  const sig = v < alpha;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
+      <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12.5, minWidth: 36, textAlign: 'right', color: sig ? C.pass : C.fail, fontWeight: 600 }}>{v}</span>
+      <span style={{ position: 'relative', display: 'inline-block', width: 80, height: 9, background: '#eee', borderRadius: 4, verticalAlign: 'middle' }}>
+        <span style={{ position: 'absolute', left: `${thr * 100}%`, top: -2, bottom: -2, width: 2, background: C.sub }} title={`α=${alpha}`} />
+        <span style={{ position: 'absolute', left: `calc(${pos * 100}% - 4px)`, top: -2, width: 8, height: 13, borderRadius: 2, background: sig ? C.pass : C.fail, border: '1px solid #fff' }} />
+      </span>
+    </span>
+  );
+}
+
+// A signed-effect chip: shows + / − direction with a directional color, value
+// printed. Used for replication effect signs and permutation effects.
+function SignChip({ sign, value }) {
+  const s = num(sign);
+  const up = s != null ? s > 0 : null;
+  const txt = up == null ? '·' : up ? '▲ +' : '▼ −';
+  const col = up == null ? C.sub : up ? C.pass : C.fail;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: 'ui-monospace, monospace', fontSize: 12.5, color: col, fontWeight: 700 }}>
+      {txt}{value != null ? <span style={{ color: C.ink, fontWeight: 400 }}>{value}</span> : null}
+    </span>
+  );
+}
+
+// A yes/no pill — green check / red cross — for boolean leaf verdicts.
+function BoolPill({ value, yes = 'yes', no = 'no' }) {
+  const t = value === true || value === 'true';
+  const f = value === false || value === 'false';
+  const col = t ? C.pass : f ? C.fail : C.sub;
+  const bg = t ? C.bgPass : f ? C.bgFail : '#f4f4f4';
+  return (
+    <span style={{ display: 'inline-block', padding: '1px 8px', borderRadius: 10, background: bg, color: col, fontSize: 11.5, fontWeight: 700, border: `1px solid ${col}22` }}>
+      {t ? `✓ ${yes}` : f ? `✗ ${no}` : '—'}
+    </span>
+  );
+}
+
+// An ancestry chip — small colored token so a list of ancestries reads at a
+// glance. Color is a stable hash of the label (presentational only).
+const ANCESTRY_COLORS = {
+  'European': '#3b6fb0', 'East Asian': '#9a4fb0', 'African': '#b06a00',
+  'West African': '#b06a00', 'Indigenous American': '#0a7d6a', 'South Asian': '#b04f7a',
+};
+function AncestryChip({ label }) {
+  if (!label) return <span style={{ color: C.sub }}>—</span>;
+  const col = ANCESTRY_COLORS[label] || C.sub;
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 12 }}>
+      <span style={{ width: 8, height: 8, borderRadius: 4, background: col, display: 'inline-block' }} />
+      {label}
+    </span>
+  );
+}
+
+// A calibration point: predicted band vs observed rate as two stacked mini-bars,
+// so over/under-calibration is visible (the closer the two bars, the better).
+function CalibCell({ predicted, observed }) {
+  const pv = num(predicted), ov = num(observed);
+  if (pv == null || ov == null) return <span style={{ color: C.sub }}>—</span>;
+  const gap = Math.abs(pv - ov);
+  const col = lerpColor(clamp01(1 - gap / 0.2)); // within 0.2 → green
+  return (
+    <span style={{ display: 'inline-block', verticalAlign: 'middle' }} title={`predicted ${pv} vs observed ${ov} (Δ${gap.toFixed(2)})`}>
+      <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+        <span style={{ display: 'inline-block', position: 'relative', width: 70, height: 12 }}>
+          <span style={{ position: 'absolute', top: 0, left: 0, height: 5, width: `${clamp01(pv) * 100}%`, background: C.accent, borderRadius: 3 }} />
+          <span style={{ position: 'absolute', bottom: 0, left: 0, height: 5, width: `${clamp01(ov) * 100}%`, background: col, borderRadius: 3 }} />
+        </span>
+        <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 11.5, color: C.sub }}>Δ{gap.toFixed(2)}</span>
+      </span>
+    </span>
+  );
+}
+
 // A patient chip rendered as a real Link to that case's route. Used wherever a
 // cohort is shown so every patient is reachable by URL (no click-to-select).
 // THE ONE VARIABLE THIS CONTROLS IS THE CASE: each chip rewrites ONLY the path
@@ -152,6 +301,8 @@ export function DiagnosisView() {
 // '' is the default "Case walk" tab (no ?tab in the URL).
 const CASE_TABS = [
   ['', 'Case walk'],
+  ['witness', '3-panel witness'],
+  ['all', 'All'],
   ['report', 'Summary writeup'],
   ['evidence', 'Evidence'],
   ['mechanism', 'Mechanism'],
@@ -219,8 +370,10 @@ export function CaseDetail({ predId, routeKey }) {
 function CasePane({ predId, sub, patient }) {
   switch (sub) {
     case '': return <CaseWalkBody predId={predId} />;
+    case 'witness': return <WitnessView predId={predId} />;
     case 'keystone': return <DiagnosisChain predId={predId} patient={patient} />;
     case 'report': return <DiagnosisSummary predId={predId} />;
+    case 'all':
     case 'evidence':
     case 'mechanism':
     case 'replication':
@@ -243,67 +396,226 @@ const mechOf = (predId) => `cm-${predId.split('-')[1]}`; // pred-a -> cm-a (orac
 
 // Per sub-route: how to fetch the list, the row id field, the title, and which
 // columns to show. endpoint() takes the predId.
+// Per-column `render(row)` functions turn the raw value into a visual primitive
+// (gauge/bar/chip). They render the SAME number the cell would otherwise print —
+// nothing is invented — just drawn proportionally. Absent `render` → plain value.
 const LEAF_CONFIG = {
   evidence: {
     title: 'Qualified evidence', noun: 'evidence item', idField: 'evidence_item_id',
     endpoint: (p) => `/api/mechanisms/${mechOf(p)}/evidence`,
-    cols: [['evidence_item_id', 'ID'], ['effect_size', 'Effect'], ['standard_error', 'SE'], ['z_stat', 'Z'], ['is_qualified_evidence', 'Qualified']],
+    cols: [
+      ['evidence_item_id', 'ID'],
+      ['represents_assay_modality', 'Modality'],
+      ['effect_size', 'Effect', (r) => <MeterCell value={r.effect_size} max={1} good />],
+      ['standard_error', 'SE', (r) => <MeterCell value={r.standard_error} max={0.5} />],
+      ['z_stat', 'Z (≥1.96)', (r) => <ZGauge z={r.z_stat} />],
+      ['is_qualified_evidence', 'Qualified', (r) => <BoolPill value={r.is_qualified_evidence} yes="qualified" no="weak" />],
+    ],
   },
   replication: {
     title: 'Cross-cohort replication', noun: 'replication', idField: 'cohort_replication_id',
     endpoint: (p) => `/api/mechanisms/${mechOf(p)}/replications`,
-    cols: [['cohort_replication_id', 'ID'], ['replication_ancestry_label', 'Ancestry'], ['replication_effect_sign', 'Sign'], ['replication_p_value', 'p'], ['is_cross_ancestry_concordant', 'Concordant']],
+    cols: [
+      ['cohort_replication_id', 'ID'],
+      ['replication_ancestry_label', 'Ancestry', (r) => <AncestryChip label={r.replication_ancestry_label} />],
+      ['replication_effect_sign', 'Direction', (r) => <SignChip sign={r.replication_effect_sign} />],
+      ['replication_p_value', 'p (<0.05)', (r) => <PValueScale p={r.replication_p_value} />],
+      ['is_cross_ancestry_concordant', 'Concordant', (r) => <BoolPill value={r.is_cross_ancestry_concordant} yes="concordant" no="discordant" />],
+    ],
   },
   controls: {
     title: 'Negative controls', noun: 'control test', idField: 'negative_control_test_id',
     endpoint: (p) => `/api/mechanisms/${mechOf(p)}/controls`,
-    cols: [['negative_control_test_id', 'ID'], ['test_kind', 'Kind'], ['permutation_effect_size', 'Permuted effect'], ['null_threshold', 'Null thresh'], ['is_survived', 'Survives']],
+    cols: [
+      ['negative_control_test_id', 'ID'],
+      ['test_kind', 'Kind'],
+      ['permutation_effect_size', 'Permuted effect', (r) => <MeterCell value={r.permutation_effect_size} max={Math.max(0.6, num(r.null_threshold) * 2 || 0.6)} digits={2} />],
+      ['null_threshold', 'Null thresh', (r) => <MeterCell value={r.null_threshold} max={Math.max(0.6, num(r.null_threshold) * 2 || 0.6)} digits={2} />],
+      ['is_survived', 'Survives', (r) => <BoolPill value={r.is_survived} yes="survives" no="fails" />],
+    ],
   },
   calibration: {
     title: 'Calibration bins', noun: 'calibration bin', idField: 'calibration_bin_id',
     endpoint: (p) => `/api/predictions/${p}/calibration`,
-    cols: [['calibration_bin_id', 'ID'], ['predicted_probability_band', 'Band'], ['observed_event_rate', 'Observed'], ['coverage_count', 'Coverage'], ['is_well_calibrated_bin', 'Well-calibrated']],
+    cols: [
+      ['calibration_bin_id', 'ID'],
+      ['predicted_probability_band', 'Pred vs Observed', (r) => <CalibCell predicted={r.predicted_probability_band} observed={r.observed_event_rate} />],
+      ['coverage_count', 'Coverage (≥20)', (r) => <MeterCell value={r.coverage_count} max={40} good digits={0} />],
+      ['is_well_calibrated_bin', 'Well-calibrated', (r) => <BoolPill value={r.is_well_calibrated_bin} yes="calibrated" no="under-covered" />],
+    ],
   },
 };
 
+// The four keystone gates — the SAME four the oracle/harness assert (see
+// tests/oracle/dag-oracle.js GATES and tests/harness/check-engine.js L6). The
+// keystone is the AND of all four. Earlier this pane listed the wrong set
+// (rests_on_confirmed_mechanism + the keystone itself), which disagreed with the
+// Full-chain tab. These are the real gates, read straight off the prediction row.
+//   value:  the field on the prediction (boolean, except predicted_value)
+//   ok(p):  is this gate SATISFIED for this patient (the clinical question)
+const KEYSTONE_GATES = [
+  { key: 'is_high_confidence_prediction', label: 'High-confidence prediction',
+    blurb: 'Calibrated AND not spurious.', ok: (p) => p.is_high_confidence_prediction === true },
+  { key: 'is_falsifiability_backed', label: 'Falsifiability-backed',
+    blurb: 'Rests on ≥1 experimentally-falsifiable confirmed node.', ok: (p) => p.is_falsifiability_backed === true },
+  { key: 'is_ancestry_transport_safe', label: 'Ancestry transport safe',
+    blurb: 'Holdout ancestries need measured transport; in-training is vacuously safe.', ok: (p) => p.is_ancestry_transport_safe === true },
+  { key: 'predicted_value', label: 'Predicted value > 0',
+    blurb: 'A non-null derived risk magnitude — the prediction has signal.', ok: (p) => Number(p.predicted_value) > 0 },
+];
+
 // The gates sub-route: the four keystone gates, read straight off the prediction.
+// Each chip is GREEN when the gate is satisfied, RED when it is not — the
+// clinical reading. The keystone (shown last) is the AND of the four. The
+// Full-chain tab answers a DIFFERENT question (did the model DERIVE each gate
+// correctly?), so a correctly-derived `false` is "pass" there but RED here — the
+// two are now reconciled by saying so explicitly.
 function GatesPane({ predId }) {
   const { data, loading, error } = useFetch(`/api/predictions/${predId}`, [predId]);
   if (loading) return <p style={{ color: C.sub }}>Loading gates…</p>;
   if (error) return <p style={{ color: C.fail }}>{error}</p>;
-  const GATES = [
-    ['rests_on_confirmed_mechanism', 'Mechanism confirmed'],
-    ['is_high_confidence_prediction', 'High-confidence prediction'],
-    ['is_ancestry_transport_safe', 'Ancestry transport safe'],
-    ['is_clinically_actionable', 'Keystone — clinically actionable'],
-  ];
+  const p = data && !data.error ? data : {};
+  const satisfied = KEYSTONE_GATES.map((g) => g.ok(p));
+  const passCount = satisfied.filter(Boolean).length;
+  const keystone = p.is_clinically_actionable === true;
+  const decidingIdx = satisfied.findIndex((s) => !s); // first failing gate
   return (
     <div>
       <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
-        The keystone ANDs the first three gates. Each is itself derived — open the full chain to see how.
+        The keystone is the AND of these four gates — <strong>{passCount}/4 satisfied</strong> for this patient.
+        A chip is <span style={{ color: C.pass, fontWeight: 600 }}>green</span> when the gate is met,{' '}
+        <span style={{ color: C.fail, fontWeight: 600 }}>red</span> when it blocks the conclusion. Each is itself
+        derived — open the full chain to see how. <em style={{ color: C.sub }}>(The Full-chain tab marks a gate green
+        when the model derived it <u>correctly</u>, not when it is satisfied — so a correct&nbsp;<code>false</code> is
+        green there but red here.)</em>
       </p>
-      {GATES.map(([k, lbl]) => <GateChip key={k} label={lbl} value={data?.[k]} />)}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8, marginBottom: 12 }}>
+        {KEYSTONE_GATES.map((g, i) => (
+          <GateCard key={g.key} label={g.label} blurb={g.blurb} satisfied={satisfied[i]}
+            value={g.key === 'predicted_value' ? p.predicted_value : p[g.key]}
+            deciding={!keystone && i === decidingIdx} />
+        ))}
+      </div>
+      {/* the keystone, derived from the four above */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8,
+        background: keystone ? C.bgPass : C.bgFail, border: `1px solid ${keystone ? C.pass : C.fail}` }}>
+        <span style={{ fontSize: 18 }}>{keystone ? '✅' : '⛔'}</span>
+        <div>
+          <div style={{ fontWeight: 700, color: keystone ? C.pass : C.fail }}>
+            Keystone — clinically actionable: {keystone ? 'true' : 'false'}
+          </div>
+          <div style={{ fontSize: 12.5, color: C.sub }}>
+            {keystone ? 'All four gates satisfied.' : `${4 - passCount} of 4 gates block the conclusion.`}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// A single gate as a card: green/red by satisfaction, with the field value, a
+// one-line meaning, and (for the deciding gate) a "◀ deciding" marker.
+function GateCard({ label, blurb, value, satisfied, deciding }) {
+  const col = satisfied ? C.pass : C.fail;
+  const bg = satisfied ? C.bgPass : C.bgFail;
+  const show = typeof value === 'number' ? (Number.isInteger(value) ? value : value.toFixed(3)) : fmtVal(value);
+  return (
+    <div style={{ border: `1px solid ${deciding ? col : C.border}`, borderLeft: `4px solid ${col}`, borderRadius: 7, background: bg, padding: '9px 12px' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 8 }}>
+        <span style={{ fontWeight: 700, fontSize: 13, color: C.ink }}>{label}</span>
+        <span style={{ fontFamily: 'ui-monospace, monospace', fontSize: 12.5, color: col, fontWeight: 700 }}>{show}</span>
+      </div>
+      <div style={{ fontSize: 11.5, color: C.sub, marginTop: 3, lineHeight: 1.35 }}>{blurb}</div>
+      {deciding ? <div style={{ fontSize: 11, color: col, fontWeight: 700, marginTop: 4 }}>◀ deciding gate</div> : null}
     </div>
   );
 }
 
 function LeafPane({ predId, sub, patient }) {
   const [panel, setPanel] = useQueryParam('panel');
+  if (sub === 'all') return <AllPane predId={predId} patient={patient} panel={panel} setPanel={setPanel} />;
   if (sub === 'gates') return <GatesPane predId={predId} />;
   if (sub === 'mechanism') return <MechanismPane predId={predId} />;
   const cfg = LEAF_CONFIG[sub];
   return <LeafList predId={predId} sub={sub} cfg={cfg} panel={panel} setPanel={setPanel} />;
 }
 
-function LeafList({ predId, sub, cfg, panel, setPanel }) {
+// AllPane — the unified "everything on one page" view. It stacks every leaf
+// surface for the case (gates + keystone, mechanism verdict, then the four
+// atom tables) so a single scroll shows the whole case, each section rendered
+// with the same rich per-type visualizations the individual tabs use. The
+// ?panel drawer is shared, so clicking any row here behaves exactly as on its
+// own tab. Nothing is re-derived — it's a layout over the existing panes.
+function AllSection({ title, anchor, blurb, children }) {
+  return (
+    <section id={anchor} style={{ border: `1px solid ${C.border}`, borderRadius: 10, padding: '14px 16px', marginBottom: 14, background: '#fff', scrollMarginTop: 12 }}>
+      <h3 style={{ margin: '0 0 2px', fontSize: 16 }}>{title}</h3>
+      {blurb ? <p style={{ color: C.sub, fontSize: 12.5, margin: '0 0 10px' }}>{blurb}</p> : null}
+      {children}
+    </section>
+  );
+}
+
+function AllPane({ predId, patient, panel, setPanel }) {
+  const SECTIONS = [
+    { key: 'gates', title: 'Gates & keystone', anchor: 'sec-gates' },
+    { key: 'mechanism', title: 'Mechanism node', anchor: 'sec-mechanism' },
+    { key: 'evidence', title: 'Qualified evidence', anchor: 'sec-evidence' },
+    { key: 'replication', title: 'Cross-cohort replication', anchor: 'sec-replication' },
+    { key: 'controls', title: 'Negative controls', anchor: 'sec-controls' },
+    { key: 'calibration', title: 'Calibration bins', anchor: 'sec-calibration' },
+  ];
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 13, marginTop: 0 }}>
+        The whole case on one page — gates, mechanism verdict, and every leaf observation, each drawn the way its
+        own tab draws it. Jump to a section, or scroll the full picture. Clicking any row opens its detail drawer.
+      </p>
+      {/* in-page jump nav */}
+      <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 14 }}>
+        {SECTIONS.map((s) => (
+          <a key={s.key} href={`#${s.anchor}`}
+            style={{ fontSize: 12, padding: '3px 10px', borderRadius: 12, border: `1px solid ${C.border}`, color: C.accent, background: C.bgAccent, textDecoration: 'none' }}>
+            {s.title}
+          </a>
+        ))}
+      </div>
+
+      <AllSection title="Gates & keystone" anchor="sec-gates"
+        blurb="The four gates the keystone ANDs — green when satisfied, red when blocking.">
+        <GatesPane predId={predId} />
+      </AllSection>
+
+      <AllSection title="Mechanism node" anchor="sec-mechanism">
+        <MechanismPane predId={predId} hideHeading />
+      </AllSection>
+
+      {['evidence', 'replication', 'controls', 'calibration'].map((sub) => {
+        const cfg = LEAF_CONFIG[sub];
+        const anchor = `sec-${sub}`;
+        return (
+          <AllSection key={sub} title={cfg.title} anchor={anchor}>
+            <LeafList predId={predId} sub={sub} cfg={cfg} panel={panel} setPanel={setPanel} hideHeading />
+          </AllSection>
+        );
+      })}
+    </div>
+  );
+}
+
+function LeafList({ predId, sub, cfg, panel, setPanel, hideHeading }) {
   const { data, loading, error } = useFetch(cfg.endpoint(predId), [predId]);
   const rows = Array.isArray(data) ? data : [];
   const openId = panel && panel.startsWith(`${sub}:`) ? panel.slice(sub.length + 1) : null;
   const openRow = rows.find((r) => String(r[cfg.idField]) === openId);
   return (
     <div>
-      <h3 style={{ marginTop: 0 }}>{cfg.title} <span style={{ color: C.sub, fontWeight: 400, fontSize: 13 }}>({rows.length})</span></h3>
-      <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>Click any {cfg.noun} to open its detail — it stays in the URL, so a refresh (or a shared link) reopens the same one.</p>
+      {hideHeading
+        ? <p style={{ color: C.sub, fontSize: 12, marginTop: 0 }}>{rows.length} {cfg.noun}{rows.length === 1 ? '' : 's'} · click a row for detail.</p>
+        : <>
+            <h3 style={{ marginTop: 0 }}>{cfg.title} <span style={{ color: C.sub, fontWeight: 400, fontSize: 13 }}>({rows.length})</span></h3>
+            <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>Click any {cfg.noun} to open its detail — it stays in the URL, so a refresh (or a shared link) reopens the same one.</p>
+          </>}
       {loading ? <p style={{ color: C.sub }}>Loading…</p> : error ? <p style={{ color: C.fail }}>{error}</p> : !rows.length ? <p style={{ color: C.sub }}>No rows.</p> : (
         <table style={{ borderCollapse: 'collapse', fontSize: 13, width: '100%' }}>
           <thead><tr>{cfg.cols.map(([, h]) => <th key={h} style={{ border: `1px solid ${C.border}`, padding: '4px 8px', background: '#f5f5f5', textAlign: 'left' }}>{h}</th>)}</tr></thead>
@@ -314,7 +626,7 @@ function LeafList({ predId, sub, cfg, panel, setPanel }) {
               return (
                 <tr key={id} onClick={() => setPanel(isOpen ? null : `${sub}:${id}`)}
                   style={{ cursor: 'pointer', background: isOpen ? C.bgAccent : 'transparent' }}>
-                  {cfg.cols.map(([k]) => <td key={k} style={{ border: `1px solid ${C.border}`, padding: '4px 8px', fontFamily: /id$/.test(k) ? 'ui-monospace, monospace' : 'inherit' }}>{fmtVal(r[k])}</td>)}
+                  {cfg.cols.map(([k, , render]) => <td key={k} style={{ border: `1px solid ${C.border}`, padding: '5px 8px', fontFamily: /id$/.test(k) ? 'ui-monospace, monospace' : 'inherit', whiteSpace: 'nowrap' }}>{render ? render(r) : fmtVal(r[k])}</td>)}
                 </tr>
               );
             })}
@@ -359,7 +671,7 @@ function LeafDrawer({ title, row, onClose }) {
 }
 
 // MechanismPane — the mechanism node for this case (the cm-X rollup + verdict).
-function MechanismPane({ predId }) {
+function MechanismPane({ predId, hideHeading }) {
   const mech = mechOf(predId);
   const { data, loading, error } = useFetch(`/api/mechanisms/${mech}`, [mech]);
   if (loading) return <p style={{ color: C.sub }}>Loading mechanism…</p>;
@@ -373,7 +685,7 @@ function MechanismPane({ predId }) {
   ];
   return (
     <div>
-      <h3 style={{ marginTop: 0 }}>Mechanism node</h3>
+      {!hideHeading ? <h3 style={{ marginTop: 0 }}>Mechanism node</h3> : null}
       <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0 }}>
         Aggregations over this mechanism's atoms decide whether it is a real causal-architecture node.
         Drill into <Link to={`/diagnosis/case/${predId}`} query={{ tab: 'evidence' }} style={{ color: C.accent }}>evidence</Link>,{' '}
@@ -381,6 +693,134 @@ function MechanismPane({ predId }) {
         <Link to={`/diagnosis/case/${predId}`} query={{ tab: 'controls' }} style={{ color: C.accent }}>controls</Link>.
       </p>
       <div>{SHOW.map(([k, lbl]) => <GateChip key={k} label={lbl} value={row[k]} />)}</div>
+    </div>
+  );
+}
+
+// ===========================================================================
+//  WITNESS — the three independently-checkable panels (the anti-laundering
+//  proof made interactive). Panel 1 = the case text the LLM was handed.
+//  Panel 2 = every leaf fact extracted from it, each with the literal span it
+//  came from. Panel 3 = the deterministic verdict + four gates. Hovering a
+//  fact lights up its source span in Panel 1: a human checks the EXTRACTION
+//  (2 ↔ 1) separately from trusting the DERIVATION (3). That separation is the
+//  whole point — it is what a "hallucination laundered through a deterministic
+//  function" cannot survive.
+// ===========================================================================
+
+// Split `text` around the first occurrence of `quote` and wrap the match in a
+// <mark>. Matching is whitespace-insensitive (the stored quote collapsed its
+// newlines) so it still lands even if the narrative wraps differently.
+function highlightNarrative(text, quote) {
+  if (!quote) return text;
+  // Build a regex that treats any run of whitespace in the quote as \s+.
+  const esc = quote.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+  let re;
+  try { re = new RegExp(esc); } catch { return text; }
+  const m = re.exec(text);
+  if (!m) return text;
+  const before = text.slice(0, m.index);
+  const hit = text.slice(m.index, m.index + m[0].length);
+  const after = text.slice(m.index + m[0].length);
+  return (<>
+    {before}
+    <mark style={{ background: '#fde68a', borderRadius: 3, padding: '1px 2px', boxShadow: '0 0 0 1px #f59e0b55' }}>{hit}</mark>
+    {after}
+  </>);
+}
+
+const WITNESS_GROUPS = [
+  ['variant', 'Variant'], ['evidence', 'Evidence assays'], ['replication', 'Cross-cohort replication'],
+  ['control', 'Negative controls'], ['calibration', 'Calibration bins'],
+];
+
+function WitnessView({ predId }) {
+  const { loading, data, error } = useFetch(`/api/witness/${predId}`, [predId]);
+  const [active, setActive] = useState(null); // the focused fact id
+
+  if (loading) return <p style={{ color: C.sub }}>Loading the witness…</p>;
+  if (error) return <p style={{ color: C.fail }}>{error}</p>;
+  if (!data || data.error) return <p style={{ color: C.fail }}>{data?.error || 'no witness'}</p>;
+
+  const { panel1, panel2, panel3 } = data;
+  const activeFact = panel2.find((f) => f.id === active);
+  const actionable = panel3.isClinicallyActionable;
+
+  return (
+    <div>
+      <p style={{ color: C.sub, fontSize: 12.5, marginTop: 0, lineHeight: 1.5 }}>
+        Three independently-checkable panels. <strong>Hover any fact</strong> in panel 2 to see the exact span of the
+        case text (panel 1) it was extracted from. You verify the <em>extraction</em> here — the <em>derivation</em>
+        {' '}(panel 3) is checkable on its own. The two never have to be trusted together.
+      </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.1fr) minmax(0,1fr) minmax(0,0.9fr)', gap: 14, alignItems: 'start' }}>
+
+        {/* PANEL 1 — the input case text */}
+        <section style={{ border: `1px solid ${C.border}`, borderRadius: 8, padding: '12px 14px', background: '#fff' }}>
+          <h4 style={{ margin: '0 0 4px', fontSize: 13 }}>1 · Presenting case <span style={{ color: C.sub, fontWeight: 400 }}>(LLM input)</span></h4>
+          <div style={{ fontSize: 11.5, color: C.sub, marginBottom: 8 }}>
+            {panel1.individual} · {panel1.ancestry}{panel1.isHoldout ? ' · holdout' : ''}
+          </div>
+          <div style={{ fontSize: 13.5, lineHeight: 1.65, whiteSpace: 'pre-wrap' }}>
+            {activeFact ? highlightNarrative(panel1.narrative || '', activeFact.sourceQuote) : (panel1.narrative || '— no case narrative —')}
+          </div>
+        </section>
+
+        {/* PANEL 2 — the extracted leaf facts, each a pointer back into panel 1 */}
+        <section style={{ border: `1px solid ${C.border}`, borderRadius: 8, padding: '12px 14px', background: '#fff' }}>
+          <h4 style={{ margin: '0 0 8px', fontSize: 13 }}>2 · Extracted facts <span style={{ color: C.sub, fontWeight: 400 }}>(the LLM's only job)</span></h4>
+          {WITNESS_GROUPS.map(([g, gl]) => {
+            const items = panel2.filter((f) => f.group === g);
+            if (!items.length) return null;
+            return (
+              <div key={g} style={{ marginBottom: 10 }}>
+                <div style={{ fontSize: 11, textTransform: 'uppercase', letterSpacing: 0.4, color: C.sub, marginBottom: 3 }}>{gl}</div>
+                {items.map((f) => {
+                  const on = f.id === active;
+                  return (
+                    <div key={f.id}
+                      onMouseEnter={() => setActive(f.id)} onMouseLeave={() => setActive(null)}
+                      onClick={() => setActive(on ? null : f.id)}
+                      style={{ cursor: 'pointer', padding: '5px 8px', borderRadius: 6, marginBottom: 3,
+                        background: on ? '#fffbeb' : '#fafafa', border: `1px solid ${on ? '#f59e0b' : C.border}` }}>
+                      <div style={{ fontSize: 12, fontWeight: 600 }}>
+                        {f.label}{f.isSynthetic ? <span title="synthetic leaf (LLM-produced lab value)"> 🧪</span> : null}
+                      </div>
+                      <div style={{ fontSize: 12, fontFamily: 'ui-monospace, monospace', color: C.ink }}>{f.value}</div>
+                      {f.sourceQuote
+                        ? <div style={{ fontSize: 11.5, color: on ? '#92400e' : C.sub, marginTop: 2 }}>↳ “{f.sourceQuote}”</div>
+                        : <div style={{ fontSize: 11.5, color: C.fail, marginTop: 2 }}>↳ no source quote</div>}
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </section>
+
+        {/* PANEL 3 — the deterministic verdict + the four gates */}
+        <section style={{ border: `1px solid ${actionable ? C.pass : C.fail}`, borderRadius: 8, padding: '12px 14px', background: '#fff' }}>
+          <h4 style={{ margin: '0 0 8px', fontSize: 13 }}>3 · Derived verdict <span style={{ color: C.sub, fontWeight: 400 }}>(deterministic)</span></h4>
+          <div style={{ fontSize: 15, fontWeight: 700, color: actionable ? C.pass : C.fail, marginBottom: 6 }}>
+            IsClinicallyActionable: {actionable ? '✅ TRUE' : '⛔ FALSE'}
+          </div>
+          <div style={{ fontSize: 11.5, color: C.sub, marginBottom: 8 }}>Tier: {panel3.stratificationTier || '—'}</div>
+          <div style={{ marginBottom: 8 }}>
+            {panel3.gates.map((gt, i) => (
+              <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'baseline', fontSize: 12, marginBottom: 3 }}>
+                <span style={{ color: gt.pass === true ? C.pass : gt.pass === false ? C.fail : C.sub, fontWeight: 700 }}>
+                  {gt.pass === true ? 'PASS' : gt.pass === false ? 'FAIL' : 'n/a'}
+                </span>
+                <span>{gt.label} <span style={{ color: C.sub }}>· {gt.detail}</span></span>
+              </div>
+            ))}
+          </div>
+          <div style={{ fontSize: 12.5, lineHeight: 1.5, background: actionable ? C.bgPass : C.bgFail, border: `1px solid ${C.border}`, borderRadius: 6, padding: '8px 10px' }}>
+            {/* deciding reason carries markdown bold — render inline via Markdown */}
+            <Markdown source={panel3.decidingReason} />
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

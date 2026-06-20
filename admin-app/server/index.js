@@ -42,7 +42,7 @@ import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
 import { query, pool } from './db.js';
 import { runHarness, groupByCategory } from '../tests/harness/check-engine.js';
-import { buildDiagnosis, renderMarkdown } from './diagnosis.js';
+import { buildDiagnosis, renderMarkdown, buildWitness } from './diagnosis.js';
 import { ingestIntake, IntakeError } from './intake.js';
 import { router as routingRouter } from './routes/routing.js';
 import { router as stateMachineRouter } from './routes/state-machines.js';
@@ -118,6 +118,19 @@ app.get('/api/diagnosis/:id', async (req, res) => {
     const markdown = renderMarkdown(d);
     if (req.query.format === 'json') return res.json({ id: req.params.id, derived: d.p, markdown });
     res.type('text/markdown').send(markdown);
+  } catch (err) {
+    res.status(500).json({ error: String(err) });
+  }
+});
+
+// THE 3-PANEL WITNESS — case text → extracted facts (w/ provenance) → verdict.
+// Powers the interactive witness tab; the extraction is checkable against the
+// case text independently of the derived conclusion.
+app.get('/api/witness/:id', async (req, res) => {
+  try {
+    const w = await buildWitness(req.params.id);
+    if (!w) return res.status(404).json({ error: 'not_found', id: req.params.id });
+    res.json(w);
   } catch (err) {
     res.status(500).json({ error: String(err) });
   }

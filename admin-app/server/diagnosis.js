@@ -86,6 +86,59 @@ export async function buildDiagnosis(predictionId) {
   return { p, mechs, variants, bins, evidence, reps, controls };
 }
 
+// ----------------------------------------------------------------------------
+//  buildWitness — the THREE-PANEL shape for the interactive UI.
+//    panel1: the case narrative (the LLM's raw input)
+//    panel2: a flat list of extracted leaf facts, each with the literal
+//            sourceQuote span it came from (and whether it's a synthetic leaf)
+//    panel3: the conclusion (keystone + deciding reason + the four gates)
+//  The UI highlights a fact's sourceQuote inside panel1 on hover/click — so a
+//  human checks the EXTRACTION (panel2 ↔ panel1) independently of the VERDICT.
+// ----------------------------------------------------------------------------
+export async function buildWitness(predictionId) {
+  const d = await buildDiagnosis(predictionId);
+  if (!d) return null;
+  const { p, mechs, variants, bins, evidence, reps, controls } = d;
+  const m = mechs[0];
+
+  const facts = [];
+  const push = (id, group, label, value, row) =>
+    facts.push({ id, group, label, value, sourceQuote: row.source_quote || null, isSynthetic: row.is_synthetic_leaf === true });
+
+  for (const v of variants)
+    push(v.genomic_variant_id, 'variant', `${v.genomic_variant_id} — allele frequency / ASE`,
+      `AF ${num(v.allele_frequency, 4)} (${v.is_rare_variant ? 'rare' : 'common'}), ASE ${yn(v.has_allele_specific_expression)} ⇒ candidate ${yn(v.is_causal_candidate)}`, v);
+  for (const e of evidence)
+    push(e.evidence_item_id, 'evidence', `${e.evidence_item_id} — effect / SE`,
+      `ZStat ${num(e.z_stat)} ⇒ qualified ${yn(e.is_qualified_evidence)}`, e);
+  for (const r of reps)
+    push(r.cohort_replication_id, 'replication', `${r.cohort_replication_id} — ${r.replication_ancestry_label} cohort`,
+      `p=${num(r.replication_p_value, 3)}, sign ${r.replication_effect_sign > 0 ? '+' : r.replication_effect_sign < 0 ? '−' : '0'} ⇒ cross-ancestry ${yn(r.is_cross_ancestry_concordant)}`, r);
+  for (const c of controls)
+    push(c.negative_control_test_id, 'control', `${c.negative_control_test_id} — permutation control`,
+      `perm ${num(c.permutation_effect_size, 3)} vs ±${num(c.null_threshold, 2)} ⇒ survived ${yn(c.is_survived)}`, c);
+  for (const b of bins)
+    push(b.calibration_bin_id, 'calibration', `${b.calibration_bin_id} — reliability bin`,
+      `band ${num(b.predicted_probability_band, 2)}, observed ${num(b.observed_event_rate, 2)}, coverage ${b.coverage_count}`, b);
+
+  return {
+    predictionId,
+    panel1: { individual: p.individual, ancestry: p.individual_ancestry_label, isHoldout: p.is_ancestry_holdout, narrative: p.case_narrative || null },
+    panel2: facts,
+    panel3: {
+      isClinicallyActionable: p.is_clinically_actionable,
+      decidingReason: decidingReason(p),
+      stratificationTier: p.patient_stratification_tier,
+      gates: [
+        { label: 'Causally grounded (magnitude)', pass: Number(p.predicted_value) > 0, detail: `PredictedValue ${num(p.predicted_value)}` },
+        { label: 'Well calibrated ∧ not spurious', pass: p.is_high_confidence_prediction, detail: `CalibratedUncertainty ${num(p.calibrated_uncertainty)}` },
+        { label: 'Falsifiability-backed', pass: p.is_falsifiability_backed, detail: m ? `${m.count_intervention_targets} intervention target(s)` : '—' },
+        { label: 'Ancestry-transport-safe', pass: p.is_ancestry_transport_safe, detail: transportStatus(p.transport_gate_status) },
+      ],
+    },
+  };
+}
+
 // Render the structured diagnosis to Markdown.
 export function renderMarkdown(d) {
   if (!d) return null;
