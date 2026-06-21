@@ -216,15 +216,41 @@ The full breadth of the problem (every omics modality, disease stages, epistasis
 trajectories) is represented as ontology context but kept **deliberately off the keystone's dependency
 path**, so the core inference stays minimal, auditable, and testable.
 
-**On portability — the honest version.** This demo targets **one** substrate (Postgres); that's all
-it needs to make its point. The larger claim it stands on — that a rulebook IR projects *identically*
-into many substrates (Postgres, Python, Go, English, OWL, Excel, ARM64, COBOL, …), verified by a
-conformance suite — is demonstrated in the framework's
-[receipts repo](https://github.com/effortlessapi/effortless-rulebooks), not here. The point of *this*
-project isn't the substrate count. It's that the **trusted layer is structure** — and once the
-domain's reasoning is structure rather than code, it is *projectable at all*: portable, transparent,
-and interchangeable, instead of re-implemented (and re-drifted) in each language a hospital, a
-regulator, and a researcher separately need.
+**On portability — the honest version.** This demo targets **one** substrate (Postgres). *This
+autoimmune model has not been run through 17 substrates* — and nothing here should be read as
+claiming it has. The multi-substrate claim is the **framework's**, not this model's: that a single
+rulebook IR projects *identically* into many substrates (Postgres, Python, Go, English, OWL, Excel,
+ARM64, COBOL, …) is demonstrated on the **framework's own conformance suite**, in the sibling
+receipts repo — borrowed credibility, labeled as borrowed.
+
+The strongest backing receipt for the *reasoning/portability* axis is the recursive transitive
+closure cross-checked against a real OWL-RL + SHACL reasoner, in the Talisman example:
+
+- **Postgres closure** — [`vw_step_precedence_closure`](https://github.com/effortlessapi/effortless-rulebooks/blob/main/rulebook-examples/talismans-special-solutions/postgres-bootstrap/03-create-views.sql)
+  is a cycle-safe `WITH RECURSIVE` CTE: 4 asserted `precedesStep` edges (an `owl:TransitiveProperty`)
+  close to all 10 ordering pairs — including the never-asserted step-1 → step-5 — each row tagged
+  `is_inferred` / `hop_distance`.
+- **OWL substrate** — the same closure computed independently by
+  [`reason.py`](https://github.com/effortlessapi/effortless-rulebooks/blob/main/rulebook-examples/talismans-special-solutions/app/backend/reasoner/reason.py):
+  SHACL rules run to a fixpoint, then an OWL-RL deductive closure for the transitive/inverse
+  properties.
+- **The referee** — the
+  [conformance harness / orchestration report](https://github.com/effortlessapi/effortless-rulebooks/blob/main/rulebook-examples/talismans-special-solutions/orchestration-report.html)
+  flags the instant the two derivations diverge. Agreement *is* the proof they're one object;
+  divergence is the alarm.
+
+That repo's standing bet — which we mirror here, scoped to this model's finite, design-time
+questions — is: *produce one competency question the OWL / RDF / SHACL stack can answer but the
+rulebook cannot express one layer up.* The one genuine boundary is honest and named: **open-world
+entailment** is where substrates legitimately diverge, and the framework surfaces it as **failing
+conformance rows, not hidden** — a substrate that lags is less mature for that feature, never "more
+real." For the closed-world, design-time reasoning this model actually does, Postgres is the
+answer-key oracle.
+
+The point of *this* project isn't the substrate count. It's that the **trusted layer is structure**
+— and once the domain's reasoning is structure rather than code, it is *projectable at all*:
+portable, transparent, and interchangeable, instead of re-implemented (and re-drifted) in each
+language a hospital, a regulator, and a researcher separately need.
 
 ## Run it
 

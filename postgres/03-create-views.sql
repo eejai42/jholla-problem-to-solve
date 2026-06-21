@@ -622,7 +622,7 @@ SELECT
 FROM tests_for_success t;
 
 -- ----------------------------------------------------------------------------
--- vw_features: Buildable capabilities surfaced by the conversation. Coarser grain than loops; AssignedLoop links a feature to the loop that delivers it (nullable until scheduled).
+-- vw_features: Catalog of buildable capabilities the platform has / allows for. Coarser grain than loops. Each row carries challenge provenance (ChallengeRefs: exact quoted text + file/line/col into THE-ORIGINAL-CHALLENGE.md, for UI hover tips), a Category, a Priority, and a free-form Markdown ChallengeNotes comment. Source of truth for the DERIVED PLATFORM_FEATURES.md. AssignedLoop links a feature to the loop that delivers it (nullable until scheduled).
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
 DROP VIEW IF EXISTS vw_features CASCADE;
@@ -630,10 +630,17 @@ CREATE VIEW vw_features WITH (security_invoker = ON) AS
 SELECT
   t.feature_id,                                                                 -- Stable identifier.
   t.title,                                                                      -- Short feature name.
-  t.description,                                                                -- What it does.
+  t.category,                                                                   -- Which layer of the platform this belongs to (Keystone / inference DAG, Leaf / LLM surface, Witness / harness, Disease-state simulation, Treatment reasoning, Corpus-level discovery, Reporting, Platform infrastructure).
+  t.priority,                                                                   -- Load-bearing | Supporting | Roadmap.
+  t.description,                                                                -- What the capability does (factual, not a pitch).
+  t.challenge_refs,                                                             -- JSON array of provenance pointers into THE-ORIGINAL-CHALLENGE.md. Each: {file,line,col,len,quote,section,relation}. col is the 0-based char offset within the line; len is the quote length; section is prompt|payoff|audit|response; relation is direct|indirect. Drives UI hover tips that highlight the exact span.
+  t.challenge_refs_rendered,                                                    -- Pre-flattened Markdown bullet list of ChallengeRefs, so the dumb hbars template can print it verbatim (the engine has no loop-over-JSON helper).
+  t.challenge_notes,                                                            -- Free-form Markdown comment: which challenge elements this relates to (directly or indirectly) and how it is load-bearing or illustrative.
+  t.ref_count,                                                                  -- Number of challenge refs (carried as raw for display; the hbars engine can't count a JSON string).
   t.assigned_loop,                                                              -- FK -> LeopoldLoops.LeopoldLoopId; empty if unscheduled.
   calc_features_name(t.feature_id) AS name,                                     -- Display label.
-  calc_features_relative_path(t.feature_id) AS relative_path                    -- Path to this Features entry: /admin/features/<id>.
+  calc_features_relative_path(t.feature_id) AS relative_path,                   -- Path to this Features entry: /admin/features/<id>.
+  calc_features_meta_line(t.feature_id) AS meta_line                            -- One-line meta summary for the catalog (category - priority - ref count).
 FROM features t;
 
 -- ----------------------------------------------------------------------------
@@ -959,4 +966,51 @@ SELECT
   calc_therapy_options_name(t.therapy_option_id) AS name,                       -- Echo.
   calc_therapy_options_relative_path(t.therapy_option_id) AS relative_path      -- Path.
 FROM therapy_options t;
+
+-- ----------------------------------------------------------------------------
+-- vw_state_transition_rules_closure: Transitive closure of state-machine transitions (an owl:TransitiveProperty). The asserted FromState->ToState edges imply the full reachability ordering of each machine - including never-asserted long-range pairs such as PresymptomaticAutoimmunity -> BiopsyIndicated. Materialized by the transpiler as the cycle-safe recursive view vw_state_transition_rules_closure(from_id, to_id, hop_distance, is_inferred): asserted edges (hop 1) plus inferred reachability rows. The disease trajectory is derived from the transition topology, not hand-asserted.
+-- Cycle-safe transitive closure of state_transition_rules(from_state -> to_state) [junction edge table].
+-- Columns: from_id, to_id, hop_distance (shortest derivation), is_inferred
+--          (TRUE iff no direct hop-1 edge asserts the pair).
+-- ----------------------------------------------------------------------------
+DROP VIEW IF EXISTS vw_state_transition_rules_closure CASCADE;
+CREATE VIEW vw_state_transition_rules_closure WITH (security_invoker = ON) AS
+WITH RECURSIVE edges AS (
+    SELECT from_state AS from_id, to_state AS to_id
+    FROM state_transition_rules
+    -- Treat NULL and empty-string FKs as 'no edge' (the transpiler stores absent
+    -- relationship values as '' rather than NULL, so both must be excluded).
+    WHERE from_state IS NOT NULL AND from_state <> '' AND to_state IS NOT NULL AND to_state <> ''
+),
+closure AS (
+    -- Base: the directly-asserted edges (hop 1).
+    SELECT
+        e.from_id,
+        e.to_id,
+        1 AS hop_distance,
+        ARRAY[e.from_id, e.to_id] AS path
+    FROM edges e
+    UNION ALL
+    -- Step: extend each path by one asserted edge, skipping nodes already on the
+    -- path so cyclic edge sets terminate (cycle-safe).
+    SELECT
+        cl.from_id,
+        e.to_id,
+        cl.hop_distance + 1,
+        cl.path || e.to_id
+    FROM closure cl
+    JOIN edges e ON e.from_id = cl.to_id
+    WHERE NOT (e.to_id = ANY(cl.path))
+)
+SELECT
+    cl.from_id,
+    cl.to_id,
+    MIN(cl.hop_distance) AS hop_distance,
+    NOT EXISTS (
+        SELECT 1 FROM edges e2
+        WHERE e2.from_id = cl.from_id AND e2.to_id = cl.to_id
+    ) AS is_inferred
+FROM closure cl
+GROUP BY cl.from_id, cl.to_id;
+
 

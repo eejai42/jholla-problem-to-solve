@@ -9864,7 +9864,7 @@
     ]
   },
   "Features": {
-    "Description": "Buildable capabilities surfaced by the conversation. Coarser grain than loops; AssignedLoop links a feature to the loop that delivers it (nullable until scheduled).",
+    "Description": "Catalog of buildable capabilities the platform has / allows for. Coarser grain than loops. Each row carries challenge provenance (ChallengeRefs: exact quoted text + file/line/col into THE-ORIGINAL-CHALLENGE.md, for UI hover tips), a Category, a Priority, and a free-form Markdown ChallengeNotes comment. Source of truth for the DERIVED PLATFORM_FEATURES.md. AssignedLoop links a feature to the loop that delivers it (nullable until scheduled).",
     "schema": [
       {
         "name": "FeatureId",
@@ -9881,11 +9881,53 @@
         "Description": "Short feature name."
       },
       {
+        "name": "Category",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Which layer of the platform this belongs to (Keystone / inference DAG, Leaf / LLM surface, Witness / harness, Disease-state simulation, Treatment reasoning, Corpus-level discovery, Reporting, Platform infrastructure)."
+      },
+      {
+        "name": "Priority",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Load-bearing | Supporting | Roadmap."
+      },
+      {
         "name": "Description",
         "datatype": "string",
         "type": "raw",
         "nullable": false,
-        "Description": "What it does."
+        "Description": "What the capability does (factual, not a pitch)."
+      },
+      {
+        "name": "ChallengeRefs",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "JSON array of provenance pointers into THE-ORIGINAL-CHALLENGE.md. Each: {file,line,col,len,quote,section,relation}. col is the 0-based char offset within the line; len is the quote length; section is prompt|payoff|audit|response; relation is direct|indirect. Drives UI hover tips that highlight the exact span."
+      },
+      {
+        "name": "ChallengeRefsRendered",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Pre-flattened Markdown bullet list of ChallengeRefs, so the dumb hbars template can print it verbatim (the engine has no loop-over-JSON helper)."
+      },
+      {
+        "name": "ChallengeNotes",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": true,
+        "Description": "Free-form Markdown comment: which challenge elements this relates to (directly or indirectly) and how it is load-bearing or illustrative."
+      },
+      {
+        "name": "RefCount",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Number of challenge refs (carried as raw for display; the hbars engine can't count a JSON string)."
       },
       {
         "name": "AssignedLoop",
@@ -9909,88 +9951,376 @@
         "nullable": true,
         "Description": "Path to this Features entry: /admin/features/<id>.",
         "formula": "=\"/admin/features/\" & {{FeatureId}}"
+      },
+      {
+        "name": "MetaLine",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "One-line meta summary for the catalog (category - priority - ref count).",
+        "formula": "=\"**Category:** \" & {{Category}} & \" - **Priority:** \" & {{Priority}} & \" - **Challenge refs:** \" & {{RefCount}}"
       }
     ],
     "data": [
       {
+        "FeatureId": "feat-keystone-actionability-gate",
+        "Title": "Four-gate clinical-actionability keystone",
+        "Category": "Keystone / inference DAG",
+        "Priority": "Load-bearing",
+        "Description": "The entire system reduces to one computed boolean, `IndividualPredictions.IsClinicallyActionable`, TRUE only when all four derived gates hold (causally grounded, well-calibrated, non-spurious, ancestry-generalizable). Computed from a pure formula DAG, never entered. Seven synthetic patients land on both sides; each failure names the single deciding gate.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 6, \"col\": 223, \"len\": 87, \"quote\": \"individualized prevention, presymptomatic diagnosis, ancestry-equitable risk prediction\", \"section\": \"payoff\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1608, \"len\": 68, \"quote\": \"with calibrated uncertainty and no reliance on spurious correlations\", \"section\": \"prompt\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 351, \"len\": 79, \"quote\": \"identify the complete causal architecture of a heterogeneous autoimmune disease\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (payoff, `THE-ORIGINAL-CHALLENGE.md` L6:223+87): _individualized prevention, presymptomatic diagnosis, ancestry-equitable risk prediction_\n- **directly addresses** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1608+68): _with calibrated uncertainty and no reliance on spurious correlations_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:351+79): _identify the complete causal architecture of a heterogeneous autoimmune disease_",
+        "ChallengeNotes": "This is the north-star reduction. It directly operationalizes the payoff paragraph's \"individualized... ancestry-equitable... actionable prediction\" and the prompt's demand for *calibrated uncertainty and no reliance on spurious correlations*. The four gates are the four hardest constraints in the prompt, each made a falsifiable boolean rather than a promise.",
+        "RefCount": 3,
+        "AssignedLoop": "",
+        "Name": "Four-gate clinical-actionability keystone",
+        "RelativePath": "/admin/features/feat-keystone-actionability-gate",
+        "MetaLine": "**Category:** Keystone / inference DAG - **Priority:** Load-bearing - **Challenge refs:** 3"
+      },
+      {
+        "FeatureId": "feat-trust-boundary-line-in-dag",
+        "Title": "Trust boundary as a line in the DAG",
+        "Category": "Keystone / inference DAG",
+        "Priority": "Load-bearing",
+        "Description": "Any field with a formula belongs to the model; any raw-input field is the human's (or the LLM's, as an overridable front-end). Every Z-stat, gate, and the keystone is a pure inspectable formula; nothing above the leaves is enterable. The trust boundary is literally an edge in the dependency graph.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1608, \"len\": 68, \"quote\": \"with calibrated uncertainty and no reliance on spurious correlations\", \"section\": \"prompt\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 66, \"col\": 191, \"len\": 37, \"quote\": \"decomposes into inspectable structure\", \"section\": \"response\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1608+68): _with calibrated uncertainty and no reliance on spurious correlations_\n- **indirectly supports** (response, `THE-ORIGINAL-CHALLENGE.md` L66:191+37): _decomposes into inspectable structure_",
+        "ChallengeNotes": "This is the conceptual spine that makes the whole platform auditable rather than 'an LLM that diagnoses'. It is what lets the system claim *no reliance on spurious correlations* structurally (the V2 response: known reasoning *decomposes into inspectable structure*).",
+        "RefCount": 2,
+        "AssignedLoop": "",
+        "Name": "Trust boundary as a line in the DAG",
+        "RelativePath": "/admin/features/feat-trust-boundary-line-in-dag",
+        "MetaLine": "**Category:** Keystone / inference DAG - **Priority:** Load-bearing - **Challenge refs:** 2"
+      },
+      {
         "FeatureId": "feat-llm-intake-clerk",
         "Title": "LLM intake clerk",
-        "Description": "LLM reads a natural-language case and writes raw intake observation rows (ancestry, allele freqs, presenting facts) to base tables.",
+        "Category": "Leaf / LLM surface",
+        "Priority": "Load-bearing",
+        "Description": "LLM reads a natural-language case and writes raw intake observation rows (ancestry, allele freqs, presenting facts) to base tables. It interprets the case like an intake nurse and never computes a single inference above the leaf layer.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 751, \"len\": 65, \"quote\": \"resolving cell-state-specific effects, allele-specific expression\", \"section\": \"prompt\", \"relation\": \"indirect\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1446, \"len\": 83, \"quote\": \"accurately predict disease onset, severity, treatment response, and adverse effects\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:751+65): _resolving cell-state-specific effects, allele-specific expression_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1446+83): _accurately predict disease onset, severity, treatment response, and adverse effects_",
+        "ChallengeNotes": "Addresses the front of the challenge's data pipeline: turning heterogeneous clinical input into structured observations. The LLM is the *transcriber*, never the diagnostician - the half of the trust boundary that stays human-overridable.",
+        "RefCount": 2,
         "AssignedLoop": "",
         "Name": "LLM intake clerk",
-        "RelativePath": "/admin/features/feat-llm-intake-clerk"
+        "RelativePath": "/admin/features/feat-llm-intake-clerk",
+        "MetaLine": "**Category:** Leaf / LLM surface - **Priority:** Load-bearing - **Challenge refs:** 2"
       },
       {
         "FeatureId": "feat-synthetic-lab",
         "Title": "Synthetic-but-transparent lab generator",
-        "Description": "LLM emits the case's test results (effect sizes/SEs, replication signs/p-values, permutation effect sizes, calibration coverage) as visible, sourced, editable leaf rows.",
+        "Category": "Leaf / LLM surface",
+        "Priority": "Load-bearing",
+        "Description": "LLM emits the case's test results (effect sizes/SEs, replication signs/p-values, permutation effect sizes, calibration coverage) as visible, sourced, editable leaf rows. The numbers are fake (the case is invented) but every value is transparent, sourced to the case, and editable.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 818, \"len\": 54, \"quote\": \"3D enhancer–promoter interactions, rare-variant burden\", \"section\": \"prompt\", \"relation\": \"indirect\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1396, \"len\": 45, \"quote\": \"produce experimentally falsifiable mechanisms\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:818+54): _3D enhancer-promoter interactions, rare-variant burden_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1396+45): _produce experimentally falsifiable mechanisms_",
+        "ChallengeNotes": "Stands in for the prompt's enormous multi-omic measurement surface. The point isn't real biology (out of scope); it's that the *shape* real measurements would slot into exists, with each number a visible, correctable knob - defeating 'a hallucination laundered through a deterministic function'.",
+        "RefCount": 2,
         "AssignedLoop": "",
         "Name": "Synthetic-but-transparent lab generator",
-        "RelativePath": "/admin/features/feat-synthetic-lab"
+        "RelativePath": "/admin/features/feat-synthetic-lab",
+        "MetaLine": "**Category:** Leaf / LLM surface - **Priority:** Load-bearing - **Challenge refs:** 2"
       },
       {
         "FeatureId": "feat-three-panel-witness",
         "Title": "Three-panel witness view",
-        "Description": "Input case text | extracted facts with provenance | deterministic diagnosis + four-gate trace.",
+        "Category": "Witness / harness",
+        "Priority": "Load-bearing",
+        "Description": "Input case text | extracted facts with per-fact provenance back into the text | deterministic diagnosis + four-gate trace. The middle panel is human-checkable independently of the verdict.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1608, \"len\": 68, \"quote\": \"with calibrated uncertainty and no reliance on spurious correlations\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1608+68): _with calibrated uncertainty and no reliance on spurious correlations_",
+        "ChallengeNotes": "This is the anti-laundering instrument: it lets a reviewer verify the extracted leaves against the source text *before* trusting any derived conclusion. Indirectly serves the prompt's demand for *no reliance on spurious correlations* by making the raw->derived path inspectable end to end.",
+        "RefCount": 1,
         "AssignedLoop": "",
         "Name": "Three-panel witness view",
-        "RelativePath": "/admin/features/feat-three-panel-witness"
+        "RelativePath": "/admin/features/feat-three-panel-witness",
+        "MetaLine": "**Category:** Witness / harness - **Priority:** Load-bearing - **Challenge refs:** 1"
+      },
+      {
+        "FeatureId": "feat-witnessed-harness-home",
+        "Title": "Witnessed red->green inference harness (home screen)",
+        "Category": "Witness / harness",
+        "Priority": "Load-bearing",
+        "Description": "The app's home page IS a red/green test tree, not a form. Every category of inference (the DAG levels / the four gates) and the specific tests under each are asserted against the app's own API for all patients. As the model is built out, tests turn green; a fully green run is the proof.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1396, \"len\": 45, \"quote\": \"produce experimentally falsifiable mechanisms\", \"section\": \"prompt\", \"relation\": \"indirect\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 66, \"col\": 191, \"len\": 37, \"quote\": \"decomposes into inspectable structure\", \"section\": \"response\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1396+45): _produce experimentally falsifiable mechanisms_\n- **indirectly supports** (response, `THE-ORIGINAL-CHALLENGE.md` L66:191+37): _decomposes into inspectable structure_",
+        "ChallengeNotes": "The harness is how the platform makes its claims *checkable rather than asserted*. It is the operational form of the V2 response's argument: not 'how much is modeled' but 'does adding the next thing keep the audit guarantee' - and it stays green and inspectable when it does.",
+        "RefCount": 2,
+        "AssignedLoop": "",
+        "Name": "Witnessed red->green inference harness (home screen)",
+        "RelativePath": "/admin/features/feat-witnessed-harness-home",
+        "MetaLine": "**Category:** Witness / harness - **Priority:** Load-bearing - **Challenge refs:** 2"
       },
       {
         "FeatureId": "feat-knob-edit-ui",
         "Title": "Knob-editing admin UI",
-        "Description": "Every LLM-produced leaf value is an editable field; correcting it re-derives the DAG.",
+        "Category": "Witness / harness",
+        "Priority": "Load-bearing",
+        "Description": "Every LLM-produced leaf value is an editable field; correcting it re-derives the DAG. Every formula is inspectable/correctable in place, like a spreadsheet cell, so a wrong input is nudged, not re-prompted.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1608, \"len\": 68, \"quote\": \"with calibrated uncertainty and no reliance on spurious correlations\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1608+68): _with calibrated uncertainty and no reliance on spurious correlations_",
+        "ChallengeNotes": "Makes the trust boundary *actionable* for a human reviewer: the model's judgment is externalized into editable bottom-row cells, and all reasoning lives in the open DAG above them.",
+        "RefCount": 1,
         "AssignedLoop": "loop-2",
         "Name": "Knob-editing admin UI",
-        "RelativePath": "/admin/features/feat-knob-edit-ui"
+        "RelativePath": "/admin/features/feat-knob-edit-ui",
+        "MetaLine": "**Category:** Witness / harness - **Priority:** Load-bearing - **Challenge refs:** 1"
       },
       {
         "FeatureId": "feat-gate-explainability",
         "Title": "Gate explainability",
-        "Description": "For a patient, show why each gate passed/failed by walking one level down (coverage, cross-ancestry count, etc.).",
+        "Category": "Witness / harness",
+        "Priority": "Load-bearing",
+        "Description": "For a patient, show why each gate passed/failed by walking one level down (coverage, cross-ancestry replication count, permutation survival, cryptic-relatedness flag, etc.).",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1545, \"len\": 62, \"quote\": \"from ancestries and environments absent from the training data\", \"section\": \"prompt\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1608, \"len\": 68, \"quote\": \"with calibrated uncertainty and no reliance on spurious correlations\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1545+62): _from ancestries and environments absent from the training data_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1608+68): _with calibrated uncertainty and no reliance on spurious correlations_",
+        "ChallengeNotes": "Turns the keystone from a verdict into an explanation. Directly serves the prompt's *calibrated uncertainty* and ancestry-generalizability requirements by exposing the exact sub-evidence each gate rests on.",
+        "RefCount": 2,
         "AssignedLoop": "loop-3",
         "Name": "Gate explainability",
-        "RelativePath": "/admin/features/feat-gate-explainability"
+        "RelativePath": "/admin/features/feat-gate-explainability",
+        "MetaLine": "**Category:** Witness / harness - **Priority:** Load-bearing - **Challenge refs:** 2"
+      },
+      {
+        "FeatureId": "feat-disease-state-machine",
+        "Title": "Disease-state machine derived from raw labs",
+        "Category": "Disease-state simulation",
+        "Priority": "Load-bearing",
+        "Description": "Disease progresses as a state machine: Presymptomatic -> SerologicActive -> EarlyNephritis -> RenalFlareRisk -> BiopsyIndicated. The current state is computed from rising anti-dsDNA + falling complement + proteinuria - never entered - and dwell time per state is tracked.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 34, \"col\": 569, \"len\": 69, \"quote\": \"the difference between an evidence gate and a disease-state simulator\", \"section\": \"audit\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 51, \"col\": 0, \"len\": 63, \"quote\": \"Disease now progresses as a state machine derived from raw labs\", \"section\": \"response\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1019, \"len\": 56, \"quote\": \"feedback between disease progression and molecular state\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (audit, `THE-ORIGINAL-CHALLENGE.md` L34:569+69): _the difference between an evidence gate and a disease-state simulator_\n- **directly addresses** (response, `THE-ORIGINAL-CHALLENGE.md` L51:0+63): _Disease now progresses as a state machine derived from raw labs_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1019+56): _feedback between disease progression and molecular state_",
+        "ChallengeNotes": "Directly answers the doctor's central v1 critique: the difference between an evidence gate and a disease-state simulator. This is the 'is the disease progressing' layer, built additively onto the same trust boundary (labs are the clinician's input; state is the model's derivation).",
+        "RefCount": 3,
+        "AssignedLoop": "",
+        "Name": "Disease-state machine derived from raw labs",
+        "RelativePath": "/admin/features/feat-disease-state-machine",
+        "MetaLine": "**Category:** Disease-state simulation - **Priority:** Load-bearing - **Challenge refs:** 3"
+      },
+      {
+        "FeatureId": "feat-sledai-activity-score",
+        "Title": "Derived SLEDAI disease-activity score",
+        "Category": "Disease-state simulation",
+        "Priority": "Load-bearing",
+        "Description": "A SLEDAI activity score (and activity tier) computed per patient from the serology series (renal points, serology points, proteinuria), not a label anyone typed. Drives the worked nephritis example: rising anti-dsDNA, falling complement, renal-flare risk, biopsy-indicated.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 34, \"col\": 275, \"len\": 62, \"quote\": \"This patient is transitioning from presymptomatic autoimmunity\", \"section\": \"audit\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 32, \"col\": 518, \"len\": 67, \"quote\": \"the clinical workflow from referral, differential diagnosis, workup\", \"section\": \"audit\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (audit, `THE-ORIGINAL-CHALLENGE.md` L34:275+62): _This patient is transitioning from presymptomatic autoimmunity_\n- **indirectly supports** (audit, `THE-ORIGINAL-CHALLENGE.md` L32:518+67): _the clinical workflow from referral, differential diagnosis, workup_",
+        "ChallengeNotes": "Concretely supplies the 'real disease activity scores' the doctor named as missing in v1, and produces the first computed worked example: a patient *transitioning toward early lupus nephritis*.",
+        "RefCount": 2,
+        "AssignedLoop": "",
+        "Name": "Derived SLEDAI disease-activity score",
+        "RelativePath": "/admin/features/feat-sledai-activity-score",
+        "MetaLine": "**Category:** Disease-state simulation - **Priority:** Load-bearing - **Challenge refs:** 2"
+      },
+      {
+        "FeatureId": "feat-treatment-line-recommendation",
+        "Title": "Derived treatment-line recommendation with one stated reason",
+        "Category": "Treatment reasoning",
+        "Priority": "Load-bearing",
+        "Description": "A recommended treatment line with a single stated reason, differentiated by the confirmed mechanism and the disease state: mycophenolate induction for active nephritis, anifrolumab for an IFN-pathway mechanism, belimumab for autoantibody-driven, secukinumab for IL-17/23.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 6, \"col\": 348, \"len\": 60, \"quote\": \"therapies that target each person’s causal molecular pathway\", \"section\": \"payoff\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 34, \"col\": 473, \"len\": 85, \"quote\": \"would likely respond differently to mycophenolate versus belimumab versus anifrolumab\", \"section\": \"audit\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 55, \"col\": 37, \"len\": 67, \"quote\": \"A derived treatment-line recommendation with a single stated reason\", \"section\": \"response\", \"relation\": \"direct\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (payoff, `THE-ORIGINAL-CHALLENGE.md` L6:348+60): _therapies that target each person's causal molecular pathway_\n- **directly addresses** (audit, `THE-ORIGINAL-CHALLENGE.md` L34:473+85): _would likely respond differently to mycophenolate versus belimumab versus anifrolumab_\n- **directly addresses** (response, `THE-ORIGINAL-CHALLENGE.md` L55:37+67): _A derived treatment-line recommendation with a single stated reason_",
+        "ChallengeNotes": "The doctor's *second* worked example, computed. Implements 'therapies that target each person's causal molecular pathway' as a derived field grounded in a confirmed CausalMechanism node - a mechanism match, not a broad immunosuppression label.",
+        "RefCount": 3,
+        "AssignedLoop": "",
+        "Name": "Derived treatment-line recommendation with one stated reason",
+        "RelativePath": "/admin/features/feat-treatment-line-recommendation",
+        "MetaLine": "**Category:** Treatment reasoning - **Priority:** Load-bearing - **Challenge refs:** 3"
+      },
+      {
+        "FeatureId": "feat-treatment-response-mechanism-match",
+        "Title": "Treatment-response prediction via mechanism match",
+        "Category": "Treatment reasoning",
+        "Priority": "Supporting",
+        "Description": "A treatment-response prediction is trustworthy only when the treatment targets a confirmed causal mechanism (IsMechanismMatched) AND the treatment is effective. A drug aimed at a debunked mechanism, or one that didn't work / was adverse, is never 'predicted to respond'.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1446, \"len\": 83, \"quote\": \"accurately predict disease onset, severity, treatment response, and adverse effects\", \"section\": \"prompt\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 6, \"col\": 633, \"len\": 29, \"quote\": \"reduce failed clinical trials\", \"section\": \"payoff\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1446+83): _accurately predict disease onset, severity, treatment response, and adverse effects_\n- **indirectly supports** (payoff, `THE-ORIGINAL-CHALLENGE.md` L6:633+29): _reduce failed clinical trials_",
+        "ChallengeNotes": "One of the three prediction types the prompt asks for (onset / severity / treatment-response). Grounds treatment response in the same causal-mechanism DAG so it can never be a free-floating label.",
+        "RefCount": 2,
+        "AssignedLoop": "",
+        "Name": "Treatment-response prediction via mechanism match",
+        "RelativePath": "/admin/features/feat-treatment-response-mechanism-match",
+        "MetaLine": "**Category:** Treatment reasoning - **Priority:** Supporting - **Challenge refs:** 2"
+      },
+      {
+        "FeatureId": "feat-emergent-serology-cluster",
+        "Title": "Emergent serology-signature cluster (corpus-level discovery)",
+        "Category": "Corpus-level discovery",
+        "Priority": "Load-bearing",
+        "Description": "A per-patient IsInPreNephriticSignatureCluster rolled up from each person's raw serology series (rising anti-dsDNA + falling complement), no label assigned. On the synthetic cohort it lands cleanly - 6 of 12 in the cluster - and perfectly separates active/progressing from quiescent patients.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 62, \"col\": 63, \"len\": 36, \"quote\": \"discovery is inherently corpus-level\", \"section\": \"response\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 62, \"col\": 340, \"len\": 66, \"quote\": \"surfaces as a derived emergent cluster across the whole population\", \"section\": \"response\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 351, \"len\": 79, \"quote\": \"identify the complete causal architecture of a heterogeneous autoimmune disease\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (response, `THE-ORIGINAL-CHALLENGE.md` L62:63+36): _discovery is inherently corpus-level_\n- **directly addresses** (response, `THE-ORIGINAL-CHALLENGE.md` L62:340+66): _surfaces as a derived emergent cluster across the whole population_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:351+79): _identify the complete causal architecture of a heterogeneous autoimmune disease_",
+        "ChallengeNotes": "Answers the doctor's deepest point: discovery is inherently corpus-level - a single chart never discovers a mechanism, a pattern across many patients does. This is the *shape* of discovery on synthetic data: membership emerges from the population's raw data and tracks the disease.",
+        "RefCount": 3,
+        "AssignedLoop": "",
+        "Name": "Emergent serology-signature cluster (corpus-level discovery)",
+        "RelativePath": "/admin/features/feat-emergent-serology-cluster",
+        "MetaLine": "**Category:** Corpus-level discovery - **Priority:** Load-bearing - **Challenge refs:** 3"
+      },
+      {
+        "FeatureId": "feat-evidence-disease-disagreement",
+        "Title": "Evidence-gate <-> disease-state disagreement detector",
+        "Category": "Corpus-level discovery",
+        "Priority": "Load-bearing",
+        "Description": "Flags the patient where the disease-state simulator and the actionability gate disagree: the disease is clearly progressing (biopsy-indicated, high activity) yet the prediction is correctly judged not clinically actionable (a relatedness-leakage problem).",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 57, \"col\": 95, \"len\": 63, \"quote\": \"the disease-state simulator and the actionability gate disagree\", \"section\": \"response\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 34, \"col\": 569, \"len\": 69, \"quote\": \"the difference between an evidence gate and a disease-state simulator\", \"section\": \"audit\", \"relation\": \"direct\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (response, `THE-ORIGINAL-CHALLENGE.md` L57:95+63): _the disease-state simulator and the actionability gate disagree_\n- **directly addresses** (audit, `THE-ORIGINAL-CHALLENGE.md` L34:569+69): _the difference between an evidence gate and a disease-state simulator_",
+        "ChallengeNotes": "The single clearest proof that disease-state simulation is a *second, independent* layer and not the old evidence gate relabeled. A system that only gated evidence could never say 'needs attention now, but our mechanism prediction isn't trustworthy enough to pick a targeted therapy.'",
+        "RefCount": 2,
+        "AssignedLoop": "",
+        "Name": "Evidence-gate <-> disease-state disagreement detector",
+        "RelativePath": "/admin/features/feat-evidence-disease-disagreement",
+        "MetaLine": "**Category:** Corpus-level discovery - **Priority:** Load-bearing - **Challenge refs:** 2"
+      },
+      {
+        "FeatureId": "feat-cohort-discovery-board",
+        "Title": "Cohort discovery board (corpus surface)",
+        "Category": "Corpus-level discovery",
+        "Priority": "Supporting",
+        "Description": "Top nav item for every role: the disease-state map, the emergent serology-signature scatter (with the derived cluster drawn as a halo, not a painted colour), the disagreement board, and the treatment-line distribution - all reading derived fields.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 6, \"col\": 312, \"len\": 30, \"quote\": \"precise patient stratification\", \"section\": \"payoff\", \"relation\": \"direct\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 62, \"col\": 63, \"len\": 36, \"quote\": \"discovery is inherently corpus-level\", \"section\": \"response\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (payoff, `THE-ORIGINAL-CHALLENGE.md` L6:312+30): _precise patient stratification_\n- **indirectly supports** (response, `THE-ORIGINAL-CHALLENGE.md` L62:63+36): _discovery is inherently corpus-level_",
+        "ChallengeNotes": "The corpus-level surface where discovery is *expressed*. Moves the platform from per-patient adjudication (v1) to a population view, which is where the prompt's 'causal architecture' lives.",
+        "RefCount": 2,
+        "AssignedLoop": "",
+        "Name": "Cohort discovery board (corpus surface)",
+        "RelativePath": "/admin/features/feat-cohort-discovery-board",
+        "MetaLine": "**Category:** Corpus-level discovery - **Priority:** Supporting - **Challenge refs:** 2"
       },
       {
         "FeatureId": "feat-diagnosis-writeup",
         "Title": "Per-patient diagnosis writeup",
-        "Description": "Doctor-style Markdown writeup (-> diagnosis.pdf once green) produced as an artifact of a passing run.",
+        "Category": "Reporting",
+        "Priority": "Load-bearing",
+        "Description": "Doctor-style Markdown writeup (-> diagnosis.pdf once green) produced as an artifact of a passing run: 'The patient presented with... tests xyz confirmed abc... therefore C (actionable / not, and the single deciding reason).' It needs no UI to be valuable.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 6, \"col\": 223, \"len\": 87, \"quote\": \"individualized prevention, presymptomatic diagnosis, ancestry-equitable risk prediction\", \"section\": \"payoff\", \"relation\": \"direct\"}]",
+        "ChallengeRefsRendered": "- **directly addresses** (payoff, `THE-ORIGINAL-CHALLENGE.md` L6:223+87): _individualized prevention, presymptomatic diagnosis, ancestry-equitable risk prediction_",
+        "ChallengeNotes": "The real output of the platform is a diagnosis, not a screen. This is the human-facing payoff that the prompt's 'presymptomatic diagnosis' and 'individualized' language ultimately asks for.",
+        "RefCount": 1,
         "AssignedLoop": "",
         "Name": "Per-patient diagnosis writeup",
-        "RelativePath": "/admin/features/feat-diagnosis-writeup"
+        "RelativePath": "/admin/features/feat-diagnosis-writeup",
+        "MetaLine": "**Category:** Reporting - **Priority:** Load-bearing - **Challenge refs:** 1"
       },
       {
         "FeatureId": "feat-derived-report-fragments",
         "Title": "Derived narrative fragment fields",
-        "Description": "Per-row calculated text fields that turn each fact into structured natural language, predicate-gated and case-by-case (e.g. Individual.TemperatureNarrative -> 'normal temperature' | 'light fever' | 'severe fever' from the row's own value). Each fragment is one spreadsheet-cell formula: it reads sibling fields and __meta__ phrases only, no joins or aggregations. Complex sentences are decomposed into constituent intermediate-translation fragments composed upward.",
+        "Category": "Reporting",
+        "Priority": "Supporting",
+        "Description": "Per-row calculated text fields that turn each fact into structured natural language, predicate-gated and case-by-case (e.g. TemperatureNarrative -> 'normal temperature' | 'light fever' | 'severe fever' from the row's own value). Each fragment is one spreadsheet-cell formula reading sibling fields and __meta__ phrases only - no joins or aggregations - composed upward into complex sentences.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 66, \"col\": 191, \"len\": 37, \"quote\": \"decomposes into inspectable structure\", \"section\": \"response\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (response, `THE-ORIGINAL-CHALLENGE.md` L66:191+37): _decomposes into inspectable structure_",
+        "ChallengeNotes": "Keeps all narrative wording inside the auditable DAG: the writeup is assembled from inspectable calculated cells, never free-text generated at render time. Reporting stays on the trust boundary.",
+        "RefCount": 1,
         "AssignedLoop": "",
         "Name": "Derived narrative fragment fields",
-        "RelativePath": "/admin/features/feat-derived-report-fragments"
+        "RelativePath": "/admin/features/feat-derived-report-fragments",
+        "MetaLine": "**Category:** Reporting - **Priority:** Supporting - **Challenge refs:** 1"
       },
       {
         "FeatureId": "feat-report-meta-phrasebook",
         "Title": "Global phrasebook in __meta__",
-        "Description": "Reusable, contextual language atoms stored once in the __meta__ settings table — literal global phrases ('The patient presented with…') and shared banding vocabulary — referenced by fragment fields so common language is authored/corrected in one place, never re-implemented per case.",
+        "Category": "Reporting",
+        "Priority": "Supporting",
+        "Description": "Reusable, contextual language atoms stored once in the __meta__ settings table - literal global phrases ('The patient presented with...') and shared banding vocabulary - referenced by fragment fields so common language is authored/corrected in one place, never re-implemented per case.",
+        "ChallengeRefs": "[]",
+        "ChallengeRefsRendered": "_No direct challenge clause - internal scaffolding._",
+        "ChallengeNotes": "DRY for narrative: the one place global phrasing is corrected. Supports the writeup feature without duplicating wording across patients.",
+        "RefCount": 0,
         "AssignedLoop": "",
         "Name": "Global phrasebook in __meta__",
-        "RelativePath": "/admin/features/feat-report-meta-phrasebook"
+        "RelativePath": "/admin/features/feat-report-meta-phrasebook",
+        "MetaLine": "**Category:** Reporting - **Priority:** Supporting - **Challenge refs:** 0"
       },
       {
         "FeatureId": "feat-report-renderer",
         "Title": "Thin Python report renderer (replaces handlebars)",
-        "Description": "Replaces the json-hbars-transform plan step with a small Python renderer whose only job is to read each patient's derived fragment fields from vw_* views and concatenate the non-empty, predicate-gated fragments in order into the diagnosis report (Markdown -> diagnosis.pdf). All sentence wording lives in the rulebook as calculated fields; the renderer owns no business or narrative logic.",
+        "Category": "Reporting",
+        "Priority": "Supporting",
+        "Description": "A small Python renderer whose only job is to read each patient's derived fragment fields from vw_* views and concatenate the non-empty, predicate-gated fragments in order into the diagnosis report (Markdown -> diagnosis.pdf). All sentence wording lives in the rulebook as calculated fields; the renderer owns no business or narrative logic.",
+        "ChallengeRefs": "[]",
+        "ChallengeRefsRendered": "_No direct challenge clause - internal scaffolding._",
+        "ChallengeNotes": "Enforces the rule that the renderer is dumb and the rulebook is the single source of narrative truth - the same discipline this PLATFORM_FEATURES.md generation itself follows.",
+        "RefCount": 0,
         "AssignedLoop": "",
         "Name": "Thin Python report renderer (replaces handlebars)",
-        "RelativePath": "/admin/features/feat-report-renderer"
+        "RelativePath": "/admin/features/feat-report-renderer",
+        "MetaLine": "**Category:** Reporting - **Priority:** Supporting - **Challenge refs:** 0"
       },
       {
         "FeatureId": "feat-report-total-coverage-check",
         "Title": "Report total-coverage harness",
+        "Category": "Reporting",
+        "Priority": "Supporting",
         "Description": "Tests that every patient word and every linked DAG node down to ground truth is represented in that patient's report (see tfs-report-covers-every-word, tfs-report-covers-every-dag-node).",
+        "ChallengeRefs": "[]",
+        "ChallengeRefsRendered": "_No direct challenge clause - internal scaffolding._",
+        "ChallengeNotes": "Closes the loop on the writeup: nothing in a patient's record is silently dropped from their report, and nothing in the report is unsourced. Total coverage is itself a witnessed test.",
+        "RefCount": 0,
         "AssignedLoop": "",
         "Name": "Report total-coverage harness",
-        "RelativePath": "/admin/features/feat-report-total-coverage-check"
+        "RelativePath": "/admin/features/feat-report-total-coverage-check",
+        "MetaLine": "**Category:** Reporting - **Priority:** Supporting - **Challenge refs:** 0"
+      },
+      {
+        "FeatureId": "feat-explainer-dag",
+        "Title": "In-app Explainer DAG (clickable field provenance)",
+        "Category": "Platform infrastructure",
+        "Priority": "Supporting",
+        "Description": "A generated, embedded visualization of the rulebook's calculated-field DAG: click any cell/field and see exactly how it was derived (raw inputs -> lookups -> calcs -> aggregations), with RuleSpeak prose baked in at transpile time.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 66, \"col\": 191, \"len\": 37, \"quote\": \"decomposes into inspectable structure\", \"section\": \"response\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (response, `THE-ORIGINAL-CHALLENGE.md` L66:191+37): _decomposes into inspectable structure_",
+        "ChallengeNotes": "Makes 'the trust boundary is a line in the graph' literally clickable. Any reviewer can trace a verdict back to the raw leaves it rests on - the in-app form of the audit guarantee.",
+        "RefCount": 1,
+        "AssignedLoop": "",
+        "Name": "In-app Explainer DAG (clickable field provenance)",
+        "RelativePath": "/admin/features/feat-explainer-dag",
+        "MetaLine": "**Category:** Platform infrastructure - **Priority:** Supporting - **Challenge refs:** 1"
+      },
+      {
+        "FeatureId": "feat-url-driven-routing",
+        "Title": "URL-driven routing & role navigation",
+        "Category": "Platform infrastructure",
+        "Priority": "Supporting",
+        "Description": "The URL is the single source of truth for view state: every thing/list has a stable URL, F5 restores the exact view+tab, and links reach any piece. Role trees (admin / intake clinician / ...) gate what each role can create/read/update/delete, derived from the RoutingAndNavigation rows.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 32, \"col\": 518, \"len\": 67, \"quote\": \"the clinical workflow from referral, differential diagnosis, workup\", \"section\": \"audit\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (audit, `THE-ORIGINAL-CHALLENGE.md` L32:518+67): _the clinical workflow from referral, differential diagnosis, workup_",
+        "ChallengeNotes": "Workflow scaffolding the doctor named as missing: referral -> workup -> monitoring needs addressable, role-scoped navigation. Permissions are derived from the rulebook, not hand-wired per screen.",
+        "RefCount": 1,
+        "AssignedLoop": "",
+        "Name": "URL-driven routing & role navigation",
+        "RelativePath": "/admin/features/feat-url-driven-routing",
+        "MetaLine": "**Category:** Platform infrastructure - **Priority:** Supporting - **Challenge refs:** 1"
+      },
+      {
+        "FeatureId": "feat-reverse-sync-db-to-rulebook",
+        "Title": "Reverse-sync DB -> rulebook (input spoke)",
+        "Category": "Platform infrastructure",
+        "Priority": "Supporting",
+        "Description": "vw_* raw + computed values are written back into the rulebook data[] (snapshot-to-rulebook), so edits made in the running app round-trip into the hub. A 'Save to rulebook' admin action and the init-db snapshot step keep the hub and the DB mirrored.",
+        "ChallengeRefs": "[]",
+        "ChallengeRefsRendered": "_No direct challenge clause - internal scaffolding._",
+        "ChallengeNotes": "Makes the running app a peer input spoke to the rulebook hub, not a downstream dead end - the mechanism by which knob edits in the UI become durable rule-state.",
+        "RefCount": 0,
+        "AssignedLoop": "",
+        "Name": "Reverse-sync DB -> rulebook (input spoke)",
+        "RelativePath": "/admin/features/feat-reverse-sync-db-to-rulebook",
+        "MetaLine": "**Category:** Platform infrastructure - **Priority:** Supporting - **Challenge refs:** 0"
+      },
+      {
+        "FeatureId": "feat-coverage-map-honesty",
+        "Title": "Honest coverage map (modeled vs. vocabulary-only)",
+        "Category": "Platform infrastructure",
+        "Priority": "Load-bearing",
+        "Description": "A clause-by-clause map against the original challenge plus an honest scorecard: each capability is marked DEEPLY MODELED, SCHEMA-MODELED, or VOCABULARY / OUT-OF-SCOPE (IsDeeplyModeled / IsSchemaModeled on DiseaseDomainConcepts). What is derived says so; what is only named says so too.",
+        "ChallengeRefs": "[{\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1085, \"len\": 78, \"quote\": \"infer counterfactual disease trajectories without randomized perturbation data\", \"section\": \"prompt\", \"relation\": \"indirect\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1325, \"len\": 37, \"quote\": \"privacy-preserving federated datasets\", \"section\": \"prompt\", \"relation\": \"indirect\"}, {\"file\": \"THE-ORIGINAL-CHALLENGE.md\", \"line\": 4, \"col\": 1254, \"len\": 69, \"quote\": \"batch effects, missing tissues, measurement error, ascertainment bias\", \"section\": \"prompt\", \"relation\": \"indirect\"}]",
+        "ChallengeRefsRendered": "- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1085+78): _infer counterfactual disease trajectories without randomized perturbation data_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1325+37): _privacy-preserving federated datasets_\n- **indirectly supports** (prompt, `THE-ORIGINAL-CHALLENGE.md` L4:1254+69): _batch effects, missing tissues, measurement error, ascertainment bias_",
+        "ChallengeNotes": "The integrity feature. It directly confronts the prompt's own breadth - counterfactual trajectories, federated privacy, batch effects - by stating exactly which clauses are real derivations and which are vocabulary only. This is what keeps the platform 'a proof of shape, not a sales pitch.'",
+        "RefCount": 3,
+        "AssignedLoop": "",
+        "Name": "Honest coverage map (modeled vs. vocabulary-only)",
+        "RelativePath": "/admin/features/feat-coverage-map-honesty",
+        "MetaLine": "**Category:** Platform infrastructure - **Priority:** Load-bearing - **Challenge refs:** 3"
       }
     ]
   },
@@ -12759,6 +13089,17 @@
         "type": "raw",
         "nullable": true,
         "Description": "Audit: AI model credited on last save, if any."
+      },
+      {
+        "name": "ProgressionClosure",
+        "datatype": "string",
+        "type": "closure",
+        "nullable": true,
+        "important": true,
+        "Description": "Transitive closure of state-machine transitions (an owl:TransitiveProperty). The asserted FromState->ToState edges imply the full reachability ordering of each machine - including never-asserted long-range pairs such as PresymptomaticAutoimmunity -> BiopsyIndicated. Materialized by the transpiler as the cycle-safe recursive view vw_state_transition_rules_closure(from_id, to_id, hop_distance, is_inferred): asserted edges (hop 1) plus inferred reachability rows. The disease trajectory is derived from the transition topology, not hand-asserted.",
+        "EdgeTable": "StateTransitionRules",
+        "FromColumn": "FromState",
+        "ToColumn": "ToState"
       }
     ],
     "data": [

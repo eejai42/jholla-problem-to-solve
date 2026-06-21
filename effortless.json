@@ -59,6 +59,23 @@
     },
     {
       "IsSSoTTranspiler": false,
+      "Name": "PlatformFeaturesTransform",
+      "RelativePath": "/plan-features",
+      "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./platform-features.hbs",
+      "IsDisabled": false,
+      "PinnedVersion": "v2026.04.14.0155",
+      "LastVersionUsed": "v2026.04.14.0155",
+      "LastUrl": "https://common-json-hbars-transform-v2026-04-14-0155-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "publish-platform-features",
+      "RelativePath": "/plan-features",
+      "CommandLine": "-exec ./publish-platform-features.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "rulebooktoexplainerdag",
       "RelativePath": "/admin-app/client/public",
       "CommandLine": "rulebook-to-explainer-dag -i ../../../effortless-rulebook/effortless-rulebook.json -o explainer-dag",

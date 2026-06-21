@@ -2992,6 +2992,16 @@ RETURNS TEXT AS $$
   SELECT (CONCAT('/admin/features/', (SELECT NULLIF(feature_id, '') FROM features WHERE feature_id = p_feature_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_features_meta_line
+-- Field: Features.MetaLine
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_features_meta_line(p_feature_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('**Category:** ', (SELECT NULLIF(category, '') FROM features WHERE feature_id = p_feature_id), ' - **Priority:** ', (SELECT NULLIF(priority, '') FROM features WHERE feature_id = p_feature_id), ' - **Challenge refs:** ', (SELECT ref_count FROM features WHERE feature_id = p_feature_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_open_questions_name
 -- Field: OpenQuestions.Name
 -- Type: calculated | DataType: string | Returns: TEXT
