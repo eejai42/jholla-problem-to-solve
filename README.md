@@ -5,25 +5,44 @@
 > reads plausibly. Nothing here is for any clinical purpose. All patients are invented; all clinical
 > figures are public, cited literature ranges.
 
-## Why this example exists
+## What this is
 
-We went looking for the **most complex medical reasoning problem we could construct** — the kind of
-grand-challenge that's supposed to be the high-water mark of "you'd need a giant opaque model for
-this." The canonical version reads like an NIH program announcement:
+This platform takes a grand-challenge that is usually treated as the canonical case for a single
+enormous opaque model — *infer the complete causal architecture of a heterogeneous autoimmune disease
+from a million-person multi-omic cohort, distinguish true causal variants from confounded ones, survive
+population stratification and cryptic relatedness, produce falsifiable mechanisms, and predict
+onset / severity / treatment-response in ancestries absent from training, with calibrated uncertainty
+and no reliance on spurious correlations* — and shows that the part that has to be **trusted** can be
+expressed as a **deterministic, fully-auditable derivation** instead.
 
-> *Given phased long-read genomes, pangenome graphs, single-cell and spatial multi-omics,
-> proteomics, metabolomics, methylomes, chromatin conformation, immune-receptor repertoires,
-> microbiomes, longitudinal exposures, treatment histories, and clinical phenotypes from a million
-> ancestrally diverse individuals, infer the complete causal architecture of a heterogeneous
-> autoimmune disease — distinguishing true causal variants from confounded ones, surviving
-> population stratification and cryptic relatedness, producing falsifiable mechanisms, and predicting
-> onset/severity/treatment-response in ancestries absent from training, with calibrated uncertainty
-> and no reliance on spurious correlations.*
+The whole problem is reduced to **one falsifiable boolean** — is a prediction *clinically actionable* —
+computed by a calculated-field DAG ([an Effortless Rulebook](https://github.com/effortlessapi)) that
+bottoms out only in raw observations. Two things make that more than a slogan, and they're the two
+things the challenge text actually asks for:
 
-That's the prompt. This repo is the **answer**, and the answer is not a bigger model. It's a
-**deterministic, auditable derivation** — an [Effortless Rulebook](https://github.com/effortlessapi)
-whose calculated-field DAG reduces the whole problem to one falsifiable boolean, reached *for the
-right reason* on both sides of the line.
+- **The verdict is reached for the right reason on both sides of the line.** The same machine says
+  *actionable* for some patients and *not actionable* for others, and it names the **single deciding
+  reason** each time. Nothing is hand-entered; there is no field anyone can set to make the answer come
+  out a particular way.
+- **The trust boundary is a line in the graph, not a promise.** Everything above the raw leaves —
+  every Z-statistic, every gate, the keystone — is a pure, inspectable formula. The judgment that
+  would otherwise hide inside a model is externalized into editable cells and open formulas you can
+  read and correct.
+
+Then there's a second layer, because a fair critique of the first version was that it adjudicates
+*whether the evidence is trustworthy*, which is not the same as modeling *whether the disease is
+progressing*. So the platform also runs the disease itself as a **state machine derived from raw
+longitudinal labs** — presymptomatic autoimmunity through serologic activity, early nephritis, renal
+flare risk, biopsy-indicated — and a patient can be **clearly progressing while the prediction is
+correctly judged untrustworthy**. Those two layers disagree on at least one patient, on purpose; a
+system that only gated evidence could never produce that sentence. (Details below, and in
+[`V2-COVERAGE-MAP.md`](V2-COVERAGE-MAP.md).)
+
+It is, throughout, **synthetic transparent data — a proof of *shape*, not validated biology.** The
+claim is not "this discovers real autoimmune mechanisms." The claim is that the *auditable structure*
+real biology would slot into — causal-evidence gating, disease-state progression, treatment-line
+reasoning, and the corpus-level surface where discovery actually happens — demonstrably exists on one
+model, every value visible and correctable, and that extending it stays additive and stays witnessed.
 
 ## The one fact everything reduces to
 
@@ -63,18 +82,15 @@ patients fail, each on exactly one gate:
 Every gate is exercised by both a passing and a failing case. The build verifies against exactly this
 oracle; it is not asserted by hand.
 
-## v2 — answering the audit: from an *evidence gate* to a *disease-state simulator*
+## The second layer: from an *evidence gate* to a *disease-state simulator*
 
-A physician review of v1 made a sharp, correct point: v1 simulates *whether evidence is clinically
-actionable*, not *whether disease is actually progressing* — "an evidence gate, not a disease-state
-simulator." It gave a fair ~15% on the full vision and named the gap with two worked examples. v2
-takes those examples and makes the system **say them**, as derived, witnessed, raw-fact-grounded
-state — on the same hub, the same trust boundary, the same red→green harness. (Full clause-by-clause
-reconciliation in [`V2-COVERAGE-MAP.md`](V2-COVERAGE-MAP.md); the reply that frames it in
-[`V2-RESPONSE-PROPOSAL.md`](V2-RESPONSE-PROPOSAL.md).)
-
-The reframe: **v1 was per-patient adjudication; v2 adds the disease-state layer** — and a disease
-*progressing* is just a **state machine** whose transitions fire on raw longitudinal observations.
+Adjudicating whether evidence is trustworthy is necessary but not sufficient: it answers *should we
+believe this prediction*, not *is this patient's disease actually progressing*. Those are different
+questions, and a platform that only does the first is an evidence gate, not a disease-state simulator.
+So the platform models the disease itself — and the move is the same one as before: **a disease
+*progressing* is a state machine whose transitions fire on raw longitudinal observations**, with the
+current state derived, never entered. (A clause-by-clause map of what is modeled versus represented
+only as vocabulary is in [`V2-COVERAGE-MAP.md`](V2-COVERAGE-MAP.md).)
 
 1. **Disease progresses as a witnessed state machine** (`lupus-nephritis-progression`):
    `PresymptomaticAutoimmunity → SerologicActive → EarlyNephritis → RenalFlareRisk → BiopsyIndicated`.
@@ -82,35 +98,52 @@ The reframe: **v1 was per-patient adjudication; v2 adds the disease-state layer*
    complement + proteinuria + urinary sediment — never hand-set. Same line in the DAG: the labs are
    the LLM's/clinician's, the state is the model's. **Bitemporal dwell-time** (`DwellDays`,
    EnteredAt/ExitedAt occupancy) answers the audit's "how long has the patient been in this state."
-2. **The audit's first worked example, computed.** Diego Santos: *"transitioning toward early lupus
-   nephritis, rising anti-dsDNA, falling complement, at renal-flare risk, biopsy-indicated"* — every
-   clause is a derived field off his serology series, with a derived `SledaiScore` (12, High/flare).
-3. **The audit's second worked example, computed.** A derived `RecommendedTreatmentLine` +
+2. **A clinical course, computed.** Diego Santos: *"transitioning toward early lupus nephritis, rising
+   anti-dsDNA, falling complement, at renal-flare risk, biopsy-indicated"* — every clause is a derived
+   field off his serology series, with a derived `SledaiScore` (12, High/flare). Not a summary anyone
+   typed; the sentence falls out of the numbers.
+3. **A treatment line, with one stated reason.** A derived `RecommendedTreatmentLine` +
    single `TreatmentLineDecidingFactor`: **mycophenolate** (active nephritis → induction),
    **anifrolumab** (type-I-IFN pathway), **belimumab** (autoantibody-driven), **secukinumab**
    (IL-17/23) — differentiated by the confirmed-mechanism pathway and the disease state, not by a label.
-4. **The minimum counter-example (the proof the two layers are independent).** Diego is
+4. **The two layers can disagree — and that's the point.** Diego is
    `progression_vs_actionability_disagree = TRUE`: the disease-state simulator says he **is
    progressing** (BiopsyIndicated, high activity) while the actionability gate says the prediction
-   is **NOT actionable** (cryptic-relatedness leakage). A pure evidence gate could never produce the
-   sentence *"clearly progressing and needs attention, but the causal-mechanism prediction isn't
-   trustworthy enough for targeted therapy."* That it can is the proof v2 ≠ v1 relabeled.
+   is **NOT actionable** (cryptic-relatedness leakage). The system can therefore say *"clearly
+   progressing and needs attention, but the causal-mechanism prediction isn't trustworthy enough for
+   targeted therapy"* — a sentence an evidence gate alone structurally cannot produce, and the clearest
+   proof that disease-state and evidence-trust are genuinely independent layers.
 
-Every concept the audit listed as absent — lupus nephritis, NPSLE, cutaneous lupus, sero±RA, erosive
-disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns,
-treatment lines, SLEDAI/DAS28 — is now in the hub (`DiseaseDomainConcepts`), each with an honest
-`ModelingStatus` (deep-DAG / schema / vocabulary). Coverage is checkable by grep, not by trust. The
-home harness now leads with these new categories (L11 disease-state, L11b progression, L5d
-treatment-line) — **716/716 green**, and the v1 keystone verdicts are unchanged.
+The broader disease vocabulary a physician expects — lupus nephritis, NPSLE, cutaneous lupus, sero±RA,
+erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, organ damage, flare patterns,
+treatment lines, SLEDAI/DAS28 — lives in the hub (`DiseaseDomainConcepts`), each carrying an honest
+`ModelingStatus` (deep-DAG / schema / vocabulary) so the depth of each concept is **checkable by grep,
+not by trust**: what is deeply derived says so, and what is only named says so too. The home harness
+leads with the disease-state categories (L11 disease-state, L11b progression, L5d treatment-line) —
+**738/738 green**, with the original keystone verdicts unchanged.
 
-> **The honest bound stays loud.** This is still **synthetic, transparent** data — a proof of
-> *shape*, not validated biology. v2 does not claim to have discovered or validated real causal
-> autoimmune mechanisms. It claims that the *auditable structure* such biology would slot into —
-> disease-state progression, treatment-line reasoning, and the corpus-level surface where discovery
-> is expressed — now demonstrably exists on one model, and that adding it was **additive into the
-> same DAG** rather than a second system. Discovery is inherently corpus-level; the cohort-level UX
-> that surfaces emergent patterns ships as the **Cohort discovery** board (top nav item), and the
-> remaining derived-signature work is tracked in the [Leopold plan](LEOPOLD_LOOPING_PLAN.md).
+### Discovery is corpus-level
+
+The hardest part of the problem isn't gating one patient's evidence — it's **discovering** a pattern
+across a population. A single chart never discovers a mechanism; a signal that recurs across many
+patients does. So the platform derives that too: the rising-anti-dsDNA / falling-complement serology
+trajectory that precedes nephritis surfaces as an **emergent cluster** — a per-patient
+`IsInPreNephriticSignatureCluster` rolled up from each person's raw serology series, with **no label
+assigned to anyone**. On the synthetic cohort the cluster lands cleanly (6 of 12), and it *perfectly
+separates* the active/progressing patients from the quiescent ones: membership **emerges** from the
+population's raw data and tracks the disease, rather than being painted on. It's the *shape* of
+corpus-level discovery — still synthetic, not a validated finding — surfaced on the top-level **Cohort
+discovery** board (the disease-state map, the signature scatter with the derived cluster drawn as a
+halo, the disagreement board, and the treatment-line distribution, all reading derived fields).
+
+> **The honest bound stays loud.** This is **synthetic, transparent** data throughout — a proof of
+> *shape*, not validated biology. Nothing here claims to have discovered or validated a real causal
+> autoimmune mechanism. The claim is narrower and checkable: the *auditable structure* real biology
+> would slot into — evidence gating, disease-state progression, treatment-line reasoning, and the
+> corpus-level surface where discovery is expressed — exists on one model with every value visible and
+> correctable, and each layer was **additive into the same DAG** rather than a second system bolted on.
+> What stays out of scope is the part that needs a real multi-omic corpus and real causal inference;
+> the [coverage map](V2-COVERAGE-MAP.md) says exactly which is which.
 
 ## The architecture — and why the LLM never gets a vote
 

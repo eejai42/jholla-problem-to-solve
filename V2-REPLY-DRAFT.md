@@ -1,7 +1,7 @@
 # Draft reply to Joe (for the doctor)
 
 > Draft — EJ to review/send. Tone: peer, not salesman. Concede the score, reframe the axis,
-> show the two worked examples computed. Mirrors the work in V2-RESPONSE-PROPOSAL.md.
+> show the two worked examples computed, then the corpus-level discovery the doctor named.
 
 ---
 
@@ -56,17 +56,25 @@ Two honest notes, because they matter:
 
 - The doctor's deepest point — *discovery* — I'd frame this way: discovery is inherently
   **corpus-level**. A single chart never discovers a mechanism; a pattern across many patients does.
-  v1 was per-patient adjudication; the next surface is the cohort view where the serology signature
-  that precedes nephritis shows up as an emergent cluster across the whole population. The model
-  already derives every field that view needs; it's a rendering job, and it's planned.
+  v1 was per-patient adjudication; so I built the cohort surface. The serology signature that precedes
+  nephritis — rising anti-dsDNA + falling complement — now surfaces as a **derived** emergent cluster
+  across the whole population: a per-patient `IsInPreNephriticSignatureCluster` rolled up from each
+  person's raw serology series, no label assigned. On the synthetic cohort it lands cleanly — 6 of 12
+  in the cluster, and it **perfectly separates** the active/progressing patients from the quiescent
+  ones. That separation is the point: membership *emerges* from the population's raw data and tracks
+  the disease, which is what "discovery is corpus-level" means in practice. It's still the *shape* of
+  discovery on synthetic data, not a validated finding — but the structure a real finding would slot
+  into now exists and is witnessed.
 
-Everything's in the repo: the home screen is still the red→green harness (now 716 checks, all green,
+Everything's in the repo: the home screen is still the red→green harness (now 738 checks, all green,
 with the disease-state layer sorted to the top), there's a clause-by-clause coverage map against the
-original challenge, and an honest scorecard. The corpus-level **Cohort discovery** board is now the
-top nav item for every role — the disease-state map, the emergent serology-signature scatter, the
-disagreement board, and the treatment-line distribution, all reading derived fields. If the doctor
-has a few minutes, the one thing worth clicking is that disagreement case — it's the clearest test of
-whether the *shape* is right for the hard part they named.
+original challenge, and an honest scorecard. The corpus-level **Cohort discovery** board is the top
+nav item for every role — the disease-state map, the emergent serology-signature scatter (now with the
+derived cluster drawn as a halo, not a colour I painted), the disagreement board, and the treatment-line
+distribution, all reading derived fields. If the doctor has a few minutes, two things are worth
+clicking: the disagreement case (the clearest test of whether the *shape* is right for the hard part
+they named), and the signature cluster on the cohort scatter (the corpus-level discovery they asked
+about, now computed).
 
 Curious what they make of it.
 
