@@ -203,7 +203,7 @@ export default function App() {
   useEffect(() => {
     if (loading || !rows.length) return;
     if (matched) return;
-    const home = role === 'admin' ? 'admin.harness'
+    const home = role === 'admin' ? 'admin.cohort'
       : role === 'intake-clinician' ? 'intake.new-patient' : 'diagnosis.case';
     const node = rows.find((r) => r.route_key === home) || rows[0];
     if (node) navigate({ path: navHref(node, {}, defaults), query: { role } }, { replace: true });

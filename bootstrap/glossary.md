@@ -2,10 +2,7 @@
 
 > **Demonstration of inference structure, not validated clinical decision support.**
 
-Vocabulary organized by whether a term is **load-bearing** (on the dependency path of the keystone
-`IndividualPredictions.IsClinicallyActionable`) or **context** (kept to represent the breadth of the
-problem statement, but deliberately not gating the keystone — see the anti-hallucination rule in
-`../LEOPOLD_LOOPs.md`).
+Vocabulary organized by whether a term is **load-bearing** (on the dependency path of the keystone `IndividualPredictions.IsClinicallyActionable`) or **context** (kept to represent the breadth of the problem statement, but deliberately not gating the keystone — see the anti-hallucination rule in `../LEOPOLD_LOOPs.md`).
 
 ---
 
@@ -62,60 +59,30 @@ TRUE only when a prediction is causally grounded, well calibrated, not spurious,
 
 ## Part 2 — Context terms (kept, NOT gating the keystone)
 
-These represent the full breadth of the problem statement and remain as sparse ontology / future evidence
-inputs. They are deliberately off the keystone's dependency path so the core inference stays minimal and testable.
+These represent the full breadth of the problem statement and remain as sparse ontology / future evidence inputs. They are deliberately off the keystone's dependency path so the core inference stays minimal and testable.
 
-**omics modalities** — RNA-seq, single-cell RNA-seq, ATAC-seq, proteomics, microbiome (load-bearing as assay
-quality + modality breadth); **methylome, chromatin-conformation (Hi-C), long-read genomes, metabolomics,
-immune-receptor repertoires, mitochondrial variation, somatic mosaicism** (present as modality/variant rows,
-not yet wired into evidence).
+**omics modalities** — RNA-seq, single-cell RNA-seq, ATAC-seq, proteomics, microbiome (load-bearing as assay quality + modality breadth); **methylome, chromatin-conformation (Hi-C), long-read genomes, metabolomics, immune-receptor repertoires, mitochondrial variation, somatic mosaicism** (present as modality/variant rows, not yet wired into evidence).
 
-**disease context** — autoimmune disease, disease stages (presymptomatic/active/remission), tissues,
-clinical phenotypes, severity scores, immune dysfunction. Observed clinical context; could later supply
-outcome labels but the keystone is mechanism- and calibration-driven.
+**disease context** — autoimmune disease, disease stages (presymptomatic/active/remission), tissues, clinical phenotypes, severity scores, immune dysfunction. Observed clinical context; could later supply outcome labels but the keystone is mechanism- and calibration-driven.
 
-**genetics breadth** — coding variants, repeat expansions, mobile-element insertions, HLA haplotypes,
-structural variants, de novo mutations, epigenetic inheritance, rare-variant burden, higher-order epistasis.
-Represented as variant types / epistatic-interaction context.
+**genetics breadth** — coding variants, repeat expansions, mobile-element insertions, HLA haplotypes, structural variants, de novo mutations, epigenetic inheritance, rare-variant burden, higher-order epistasis. Represented as variant types / epistatic-interaction context.
 
-**other influences** — environmental exposures, gene–environment–microbiome interactions, maternal &
-developmental effects, treatment-induced changes, counterfactual trajectories, feedback. Held as context rows.
+**other influences** — environmental exposures, gene–environment–microbiome interactions, maternal & developmental effects, treatment-induced changes, counterfactual trajectories, feedback. Held as context rows.
 
-**bias/quality vocabulary** — population stratification, assortative mating, batch effects, measurement
-error, ascertainment bias, shifting environments. Of these, **measurement error** (assay quality),
-**cryptic relatedness**, **confounding/stratification** (negative controls), and **ancestry portability**
-(transport gate) are load-bearing; the rest are context.
+**bias/quality vocabulary** — population stratification, assortative mating, batch effects, measurement error, ascertainment bias, shifting environments. Of these, **measurement error** (assay quality), **cryptic relatedness**, **confounding/stratification** (negative controls), and **ancestry portability** (transport gate) are load-bearing; the rest are context.
 
-**outcomes vocabulary** — disease onset, severity, treatment response, adverse effects, individualized
-prevention, presymptomatic diagnosis, gene-/cell-based therapies, clinical trials. The platform predicts
-onset risk as `PredictedValue`; the other prediction types are representable but seeded sparsely.
+**outcomes vocabulary** — disease onset, severity, treatment response, adverse effects, individualized prevention, presymptomatic diagnosis, gene-/cell-based therapies, clinical trials. The platform predicts onset risk as `PredictedValue`; the other prediction types are representable but seeded sparsely.
 
 ---
 
 ## Part 3 — v2 disease-domain depth (response to the v1 audit)
 
-> The v1 audit ("15% — an evidence-adjudication layer, not a disease-state simulator") named a
-> specific list of disease-domain concepts and clinical-workflow stages as **absent**. v2 adds
-> every one of them to the hub as a first-class `DiseaseDomainConcepts` row, with an honest
-> `ModelingStatus`: **deep-dag** (carries a witnessed inference DAG), **schema** (first-class
-> schema + data + derived fields), or **vocabulary** (present as a stressor/concept type). Grep the
-> rulebook for any of these terms — they are no longer absent. See `V2-RESPONSE-PROPOSAL.md`.
+> The v1 audit ("an evidence-adjudication layer, not a disease-state simulator") named a specific list of disease-domain concepts and clinical-workflow stages as **absent**. v2 adds every one of them to the hub as a first-class `DiseaseDomainConcepts` row, with an honest `ModelingStatus`: **deep-dag** (carries a witnessed inference DAG), **schema** (first-class schema + data + derived fields), or **vocabulary** (present as a stressor/concept type). Grep the rulebook for any of these terms — they are no longer absent. See `V2-RESPONSE-PROPOSAL.md`.
 
-**disease-state simulator vs evidence gate** — the audit's central distinction. v1 = the *evidence
-gate* (`IsClinicallyActionable`, per-patient). v2 adds the *disease-state simulator*: disease
-modeled as a **witnessed state machine** whose transitions fire on raw longitudinal observations,
-with derived current-state and **bitemporal dwell-time**.
+**disease-state simulator vs evidence gate** — the audit's central distinction. v1 = the *evidence gate* (`IsClinicallyActionable`, per-patient). v2 adds the *disease-state simulator*: disease modeled as a **witnessed state machine** whose transitions fire on raw longitudinal observations, with derived current-state and **bitemporal dwell-time**.
 
-**load-bearing (deep-dag) v2 concepts** — `lupus-nephritis` (progression machine driven by rising
-anti-dsDNA + falling complement + proteinuria → renal-flare-risk → biopsy-indicated),
-`treatment-line-selection` (MMF vs belimumab vs anifrolumab + single deciding reason),
-`disease-activity-score` (SLEDAI/DAS28 derived from raw components, not hand-entered). These are the
-doctor's own two worked examples, made to compute.
+**load-bearing (deep-dag) v2 concepts** — `lupus-nephritis` (progression machine driven by rising anti-dsDNA + falling complement + proteinuria → renal-flare-risk → biopsy-indicated), `treatment-line-selection` (MMF vs belimumab vs anifrolumab + single deciding reason), `disease-activity-score` (SLEDAI/DAS28 derived from raw components, not hand-entered). These are the doctor's own two worked examples, made to compute.
 
-**schema-level v2 concepts** — neuropsychiatric lupus, cutaneous lupus, organ damage (SLICC-style),
-seropositive/seronegative RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD
-overlap, flare pattern, treatment line. First-class phenotype subtypes / progression axes.
+**schema-level v2 concepts** — neuropsychiatric lupus, cutaneous lupus, organ damage (SLICC-style), seropositive/seronegative RA, erosive disease, axial PsA, enthesitis, dactylitis, uveitis, IBD overlap, flare pattern, treatment line. First-class phenotype subtypes / progression axes.
 
-**clinical-workflow vocabulary** — referral, differential, workup, classification, baseline-severity,
-treatment-choice, monitoring, flare-management, adverse-event-surveillance, outcomes. Present as the
-states of a clinical-workflow machine; the workup/monitoring states are where the raw leaves enter.
+**clinical-workflow vocabulary** — referral, differential, workup, classification, baseline-severity, treatment-choice, monitoring, flare-management, adverse-event-surveillance, outcomes. Present as the states of a clinical-workflow machine; the workup/monitoring states are where the raw leaves enter.

@@ -5,15 +5,20 @@
 > reads plausibly. Nothing here is for any clinical purpose. All patients are invented; all clinical
 > figures are public, cited literature ranges.
 
-## What this is
+## What this demonstrates
 
-This platform takes a grand-challenge that is usually treated as the canonical case for a single
-enormous opaque model — *infer the complete causal architecture of a heterogeneous autoimmune disease
-from a million-person multi-omic cohort, distinguish true causal variants from confounded ones, survive
-population stratification and cryptic relatedness, produce falsifiable mechanisms, and predict
-onset / severity / treatment-response in ancestries absent from training, with calibrated uncertainty
-and no reliance on spurious correlations* — and shows that the part that has to be **trusted** can be
-expressed as a **deterministic, fully-auditable derivation** instead.
+A grand-challenge prompt usually treated as the canonical case for one enormous opaque model — *infer
+the complete causal architecture of a heterogeneous autoimmune disease from a million-person
+multi-omic cohort, distinguish true causal variants from confounded ones, survive population
+stratification and cryptic relatedness, produce falsifiable mechanisms, and predict onset / severity /
+treatment-response in ancestries absent from training, with calibrated uncertainty and no reliance on
+spurious correlations.*
+
+This repo is **not an attempt to solve that.** It is a demonstration of a narrower, sharper claim:
+
+> **Even a problem this complex has a *trusted layer* that can be expressed as inspectable structure
+> rather than code — and once it is structure, the vocabulary of the domain becomes portable,
+> transparent, and interchangeable. Building that geometry is a matter of hours, not months.**
 
 The whole problem is reduced to **one falsifiable boolean** — is a prediction *clinically actionable* —
 computed by a calculated-field DAG ([an Effortless Rulebook](https://github.com/effortlessapi)) that
@@ -29,20 +34,22 @@ things the challenge text actually asks for:
   would otherwise hide inside a model is externalized into editable cells and open formulas you can
   read and correct.
 
-Then there's a second layer, because a fair critique of the first version was that it adjudicates
-*whether the evidence is trustworthy*, which is not the same as modeling *whether the disease is
-progressing*. So the platform also runs the disease itself as a **state machine derived from raw
-longitudinal labs** — presymptomatic autoimmunity through serologic activity, early nephritis, renal
-flare risk, biopsy-indicated — and a patient can be **clearly progressing while the prediction is
-correctly judged untrustworthy**. Those two layers disagree on at least one patient, on purpose; a
-system that only gated evidence could never produce that sentence. (Details below, and in the
-[coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary) at the end.)
+A clinical reviewer of the first version made one fair, substantive observation: it adjudicated
+*whether the evidence was trustworthy*, which is not the same as modeling *whether the disease is
+progressing*. That was the right next thing to build — so the platform now also runs the disease itself
+as a **state machine derived from raw longitudinal labs**, and a patient can be **clearly progressing
+while the prediction is correctly judged untrustworthy.** (The full audit and the response to it are
+preserved verbatim in [`THE-ORIGINAL-CHALLENGE.md`](THE-ORIGINAL-CHALLENGE.md).)
 
-It is, throughout, **synthetic transparent data — a proof of *shape*, not validated biology.** The
-claim is not "this discovers real autoimmune mechanisms." The claim is that the *auditable structure*
-real biology would slot into — causal-evidence gating, disease-state progression, treatment-line
-reasoning, and the corpus-level surface where discovery actually happens — demonstrably exists on one
-model, every value visible and correctable, and that extending it stays additive and stays witnessed.
+> **The one honest bound, stated once.** Everything here is **synthetic, transparent data — a proof of
+> *shape*, not validated biology.** Nothing claims to have discovered or validated a real causal
+> autoimmune mechanism. The checkable claim is narrower: the *auditable structure* real biology would
+> slot into — evidence gating, disease-state progression, treatment-line reasoning, and the
+> corpus-level surface where discovery is expressed — demonstrably exists on one model with every value
+> visible and correctable, and each layer was **additive into the same DAG** in hours rather than a
+> second system bolted on. What stays out of scope is the part that needs a real multi-omic corpus and
+> real causal inference; the [coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary)
+> at the end says exactly which is which.
 
 ## The one fact everything reduces to
 
@@ -84,13 +91,15 @@ oracle; it is not asserted by hand.
 
 ## The second layer: from an *evidence gate* to a *disease-state simulator*
 
-Adjudicating whether evidence is trustworthy is necessary but not sufficient: it answers *should we
-believe this prediction*, not *is this patient's disease actually progressing*. Those are different
-questions, and a platform that only does the first is an evidence gate, not a disease-state simulator.
-So the platform models the disease itself — and the move is the same one as before: **a disease
-*progressing* is a state machine whose transitions fire on raw longitudinal observations**, with the
-current state derived, never entered. (A clause-by-clause map of what is modeled versus represented
-only as vocabulary is the [coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary) at the end.)
+The reviewer's point was that adjudicating whether evidence is trustworthy answers *should we believe
+this prediction*, not *is this patient's disease actually progressing* — an evidence gate, not a
+disease-state simulator. So the platform now models the disease itself, and the move is the same one as
+before: **a disease *progressing* is a state machine whose transitions fire on raw longitudinal
+observations**, with the current state derived, never entered. The point worth noting is the *cost*:
+this whole second layer was **additive into the same DAG, built in hours, and the harness stayed
+green** — which is the thing a point-in-time coverage score can't see. (A clause-by-clause map of what
+is modeled versus represented only as vocabulary is the
+[coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary) at the end.)
 
 1. **Disease progresses as a witnessed state machine** (`lupus-nephritis-progression`):
    `PresymptomaticAutoimmunity → SerologicActive → EarlyNephritis → RenalFlareRisk → BiopsyIndicated`.
@@ -135,15 +144,6 @@ population's raw data and tracks the disease, rather than being painted on. It's
 corpus-level discovery — still synthetic, not a validated finding — surfaced on the top-level **Cohort
 discovery** board (the disease-state map, the signature scatter with the derived cluster drawn as a
 halo, the disagreement board, and the treatment-line distribution, all reading derived fields).
-
-> **The honest bound stays loud.** This is **synthetic, transparent** data throughout — a proof of
-> *shape*, not validated biology. Nothing here claims to have discovered or validated a real causal
-> autoimmune mechanism. The claim is narrower and checkable: the *auditable structure* real biology
-> would slot into — evidence gating, disease-state progression, treatment-line reasoning, and the
-> corpus-level surface where discovery is expressed — exists on one model with every value visible and
-> correctable, and each layer was **additive into the same DAG** rather than a second system bolted on.
-> What stays out of scope is the part that needs a real multi-omic corpus and real causal inference;
-> the [coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary) below says exactly which is which.
 
 ## The architecture — and why the LLM never gets a vote
 
@@ -215,6 +215,16 @@ in the calculated-field DAG, built bottom-up:
 The full breadth of the problem (every omics modality, disease stages, epistasis, counterfactual
 trajectories) is represented as ontology context but kept **deliberately off the keystone's dependency
 path**, so the core inference stays minimal, auditable, and testable.
+
+**On portability — the honest version.** This demo targets **one** substrate (Postgres); that's all
+it needs to make its point. The larger claim it stands on — that a rulebook IR projects *identically*
+into many substrates (Postgres, Python, Go, English, OWL, Excel, ARM64, COBOL, …), verified by a
+conformance suite — is demonstrated in the framework's
+[receipts repo](https://github.com/effortlessapi/effortless-rulebooks), not here. The point of *this*
+project isn't the substrate count. It's that the **trusted layer is structure** — and once the
+domain's reasoning is structure rather than code, it is *projectable at all*: portable, transparent,
+and interchangeable, instead of re-implemented (and re-drifted) in each language a hospital, a
+regulator, and a researcher separately need.
 
 ## Run it
 
