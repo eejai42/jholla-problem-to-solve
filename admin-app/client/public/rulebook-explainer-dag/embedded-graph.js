@@ -10304,7 +10304,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ]
   },
   "LeopoldLoops": {
-    "Description": "The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.",
+    "Description": "The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPs.md, via json-hbars-transform) is generated from these rows; completed ([DONE]) loops are pruned at publish so only current/roadmap work shows in the plan.",
     "schema": [
       {
         "name": "LeopoldLoopId",
@@ -12018,7 +12018,7 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "RoutingAndNavigationId": "nav-admin-leopold",
         "DisplayName": "Leopold Loops",
         "Route": "/admin/leopold",
-        "Description": "Edit the Leopold loop plan rows and regenerate LEOPOLD_LOOPING_PLAN.md.",
+        "Description": "Edit the Leopold loop plan rows and regenerate LEOPOLD_LOOPs.md.",
         "SortOrder": 96,
         "ParentRouteKey": "admin",
         "RouteKey": "admin.leopold",

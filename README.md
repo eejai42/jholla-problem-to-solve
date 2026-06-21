@@ -35,8 +35,8 @@ progressing*. So the platform also runs the disease itself as a **state machine 
 longitudinal labs** — presymptomatic autoimmunity through serologic activity, early nephritis, renal
 flare risk, biopsy-indicated — and a patient can be **clearly progressing while the prediction is
 correctly judged untrustworthy**. Those two layers disagree on at least one patient, on purpose; a
-system that only gated evidence could never produce that sentence. (Details below, and in
-[`V2-COVERAGE-MAP.md`](V2-COVERAGE-MAP.md).)
+system that only gated evidence could never produce that sentence. (Details below, and in the
+[coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary) at the end.)
 
 It is, throughout, **synthetic transparent data — a proof of *shape*, not validated biology.** The
 claim is not "this discovers real autoimmune mechanisms." The claim is that the *auditable structure*
@@ -90,7 +90,7 @@ questions, and a platform that only does the first is an evidence gate, not a di
 So the platform models the disease itself — and the move is the same one as before: **a disease
 *progressing* is a state machine whose transitions fire on raw longitudinal observations**, with the
 current state derived, never entered. (A clause-by-clause map of what is modeled versus represented
-only as vocabulary is in [`V2-COVERAGE-MAP.md`](V2-COVERAGE-MAP.md).)
+only as vocabulary is the [coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary) at the end.)
 
 1. **Disease progresses as a witnessed state machine** (`lupus-nephritis-progression`):
    `PresymptomaticAutoimmunity → SerologicActive → EarlyNephritis → RenalFlareRisk → BiopsyIndicated`.
@@ -143,7 +143,7 @@ halo, the disagreement board, and the treatment-line distribution, all reading d
 > corpus-level surface where discovery is expressed — exists on one model with every value visible and
 > correctable, and each layer was **additive into the same DAG** rather than a second system bolted on.
 > What stays out of scope is the part that needs a real multi-omic corpus and real causal inference;
-> the [coverage map](V2-COVERAGE-MAP.md) says exactly which is which.
+> the [coverage map](#coverage-map--what-is-modeled-vs-represented-only-as-vocabulary) below says exactly which is which.
 
 ## The architecture — and why the LLM never gets a vote
 
@@ -229,4 +229,28 @@ patients, asserted against the app's own API. Nodes go green as each endpoint is
 `vw_*` views. A passing run produces a per-patient, doctor-style diagnosis writeup as its artifact.
 
 See `admin-app/tests/README.md` for the harness contract, `CLAUDE.md` for the running north star,
-and `LEOPOLD_LOOPING_PLAN.md` for the build loop.
+and `LEOPOLD_LOOPs.md` for the build loop.
+
+## Coverage map — what is modeled vs. represented only as vocabulary
+
+> Everything the audit named that is DERIVED or MODELED is in the model. What remains below is the
+> deliberately-not-built surface: concepts present as a TYPE/slot the model can talk about
+> (**VOCABULARY**), or things that need real multi-omic data / real causal inference and are
+> represented only as a slot with no validated claim (**OUT-OF-SCOPE**).
+>
+> The disease-state simulator (progression machine + SLEDAI), the treatment-line recommendation, the
+> disagreement counter-example, and the **emergent corpus-level serology-signature cluster** are all
+> DERIVED and live — so they are no longer listed here. The cluster (`IsInPreNephriticSignatureCluster`
+> / `SignatureStrength`, 6/12 with perfect active-vs-quiescent separation) demonstrates the *shape* of
+> corpus-level discovery; what stays OUT-OF-SCOPE is **real** causal discovery/validation from a real
+> multi-omic corpus.
+
+| Challenge phrase | Status | Slot |
+|---|---|---|
+| clinical workflow (referral→differential→workup→classification→baseline-severity→treatment-choice→monitoring→flare-mgmt→AE-surveillance→outcomes) | VOCABULARY | workflow states; workup/monitoring are where raw leaves enter |
+| deep adverse-event surveillance | VOCABULARY | `adverse-event-surveillance` |
+| repeat expansions, mobile-element insertions, somatic mosaicism, mitochondrial variation, epigenetic inheritance | VOCABULARY | named in challenge + glossary; would be additional `VariantTypes` rows |
+| assortative mating, batch effects, missing tissues, measurement error, ascertainment bias, shifting environments | VOCABULARY | named stressor types (only `OmicsAssays.MeasurementErrorScore` is wired as a leaf) |
+| cell-state-specific effects, 3D enhancer–promoter, chromatin conformation | VOCABULARY / OUT-OF-SCOPE | `OmicsModalities`/`Tissues` represent the slot; no real single-cell/Hi-C data |
+| counterfactual trajectories without randomized perturbation | VOCABULARY / OUT-OF-SCOPE | `CounterfactualTrajectories` (sparse); real counterfactual causal inference not done. (NB: the *emergent serology-signature cluster* IS now derived — that's discovery-shape, not counterfactual inference.) |
+| omics/data-modality breadth (phased T2T genomes, pangenome graphs, scRNA/ATAC, proteomics, metabolomics, methylomes, Hi-C, immune repertoires, microbiomes, exposures) | OUT-OF-SCOPE (as real data) | `OmicsModalities`/`OmicsAssays`/`Tissues`/`EnvironmentalExposures`/`FederatedDatasets` are shaped to receive them; PoC uses synthetic values, not a real corpus |

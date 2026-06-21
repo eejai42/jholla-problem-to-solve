@@ -7,7 +7,8 @@
 <!-- fully data-driven. (This hbars engine supports iteration +     -->
 <!-- interpolation only - no working conditional/eq helper, so      -->
 <!-- grouping is expressed as per-row derived text, not template    -->
-<!-- conditionals.) Template: plan/leopold-plan.hbs                 -->
+<!-- conditionals. [DONE] loops are pruned post-render by           -->
+<!-- plan/publish-plan.sh.) Template: plan/leopold-plan.hbs         -->
 <!-- ============================================================= -->
 # Leopold Looping Plan — Causal Autoimmune Architecture Platform  *(derived)*
 
@@ -15,10 +16,11 @@
 >
 > **This file is generated.** Source of truth = the `LeopoldLoops` rows in
 > `effortless-rulebook/effortless-rulebook.json`. Change a loop's `Status` there (and its
-> `StatusBadge`/`StatusLine`) and rerun `effortless build`. Loops render in `SortOrder`: completed
-> loops first as a ledger (`[DONE]`), then the current `[NEXT]` loop and the `[PLANNED]` loops that
-> are **load-bearing for the v1-audit response**, then `[ROADMAP]` — the next conversation's work,
-> deliberately *not* part of the audit response.
+> `StatusBadge`/`StatusLine`) and rerun `effortless build`. Only **current** work renders here:
+> completed (`[DONE]`) loops are pruned at publish time — they live in the git history and the code.
+> What shows is the current `[NEXT]` loop and the `[PLANNED]` loops that are **load-bearing for the
+> v1-audit response**, then `[ROADMAP]` — the next conversation's work, deliberately *not* part of
+> the audit response.
 
 ## The keystone (never lose sight of this)
 
@@ -41,7 +43,7 @@ surface the new rule. 6. **Update the rulebook** `LeopoldLoops` rows (tick done,
 
 ---
 
-## Loops (in order — `[DONE]` ledger first, then `[NEXT]`, `[PLANNED]`, then `[ROADMAP]`)
+## Loops (current work only — `[NEXT]`, `[PLANNED]`, then `[ROADMAP]`; `[DONE]` loops are pruned at publish)
 >
 > **`[NEXT]` + `[PLANNED]` = the v1-audit response** (load-bearing only). **`[ROADMAP]` = the next
 > conversation** — present so nothing is hidden, but explicitly out of scope for the audit reply.

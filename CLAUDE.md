@@ -58,7 +58,7 @@ harness**, whose payoff is a **doctor-style writeup per patient, derived from ra
    *(Bound: editing a field's value or formula body is local; changing its type or its place in the
    dependency graph can ripple.)*
 
-See `admin-app/tests/README.md` for the harness contract and `LEOPOLD_LOOPING_PLAN.md` Loop 0.5+.
+See `admin-app/tests/README.md` for the harness contract and `LEOPOLD_LOOPs.md` for the current loop plan.
 
 ## Bootstrap Artifacts
 - `bootstrap/problem-to-solve.md` — raw requirements

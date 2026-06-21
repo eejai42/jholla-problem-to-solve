@@ -681,7 +681,7 @@ SELECT
 FROM glossary_terms t;
 
 -- ----------------------------------------------------------------------------
--- vw_leopold_loops: The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.
+-- vw_leopold_loops: The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPs.md, via json-hbars-transform) is generated from these rows; completed ([DONE]) loops are pruned at publish so only current/roadmap work shows in the plan.
 -- Combines base table columns with calculated/lookup/aggregation fields.
 -- ----------------------------------------------------------------------------
 DROP VIEW IF EXISTS vw_leopold_loops CASCADE;

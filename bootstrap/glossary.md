@@ -5,7 +5,7 @@
 Vocabulary organized by whether a term is **load-bearing** (on the dependency path of the keystone
 `IndividualPredictions.IsClinicallyActionable`) or **context** (kept to represent the breadth of the
 problem statement, but deliberately not gating the keystone — see the anti-hallucination rule in
-`../LEOPOLD_LOOPING_PLAN.md`).
+`../LEOPOLD_LOOPs.md`).
 
 ---
 

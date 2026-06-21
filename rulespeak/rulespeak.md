@@ -238,7 +238,7 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | **Glossary Term** | Vocabulary coined in the gauntlet conversation, so the framing is shared and stable across sessions. | — |
 | Name | Computed as the term. | _Display label._ |
 | Relative Path | Computed as the literal “/admin/glossary/”, followed by the glossary term ID. | _Path to this GlossaryTerms entry: /admin/glossary/<id>._ |
-| **Leopold Loop** | The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN. | — |
+| **Leopold Loop** | The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPs.md, via json-hbars-transform) is generated from these rows; completed ([DONE]) loops are pruned at publish so only current/roadmap work shows in the plan. | — |
 | Name | Computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title. | _Display label._ |
 | Relative Path | Computed as the literal “/admin/leopold-loops/”, followed by the leopold loop ID. | _Path to this LeopoldLoops entry: /admin/leopold-loops/<id>._ |
 | Completedness | Computed as the status. | _Normalized status used by the derived plan to decide placement._ |

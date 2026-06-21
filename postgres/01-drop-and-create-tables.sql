@@ -581,7 +581,7 @@ COMMENT ON COLUMN glossary_terms.term IS 'The term.';
 COMMENT ON COLUMN glossary_terms.definition IS 'What it means here.';
 
 -- ----------------------------------------------------------------------------
--- LeopoldLoops: The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.
+-- LeopoldLoops: The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPs.md, via json-hbars-transform) is generated from these rows; completed ([DONE]) loops are pruned at publish so only current/roadmap work shows in the plan.
 -- ----------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS leopold_loops (
   leopold_loop_id                     TEXT                 PRIMARY KEY          -- Stable identifier.
@@ -595,7 +595,7 @@ ALTER TABLE leopold_loops ADD COLUMN IF NOT EXISTS state_commit_msg TEXT;       
 ALTER TABLE leopold_loops ADD COLUMN IF NOT EXISTS sort_order NUMERIC;                              -- Ordering within the plan.
 ALTER TABLE leopold_loops ADD COLUMN IF NOT EXISTS status_badge TEXT;                               -- Display badge for the derived plan, e.g. [DONE] / [NEXT] / [PLANNED] / [BACKLOG].
 ALTER TABLE leopold_loops ADD COLUMN IF NOT EXISTS status_line TEXT;                                -- Extra plan line: commit messages for done/next loops; empty otherwise.
-COMMENT ON TABLE leopold_loops IS 'The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPING_PLAN.md, via json-hbars-transform) is generated from these rows; Completedness decides what shows in the current PLAN.';
+COMMENT ON TABLE leopold_loops IS 'The ordered Leopold loops that build this platform, as data. The derived plan (LEOPOLD_LOOPs.md, via json-hbars-transform) is generated from these rows; completed ([DONE]) loops are pruned at publish so only current/roadmap work shows in the plan.';
 COMMENT ON COLUMN leopold_loops.leopold_loop_id IS 'Stable identifier.';
 COMMENT ON COLUMN leopold_loops.loop_number IS 'Display number (0, 0.5, 1...).';
 COMMENT ON COLUMN leopold_loops.title IS 'Loop title.';
