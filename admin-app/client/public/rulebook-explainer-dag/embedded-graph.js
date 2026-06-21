@@ -10325,6 +10325,155 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       }
     ]
   },
+  "InferenceKinds": {
+    "Description": "Families of derivation the platform performs - the KINDS of inference in the DAG (lookups, aggregations, higher-order gates, state machines, transitive closure, predicate-gated narrative, cross-substrate conformance), independent of any one feature. Lets PLATFORM_FEATURES.md open with a short overview of the reasoning machinery before the per-feature catalog. Grounded in field types that actually exist in this rulebook; Maturity is Live unless an upstream step is still in flight.",
+    "schema": [
+      {
+        "name": "InferenceKindId",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Stable identifier."
+      },
+      {
+        "name": "Title",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Short name of the inference family."
+      },
+      {
+        "name": "Description",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "One-line factual description of the kind."
+      },
+      {
+        "name": "ExampleField",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "A concrete field in the model that realizes this kind."
+      },
+      {
+        "name": "EvidenceCount",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "How much of it exists (field counts / usage), for honest weight."
+      },
+      {
+        "name": "Maturity",
+        "datatype": "string",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Live | Partial (Partial = an upstream step is still in flight)."
+      },
+      {
+        "name": "SortOrder",
+        "datatype": "number",
+        "type": "raw",
+        "nullable": false,
+        "Description": "Display order in the overview."
+      },
+      {
+        "name": "Name",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Display label.",
+        "formula": "={{Title}}"
+      },
+      {
+        "name": "RelativePath",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "Path to this entry: /admin/inference-kinds/<id>.",
+        "formula": "=\"/admin/inference-kinds/\" & {{InferenceKindId}}"
+      }
+    ],
+    "data": [
+      {
+        "InferenceKindId": "ik-lookup-fk",
+        "Title": "Lookup / FK resolution",
+        "Description": "Pull a related row's value across a foreign key so a derived field can reason over it in place (no application-side JOIN). The relationship is declared once; the value resolves wherever it is needed.",
+        "ExampleField": "Individuals.FederatedDatasetNodeLabel (resolves the dataset's label by FK)",
+        "EvidenceCount": "35 lookup fields + 42 relationships; INDEX/MATCH used 49x",
+        "Maturity": "Live",
+        "SortOrder": 1,
+        "Name": "Lookup / FK resolution",
+        "RelativePath": "/admin/inference-kinds/ik-lookup-fk"
+      },
+      {
+        "InferenceKindId": "ik-aggregation-rollup",
+        "Title": "Aggregation rollups",
+        "Description": "Collapse many child rows into one parent value - counts, maxima, sums, fractions. This is how per-row facts become corpus-level patterns: a population signature is a rollup over each person's raw series, with no label assigned.",
+        "ExampleField": "Individuals.MaxProgressionStateOrder; the emergent IsInPreNephriticSignatureCluster rollup",
+        "EvidenceCount": "33 aggregation fields; COUNTIFS/MAXIFS/SUMIFS used 33x",
+        "Maturity": "Live",
+        "SortOrder": 2,
+        "Name": "Aggregation rollups",
+        "RelativePath": "/admin/inference-kinds/ik-aggregation-rollup"
+      },
+      {
+        "InferenceKindId": "ik-higher-order",
+        "Title": "Higher-order inference (gates over gates)",
+        "Description": "Calculated fields that take other calculated fields as inputs, stacked into a multi-level DAG. The keystone is the apex: a boolean computed over four gates, each themselves computed over lower derivations - inference about inferences, never a hand-entered answer.",
+        "ExampleField": "IndividualPredictions.IsClinicallyActionable (AND of the four derived gates)",
+        "EvidenceCount": "200 calculated fields; the keystone is an AND of four derived gates",
+        "Maturity": "Live",
+        "SortOrder": 3,
+        "Name": "Higher-order inference (gates over gates)",
+        "RelativePath": "/admin/inference-kinds/ik-higher-order"
+      },
+      {
+        "InferenceKindId": "ik-state-machine",
+        "Title": "State-machine derivation",
+        "Description": "A subject's current state is derived from raw longitudinal inputs against a declared transition graph, not entered. Dwell time per state and the progression key fall out of the same derivation.",
+        "ExampleField": "Individuals.NephritisProgressionStateKey (from rising anti-dsDNA + falling complement)",
+        "EvidenceCount": "2 state machines, 13 states, 14 transition rules; current state is computed",
+        "Maturity": "Live",
+        "SortOrder": 4,
+        "Name": "State-machine derivation",
+        "RelativePath": "/admin/inference-kinds/ik-state-machine"
+      },
+      {
+        "InferenceKindId": "ik-transitive-closure",
+        "Title": "Transitive closure (reachability inference)",
+        "Description": "Sparsely-asserted FromState->ToState edges imply the full reachability ordering, including never-asserted long-range pairs. The disease trajectory is inferred from the transition topology (e.g. intake -> actionable at hop 5, is_inferred=true) rather than hand-typed as an integer ladder - the autoimmune analogue of a step-1 -> step-5 ordering.",
+        "ExampleField": "StateTransitionRules.ProgressionClosure (presymptomatic -> biopsy-indicated, inferred)",
+        "EvidenceCount": "1 closure field -> vw_state_transition_rules_closure: 14 asserted edges, 18 inferred pairs (to hop 5)",
+        "Maturity": "Live",
+        "SortOrder": 5,
+        "Name": "Transitive closure (reachability inference)",
+        "RelativePath": "/admin/inference-kinds/ik-transitive-closure"
+      },
+      {
+        "InferenceKindId": "ik-predicate-narrative",
+        "Title": "Predicate-gated narrative",
+        "Description": "Each raw fact is turned into a phrase by a per-row formula that selects wording from its own value and a shared __meta__ phrasebook (e.g. a temperature becomes 'normal' | 'light fever' | 'severe fever'). The diagnosis writeup is assembled from these inspectable cells - no free-text generated at render time.",
+        "ExampleField": "Individuals.ActivityTier / TemperatureNarrative (banded from the row's own value)",
+        "EvidenceCount": "IF used 166x; per-row narrative fragment fields band raw values into language",
+        "Maturity": "Live",
+        "SortOrder": 6,
+        "Name": "Predicate-gated narrative",
+        "RelativePath": "/admin/inference-kinds/ik-predicate-narrative"
+      },
+      {
+        "InferenceKindId": "ik-cross-substrate-conformance",
+        "Title": "Cross-substrate conformance",
+        "Description": "The same declared model is projected to a second substrate (OWL) and a reasoner closes it independently; agreement between the OWL-RL closure and the Postgres recursive view is the conformance receipt. The Postgres closure is live; the OWL projection / referee is the in-flight CR step, so this is marked Partial.",
+        "ExampleField": "rulebook-to-owl projection of ProgressionClosure (reason.py closure == vw_*_closure)",
+        "EvidenceCount": "closure field carries owl:TransitiveProperty intent; OWL-RL == Postgres receipt is the open CR step",
+        "Maturity": "Partial",
+        "SortOrder": 7,
+        "Name": "Cross-substrate conformance",
+        "RelativePath": "/admin/inference-kinds/ik-cross-substrate-conformance"
+      }
+    ]
+  },
   "OpenQuestions": {
     "Description": "Decisions still pending, captured so they are not silently re-litigated in a later session.",
     "schema": [
@@ -24633,6 +24782,36 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     ],
     "structure": null
   },
+  "InferenceKinds.Name": {
+    "table": "InferenceKinds",
+    "field": "Name",
+    "kind": "formula",
+    "rule": "An inference kind\u0027s name is computed as the title.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "InferenceKinds",
+        "field": "Title",
+        "label": "title"
+      }
+    ],
+    "structure": null
+  },
+  "InferenceKinds.RelativePath": {
+    "table": "InferenceKinds",
+    "field": "RelativePath",
+    "kind": "formula",
+    "rule": "An inference kind\u0027s relative path is computed as the literal \u201C/admin/inference-kinds/\u201D, followed by the inference kind ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "InferenceKinds",
+        "field": "InferenceKindId",
+        "label": "inference kind ID"
+      }
+    ],
+    "structure": null
+  },
   "OpenQuestions.Name": {
     "table": "OpenQuestions",
     "field": "Name",
@@ -26482,6 +26661,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
   ],
   "Features": [
     "A feature **must** have a title, a category, a priority, a description, and a ref count."
+  ],
+  "InferenceKinds": [
+    "An inference kind **must** have a title, a description, an example field, an evidence count, a maturity, and a sort order."
   ],
   "OpenQuestions": [
     "An open question **must** have a question and a context, and record whether it is resolved."

@@ -46,6 +46,13 @@ preserved verbatim in [`THE-ORIGINAL-CHALLENGE.md`](THE-ORIGINAL-CHALLENGE.md).)
 > the original challenge it addresses** (the quoted phrase plus its file/line/character position, so the
 > UI can show it as a hover tip). It is **derived** from the `Features` rows in the rulebook, so it can
 > never drift from what is actually built.
+>
+> Those features are built from a small set of **inference families** — the kinds of derivation the DAG
+> performs: **lookup / FK resolution**, **aggregation rollups**, **higher-order inference** (gates over
+> gates), **state-machine derivation**, **transitive closure** (reachability inferred from sparse edges),
+> **predicate-gated narrative**, and **cross-substrate conformance**. The catalog opens with this
+> overview (derived from the `InferenceKinds` rows), each family grounded in field types that exist in
+> the rulebook today.
 
 > **The one honest bound, stated once.** Everything here is **synthetic, transparent data — a proof of
 > *shape*, not validated biology.** Nothing claims to have discovered or validated a real causal

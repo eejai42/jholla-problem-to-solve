@@ -15,12 +15,21 @@
     {
       "IsSSoTTranspiler": false,
       "Name": "rulebooktorulespeak",
-      "RelativePath": "/rulespeak",
+      "RelativePath": "/rulespeak-english",
       "CommandLine": "rulebook-to-rulespeak -i ../effortless-rulebook/effortless-rulebook.json",
       "IsDisabled": false,
       "PinnedVersion": "v2026.06.10.1308",
       "LastVersionUsed": "v2026.06.10.1308",
       "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-10-1308-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "rulebooktorulespeak",
+      "RelativePath": "/rulespeak-german",
+      "CommandLine": "rulebook-to-rulespeak-de -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.20.2306",
+      "LastUrl": "https://effortless-rulebook-to-rulespeak-v2026-06-20-2306-cmvbd4phczmeg.7pktzg2z971j0.cpln.app"
     },
     {
       "IsSSoTTranspiler": false,

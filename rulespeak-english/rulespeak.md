@@ -230,6 +230,9 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Name | Computed as the title. | _Display label._ |
 | Relative Path | Computed as the literal “/admin/features/”, followed by the feature ID. | _Path to this Features entry: /admin/features/<id>._ |
 | Meta Line | Computed as the literal “**Category:** ”, followed by the category, followed by the literal “ - **Priority:** ”, followed by the priority, followed by the literal “ - **Challenge refs:** ”, followed by the ref count. | _One-line meta summary for the catalog (category - priority - ref count)._ |
+| **Inference Kind** | Families of derivation the platform performs - the KINDS of inference in the DAG (lookups, aggregations, higher-order gates, state machines, transitive closure, predicate-gated narrative, cross-substrate conformance), independent of any one feature. Lets PLATFORM_FEATURES.md open with a short overview of the reasoning machinery before the per-feature catalog. Grounded in field types that actually exist in this rulebook; Maturity is Live unless an upstream step is still in flight. | — |
+| Name | Computed as the title. | _Display label._ |
+| Relative Path | Computed as the literal “/admin/inference-kinds/”, followed by the inference kind ID. | _Path to this entry: /admin/inference-kinds/<id>._ |
 | **Open Question** | Decisions still pending, captured so they are not silently re-litigated in a later session. | — |
 | Name | Computed as the question. | _Display label._ |
 | Relative Path | Computed as the literal “/admin/open-questions/”, followed by the open question ID. | _Path to this OpenQuestions entry: /admin/open-questions/<id>._ |
@@ -370,6 +373,7 @@ already computes (cross-referenced as DR-N in the Definitional Rules below)._
 - An axiom **must** have a statement, a rationale, and a category.
 - A tests for success **must** have a claim, a how witnessed, and a status.
 - A feature **must** have a title, a category, a priority, a description, and a ref count.
+- An inference kind **must** have a title, a description, an example field, an evidence count, a maturity, and a sort order.
 - An open question **must** have a question and a context, and record whether it is resolved.
 - A non goal **must** have a statement and a why excluded.
 - A glossary term **must** have a term and a definition.
@@ -594,71 +598,73 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-193 Name** | A feature's name is computed as the title. |
 | **DR-194 Relative Path** | A feature's relative path is computed as the literal “/admin/features/”, followed by the feature ID. |
 | **DR-195 Meta Line** | A feature's meta line is computed as the literal “**Category:** ”, followed by the category, followed by the literal “ - **Priority:** ”, followed by the priority, followed by the literal “ - **Challenge refs:** ”, followed by the ref count. |
-| **DR-196 Name** | An open question's name is computed as the question. |
-| **DR-197 Relative Path** | An open question's relative path is computed as the literal “/admin/open-questions/”, followed by the open question ID. |
-| **DR-198 Name** | A non goal's name is computed as the statement. |
-| **DR-199 Relative Path** | A non goal's relative path is computed as the literal “/admin/non-goals/”, followed by the non goal ID. |
-| **DR-200 Name** | A glossary term's name is computed as the term. |
-| **DR-201 Relative Path** | A glossary term's relative path is computed as the literal “/admin/glossary/”, followed by the glossary term ID. |
-| **DR-202 Name** | A leopold loop's name is computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title. |
-| **DR-203 Relative Path** | A leopold loop's relative path is computed as the literal “/admin/leopold-loops/”, followed by the leopold loop ID. |
-| **DR-204 Completedness** | A leopold loop's completedness is computed as the status. |
-| **DR-205 Is in Current Plan** | A leopold loop is considered in current plan if it is not the case that the status is the literal “done”. |
-| **DR-206 Name** | A routing and navigation's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-207 Admin Can Create** | A routing and navigation is flagged admin can create if the admin CRUD mentions the literal “C”. |
-| **DR-208 Admin Can Read** | A routing and navigation is flagged admin can read if the admin CRUD mentions the literal “R”. |
-| **DR-209 Admin Can Update** | A routing and navigation is flagged admin can update if the admin CRUD mentions the literal “U”. |
-| **DR-210 Admin Can Delete** | A routing and navigation is flagged admin can delete if the admin CRUD mentions the literal “D”. |
-| **DR-211 Intake Clinician Can Create** | A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions the literal “C”. |
-| **DR-212 Intake Clinician Can Read** | A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions the literal “R”. |
-| **DR-213 Intake Clinician Can Update** | A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions the literal “U”. |
-| **DR-214 Intake Clinician Can Delete** | A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions the literal “D”. |
-| **DR-215 Diagnosing Doctor Can Create** | A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions the literal “C”. |
-| **DR-216 Diagnosing Doctor Can Read** | A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions the literal “R”. |
-| **DR-217 Diagnosing Doctor Can Update** | A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions the literal “U”. |
-| **DR-218 Diagnosing Doctor Can Delete** | A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions the literal “D”. |
-| **DR-219 External Llm Can Create** | A routing and navigation is flagged external llm can create if the external llm CRUD mentions the literal “C”. |
-| **DR-220 External Llm Can Read** | A routing and navigation is flagged external llm can read if the external llm CRUD mentions the literal “R”. |
-| **DR-221 External Llm Can Update** | A routing and navigation is flagged external llm can update if the external llm CRUD mentions the literal “U”. |
-| **DR-222 External Llm Can Delete** | A routing and navigation is flagged external llm can delete if the external llm CRUD mentions the literal “D”. |
-| **DR-223 Depth** | The routing and navigation's depth is determined by the following priority:<br>1. 0, if the parent route key is blank;<br>2. otherwise the length of the route key minus the length of the route key with every a period replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-224 Full Path** | A routing and navigation's full path is computed as the route. |
-| **DR-225 Handler Base Name** | A routing and navigation's handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-226 Relative Path** | A routing and navigation's relative path is computed as the literal “/admin/routing/”, followed by the routing and navigation ID. |
-| **DR-227 Relative Path** | A state machine's relative path is computed as the literal “/admin/state-machine/”, followed by the state machine ID. |
-| **DR-228 State Count** | A state machine's state count is the number of machine states related to the state machine. |
-| **DR-229 Transition Rule Count** | A state machine's transition rule count is the number of state transition rules related to the state machine. |
-| **DR-230 Relative Path** | A machine state's relative path is computed as the literal “/admin/state-machine/states/”, followed by the machine state ID. |
-| **DR-231 Relative Path** | A state transition rule's relative path is computed as the literal “/admin/state-machine/rules/”, followed by the state transition rule ID. |
-| **DR-232 From State Key** | A state transition rule's from state key is the state key of the state transition rule's from state. |
-| **DR-233 To State Key** | A state transition rule's to state key is the state key of the state transition rule's to state. |
-| **DR-234 Is Forward Edge** | A state transition rule is considered a forward edge if it is not the case that the to state key is the from state key. |
-| **DR-235 Relative Path** | A state transition's relative path is computed as the literal “/admin/state-machine/transitions/”, followed by the state transition ID. |
-| **DR-236 Is Forward** | A state transition is considered a forward if it is not the case that the to state key is the literal “Intake”. |
-| **DR-237 Relative Path** | A subject state instance's relative path is computed as the literal “/admin/state-machine/instances/”, followed by the subject state instance ID. |
-| **DR-238 Is Current** | A subject state instance is considered a current if the exited at is blank. |
-| **DR-239 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
-| **DR-240 Is Long Dwell** | A subject state instance is considered a long dwell if the dwell days is at least 90. |
-| **DR-241 Name** | A disease domain concept's name is computed as the concept label. |
-| **DR-242 Relative Path** | A disease domain concept's relative path is computed as the literal “/admin/disease-concepts/”, followed by the disease domain concept ID. |
-| **DR-243 Is Deeply Modeled** | A disease domain concept is considered deeply modeled if the modeling status is the literal “deep-dag”. |
-| **DR-244 Is Schema Modeled** | A disease domain concept is considered schema modeled if at least one of the following holds: the modeling status is the literal “deep-dag” or the modeling status is the literal “schema”. |
-| **DR-245 Prior Anti Ds Dna IU** | A serology observation's prior anti ds dna IU is the anti ds dna IU of the serology observation's prior observation. |
-| **DR-246 Prior C3** | A serology observation's prior c3 is the complement c3 of the serology observation's prior observation. |
-| **DR-247 Prior C4** | A serology observation's prior c4 is the complement c4 of the serology observation's prior observation. |
-| **DR-248 Anti Ds Dna Trend** | The serology observation's anti ds dna trend is determined by the following priority:<br>1. the literal “Stable”, if the prior anti ds dna IU is blank;<br>2. the literal “Rising”, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;<br>3. the literal “Falling”, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;<br>4. otherwise the literal “Stable”. |
-| **DR-249 Complement Trend** | The serology observation's complement trend is determined by the following priority:<br>1. the literal “Stable”, if the prior c3 is blank;<br>2. the literal “Falling”, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;<br>3. the literal “Rising”, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;<br>4. otherwise the literal “Stable”. |
-| **DR-250 Is Pre Nephritic Signature Panel** | A serology observation is considered a pre nephritic signature panel if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”. |
-| **DR-251 Is Significant Proteinuria** | A serology observation is considered a significant proteinuria if the proteinuria g per day is at least 0.5. |
-| **DR-252 Is Nephrotic Range Proteinuria** | A serology observation is considered a nephrotic range proteinuria if the proteinuria g per day is at least 3.0. |
-| **DR-253 Sledai Renal Points** | The serology observation's sledai renal points is determined by the following priority:<br>1. 8, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. 4, if the is significant proteinuria flag is set;<br>3. otherwise 0. |
-| **DR-254 Sledai Serology Points** | The serology observation's sledai serology points is determined by the following priority:<br>1. 4, if all of the following hold: the complement trend is the literal “Falling” and the anti ds dna trend is the literal “Rising”;<br>2. 2, if at least one of the following holds: the complement trend is the literal “Falling” or the anti ds dna trend is the literal “Rising”;<br>3. otherwise 0. |
-| **DR-255 Sledai Score** | A serology observation's sledai score is computed as the sledai renal points plus the sledai serology points. |
-| **DR-256 Progression State Key** | The serology observation's progression state key is determined by the following priority:<br>1. the literal “BiopsyIndicated”, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. the literal “RenalFlareRisk”, if the proteinuria g per day is at least 1.0;<br>3. the literal “EarlyNephritis”, if the is significant proteinuria flag is set;<br>4. the literal “SerologicActive”, if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”;<br>5. otherwise the literal “PresymptomaticAutoimmunity”. |
-| **DR-257 Progression State Order** | The serology observation's progression state order is determined by the following priority:<br>1. 5, if the progression state key is the literal “BiopsyIndicated”;<br>2. 4, if the progression state key is the literal “RenalFlareRisk”;<br>3. 3, if the progression state key is the literal “EarlyNephritis”;<br>4. 2, if the progression state key is the literal “SerologicActive”;<br>5. otherwise 1. |
-| **DR-258 Relative Path** | A serology observation's relative path is computed as the literal “/admin/serology/”, followed by the serology observation ID. |
-| **DR-259 Name** | A therapy option's name is computed as the therapy label. |
-| **DR-260 Relative Path** | A therapy option's relative path is computed as the literal “/admin/therapy-options/”, followed by the therapy option ID. |
+| **DR-196 Name** | An inference kind's name is computed as the title. |
+| **DR-197 Relative Path** | An inference kind's relative path is computed as the literal “/admin/inference-kinds/”, followed by the inference kind ID. |
+| **DR-198 Name** | An open question's name is computed as the question. |
+| **DR-199 Relative Path** | An open question's relative path is computed as the literal “/admin/open-questions/”, followed by the open question ID. |
+| **DR-200 Name** | A non goal's name is computed as the statement. |
+| **DR-201 Relative Path** | A non goal's relative path is computed as the literal “/admin/non-goals/”, followed by the non goal ID. |
+| **DR-202 Name** | A glossary term's name is computed as the term. |
+| **DR-203 Relative Path** | A glossary term's relative path is computed as the literal “/admin/glossary/”, followed by the glossary term ID. |
+| **DR-204 Name** | A leopold loop's name is computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title. |
+| **DR-205 Relative Path** | A leopold loop's relative path is computed as the literal “/admin/leopold-loops/”, followed by the leopold loop ID. |
+| **DR-206 Completedness** | A leopold loop's completedness is computed as the status. |
+| **DR-207 Is in Current Plan** | A leopold loop is considered in current plan if it is not the case that the status is the literal “done”. |
+| **DR-208 Name** | A routing and navigation's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-209 Admin Can Create** | A routing and navigation is flagged admin can create if the admin CRUD mentions the literal “C”. |
+| **DR-210 Admin Can Read** | A routing and navigation is flagged admin can read if the admin CRUD mentions the literal “R”. |
+| **DR-211 Admin Can Update** | A routing and navigation is flagged admin can update if the admin CRUD mentions the literal “U”. |
+| **DR-212 Admin Can Delete** | A routing and navigation is flagged admin can delete if the admin CRUD mentions the literal “D”. |
+| **DR-213 Intake Clinician Can Create** | A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions the literal “C”. |
+| **DR-214 Intake Clinician Can Read** | A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions the literal “R”. |
+| **DR-215 Intake Clinician Can Update** | A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions the literal “U”. |
+| **DR-216 Intake Clinician Can Delete** | A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions the literal “D”. |
+| **DR-217 Diagnosing Doctor Can Create** | A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions the literal “C”. |
+| **DR-218 Diagnosing Doctor Can Read** | A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions the literal “R”. |
+| **DR-219 Diagnosing Doctor Can Update** | A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions the literal “U”. |
+| **DR-220 Diagnosing Doctor Can Delete** | A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions the literal “D”. |
+| **DR-221 External Llm Can Create** | A routing and navigation is flagged external llm can create if the external llm CRUD mentions the literal “C”. |
+| **DR-222 External Llm Can Read** | A routing and navigation is flagged external llm can read if the external llm CRUD mentions the literal “R”. |
+| **DR-223 External Llm Can Update** | A routing and navigation is flagged external llm can update if the external llm CRUD mentions the literal “U”. |
+| **DR-224 External Llm Can Delete** | A routing and navigation is flagged external llm can delete if the external llm CRUD mentions the literal “D”. |
+| **DR-225 Depth** | The routing and navigation's depth is determined by the following priority:<br>1. 0, if the parent route key is blank;<br>2. otherwise the length of the route key minus the length of the route key with every a period replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-226 Full Path** | A routing and navigation's full path is computed as the route. |
+| **DR-227 Handler Base Name** | A routing and navigation's handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-228 Relative Path** | A routing and navigation's relative path is computed as the literal “/admin/routing/”, followed by the routing and navigation ID. |
+| **DR-229 Relative Path** | A state machine's relative path is computed as the literal “/admin/state-machine/”, followed by the state machine ID. |
+| **DR-230 State Count** | A state machine's state count is the number of machine states related to the state machine. |
+| **DR-231 Transition Rule Count** | A state machine's transition rule count is the number of state transition rules related to the state machine. |
+| **DR-232 Relative Path** | A machine state's relative path is computed as the literal “/admin/state-machine/states/”, followed by the machine state ID. |
+| **DR-233 Relative Path** | A state transition rule's relative path is computed as the literal “/admin/state-machine/rules/”, followed by the state transition rule ID. |
+| **DR-234 From State Key** | A state transition rule's from state key is the state key of the state transition rule's from state. |
+| **DR-235 To State Key** | A state transition rule's to state key is the state key of the state transition rule's to state. |
+| **DR-236 Is Forward Edge** | A state transition rule is considered a forward edge if it is not the case that the to state key is the from state key. |
+| **DR-237 Relative Path** | A state transition's relative path is computed as the literal “/admin/state-machine/transitions/”, followed by the state transition ID. |
+| **DR-238 Is Forward** | A state transition is considered a forward if it is not the case that the to state key is the literal “Intake”. |
+| **DR-239 Relative Path** | A subject state instance's relative path is computed as the literal “/admin/state-machine/instances/”, followed by the subject state instance ID. |
+| **DR-240 Is Current** | A subject state instance is considered a current if the exited at is blank. |
+| **DR-241 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
+| **DR-242 Is Long Dwell** | A subject state instance is considered a long dwell if the dwell days is at least 90. |
+| **DR-243 Name** | A disease domain concept's name is computed as the concept label. |
+| **DR-244 Relative Path** | A disease domain concept's relative path is computed as the literal “/admin/disease-concepts/”, followed by the disease domain concept ID. |
+| **DR-245 Is Deeply Modeled** | A disease domain concept is considered deeply modeled if the modeling status is the literal “deep-dag”. |
+| **DR-246 Is Schema Modeled** | A disease domain concept is considered schema modeled if at least one of the following holds: the modeling status is the literal “deep-dag” or the modeling status is the literal “schema”. |
+| **DR-247 Prior Anti Ds Dna IU** | A serology observation's prior anti ds dna IU is the anti ds dna IU of the serology observation's prior observation. |
+| **DR-248 Prior C3** | A serology observation's prior c3 is the complement c3 of the serology observation's prior observation. |
+| **DR-249 Prior C4** | A serology observation's prior c4 is the complement c4 of the serology observation's prior observation. |
+| **DR-250 Anti Ds Dna Trend** | The serology observation's anti ds dna trend is determined by the following priority:<br>1. the literal “Stable”, if the prior anti ds dna IU is blank;<br>2. the literal “Rising”, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;<br>3. the literal “Falling”, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;<br>4. otherwise the literal “Stable”. |
+| **DR-251 Complement Trend** | The serology observation's complement trend is determined by the following priority:<br>1. the literal “Stable”, if the prior c3 is blank;<br>2. the literal “Falling”, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;<br>3. the literal “Rising”, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;<br>4. otherwise the literal “Stable”. |
+| **DR-252 Is Pre Nephritic Signature Panel** | A serology observation is considered a pre nephritic signature panel if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”. |
+| **DR-253 Is Significant Proteinuria** | A serology observation is considered a significant proteinuria if the proteinuria g per day is at least 0.5. |
+| **DR-254 Is Nephrotic Range Proteinuria** | A serology observation is considered a nephrotic range proteinuria if the proteinuria g per day is at least 3.0. |
+| **DR-255 Sledai Renal Points** | The serology observation's sledai renal points is determined by the following priority:<br>1. 8, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. 4, if the is significant proteinuria flag is set;<br>3. otherwise 0. |
+| **DR-256 Sledai Serology Points** | The serology observation's sledai serology points is determined by the following priority:<br>1. 4, if all of the following hold: the complement trend is the literal “Falling” and the anti ds dna trend is the literal “Rising”;<br>2. 2, if at least one of the following holds: the complement trend is the literal “Falling” or the anti ds dna trend is the literal “Rising”;<br>3. otherwise 0. |
+| **DR-257 Sledai Score** | A serology observation's sledai score is computed as the sledai renal points plus the sledai serology points. |
+| **DR-258 Progression State Key** | The serology observation's progression state key is determined by the following priority:<br>1. the literal “BiopsyIndicated”, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. the literal “RenalFlareRisk”, if the proteinuria g per day is at least 1.0;<br>3. the literal “EarlyNephritis”, if the is significant proteinuria flag is set;<br>4. the literal “SerologicActive”, if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”;<br>5. otherwise the literal “PresymptomaticAutoimmunity”. |
+| **DR-259 Progression State Order** | The serology observation's progression state order is determined by the following priority:<br>1. 5, if the progression state key is the literal “BiopsyIndicated”;<br>2. 4, if the progression state key is the literal “RenalFlareRisk”;<br>3. 3, if the progression state key is the literal “EarlyNephritis”;<br>4. 2, if the progression state key is the literal “SerologicActive”;<br>5. otherwise 1. |
+| **DR-260 Relative Path** | A serology observation's relative path is computed as the literal “/admin/serology/”, followed by the serology observation ID. |
+| **DR-261 Name** | A therapy option's name is computed as the therapy label. |
+| **DR-262 Relative Path** | A therapy option's relative path is computed as the literal “/admin/therapy-options/”, followed by the therapy option ID. |
 
 ## 5 Traceability to Schema
 
@@ -862,6 +868,8 @@ the same logic the rulebook stores, written for a business reader._
 | **Features.Name** | formula | `Title` |
 | **Features.RelativePath** | formula | `"/admin/features/" & FeatureId` |
 | **Features.MetaLine** | formula | `"**Category:** " & Category & " - **Priority:** " & Priority & " - **Challenge refs:** " & RefCount` |
+| **InferenceKinds.Name** | formula | `Title` |
+| **InferenceKinds.RelativePath** | formula | `"/admin/inference-kinds/" & InferenceKindId` |
 | **OpenQuestions.Name** | formula | `Question` |
 | **OpenQuestions.RelativePath** | formula | `"/admin/open-questions/" & OpenQuestionId` |
 | **NonGoals.Name** | formula | `Statement` |

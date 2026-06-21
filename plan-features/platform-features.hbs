@@ -31,6 +31,18 @@ so the UI can surface it as a hover tip back into the source text. The trust bou
 same: any field with a formula belongs to the model; any raw-input field is the human's (or the LLM's,
 as an overridable front-end).
 
+## Kinds of inference the platform performs
+
+Before the per-feature list, here are the **families of derivation** the DAG actually uses — the
+reasoning machinery the features are built from. Each is grounded in field types that exist in the
+rulebook today (`Live`), or marked `Partial` where an upstream step is still in flight.
+{{#each handlebars.InferenceKinds.data}}
+- **{{Title}}** — {{Description}} _({{Maturity}})_
+  _e.g._ `{{ExampleField}}` — {{EvidenceCount}}.
+{{/each}}
+
+The 24 features below realize these kinds. (Source: the `InferenceKinds` rows in the rulebook.)
+
 ---
 {{#each handlebars.Features.data}}
 ## {{Title}}

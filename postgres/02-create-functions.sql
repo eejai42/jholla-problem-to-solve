@@ -3002,6 +3002,26 @@ RETURNS TEXT AS $$
   SELECT (CONCAT('**Category:** ', (SELECT NULLIF(category, '') FROM features WHERE feature_id = p_feature_id), ' - **Priority:** ', (SELECT NULLIF(priority, '') FROM features WHERE feature_id = p_feature_id), ' - **Challenge refs:** ', (SELECT ref_count FROM features WHERE feature_id = p_feature_id)))::text;
 $$ LANGUAGE sql STABLE;
 
+-- calc_inference_kinds_name
+-- Field: InferenceKinds.Name
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_inference_kinds_name(p_inference_kind_id TEXT)
+RETURNS TEXT AS $$
+  SELECT ((SELECT NULLIF(title, '') FROM inference_kinds WHERE inference_kind_id = p_inference_kind_id))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_inference_kinds_relative_path
+-- Field: InferenceKinds.RelativePath
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_inference_kinds_relative_path(p_inference_kind_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('/admin/inference-kinds/', (SELECT NULLIF(inference_kind_id, '') FROM inference_kinds WHERE inference_kind_id = p_inference_kind_id)))::text;
+$$ LANGUAGE sql STABLE;
+
 -- calc_open_questions_name
 -- Field: OpenQuestions.Name
 -- Type: calculated | DataType: string | Returns: TEXT

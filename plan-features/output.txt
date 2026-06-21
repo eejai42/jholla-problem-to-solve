@@ -31,6 +31,28 @@ so the UI can surface it as a hover tip back into the source text. The trust bou
 same: any field with a formula belongs to the model; any raw-input field is the human's (or the LLM's,
 as an overridable front-end).
 
+## Kinds of inference the platform performs
+
+Before the per-feature list, here are the **families of derivation** the DAG actually uses — the
+reasoning machinery the features are built from. Each is grounded in field types that exist in the
+rulebook today (`Live`), or marked `Partial` where an upstream step is still in flight.
+- **Lookup / FK resolution** — Pull a related row's value across a foreign key so a derived field can reason over it in place (no application-side JOIN). The relationship is declared once; the value resolves wherever it is needed. _(Live)_
+  _e.g._ `Individuals.FederatedDatasetNodeLabel (resolves the dataset's label by FK)` — 35 lookup fields + 42 relationships; INDEX/MATCH used 49x.
+- **Aggregation rollups** — Collapse many child rows into one parent value - counts, maxima, sums, fractions. This is how per-row facts become corpus-level patterns: a population signature is a rollup over each person's raw series, with no label assigned. _(Live)_
+  _e.g._ `Individuals.MaxProgressionStateOrder; the emergent IsInPreNephriticSignatureCluster rollup` — 33 aggregation fields; COUNTIFS/MAXIFS/SUMIFS used 33x.
+- **Higher-order inference (gates over gates)** — Calculated fields that take other calculated fields as inputs, stacked into a multi-level DAG. The keystone is the apex: a boolean computed over four gates, each themselves computed over lower derivations - inference about inferences, never a hand-entered answer. _(Live)_
+  _e.g._ `IndividualPredictions.IsClinicallyActionable (AND of the four derived gates)` — 200 calculated fields; the keystone is an AND of four derived gates.
+- **State-machine derivation** — A subject's current state is derived from raw longitudinal inputs against a declared transition graph, not entered. Dwell time per state and the progression key fall out of the same derivation. _(Live)_
+  _e.g._ `Individuals.NephritisProgressionStateKey (from rising anti-dsDNA + falling complement)` — 2 state machines, 13 states, 14 transition rules; current state is computed.
+- **Transitive closure (reachability inference)** — Sparsely-asserted FromState-&gt;ToState edges imply the full reachability ordering, including never-asserted long-range pairs. The disease trajectory is inferred from the transition topology (e.g. intake -&gt; actionable at hop 5, is_inferred=true) rather than hand-typed as an integer ladder - the autoimmune analogue of a step-1 -&gt; step-5 ordering. _(Live)_
+  _e.g._ `StateTransitionRules.ProgressionClosure (presymptomatic -&gt; biopsy-indicated, inferred)` — 1 closure field -&gt; vw_state_transition_rules_closure: 14 asserted edges, 18 inferred pairs (to hop 5).
+- **Predicate-gated narrative** — Each raw fact is turned into a phrase by a per-row formula that selects wording from its own value and a shared __meta__ phrasebook (e.g. a temperature becomes 'normal' | 'light fever' | 'severe fever'). The diagnosis writeup is assembled from these inspectable cells - no free-text generated at render time. _(Live)_
+  _e.g._ `Individuals.ActivityTier / TemperatureNarrative (banded from the row's own value)` — IF used 166x; per-row narrative fragment fields band raw values into language.
+- **Cross-substrate conformance** — The same declared model is projected to a second substrate (OWL) and a reasoner closes it independently; agreement between the OWL-RL closure and the Postgres recursive view is the conformance receipt. The Postgres closure is live; the OWL projection / referee is the in-flight CR step, so this is marked Partial. _(Partial)_
+  _e.g._ `rulebook-to-owl projection of ProgressionClosure (reason.py closure == vw_*_closure)` — closure field carries owl:TransitiveProperty intent; OWL-RL == Postgres receipt is the open CR step.
+
+The 24 features below realize these kinds. (Source: the `InferenceKinds` rows in the rulebook.)
+
 ---
 ## Four-gate clinical-actionability keystone
 
