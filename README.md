@@ -41,6 +41,12 @@ as a **state machine derived from raw longitudinal labs**, and a patient can be 
 while the prediction is correctly judged untrustworthy.** (The full audit and the response to it are
 preserved verbatim in [`THE-ORIGINAL-CHALLENGE.md`](THE-ORIGINAL-CHALLENGE.md).)
 
+> **What the platform actually does, feature by feature:** [`PLATFORM_FEATURES.md`](PLATFORM_FEATURES.md)
+> is a factual catalog of every capability — each with its category, priority, and the **exact clause of
+> the original challenge it addresses** (the quoted phrase plus its file/line/character position, so the
+> UI can show it as a hover tip). It is **derived** from the `Features` rows in the rulebook, so it can
+> never drift from what is actually built.
+
 > **The one honest bound, stated once.** Everything here is **synthetic, transparent data — a proof of
 > *shape*, not validated biology.** Nothing claims to have discovered or validated a real causal
 > autoimmune mechanism. The checkable claim is narrower: the *auditable structure* real biology would
@@ -263,6 +269,12 @@ cd ../admin-app && npm install && npm test   # the witnessed red→green inferen
 The app's home page **is** the witnessed red/green harness tree — every DAG node, for all seven
 patients, asserted against the app's own API. Nodes go green as each endpoint is wired to read the
 `vw_*` views. A passing run produces a per-patient, doctor-style diagnosis writeup as its artifact.
+
+See [`PLATFORM_FEATURES.md`](PLATFORM_FEATURES.md) for the full capability catalog — every feature
+with its category, priority, and the **exact challenge clause it addresses** (quoted phrase + file,
+line, and character position into [`THE-ORIGINAL-CHALLENGE.md`](THE-ORIGINAL-CHALLENGE.md), the source
+for the in-app hover tips). That file is **derived** from the `Features` rows in the rulebook and
+regenerated on every `effortless build`.
 
 See `admin-app/tests/README.md` for the harness contract, `CLAUDE.md` for the running north star,
 and `LEOPOLD_LOOPs.md` for the build loop.
