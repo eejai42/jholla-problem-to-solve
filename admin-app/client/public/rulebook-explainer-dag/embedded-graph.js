@@ -10505,10 +10505,10 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       {
         "InferenceKindId": "ik-cross-substrate-conformance",
         "Title": "Cross-substrate conformance",
-        "Description": "The same declared model is projected to a second substrate (OWL) and a reasoner closes it independently; agreement between the OWL-RL closure and the Postgres recursive view is the conformance receipt. The Postgres closure is live; the OWL projection / referee is the in-flight CR step, so this is marked Partial.",
-        "ExampleField": "rulebook-to-owl projection of ProgressionClosure (reason.py closure == vw_*_closure)",
-        "EvidenceCount": "closure field carries owl:TransitiveProperty intent; OWL-RL == Postgres receipt is the open CR step",
-        "Maturity": "Partial",
+        "Description": "The same declared model is projected to a second substrate (OWL) and an independent reasoner closes it on its own; agreement with the Postgres recursive view is the conformance receipt. rulebook-to-owl emits the transition relation as an owl:TransitiveProperty, owlrl deduces every reachable pair, and owl/reason.py diffs that set against vw_state_transition_rules_closure - they match exactly (32 reachability pairs, incl. the inferred long-range intake -> actionable at hop 5). A recursive SQL view and an OWL-RL deductive closure compute the same reachability from one model: the reasoning is substrate-independent, not SQL-specific.",
+        "ExampleField": "owl/reason.py: owlrl closure of `progression` (TransitiveProperty) == vw_state_transition_rules_closure",
+        "EvidenceCount": "OWL-RL closure == Postgres closure: 14 asserted edges, 18 inferred pairs, 32 total - identical sets, verified by owl/reason.py",
+        "Maturity": "Live",
         "SortOrder": 7,
         "Name": "Cross-substrate conformance",
         "RelativePath": "/admin/inference-kinds/ik-cross-substrate-conformance"

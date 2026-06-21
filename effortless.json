@@ -51,6 +51,23 @@
     },
     {
       "IsSSoTTranspiler": false,
+      "Name": "rulebooktoowl",
+      "RelativePath": "/owl",
+      "CommandLine": "rulebook-to-owl -i ../effortless-rulebook/effortless-rulebook.json",
+      "IsDisabled": false,
+      "LastVersionUsed": "v2026.06.21.0954",
+      "LastUrl": "https://effortless-rulebook-to-owl-v2026-06-21-0954-cmvbd4phczmeg.7pktzg2z971j0.cpln.app",
+      "_note": "TEMPORARY: a `-setUrl rulebook-to-owl=<v2026.06.21.1215 workload url>` override redirects the actual call to the full implementation (emits ontology.owl + individuals.ttl + rules.shacl.ttl with the transition relation as an owl:TransitiveProperty). The version index still tops out at v2026.06.21.1159/0954, so LastVersionUsed lags. Re-pin to v2026.06.21.1215 and drop this note + the override once the index catches up. The owl-conformance step (owl/run-conformance.sh -> owl/reason.py) gates the build on OWL-RL closure == vw_state_transition_rules_closure."
+    },
+    {
+      "IsSSoTTranspiler": false,
+      "Name": "owl-conformance",
+      "RelativePath": "/owl",
+      "CommandLine": "-exec ./run-conformance.sh",
+      "IsDisabled": false
+    },
+    {
+      "IsSSoTTranspiler": false,
       "Name": "JsonHbarsTransform",
       "RelativePath": "/plan",
       "CommandLine": "json-hbars-transform -i ../effortless-rulebook/effortless-rulebook.json -i ./leopold-plan.hbs",
