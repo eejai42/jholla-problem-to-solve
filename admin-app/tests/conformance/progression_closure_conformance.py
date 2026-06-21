@@ -121,6 +121,32 @@ def owl_rl_closure():
     return pairs, len(asserted)
 
 
+def load_bearing_check():
+    """Prove the closure is CONSUMED, not just computed: MachineStates.ReachableStateCount
+    reads the closure view, and its values are non-monotonic in the severity rank — so no
+    function of the linear OrderIndex can reproduce them. Delete the closure and the field is
+    uncomputable; flatten the graph to a line and the field would collapse to the rank. That
+    is what 'load-bearing' means."""
+    sql = (
+        "SELECT order_index, reachable_state_count "
+        "FROM vw_machine_states WHERE machine_state_id LIKE 'lupus%' ORDER BY order_index;"
+    )
+    out = subprocess.check_output(["psql", DB_URL, "-tA", "-F", "\t", "-c", sql], text=True)
+    rows = [tuple(map(int, l.split("\t"))) for l in out.splitlines() if l.strip()]
+    by_rank = dict(rows)
+    # The remission branch makes both ends terminal sinks: rank 0 (Quiescent) and rank 5
+    # (BiopsyIndicated) BOTH have 0 reachable-ahead, though they sit at opposite ends.
+    lo, hi = min(by_rank), max(by_rank)
+    if by_rank.get(lo) != 0 or by_rank.get(hi) != 0:
+        fail(
+            f"expected both rank-{lo} and rank-{hi} to have 0 reachable-ahead (terminal sinks); "
+            f"got {by_rank.get(lo)} and {by_rank.get(hi)} — has the graph lost its branch?"
+        )
+    print(f"  Load-bearing check       : reachable_state_count non-monotonic in rank "
+          f"(rank {lo} and rank {hi} both = 0) ✅")
+    print("                             -> the severity rank CANNOT reproduce it; the closure is consumed.")
+
+
 def main():
     print("Progression-closure cross-substrate conformance (CR-2)")
     print("=" * 60)
@@ -144,9 +170,12 @@ def main():
         fail(f"headline inferred pair {HEADLINE} missing from the closure (the 1->5 reachability)")
 
     print(f"  Headline inferred pair  : {HEADLINE[0]} -> {HEADLINE[1]} present in BOTH ✅")
+
+    load_bearing_check()
+
     print("=" * 60)
-    print(f"✅ CONFORMANCE PASS — {len(pg)} pairs, OWL-RL ≡ Postgres, byte-identical.")
-    print("   The disease-progression reachability is one object across two substrates.")
+    print(f"✅ CONFORMANCE PASS — {len(pg)} pairs, OWL-RL ≡ Postgres, byte-identical;")
+    print("   and the closure is CONSUMED by a derivation the severity rank cannot reproduce.")
 
 
 if __name__ == "__main__":

@@ -1152,6 +1152,23 @@
         "nullable": true,
         "Description": "Decoded druggable pathway implicated by this individual's mechanism.",
         "formula": "=IF({{TargetPathwayCode}}=1,\"type-I-IFN\",IF({{TargetPathwayCode}}=2,\"B-cell/autoantibody\",IF({{TargetPathwayCode}}=3,\"T-cell-costim\",IF({{TargetPathwayCode}}=4,\"IL-17/23\",\"\"))))"
+      },
+      {
+        "name": "CurrentProgressionStateId",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "This individual's current lupus-progression state as a MachineStates id (closure-view key form): the lupus-nephritis-progression machine prefix + the lowercased NephritisProgressionStateKey. Pure projection of the derived current state; used to look up closure-derived prognostics.",
+        "formula": "=\"lupus-nephritis-progression--\" & LOWER({{NephritisProgressionStateKey}})"
+      },
+      {
+        "name": "ReachableStatesAhead",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "important": true,
+        "Description": "How many disease states are still reachable ahead of THIS patient from their current state, via the transition closure (looks up MachineStates.ReachableStateCount for CurrentProgressionStateId). A closure-derived prognostic horizon: Diego at BiopsyIndicated has 0 ahead (terminal); a Presymptomatic patient has 5. NOT derivable from the severity rank alone (the count is non-monotonic in rank because the machine branches into remission).",
+        "formula": "=INDEX(MachineStates!{{ReachableStateCount}}, MATCH({{CurrentProgressionStateId}}, MachineStates!{{MachineStateId}}, 0))"
       }
     ],
     "data": [
@@ -1205,7 +1222,9 @@
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--serologicactive",
+        "ReachableStatesAhead": 4
       },
       {
         "IndividualId": "ind-b-okafor",
@@ -1257,7 +1276,9 @@
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-c-chen",
@@ -1309,7 +1330,9 @@
         "TargetPathway": "B-cell/autoantibody",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--serologicactive",
+        "ReachableStatesAhead": 4
       },
       {
         "IndividualId": "ind-d-santos",
@@ -1361,7 +1384,9 @@
         "TargetPathway": "B-cell/autoantibody",
         "CountPreNephriticSignaturePanels": 2,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 2
+        "SignatureStrength": 2,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--biopsyindicated",
+        "ReachableStatesAhead": 0
       },
       {
         "IndividualId": "ind-e-mensah",
@@ -1413,7 +1438,9 @@
         "TargetPathway": "T-cell-costim",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-f-haidar",
@@ -1465,7 +1492,9 @@
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-g-lin",
@@ -1517,7 +1546,9 @@
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-h-yamamoto",
@@ -1574,7 +1605,9 @@
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--earlynephritis",
+        "ReachableStatesAhead": 2
       },
       {
         "IndividualId": "ind-i-conteh",
@@ -1631,7 +1664,9 @@
         "TargetPathway": "B-cell/autoantibody",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--renalflarerisk",
+        "ReachableStatesAhead": 1
       },
       {
         "IndividualId": "ind-j-brooks",
@@ -1688,7 +1723,9 @@
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--serologicactive",
+        "ReachableStatesAhead": 4
       },
       {
         "IndividualId": "ind-k-nair",
@@ -1745,7 +1782,9 @@
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-l-brandt",
@@ -1802,7 +1841,9 @@
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       }
     ]
   },
@@ -12848,6 +12889,15 @@
         "type": "raw",
         "nullable": true,
         "Description": "Audit: AI model credited on last save, if any."
+      },
+      {
+        "name": "ReachableStateCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of states reachable FROM this state via the transitive closure of the transition edges (rollup over vw_state_transition_rules_closure where from_id = this state). This is a graph-reachability fact the linear severity rank CANNOT reproduce: both Quiescent (the remission sink) and BiopsyIndicated (the terminal progression state) have 0 reachable-ahead, though they sit at opposite ends of the order — the count is non-monotonic in OrderIndex because the machine BRANCHES (remission). The closure is load-bearing here: delete it and this field is uncomputable.",
+        "formula": "=COUNTIFS(vw_state_transition_rules_closure!{{FromId}}, {{MachineStateId}})"
       }
     ],
     "data": [
@@ -12867,7 +12917,8 @@
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 6
       },
       {
         "MachineStateId": "diagnosis-lifecycle--evidenceassessed",
@@ -12885,7 +12936,8 @@
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 5
       },
       {
         "MachineStateId": "diagnosis-lifecycle--mechanismconfirmed",
@@ -12903,7 +12955,8 @@
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 4
       },
       {
         "MachineStateId": "diagnosis-lifecycle--calibrationchecked",
@@ -12921,7 +12974,8 @@
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 3
       },
       {
         "MachineStateId": "diagnosis-lifecycle--transportchecked",
@@ -12939,7 +12993,8 @@
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 2
       },
       {
         "MachineStateId": "diagnosis-lifecycle--actionable",
@@ -12957,7 +13012,8 @@
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 0
       },
       {
         "MachineStateId": "diagnosis-lifecycle--notactionable",
@@ -12975,7 +13031,8 @@
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 0
       },
       {
         "MachineStateId": "lupus-nephritis-progression--quiescent",
@@ -12993,7 +13050,8 @@
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 0
       },
       {
         "MachineStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
@@ -13011,7 +13069,8 @@
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 5
       },
       {
         "MachineStateId": "lupus-nephritis-progression--serologicactive",
@@ -13029,7 +13088,8 @@
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 4
       },
       {
         "MachineStateId": "lupus-nephritis-progression--earlynephritis",
@@ -13047,7 +13107,8 @@
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 2
       },
       {
         "MachineStateId": "lupus-nephritis-progression--renalflarerisk",
@@ -13065,7 +13126,8 @@
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 1
       },
       {
         "MachineStateId": "lupus-nephritis-progression--biopsyindicated",
@@ -13083,7 +13145,8 @@
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 0
       }
     ]
   },

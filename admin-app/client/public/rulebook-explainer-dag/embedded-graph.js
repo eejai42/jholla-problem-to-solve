@@ -1153,6 +1153,23 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "nullable": true,
         "Description": "Decoded druggable pathway implicated by this individual's mechanism.",
         "formula": "=IF({{TargetPathwayCode}}=1,\"type-I-IFN\",IF({{TargetPathwayCode}}=2,\"B-cell/autoantibody\",IF({{TargetPathwayCode}}=3,\"T-cell-costim\",IF({{TargetPathwayCode}}=4,\"IL-17/23\",\"\"))))"
+      },
+      {
+        "name": "CurrentProgressionStateId",
+        "datatype": "string",
+        "type": "calculated",
+        "nullable": true,
+        "Description": "This individual's current lupus-progression state as a MachineStates id (closure-view key form): the lupus-nephritis-progression machine prefix + the lowercased NephritisProgressionStateKey. Pure projection of the derived current state; used to look up closure-derived prognostics.",
+        "formula": "=\"lupus-nephritis-progression--\" & LOWER({{NephritisProgressionStateKey}})"
+      },
+      {
+        "name": "ReachableStatesAhead",
+        "datatype": "integer",
+        "type": "lookup",
+        "nullable": true,
+        "important": true,
+        "Description": "How many disease states are still reachable ahead of THIS patient from their current state, via the transition closure (looks up MachineStates.ReachableStateCount for CurrentProgressionStateId). A closure-derived prognostic horizon: Diego at BiopsyIndicated has 0 ahead (terminal); a Presymptomatic patient has 5. NOT derivable from the severity rank alone (the count is non-monotonic in rank because the machine branches into remission).",
+        "formula": "=INDEX(MachineStates!{{ReachableStateCount}}, MATCH({{CurrentProgressionStateId}}, MachineStates!{{MachineStateId}}, 0))"
       }
     ],
     "data": [
@@ -1206,7 +1223,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--serologicactive",
+        "ReachableStatesAhead": 4
       },
       {
         "IndividualId": "ind-b-okafor",
@@ -1258,7 +1277,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-c-chen",
@@ -1310,7 +1331,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "B-cell/autoantibody",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--serologicactive",
+        "ReachableStatesAhead": 4
       },
       {
         "IndividualId": "ind-d-santos",
@@ -1362,7 +1385,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "B-cell/autoantibody",
         "CountPreNephriticSignaturePanels": 2,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 2
+        "SignatureStrength": 2,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--biopsyindicated",
+        "ReachableStatesAhead": 0
       },
       {
         "IndividualId": "ind-e-mensah",
@@ -1414,7 +1439,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "T-cell-costim",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-f-haidar",
@@ -1466,7 +1493,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-g-lin",
@@ -1518,7 +1547,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-h-yamamoto",
@@ -1575,7 +1606,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--earlynephritis",
+        "ReachableStatesAhead": 2
       },
       {
         "IndividualId": "ind-i-conteh",
@@ -1632,7 +1665,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "B-cell/autoantibody",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--renalflarerisk",
+        "ReachableStatesAhead": 1
       },
       {
         "IndividualId": "ind-j-brooks",
@@ -1689,7 +1724,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "type-I-IFN",
         "CountPreNephriticSignaturePanels": 1,
         "IsInPreNephriticSignatureCluster": true,
-        "SignatureStrength": 1
+        "SignatureStrength": 1,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--serologicactive",
+        "ReachableStatesAhead": 4
       },
       {
         "IndividualId": "ind-k-nair",
@@ -1746,7 +1783,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       },
       {
         "IndividualId": "ind-l-brandt",
@@ -1803,7 +1842,9 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "TargetPathway": "IL-17/23",
         "CountPreNephriticSignaturePanels": 0,
         "IsInPreNephriticSignatureCluster": false,
-        "SignatureStrength": 0
+        "SignatureStrength": 0,
+        "CurrentProgressionStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
+        "ReachableStatesAhead": 5
       }
     ]
   },
@@ -12849,6 +12890,15 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "type": "raw",
         "nullable": true,
         "Description": "Audit: AI model credited on last save, if any."
+      },
+      {
+        "name": "ReachableStateCount",
+        "datatype": "integer",
+        "type": "aggregation",
+        "nullable": true,
+        "important": true,
+        "Description": "Number of states reachable FROM this state via the transitive closure of the transition edges (rollup over vw_state_transition_rules_closure where from_id = this state). This is a graph-reachability fact the linear severity rank CANNOT reproduce: both Quiescent (the remission sink) and BiopsyIndicated (the terminal progression state) have 0 reachable-ahead, though they sit at opposite ends of the order — the count is non-monotonic in OrderIndex because the machine BRANCHES (remission). The closure is load-bearing here: delete it and this field is uncomputable.",
+        "formula": "=COUNTIFS(vw_state_transition_rules_closure!{{FromId}}, {{MachineStateId}})"
       }
     ],
     "data": [
@@ -12868,7 +12918,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 6
       },
       {
         "MachineStateId": "diagnosis-lifecycle--evidenceassessed",
@@ -12886,7 +12937,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 5
       },
       {
         "MachineStateId": "diagnosis-lifecycle--mechanismconfirmed",
@@ -12904,7 +12956,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 4
       },
       {
         "MachineStateId": "diagnosis-lifecycle--calibrationchecked",
@@ -12922,7 +12975,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 3
       },
       {
         "MachineStateId": "diagnosis-lifecycle--transportchecked",
@@ -12940,7 +12994,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 2
       },
       {
         "MachineStateId": "diagnosis-lifecycle--actionable",
@@ -12958,7 +13013,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 0
       },
       {
         "MachineStateId": "diagnosis-lifecycle--notactionable",
@@ -12976,7 +13032,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ToTransitionRules": null,
         "CreatedAt": null,
         "ModifiedAt": null,
-        "ModifiedByModel": null
+        "ModifiedByModel": null,
+        "ReachableStateCount": 0
       },
       {
         "MachineStateId": "lupus-nephritis-progression--quiescent",
@@ -12994,7 +13051,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 0
       },
       {
         "MachineStateId": "lupus-nephritis-progression--presymptomaticautoimmunity",
@@ -13012,7 +13070,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 5
       },
       {
         "MachineStateId": "lupus-nephritis-progression--serologicactive",
@@ -13030,7 +13089,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 4
       },
       {
         "MachineStateId": "lupus-nephritis-progression--earlynephritis",
@@ -13048,7 +13108,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 2
       },
       {
         "MachineStateId": "lupus-nephritis-progression--renalflarerisk",
@@ -13066,7 +13127,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 1
       },
       {
         "MachineStateId": "lupus-nephritis-progression--biopsyindicated",
@@ -13084,7 +13146,8 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
         "ModifiedAt": "2026-06-20T00:00:00Z",
         "ModifiedByModel": "claude-opus-4-8",
         "FromTransitionRules": null,
-        "ToTransitionRules": null
+        "ToTransitionRules": null,
+        "ReachableStateCount": 0
       }
     ]
   },
@@ -20095,6 +20158,31 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
       "children": null
     }
   },
+  "Individuals.ReachableStatesAhead": {
+    "table": "Individuals",
+    "field": "ReachableStatesAhead",
+    "kind": "lookup",
+    "rule": "An individual\u0027s reachable states ahead is the reachable state count of the individual\u0027s current progression state ID.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "MachineStates",
+        "field": "ReachableStateCount",
+        "label": "reachable state count"
+      },
+      {
+        "table": "Individuals",
+        "field": "CurrentProgressionStateId",
+        "label": "current progression state ID"
+      },
+      {
+        "table": "MachineStates",
+        "field": "MachineStateId",
+        "label": "machine state ID"
+      }
+    ],
+    "structure": null
+  },
   "GenomicVariants.Name": {
     "table": "GenomicVariants",
     "field": "Name",
@@ -25655,6 +25743,26 @@ window.__EFFORTLESS_EXPLAINER__ = { rulebook: {
     "rule": "A machine state\u0027s relative path is computed as the literal \u201C/admin/state-machine/states/\u201D, followed by the machine state ID.",
     "mechanical": false,
     "refs": [
+      {
+        "table": "MachineStates",
+        "field": "MachineStateId",
+        "label": "machine state ID"
+      }
+    ],
+    "structure": null
+  },
+  "MachineStates.ReachableStateCount": {
+    "table": "MachineStates",
+    "field": "ReachableStateCount",
+    "kind": "rollup",
+    "rule": "A machine state\u0027s reachable state count is the number of vw state transition rules closure related to the machine state.",
+    "mechanical": false,
+    "refs": [
+      {
+        "table": "vw_state_transition_rules_closure",
+        "field": "FromId",
+        "label": "from ID"
+      },
       {
         "table": "MachineStates",
         "field": "MachineStateId",

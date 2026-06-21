@@ -211,7 +211,9 @@ SELECT
   calc_individuals_is_high_disease_activity(t.individual_id) AS is_high_disease_activity,-- TRUE when peak SLEDAI >= 12.
   calc_individuals_is_disease_progressing(t.individual_id) AS is_disease_progressing,-- TRUE when the disease-state simulator places the patient in an active/worsening renal state (independent of the actionability gate).
   calc_individuals_target_pathway_code(t.individual_id) AS target_pathway_code, -- Resolved pathway code from this individual's causal mechanism (MAXIFS).
-  calc_individuals_target_pathway(t.individual_id) AS target_pathway            -- Decoded druggable pathway implicated by this individual's mechanism.
+  calc_individuals_target_pathway(t.individual_id) AS target_pathway,           -- Decoded druggable pathway implicated by this individual's mechanism.
+  calc_individuals_current_progression_state_id(t.individual_id) AS current_progression_state_id,-- This individual's current lupus-progression state as a MachineStates id (closure-view key form): the lupus-nephritis-progression machine prefix + the lowercased NephritisProgressionStateKey. Pure projection of the derived current state; used to look up closure-derived prognostics.
+  calc_individuals_reachable_states_ahead(t.individual_id) AS reachable_states_ahead-- How many disease states are still reachable ahead of THIS patient from their current state, via the transition closure (looks up MachineStates.ReachableStateCount for CurrentProgressionStateId). A closure-derived prognostic horizon: Diego at BiopsyIndicated has 0 ahead (terminal); a Presymptomatic patient has 5. NOT derivable from the severity rank alone (the count is non-monotonic in rank because the machine branches into remission).
 FROM individuals t;
 
 -- ----------------------------------------------------------------------------
@@ -830,7 +832,8 @@ SELECT
   t.created_by,                                                                 -- Audit: owner who created it.
   t.modified_at,                                                                -- Audit: when last written.
   t.modified_by,                                                                -- Audit: who last wrote it.
-  t.modified_by_model                                                           -- Audit: AI model credited on last save, if any.
+  t.modified_by_model,                                                          -- Audit: AI model credited on last save, if any.
+  calc_machine_states_reachable_state_count(t.machine_state_id) AS reachable_state_count-- Number of states reachable FROM this state via the transitive closure of the transition edges (rollup over vw_state_transition_rules_closure where from_id = this state). This is a graph-reachability fact the linear severity rank CANNOT reproduce: both Quiescent (the remission sink) and BiopsyIndicated (the terminal progression state) have 0 reachable-ahead, though they sit at opposite ends of the order — the count is non-monotonic in OrderIndex because the machine BRANCHES (remission). The closure is load-bearing here: delete it and this field is uncomputable.
 FROM machine_states t;
 
 -- ----------------------------------------------------------------------------

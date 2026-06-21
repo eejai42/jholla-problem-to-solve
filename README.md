@@ -265,6 +265,21 @@ The point of *this* project isn't the substrate count. It's that the **trusted l
 portable, transparent, and interchangeable, instead of re-implemented (and re-drifted) in each
 language a hospital, a regulator, and a researcher separately need.
 
+**On transitive closure — the in-repo receipt.** The disease-progression machines
+(`lupus-nephritis-progression`, `diagnosis-lifecycle`) store progression as sparsely-asserted
+`FromState → ToState` edges. A single `closure` field on `StateTransitionRules` materializes
+`vw_state_transition_rules_closure` — a cycle-safe `WITH RECURSIVE` view — and emits
+`progression a owl:TransitiveProperty` in the OWL projection. From the 14 asserted edges, **both**
+substrates independently derive the same 32 reachability pairs, including the never-asserted
+`PresymptomaticAutoimmunity → BiopsyIndicated` (4 hops, `is_inferred`) — the autoimmune analogue of
+the Talisman `step-1 → step-5` receipt. The closure is **load-bearing, not decorative**:
+`MachineStates.ReachableStateCount` (and the per-patient `Individuals.ReachableStatesAhead`) consume
+it to answer a graph-reachability question the linear severity rank *cannot* reproduce — because the
+remission branch makes both `Quiescent` (rank 0) and `BiopsyIndicated` (rank 5) terminal sinks with
+0 reachable-ahead, a value non-monotonic in the rank. Re-run the proof:
+`python3 admin-app/tests/conformance/progression_closure_conformance.py` — it cross-checks the
+OWL-RL deductive closure against the Postgres recursive CTE and asserts the load-bearing property.
+
 ## Run it
 
 ```bash

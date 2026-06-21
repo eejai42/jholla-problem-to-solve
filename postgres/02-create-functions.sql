@@ -826,6 +826,17 @@ RETURNS TEXT AS $$
   SELECT (SELECT node_label::text FROM federated_datasets WHERE federated_dataset_id = (SELECT federated_dataset FROM individuals WHERE individual_id = p_individual_id));
 $$ LANGUAGE sql STABLE;
 
+-- calc_individuals_reachable_states_ahead
+-- Field: Individuals.ReachableStatesAhead
+-- Type: lookup | DataType: integer | Returns: INTEGER
+-- Lookup: ReachableStateCount from related MachineStates
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_reachable_states_ahead(p_individual_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT calc_machine_states_reachable_state_count(calc_individuals_current_progression_state_id(p_individual_id));
+$$ LANGUAGE sql STABLE;
+
 -- get_environmental_exposures_exposure_label
 -- Helper function: Get ExposureLabel from EnvironmentalExposures by EnvironmentalExposureId
 -- Used for join-free cross-table references in aggregations
@@ -986,6 +997,96 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION get_epistatic_interactions_has_pleiotropy(p_epistatic_interaction_id TEXT)
 RETURNS BOOLEAN AS $$
   SELECT (SELECT has_pleiotropy FROM epistatic_interactions WHERE epistatic_interaction_id = p_epistatic_interaction_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_state_key
+-- Helper function: Get StateKey from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_state_key(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT state_key FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_title
+-- Helper function: Get Title from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_title(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT title FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_order_index
+-- Helper function: Get OrderIndex from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_order_index(p_machine_state_id TEXT)
+RETURNS NUMERIC AS $$
+  SELECT (SELECT order_index FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_is_initial
+-- Helper function: Get IsInitial from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_is_initial(p_machine_state_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_initial FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_is_terminal
+-- Helper function: Get IsTerminal from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_is_terminal(p_machine_state_id TEXT)
+RETURNS BOOLEAN AS $$
+  SELECT (SELECT is_terminal FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_created_at
+-- Helper function: Get CreatedAt from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_created_at(p_machine_state_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT created_at FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_created_by
+-- Helper function: Get CreatedBy from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_created_by(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT created_by FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_modified_at
+-- Helper function: Get ModifiedAt from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_modified_at(p_machine_state_id TEXT)
+RETURNS TIMESTAMPTZ AS $$
+  SELECT (SELECT modified_at FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_modified_by
+-- Helper function: Get ModifiedBy from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_modified_by(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by FROM machine_states WHERE machine_state_id = p_machine_state_id);
+$$ LANGUAGE sql STABLE;
+
+-- get_machine_states_modified_by_model
+-- Helper function: Get ModifiedByModel from MachineStates by MachineStateId
+-- Used for join-free cross-table references in aggregations
+
+CREATE OR REPLACE FUNCTION get_machine_states_modified_by_model(p_machine_state_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (SELECT modified_by_model FROM machine_states WHERE machine_state_id = p_machine_state_id);
 $$ LANGUAGE sql STABLE;
 
 -- calc_individuals_name
@@ -1286,6 +1387,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_individuals_target_pathway(p_individual_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 1 THEN ('type-I-IFN')::text ELSE (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 2 THEN ('B-cell/autoantibody')::text ELSE (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 3 THEN ('T-cell-costim')::text ELSE (CASE WHEN (calc_individuals_target_pathway_code(p_individual_id))::NUMERIC = 4 THEN ('IL-17/23')::text ELSE ('')::text END)::text END)::text END)::text END)::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_individuals_current_progression_state_id
+-- Field: Individuals.CurrentProgressionStateId
+-- Type: calculated | DataType: string | Returns: TEXT
+
+
+CREATE OR REPLACE FUNCTION calc_individuals_current_progression_state_id(p_individual_id TEXT)
+RETURNS TEXT AS $$
+  SELECT (CONCAT('lupus-nephritis-progression--', LOWER(calc_individuals_nephritis_progression_state_key(p_individual_id))))::text;
 $$ LANGUAGE sql STABLE;
 
 -- calc_genomic_variants_parent_path
@@ -3332,96 +3443,6 @@ RETURNS TEXT AS $$
   SELECT (CONCAT('/admin/routing/', (SELECT NULLIF(routing_and_navigation_id, '') FROM routing_and_navigation WHERE routing_and_navigation_id = p_routing_and_navigation_id)))::text;
 $$ LANGUAGE sql STABLE;
 
--- get_machine_states_state_key
--- Helper function: Get StateKey from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_state_key(p_machine_state_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT state_key FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_title
--- Helper function: Get Title from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_title(p_machine_state_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT title FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_order_index
--- Helper function: Get OrderIndex from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_order_index(p_machine_state_id TEXT)
-RETURNS NUMERIC AS $$
-  SELECT (SELECT order_index FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_is_initial
--- Helper function: Get IsInitial from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_is_initial(p_machine_state_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT is_initial FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_is_terminal
--- Helper function: Get IsTerminal from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_is_terminal(p_machine_state_id TEXT)
-RETURNS BOOLEAN AS $$
-  SELECT (SELECT is_terminal FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_created_at
--- Helper function: Get CreatedAt from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_created_at(p_machine_state_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT created_at FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_created_by
--- Helper function: Get CreatedBy from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_created_by(p_machine_state_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT created_by FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_modified_at
--- Helper function: Get ModifiedAt from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_modified_at(p_machine_state_id TEXT)
-RETURNS TIMESTAMPTZ AS $$
-  SELECT (SELECT modified_at FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_modified_by
--- Helper function: Get ModifiedBy from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_modified_by(p_machine_state_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT modified_by FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
--- get_machine_states_modified_by_model
--- Helper function: Get ModifiedByModel from MachineStates by MachineStateId
--- Used for join-free cross-table references in aggregations
-
-CREATE OR REPLACE FUNCTION get_machine_states_modified_by_model(p_machine_state_id TEXT)
-RETURNS TEXT AS $$
-  SELECT (SELECT modified_by_model FROM machine_states WHERE machine_state_id = p_machine_state_id);
-$$ LANGUAGE sql STABLE;
-
 -- get_state_transition_rules_guard_description
 -- Helper function: Get GuardDescription from StateTransitionRules by StateTransitionRuleId
 -- Used for join-free cross-table references in aggregations
@@ -3741,6 +3762,16 @@ $$ LANGUAGE sql STABLE;
 CREATE OR REPLACE FUNCTION calc_machine_states_relative_path(p_machine_state_id TEXT)
 RETURNS TEXT AS $$
   SELECT (CONCAT('/admin/state-machine/states/', (SELECT NULLIF(machine_state_id, '') FROM machine_states WHERE machine_state_id = p_machine_state_id)))::text;
+$$ LANGUAGE sql STABLE;
+
+-- calc_machine_states_reachable_state_count
+-- Field: MachineStates.ReachableStateCount
+-- Type: aggregation | DataType: integer | Returns: INTEGER
+
+
+CREATE OR REPLACE FUNCTION calc_machine_states_reachable_state_count(p_machine_state_id TEXT)
+RETURNS INTEGER AS $$
+  SELECT ((SELECT COUNT(*) FROM vw_state_transition_rules_closure WHERE from_id = (SELECT NULLIF(machine_state_id, '') FROM machine_states WHERE machine_state_id = p_machine_state_id)))::integer;
 $$ LANGUAGE sql STABLE;
 
 -- calc_state_transition_rules_from_state_key

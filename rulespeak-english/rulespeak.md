@@ -70,6 +70,7 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Is Disease Progressing | True when at least one of the following holds: the nephritis progression state key is the literal “EarlyNephritis”; the nephritis progression state key is the literal “RenalFlareRisk”; or the nephritis progression state key is the literal “BiopsyIndicated”. | _TRUE when the disease-state simulator places the patient in an active/worsening renal state (independent of the actionability gate)._ |
 | Target Pathway Code | The largest target pathway code across the causal mechanisms related to the individual. | _Resolved pathway code from this individual's causal mechanism (MAXIFS)._ |
 | Target Pathway | Determined by priority: the literal “type-I-IFN” if the target pathway code is 1; the literal “B-cell/autoantibody” if the target pathway code is 2; the literal “T-cell-costim” if the target pathway code is 3; the literal “IL-17/23” if the target pathway code is 4; otherwise an empty string. | _Decoded druggable pathway implicated by this individual's mechanism._ |
+| Reachable States Ahead | The reachable state count of the individual's current progression state ID. | _How many disease states are still reachable ahead of THIS patient from their current state, via the transition closure (looks up MachineStates.ReachableStateCount for CurrentProgressionStateId). A closure-derived prognostic horizon: Diego at BiopsyIndicated has 0 ahead (terminal); a Presymptomatic patient has 5. NOT derivable from the severity rank alone (the count is non-monotonic in rank because the machine branches into remission)._ |
 | **Genomic Variant** | Genomic variant calls per individual spanning regulatory, coding, structural, HLA haplotypes, de novo mutations, somatic mosaicism, and mitochondrial variation. | — |
 | Name | Computed as the variant label. | _Display label._ |
 | Parent Path | The relative path of the genomic variant's individual. | _Lookup: Individuals.RelativePath via Individual — used to chain this entity's path under its parent._ |
@@ -275,6 +276,7 @@ _Rulebook for inferring the complete causal architecture of heterogeneous autoim
 | Transition Rule Count | The number of state transition rules related to the state machine. | _Count of StateTransitionRules in this machine._ |
 | **Machine State** | Legal states of each machine. | — |
 | Relative Path | Computed as the literal “/admin/state-machine/states/”, followed by the machine state ID. | _Path to this state's page._ |
+| Reachable State Count | The number of vw state transition rules closure related to the machine state. | _Number of states reachable FROM this state via the transitive closure of the transition edges (rollup over vw_state_transition_rules_closure where from_id = this state). This is a graph-reachability fact the linear severity rank CANNOT reproduce: both Quiescent (the remission sink) and BiopsyIndicated (the terminal progression state) have 0 reachable-ahead, though they sit at opposite ends of the order — the count is non-monotonic in OrderIndex because the machine BRANCHES (remission). The closure is load-bearing here: delete it and this field is uncomputable._ |
 | **State Transition Rule** | Legal edges (guards) of each machine. | — |
 | Relative Path | Computed as the literal “/admin/state-machine/rules/”, followed by the state transition rule ID. | _Path to this rule's page._ |
 | From State Key | The state key of the state transition rule's from state. | _Lookup: FromState.StateKey._ |
@@ -455,216 +457,218 @@ but clunky — a flag for an optional downstream reword pass, not a defect._
 | **DR-50 Is Disease Progressing** | An individual is considered disease progressing if at least one of the following holds: the nephritis progression state key is the literal “EarlyNephritis”; the nephritis progression state key is the literal “RenalFlareRisk”; or the nephritis progression state key is the literal “BiopsyIndicated”. |
 | **DR-51 Target Pathway Code** | An individual's target pathway code is the largest target pathway code across the causal mechanisms related to the individual. |
 | **DR-52 Target Pathway** | The individual's target pathway is determined by the following priority:<br>1. the literal “type-I-IFN”, if the target pathway code is 1;<br>2. the literal “B-cell/autoantibody”, if the target pathway code is 2;<br>3. the literal “T-cell-costim”, if the target pathway code is 3;<br>4. the literal “IL-17/23”, if the target pathway code is 4;<br>5. otherwise an empty string. |
-| **DR-53 Name** | A genomic variant's name is computed as the variant label. |
-| **DR-54 Parent Path** | A genomic variant's parent path is the relative path of the genomic variant's individual. |
-| **DR-55 Relative Path** | A genomic variant's relative path is computed as the parent path, followed by the literal “/variants/”, followed by the genomic variant ID. |
-| **DR-56 Variant Type Label** | A genomic variant's variant type label is the type label of the genomic variant's variant type. |
-| **DR-57 Variant Class is Rare** | A genomic variant's variant class is rare is true when the genomic variant's variant type is a rare variant class. |
-| **DR-58 Individual Ancestry Label** | A genomic variant's individual ancestry label is the ancestry label of the genomic variant's individual. |
-| **DR-59 Is Rare Variant** | A genomic variant is considered a rare variant if the allele frequency is less than 0.01. |
-| **DR-60 Is Causal Candidate** | A genomic variant is considered a causal candidate if all of the following hold: at least one of the following holds: the is rare variant flag is set or the variant class is rare flag is set and the has allele specific expression flag is set. |
-| **DR-61 Name** | An omics assay's name is computed as the assay label. |
-| **DR-62 Parent Path** | An omics assay's parent path is the relative path of the omics assay's individual. |
-| **DR-63 Relative Path** | An omics assay's relative path is computed as the parent path, followed by the literal “/assays/”, followed by the omics assay ID. |
-| **DR-64 Modality Label** | An omics assay's modality label is the modality label of the omics assay's omics modality. |
-| **DR-65 Tissue Label** | The omics assay's tissue label is determined by the following priority:<br>1. the literal “Missing Tissue”, if the tissue is blank;<br>2. otherwise the tissue label of the omics assay's tissue. |
-| **DR-66 Has Batch Effect Risk** | An omics assay is considered to have a batch effect risk if the measurement error score is greater than 0.3. |
-| **DR-67 Is High Quality Assay** | An omics assay is considered a high quality assay if all of the following hold: it is not the case that the has batch effect risk flag is set and the measurement error score is less than 0.15. |
-| **DR-68 Name** | An evidence item's name is computed as the evidence label. |
-| **DR-69 Parent Path** | An evidence item's parent path is the relative path of the evidence item's causal mechanism. |
-| **DR-70 Relative Path** | An evidence item's relative path is computed as the parent path, followed by the literal “/evidence/”, followed by the evidence item ID. |
-| **DR-71 Assay is High Quality** | An evidence item's assay is high quality is true when the evidence item's omics assay is a high quality assay. |
-| **DR-72 Z Stat** | The evidence item's z stat is determined by the following priority:<br>1. the effect size divided by the standard error, if the standard error is greater than 0;<br>2. otherwise 0. |
-| **DR-73 Is Confound Controlled** | An evidence item is considered confound controlled if all of the following hold: the is adjusted for ancestry p cs flag is set and the is adjusted for batch flag is set. |
-| **DR-74 Is Qualified Evidence** | An evidence item is considered a qualified evidence if all of the following hold: the assay is high quality flag is set; it is not the case that the is negative control arm flag is set; the z stat is at least 2; and the is confound controlled flag is set. |
-| **DR-75 Name** | A cohort replication's name is computed as the replication label. |
-| **DR-76 Parent Path** | A cohort replication's parent path is the relative path of the cohort replication's causal mechanism. |
-| **DR-77 Relative Path** | A cohort replication's relative path is computed as the parent path, followed by the literal “/replications/”, followed by the cohort replication ID. |
-| **DR-78 Replicated At Nominal Sig** | A cohort replication is flagged replicated at nominal sig if all of the following hold: the replication p value is at most 0.05 and the replication effect sign is 1. |
-| **DR-79 Mechanism Primary Ancestry** | A cohort replication's mechanism primary ancestry is the individual ancestry label of the cohort replication's causal mechanism. |
-| **DR-80 Is Different Ancestry Replication** | A cohort replication is considered a different ancestry replication if it is not the case that the replication ancestry label is the mechanism primary ancestry. |
-| **DR-81 Is Cross Ancestry Concordant** | A cohort replication is considered a cross ancestry concordant if all of the following hold: the replicated at nominal sig flag is set and the is different ancestry replication flag is set. |
-| **DR-82 Name** | A negative control test's name is computed as the control label. |
-| **DR-83 Parent Path** | A negative control test's parent path is the relative path of the negative control test's causal mechanism. |
-| **DR-84 Relative Path** | A negative control test's relative path is computed as the parent path, followed by the literal “/neg-controls/”, followed by the negative control test ID. |
-| **DR-85 Is Survived** | A negative control test is considered survived if the permutation effect size is at most the null threshold. |
-| **DR-86 Name** | An environmental exposure's name is computed as the exposure label. |
-| **DR-87 Parent Path** | An environmental exposure's parent path is the relative path of the environmental exposure's individual. |
-| **DR-88 Relative Path** | An environmental exposure's relative path is computed as the parent path, followed by the literal “/exposures/”, followed by the environmental exposure ID. |
-| **DR-89 Individual Ancestry Label** | An environmental exposure's individual ancestry label is the ancestry label of the environmental exposure's individual. |
-| **DR-90 Is High Exposure** | An environmental exposure is considered a high exposure if the exposure level is greater than 5. |
-| **DR-91 Name** | A treatment's name is computed as the treatment label. |
-| **DR-92 Parent Path** | A treatment's parent path is the relative path of the treatment's individual. |
-| **DR-93 Relative Path** | A treatment's relative path is computed as the parent path, followed by the literal “/treatments/”, followed by the treatment ID. |
-| **DR-94 Autoimmune Disease Label** | A treatment's autoimmune disease label is the disease label of the treatment's autoimmune disease. |
-| **DR-95 Is Effective Treatment** | A treatment is considered an effective treatment if all of the following hold: at least one of the following holds: the treatment response is the literal “Complete” or the treatment response is the literal “Partial” and it is not the case that the has adverse effect flag is set. |
-| **DR-96 Is Mechanism Matched** | A treatment's is mechanism matched is false if the targets mechanism is blank, otherwise the is causal architecture node of the treatment's targets mechanism. |
-| **DR-97 Is Treatment Response Predicted** | A treatment is considered treatment response predicted if all of the following hold: the is effective treatment flag is set and the is mechanism matched flag is set. |
-| **DR-98 Treatment Response Deciding Factor** | The treatment's treatment response deciding factor is determined by the following priority:<br>1. the literal “EffectiveOnConfirmedMechanism”, if the is treatment response predicted flag is set;<br>2. the literal “NoConfirmedMechanism”, if it is not the case that the is mechanism matched flag is set;<br>3. the literal “AdverseEffect”, if the has adverse effect flag is set;<br>4. the literal “NoResponse”, if at least one of the following holds: the treatment response is the literal “None” or the treatment response is the literal “Adverse”;<br>5. otherwise the literal “Undetermined”. |
-| **DR-99 Name** | A clinical phenotype's name is computed as the phenotype label. |
-| **DR-100 Parent Path** | A clinical phenotype's parent path is the relative path of the clinical phenotype's individual. |
-| **DR-101 Relative Path** | A clinical phenotype's relative path is computed as the parent path, followed by the literal “/phenotypes/”, followed by the clinical phenotype ID. |
-| **DR-102 Disease Stage Label** | The clinical phenotype's disease stage label is determined by the following priority:<br>1. an empty string, if the disease stage is blank;<br>2. otherwise the stage label of the clinical phenotype's disease stage. |
-| **DR-103 Is High Severity** | A clinical phenotype is considered a high severity if the severity score is greater than 7. |
-| **DR-104 Is Presymptomatic Phenotype** | A clinical phenotype is considered a presymptomatic phenotype if the disease stage label is the literal “Presymptomatic”. |
-| **DR-105 Target Pathway Code** | The causal mechanism's target pathway code is determined by the following priority:<br>1. 1, if the target pathway is the literal “type-I-IFN”;<br>2. 2, if the target pathway is the literal “B-cell/autoantibody”;<br>3. 3, if the target pathway is the literal “T-cell-costim”;<br>4. 4, if the target pathway is the literal “IL-17/23”;<br>5. otherwise 0. |
-| **DR-106 Name** | A causal mechanism's name is computed as the mechanism label. |
-| **DR-107 Parent Path** | A causal mechanism's parent path is the relative path of the causal mechanism's individual. |
-| **DR-108 Relative Path** | A causal mechanism's relative path is computed as the parent path, followed by the literal “/mechanisms/”, followed by the causal mechanism ID. |
-| **DR-109 Individual Ancestry Label** | A causal mechanism's individual ancestry label is the ancestry label of the causal mechanism's individual. |
-| **DR-110 Count Qualified Evidence** | A causal mechanism's count qualified evidence is the number of the causal mechanism's evidence items that are qualified evidences. |
-| **DR-111 Count Modalities Supporting** | A causal mechanism's count modalities supporting is the number of the causal mechanism's evidence items that are cross modalities and are qualified evidences. |
-| **DR-112 Count Intervention Targets** | A causal mechanism's count intervention targets is the number of intervention targets related to the causal mechanism. |
-| **DR-113 Is Experimentally Falsifiable** | A causal mechanism is considered an experimentally falsifiable if all of the following hold: the count intervention targets is at least 1 and the count qualified evidence is at least 1. |
-| **DR-114 Count Replications** | A causal mechanism's count replications is the number of cohort replications related to the causal mechanism. |
-| **DR-115 Count Concordant Replications** | A causal mechanism's count concordant replications is the number of the causal mechanism's cohort replications that are replicated at nominal sig. |
-| **DR-116 Count Cross Ancestry Concordant** | A causal mechanism's count cross ancestry concordant is the number of the causal mechanism's cohort replications that are cross ancestry concordants. |
-| **DR-117 Replication Fraction** | The causal mechanism's replication fraction is determined by the following priority:<br>1. the count concordant replications divided by the count replications, if the count replications is greater than 0;<br>2. otherwise 0. |
-| **DR-118 Replicates Across Cohorts** | A causal mechanism is considered to replicate across cohorts if all of the following hold: the count replications is at least 2 and the count concordant replications is at least 2. |
-| **DR-119 Count Neg Control Tests** | A causal mechanism's count neg control tests is the number of negative control tests related to the causal mechanism. |
-| **DR-120 Count Neg Control Survived** | A causal mechanism's count neg control survived is the number of the causal mechanism's negative control tests that are survived. |
-| **DR-121 Survives Negative Controls** | A causal mechanism is considered to survive negative controls if all of the following hold: the count neg control tests is at least 1 and the count neg control survived is the count neg control tests. |
-| **DR-122 Is Spurious Derived** | A causal mechanism is considered spurious derived if at least one of the following holds: it is not the case that the replicates across cohorts flag is set; it is not the case that the survives negative controls flag is set; the count modalities supporting is less than 2; or the has pleiotropy flag is set. |
-| **DR-123 Causal Confidence** | The causal mechanism's causal confidence is determined by the following priority:<br>1. 1, if 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0 is greater than 1;<br>2. otherwise 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0. |
-| **DR-124 Variant is Causal Candidate** | A causal mechanism's variant is causal candidate is false if the genomic variant is blank, otherwise the is causal candidate of the causal mechanism's genomic variant. |
-| **DR-125 Is Causal Architecture Node** | A causal mechanism is considered a causal architecture node if all of the following hold: the causal confidence is at least 0.7; the is experimentally falsifiable flag is set; it is not the case that the is spurious derived flag is set; and at least one of the following holds: the variant is causal candidate flag is set or the environmental exposure has a value. |
-| **DR-126 Is Ancestry Transportable** | A causal mechanism is considered an ancestry transportable if all of the following hold: the is causal architecture node flag is set and the count cross ancestry concordant is at least 1. |
-| **DR-127 Name** | An epistatic interaction's name is computed as the interaction label. |
-| **DR-128 Parent Path** | An epistatic interaction's parent path is the relative path of the epistatic interaction's individual. |
-| **DR-129 Relative Path** | An epistatic interaction's relative path is computed as the parent path, followed by the literal “/epistasis/”, followed by the epistatic interaction ID. |
-| **DR-130 Is High Order Epistasis** | An epistatic interaction is considered a high order epistasis if the epistasis score is greater than 0.5. |
-| **DR-131 Name** | A counterfactual trajectory's name is computed as the trajectory label. |
-| **DR-132 Parent Path** | A counterfactual trajectory's parent path is the relative path of the counterfactual trajectory's individual. |
-| **DR-133 Relative Path** | A counterfactual trajectory's relative path is computed as the parent path, followed by the literal “/trajectories/”, followed by the counterfactual trajectory ID. |
-| **DR-134 Autoimmune Disease Label** | A counterfactual trajectory's autoimmune disease label is the disease label of the counterfactual trajectory's autoimmune disease. |
-| **DR-135 Is Worsening Trajectory** | A counterfactual trajectory is considered a worsening trajectory if the projected severity is greater than 7. |
-| **DR-136 Name** | An individual prediction's name is computed as the prediction label. |
-| **DR-137 Parent Path** | An individual prediction's parent path is the relative path of the individual prediction's individual. |
-| **DR-138 Relative Path** | An individual prediction's relative path is computed as the parent path, followed by the literal “/predictions/”, followed by the individual prediction ID. |
-| **DR-139 Individual Ancestry Label** | An individual prediction's individual ancestry label is the ancestry label of the individual prediction's individual. |
-| **DR-140 Is Ancestry Holdout** | An individual prediction's is ancestry holdout is true when the individual prediction's individual is ancestry absent from training. |
-| **DR-141 Individual Causal Mass** | An individual prediction's individual causal mass is 0 if the individual is blank, otherwise the sum confirmed causal confidence of the individual prediction's individual. |
-| **DR-142 Individual Confirmed Node Count** | An individual prediction's individual confirmed node count is 0 if the individual is blank, otherwise the count confirmed causal nodes of the individual prediction's individual. |
-| **DR-143 Individual Cross Ancestry Node Count** | An individual prediction's individual cross ancestry node count is 0 if the individual is blank, otherwise the count cross ancestry confirmed nodes of the individual prediction's individual. |
-| **DR-144 Individual Has Cryptic Relatedness** | An individual prediction's individual has cryptic relatedness is false if the individual is blank, otherwise the has cryptic relatedness flag of the individual prediction's individual. |
-| **DR-145 Individual Max Severity Score** | An individual prediction's individual max severity score is 0 if the individual is blank, otherwise the max severity score of the individual prediction's individual. |
-| **DR-146 Individual Has High Severity Phenotype** | An individual prediction's individual has high severity phenotype is false if the individual is blank, otherwise the has high severity phenotype of the individual prediction's individual. |
-| **DR-147 Individual Has Predicted Treatment Response** | An individual prediction's individual has predicted treatment response is false if the individual is blank, otherwise the has predicted treatment response of the individual prediction's individual. |
-| **DR-148 Predicted Value** | The individual prediction's predicted value is determined by the following priority:<br>1. 10, if 2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10;<br>2. otherwise 2 times the individual causal mass plus 1.5 times the individual confirmed node count. |
-| **DR-149 Count Bins** | An individual prediction's count bins is the number of calibration bins related to the individual prediction. |
-| **DR-150 Count Well Calibrated Bins** | An individual prediction's count well calibrated bins is the number of the individual prediction's calibration bins that are well calibrated bins. |
-| **DR-151 Sum Bin Abs Error** | An individual prediction's sum bin abs error is the total bin abs error across the calibration bins related to the individual prediction. |
-| **DR-152 Mean Bin Abs Error** | The individual prediction's mean bin abs error is determined by the following priority:<br>1. the sum bin abs error divided by the count bins, if the count bins is greater than 0;<br>2. otherwise 1. |
-| **DR-153 Well Calibrated Fraction** | The individual prediction's well calibrated fraction is determined by the following priority:<br>1. the count well calibrated bins divided by the count bins, if the count bins is greater than 0;<br>2. otherwise 0. |
-| **DR-154 Calibrated Uncertainty** | An individual prediction's calibrated uncertainty is computed as 0 if 1 minus the mean bin abs error is less than 0, otherwise 1 minus the mean bin abs error times the well calibrated fraction. |
-| **DR-155 Rests on Confirmed Mechanism** | An individual prediction is considered to rest on confirmed mechanism if the individual confirmed node count is at least 1. |
-| **DR-156 Has Spurious Correlation Flag** | An individual prediction is considered to have a spurious correlation flag if at least one of the following holds: it is not the case that the rests on confirmed mechanism flag is set or the individual has cryptic relatedness flag is set. |
-| **DR-157 Is Falsifiability Backed** | An individual prediction is considered falsifiability backed if the individual confirmed node count is at least 1. |
-| **DR-158 Is Transportable to Absent Ancestry** | An individual prediction is considered a transportable to absent ancestry if all of the following hold: the is ancestry holdout flag is set; the individual cross ancestry node count is at least 1; and it is not the case that the has spurious correlation flag is set. |
-| **DR-159 Is Ancestry Transport Safe** | An individual prediction is considered an ancestry transport safe if the is transportable to absent ancestry if the is ancestry holdout flag is set, otherwise true. |
-| **DR-160 Transport Gate Status** | The individual prediction's transport gate status is determined by the following priority:<br>1. the literal “NotApplicable”, if it is not the case that the is ancestry holdout flag is set;<br>2. the literal “PASS-tested”, if the is transportable to absent ancestry flag is set;<br>3. otherwise the literal “FAIL”. |
-| **DR-161 Is High Confidence Prediction** | An individual prediction is considered a high confidence prediction if all of the following hold: the calibrated uncertainty is at least 0.7 and it is not the case that the has spurious correlation flag is set. |
-| **DR-162 Patient Stratification Tier** | The individual prediction's patient stratification tier is determined by the following priority:<br>1. the literal “High-Risk Pathway”, if the predicted value is at least 7;<br>2. the literal “Moderate-Risk Pathway”, if the predicted value is at least 4;<br>3. otherwise the literal “Low-Risk Pathway”. |
-| **DR-163 Predicted Severity Value** | An individual prediction's predicted severity value is computed as the individual max severity score. |
-| **DR-164 Severity Tier** | The individual prediction's severity tier is determined by the following priority:<br>1. the literal “Severe”, if the predicted severity value is greater than 7;<br>2. the literal “Moderate”, if the predicted severity value is at least 4;<br>3. otherwise the literal “Mild”. |
-| **DR-165 Is Severity Actionable** | An individual prediction is considered a severity actionable if all of the following hold: the individual has high severity phenotype flag is set; the rests on confirmed mechanism flag is set; and it is not the case that the has spurious correlation flag is set. |
-| **DR-166 Severity Deciding Factor** | The individual prediction's severity deciding factor is determined by the following priority:<br>1. the literal “HighSeverityOnConfirmedMechanism”, if the is severity actionable flag is set;<br>2. the literal “NotHighSeverity”, if it is not the case that the individual has high severity phenotype flag is set;<br>3. the literal “NoValidatedMechanism”, if it is not the case that the rests on confirmed mechanism flag is set;<br>4. the literal “SpuriousFlag”, if the has spurious correlation flag is set;<br>5. otherwise the literal “Undetermined”. |
-| **DR-167 Is Treatment Response Actionable** | An individual prediction is considered a treatment response actionable if the individual has predicted treatment response flag is set. |
-| **DR-168 Treatment Response Deciding Factor** | The individual prediction's treatment response deciding factor is determined by the following priority:<br>1. the literal “EffectiveOnConfirmedMechanism”, if the is treatment response actionable flag is set;<br>2. the literal “NoEffectiveTreatmentOnMechanism”, if the rests on confirmed mechanism flag is set;<br>3. otherwise the literal “NoConfirmedMechanism”. |
-| **DR-169 Is Clinically Actionable** | An individual prediction is considered a clinically actionable if all of the following hold: the is high confidence prediction flag is set; the is falsifiability backed flag is set; the is ancestry transport safe flag is set; and the predicted value is greater than 0. |
-| **DR-170 Lifecycle State Key** | The individual prediction's lifecycle state key is determined by the following priority:<br>1. the literal “Actionable”, if all of the following hold: the is high confidence prediction flag is set; the is falsifiability backed flag is set; the is ancestry transport safe flag is set; and the predicted value is greater than 0;<br>2. the literal “NotActionable”, if at least one of the following holds: it is not the case that the rests on confirmed mechanism flag is set or it is not the case that the is falsifiability backed flag is set;<br>3. the literal “NotActionable”, if the individual has cryptic relatedness flag is set;<br>4. the literal “NotActionable”, if the calibrated uncertainty is less than 0.7;<br>5. the literal “NotActionable”, if it is not the case that the is ancestry transport safe flag is set;<br>6. otherwise the literal “Actionable”. |
-| **DR-171 Deciding Gate** | The individual prediction's deciding gate is determined by the following priority:<br>1. the literal “AllGatesPass”, if the is clinically actionable flag is set;<br>2. the literal “NoValidatedMechanism”, if it is not the case that the rests on confirmed mechanism flag is set;<br>3. the literal “CrypticRelatedness”, if the individual has cryptic relatedness flag is set;<br>4. the literal “Calibration”, if the calibrated uncertainty is less than 0.7;<br>5. the literal “AncestryTransport”, if it is not the case that the is ancestry transport safe flag is set;<br>6. otherwise the literal “Undetermined”. |
-| **DR-172 Individual Target Pathway** | An individual prediction's individual target pathway is the target pathway of the individual prediction's individual. |
-| **DR-173 Individual Progression State Key** | An individual prediction's individual progression state key is the nephritis progression state key of the individual prediction's individual. |
-| **DR-174 Individual is Disease Progressing** | An individual prediction's individual is disease progressing is true when the individual prediction's individual is disease progressing. |
-| **DR-175 Recommended Treatment Line** | The individual prediction's recommended treatment line is determined by the following priority:<br>1. the literal “No targeted line — mechanism unconfirmed”, if it is not the case that the rests on confirmed mechanism flag is set;<br>2. the literal “Mycophenolate (induction)”, if at least one of the following holds: the individual progression state key is the literal “RenalFlareRisk” or the individual progression state key is the literal “BiopsyIndicated”;<br>3. the literal “Anifrolumab”, if the individual target pathway is the literal “type-I-IFN”;<br>4. the literal “Belimumab”, if the individual target pathway is the literal “B-cell/autoantibody”;<br>5. the literal “Secukinumab”, if the individual target pathway is the literal “IL-17/23”;<br>6. otherwise the literal “Standard-of-care (no mechanism-matched targeted line)”. |
-| **DR-176 Treatment Line Deciding Factor** | The individual prediction's treatment line deciding factor is determined by the following priority:<br>1. the literal “MechanismUnconfirmed”, if it is not the case that the rests on confirmed mechanism flag is set;<br>2. the literal “ActiveNephritis-Induction”, if at least one of the following holds: the individual progression state key is the literal “RenalFlareRisk” or the individual progression state key is the literal “BiopsyIndicated”;<br>3. the literal “IFNSignature-Anifrolumab”, if the individual target pathway is the literal “type-I-IFN”;<br>4. the literal “AutoantibodyDriven-Belimumab”, if the individual target pathway is the literal “B-cell/autoantibody”;<br>5. the literal “IL17Axis-Secukinumab”, if the individual target pathway is the literal “IL-17/23”;<br>6. otherwise the literal “NoMechanismMatch”. |
-| **DR-177 Progression Vs Actionability Disagree** | An individual prediction is flagged progression vs actionability disagree if all of the following hold: the individual is disease progressing flag is set and it is not the case that the is clinically actionable flag is set. |
-| **DR-178 Name** | A calibration bin's name is computed as the bin label. |
-| **DR-179 Parent Path** | A calibration bin's parent path is the relative path of the calibration bin's individual prediction. |
-| **DR-180 Relative Path** | A calibration bin's relative path is computed as the parent path, followed by the literal “/bins/”, followed by the calibration bin ID. |
-| **DR-181 Bin Abs Error** | The calibration bin's bin abs error is determined by the following priority:<br>1. the predicted probability band minus the observed event rate, if the predicted probability band is at least the observed event rate;<br>2. otherwise the observed event rate minus the predicted probability band. |
-| **DR-182 Is Well Calibrated Bin** | A calibration bin is considered a well calibrated bin if all of the following hold: the coverage count is at least 20 and the bin abs error is at most 0.1. |
-| **DR-183 Name** | An intervention target's name is computed as the target label. |
-| **DR-184 Parent Path** | An intervention target's parent path is the relative path of the intervention target's causal mechanism. |
-| **DR-185 Relative Path** | An intervention target's relative path is computed as the parent path, followed by the literal “/targets/”, followed by the intervention target ID. |
-| **DR-186 Causal Mechanism Label** | An intervention target's causal mechanism label is the mechanism label of the intervention target's causal mechanism. |
-| **DR-187 Is Gene Based Therapy** | An intervention target is considered a gene based therapy if the therapy class is the literal “Gene-based”. |
-| **DR-188 Is Cell Based Therapy** | An intervention target is considered a cell based therapy if the therapy class is the literal “Cell-based”. |
-| **DR-189 Name** | An axiom's name is computed as the statement. |
-| **DR-190 Relative Path** | An axiom's relative path is computed as the literal “/admin/axioms/”, followed by the axiom ID. |
-| **DR-191 Name** | A tests for success's name is computed as the claim. |
-| **DR-192 Relative Path** | A tests for success's relative path is computed as the literal “/admin/tests-for-success/”, followed by the test for success ID. |
-| **DR-193 Name** | A feature's name is computed as the title. |
-| **DR-194 Relative Path** | A feature's relative path is computed as the literal “/admin/features/”, followed by the feature ID. |
-| **DR-195 Meta Line** | A feature's meta line is computed as the literal “**Category:** ”, followed by the category, followed by the literal “ - **Priority:** ”, followed by the priority, followed by the literal “ - **Challenge refs:** ”, followed by the ref count. |
-| **DR-196 Name** | An inference kind's name is computed as the title. |
-| **DR-197 Relative Path** | An inference kind's relative path is computed as the literal “/admin/inference-kinds/”, followed by the inference kind ID. |
-| **DR-198 Name** | An open question's name is computed as the question. |
-| **DR-199 Relative Path** | An open question's relative path is computed as the literal “/admin/open-questions/”, followed by the open question ID. |
-| **DR-200 Name** | A non goal's name is computed as the statement. |
-| **DR-201 Relative Path** | A non goal's relative path is computed as the literal “/admin/non-goals/”, followed by the non goal ID. |
-| **DR-202 Name** | A glossary term's name is computed as the term. |
-| **DR-203 Relative Path** | A glossary term's relative path is computed as the literal “/admin/glossary/”, followed by the glossary term ID. |
-| **DR-204 Name** | A leopold loop's name is computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title. |
-| **DR-205 Relative Path** | A leopold loop's relative path is computed as the literal “/admin/leopold-loops/”, followed by the leopold loop ID. |
-| **DR-206 Completedness** | A leopold loop's completedness is computed as the status. |
-| **DR-207 Is in Current Plan** | A leopold loop is considered in current plan if it is not the case that the status is the literal “done”. |
-| **DR-208 Name** | A routing and navigation's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-209 Admin Can Create** | A routing and navigation is flagged admin can create if the admin CRUD mentions the literal “C”. |
-| **DR-210 Admin Can Read** | A routing and navigation is flagged admin can read if the admin CRUD mentions the literal “R”. |
-| **DR-211 Admin Can Update** | A routing and navigation is flagged admin can update if the admin CRUD mentions the literal “U”. |
-| **DR-212 Admin Can Delete** | A routing and navigation is flagged admin can delete if the admin CRUD mentions the literal “D”. |
-| **DR-213 Intake Clinician Can Create** | A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions the literal “C”. |
-| **DR-214 Intake Clinician Can Read** | A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions the literal “R”. |
-| **DR-215 Intake Clinician Can Update** | A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions the literal “U”. |
-| **DR-216 Intake Clinician Can Delete** | A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions the literal “D”. |
-| **DR-217 Diagnosing Doctor Can Create** | A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions the literal “C”. |
-| **DR-218 Diagnosing Doctor Can Read** | A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions the literal “R”. |
-| **DR-219 Diagnosing Doctor Can Update** | A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions the literal “U”. |
-| **DR-220 Diagnosing Doctor Can Delete** | A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions the literal “D”. |
-| **DR-221 External Llm Can Create** | A routing and navigation is flagged external llm can create if the external llm CRUD mentions the literal “C”. |
-| **DR-222 External Llm Can Read** | A routing and navigation is flagged external llm can read if the external llm CRUD mentions the literal “R”. |
-| **DR-223 External Llm Can Update** | A routing and navigation is flagged external llm can update if the external llm CRUD mentions the literal “U”. |
-| **DR-224 External Llm Can Delete** | A routing and navigation is flagged external llm can delete if the external llm CRUD mentions the literal “D”. |
-| **DR-225 Depth** | The routing and navigation's depth is determined by the following priority:<br>1. 0, if the parent route key is blank;<br>2. otherwise the length of the route key minus the length of the route key with every a period replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-226 Full Path** | A routing and navigation's full path is computed as the route. |
-| **DR-227 Handler Base Name** | A routing and navigation's handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space. ⚠︎ mechanical <!-- rulespeak:reword --> |
-| **DR-228 Relative Path** | A routing and navigation's relative path is computed as the literal “/admin/routing/”, followed by the routing and navigation ID. |
-| **DR-229 Relative Path** | A state machine's relative path is computed as the literal “/admin/state-machine/”, followed by the state machine ID. |
-| **DR-230 State Count** | A state machine's state count is the number of machine states related to the state machine. |
-| **DR-231 Transition Rule Count** | A state machine's transition rule count is the number of state transition rules related to the state machine. |
-| **DR-232 Relative Path** | A machine state's relative path is computed as the literal “/admin/state-machine/states/”, followed by the machine state ID. |
-| **DR-233 Relative Path** | A state transition rule's relative path is computed as the literal “/admin/state-machine/rules/”, followed by the state transition rule ID. |
-| **DR-234 From State Key** | A state transition rule's from state key is the state key of the state transition rule's from state. |
-| **DR-235 To State Key** | A state transition rule's to state key is the state key of the state transition rule's to state. |
-| **DR-236 Is Forward Edge** | A state transition rule is considered a forward edge if it is not the case that the to state key is the from state key. |
-| **DR-237 Relative Path** | A state transition's relative path is computed as the literal “/admin/state-machine/transitions/”, followed by the state transition ID. |
-| **DR-238 Is Forward** | A state transition is considered a forward if it is not the case that the to state key is the literal “Intake”. |
-| **DR-239 Relative Path** | A subject state instance's relative path is computed as the literal “/admin/state-machine/instances/”, followed by the subject state instance ID. |
-| **DR-240 Is Current** | A subject state instance is considered a current if the exited at is blank. |
-| **DR-241 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
-| **DR-242 Is Long Dwell** | A subject state instance is considered a long dwell if the dwell days is at least 90. |
-| **DR-243 Name** | A disease domain concept's name is computed as the concept label. |
-| **DR-244 Relative Path** | A disease domain concept's relative path is computed as the literal “/admin/disease-concepts/”, followed by the disease domain concept ID. |
-| **DR-245 Is Deeply Modeled** | A disease domain concept is considered deeply modeled if the modeling status is the literal “deep-dag”. |
-| **DR-246 Is Schema Modeled** | A disease domain concept is considered schema modeled if at least one of the following holds: the modeling status is the literal “deep-dag” or the modeling status is the literal “schema”. |
-| **DR-247 Prior Anti Ds Dna IU** | A serology observation's prior anti ds dna IU is the anti ds dna IU of the serology observation's prior observation. |
-| **DR-248 Prior C3** | A serology observation's prior c3 is the complement c3 of the serology observation's prior observation. |
-| **DR-249 Prior C4** | A serology observation's prior c4 is the complement c4 of the serology observation's prior observation. |
-| **DR-250 Anti Ds Dna Trend** | The serology observation's anti ds dna trend is determined by the following priority:<br>1. the literal “Stable”, if the prior anti ds dna IU is blank;<br>2. the literal “Rising”, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;<br>3. the literal “Falling”, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;<br>4. otherwise the literal “Stable”. |
-| **DR-251 Complement Trend** | The serology observation's complement trend is determined by the following priority:<br>1. the literal “Stable”, if the prior c3 is blank;<br>2. the literal “Falling”, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;<br>3. the literal “Rising”, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;<br>4. otherwise the literal “Stable”. |
-| **DR-252 Is Pre Nephritic Signature Panel** | A serology observation is considered a pre nephritic signature panel if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”. |
-| **DR-253 Is Significant Proteinuria** | A serology observation is considered a significant proteinuria if the proteinuria g per day is at least 0.5. |
-| **DR-254 Is Nephrotic Range Proteinuria** | A serology observation is considered a nephrotic range proteinuria if the proteinuria g per day is at least 3.0. |
-| **DR-255 Sledai Renal Points** | The serology observation's sledai renal points is determined by the following priority:<br>1. 8, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. 4, if the is significant proteinuria flag is set;<br>3. otherwise 0. |
-| **DR-256 Sledai Serology Points** | The serology observation's sledai serology points is determined by the following priority:<br>1. 4, if all of the following hold: the complement trend is the literal “Falling” and the anti ds dna trend is the literal “Rising”;<br>2. 2, if at least one of the following holds: the complement trend is the literal “Falling” or the anti ds dna trend is the literal “Rising”;<br>3. otherwise 0. |
-| **DR-257 Sledai Score** | A serology observation's sledai score is computed as the sledai renal points plus the sledai serology points. |
-| **DR-258 Progression State Key** | The serology observation's progression state key is determined by the following priority:<br>1. the literal “BiopsyIndicated”, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. the literal “RenalFlareRisk”, if the proteinuria g per day is at least 1.0;<br>3. the literal “EarlyNephritis”, if the is significant proteinuria flag is set;<br>4. the literal “SerologicActive”, if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”;<br>5. otherwise the literal “PresymptomaticAutoimmunity”. |
-| **DR-259 Progression State Order** | The serology observation's progression state order is determined by the following priority:<br>1. 5, if the progression state key is the literal “BiopsyIndicated”;<br>2. 4, if the progression state key is the literal “RenalFlareRisk”;<br>3. 3, if the progression state key is the literal “EarlyNephritis”;<br>4. 2, if the progression state key is the literal “SerologicActive”;<br>5. otherwise 1. |
-| **DR-260 Relative Path** | A serology observation's relative path is computed as the literal “/admin/serology/”, followed by the serology observation ID. |
-| **DR-261 Name** | A therapy option's name is computed as the therapy label. |
-| **DR-262 Relative Path** | A therapy option's relative path is computed as the literal “/admin/therapy-options/”, followed by the therapy option ID. |
+| **DR-53 Reachable States Ahead** | An individual's reachable states ahead is the reachable state count of the individual's current progression state ID. |
+| **DR-54 Name** | A genomic variant's name is computed as the variant label. |
+| **DR-55 Parent Path** | A genomic variant's parent path is the relative path of the genomic variant's individual. |
+| **DR-56 Relative Path** | A genomic variant's relative path is computed as the parent path, followed by the literal “/variants/”, followed by the genomic variant ID. |
+| **DR-57 Variant Type Label** | A genomic variant's variant type label is the type label of the genomic variant's variant type. |
+| **DR-58 Variant Class is Rare** | A genomic variant's variant class is rare is true when the genomic variant's variant type is a rare variant class. |
+| **DR-59 Individual Ancestry Label** | A genomic variant's individual ancestry label is the ancestry label of the genomic variant's individual. |
+| **DR-60 Is Rare Variant** | A genomic variant is considered a rare variant if the allele frequency is less than 0.01. |
+| **DR-61 Is Causal Candidate** | A genomic variant is considered a causal candidate if all of the following hold: at least one of the following holds: the is rare variant flag is set or the variant class is rare flag is set and the has allele specific expression flag is set. |
+| **DR-62 Name** | An omics assay's name is computed as the assay label. |
+| **DR-63 Parent Path** | An omics assay's parent path is the relative path of the omics assay's individual. |
+| **DR-64 Relative Path** | An omics assay's relative path is computed as the parent path, followed by the literal “/assays/”, followed by the omics assay ID. |
+| **DR-65 Modality Label** | An omics assay's modality label is the modality label of the omics assay's omics modality. |
+| **DR-66 Tissue Label** | The omics assay's tissue label is determined by the following priority:<br>1. the literal “Missing Tissue”, if the tissue is blank;<br>2. otherwise the tissue label of the omics assay's tissue. |
+| **DR-67 Has Batch Effect Risk** | An omics assay is considered to have a batch effect risk if the measurement error score is greater than 0.3. |
+| **DR-68 Is High Quality Assay** | An omics assay is considered a high quality assay if all of the following hold: it is not the case that the has batch effect risk flag is set and the measurement error score is less than 0.15. |
+| **DR-69 Name** | An evidence item's name is computed as the evidence label. |
+| **DR-70 Parent Path** | An evidence item's parent path is the relative path of the evidence item's causal mechanism. |
+| **DR-71 Relative Path** | An evidence item's relative path is computed as the parent path, followed by the literal “/evidence/”, followed by the evidence item ID. |
+| **DR-72 Assay is High Quality** | An evidence item's assay is high quality is true when the evidence item's omics assay is a high quality assay. |
+| **DR-73 Z Stat** | The evidence item's z stat is determined by the following priority:<br>1. the effect size divided by the standard error, if the standard error is greater than 0;<br>2. otherwise 0. |
+| **DR-74 Is Confound Controlled** | An evidence item is considered confound controlled if all of the following hold: the is adjusted for ancestry p cs flag is set and the is adjusted for batch flag is set. |
+| **DR-75 Is Qualified Evidence** | An evidence item is considered a qualified evidence if all of the following hold: the assay is high quality flag is set; it is not the case that the is negative control arm flag is set; the z stat is at least 2; and the is confound controlled flag is set. |
+| **DR-76 Name** | A cohort replication's name is computed as the replication label. |
+| **DR-77 Parent Path** | A cohort replication's parent path is the relative path of the cohort replication's causal mechanism. |
+| **DR-78 Relative Path** | A cohort replication's relative path is computed as the parent path, followed by the literal “/replications/”, followed by the cohort replication ID. |
+| **DR-79 Replicated At Nominal Sig** | A cohort replication is flagged replicated at nominal sig if all of the following hold: the replication p value is at most 0.05 and the replication effect sign is 1. |
+| **DR-80 Mechanism Primary Ancestry** | A cohort replication's mechanism primary ancestry is the individual ancestry label of the cohort replication's causal mechanism. |
+| **DR-81 Is Different Ancestry Replication** | A cohort replication is considered a different ancestry replication if it is not the case that the replication ancestry label is the mechanism primary ancestry. |
+| **DR-82 Is Cross Ancestry Concordant** | A cohort replication is considered a cross ancestry concordant if all of the following hold: the replicated at nominal sig flag is set and the is different ancestry replication flag is set. |
+| **DR-83 Name** | A negative control test's name is computed as the control label. |
+| **DR-84 Parent Path** | A negative control test's parent path is the relative path of the negative control test's causal mechanism. |
+| **DR-85 Relative Path** | A negative control test's relative path is computed as the parent path, followed by the literal “/neg-controls/”, followed by the negative control test ID. |
+| **DR-86 Is Survived** | A negative control test is considered survived if the permutation effect size is at most the null threshold. |
+| **DR-87 Name** | An environmental exposure's name is computed as the exposure label. |
+| **DR-88 Parent Path** | An environmental exposure's parent path is the relative path of the environmental exposure's individual. |
+| **DR-89 Relative Path** | An environmental exposure's relative path is computed as the parent path, followed by the literal “/exposures/”, followed by the environmental exposure ID. |
+| **DR-90 Individual Ancestry Label** | An environmental exposure's individual ancestry label is the ancestry label of the environmental exposure's individual. |
+| **DR-91 Is High Exposure** | An environmental exposure is considered a high exposure if the exposure level is greater than 5. |
+| **DR-92 Name** | A treatment's name is computed as the treatment label. |
+| **DR-93 Parent Path** | A treatment's parent path is the relative path of the treatment's individual. |
+| **DR-94 Relative Path** | A treatment's relative path is computed as the parent path, followed by the literal “/treatments/”, followed by the treatment ID. |
+| **DR-95 Autoimmune Disease Label** | A treatment's autoimmune disease label is the disease label of the treatment's autoimmune disease. |
+| **DR-96 Is Effective Treatment** | A treatment is considered an effective treatment if all of the following hold: at least one of the following holds: the treatment response is the literal “Complete” or the treatment response is the literal “Partial” and it is not the case that the has adverse effect flag is set. |
+| **DR-97 Is Mechanism Matched** | A treatment's is mechanism matched is false if the targets mechanism is blank, otherwise the is causal architecture node of the treatment's targets mechanism. |
+| **DR-98 Is Treatment Response Predicted** | A treatment is considered treatment response predicted if all of the following hold: the is effective treatment flag is set and the is mechanism matched flag is set. |
+| **DR-99 Treatment Response Deciding Factor** | The treatment's treatment response deciding factor is determined by the following priority:<br>1. the literal “EffectiveOnConfirmedMechanism”, if the is treatment response predicted flag is set;<br>2. the literal “NoConfirmedMechanism”, if it is not the case that the is mechanism matched flag is set;<br>3. the literal “AdverseEffect”, if the has adverse effect flag is set;<br>4. the literal “NoResponse”, if at least one of the following holds: the treatment response is the literal “None” or the treatment response is the literal “Adverse”;<br>5. otherwise the literal “Undetermined”. |
+| **DR-100 Name** | A clinical phenotype's name is computed as the phenotype label. |
+| **DR-101 Parent Path** | A clinical phenotype's parent path is the relative path of the clinical phenotype's individual. |
+| **DR-102 Relative Path** | A clinical phenotype's relative path is computed as the parent path, followed by the literal “/phenotypes/”, followed by the clinical phenotype ID. |
+| **DR-103 Disease Stage Label** | The clinical phenotype's disease stage label is determined by the following priority:<br>1. an empty string, if the disease stage is blank;<br>2. otherwise the stage label of the clinical phenotype's disease stage. |
+| **DR-104 Is High Severity** | A clinical phenotype is considered a high severity if the severity score is greater than 7. |
+| **DR-105 Is Presymptomatic Phenotype** | A clinical phenotype is considered a presymptomatic phenotype if the disease stage label is the literal “Presymptomatic”. |
+| **DR-106 Target Pathway Code** | The causal mechanism's target pathway code is determined by the following priority:<br>1. 1, if the target pathway is the literal “type-I-IFN”;<br>2. 2, if the target pathway is the literal “B-cell/autoantibody”;<br>3. 3, if the target pathway is the literal “T-cell-costim”;<br>4. 4, if the target pathway is the literal “IL-17/23”;<br>5. otherwise 0. |
+| **DR-107 Name** | A causal mechanism's name is computed as the mechanism label. |
+| **DR-108 Parent Path** | A causal mechanism's parent path is the relative path of the causal mechanism's individual. |
+| **DR-109 Relative Path** | A causal mechanism's relative path is computed as the parent path, followed by the literal “/mechanisms/”, followed by the causal mechanism ID. |
+| **DR-110 Individual Ancestry Label** | A causal mechanism's individual ancestry label is the ancestry label of the causal mechanism's individual. |
+| **DR-111 Count Qualified Evidence** | A causal mechanism's count qualified evidence is the number of the causal mechanism's evidence items that are qualified evidences. |
+| **DR-112 Count Modalities Supporting** | A causal mechanism's count modalities supporting is the number of the causal mechanism's evidence items that are cross modalities and are qualified evidences. |
+| **DR-113 Count Intervention Targets** | A causal mechanism's count intervention targets is the number of intervention targets related to the causal mechanism. |
+| **DR-114 Is Experimentally Falsifiable** | A causal mechanism is considered an experimentally falsifiable if all of the following hold: the count intervention targets is at least 1 and the count qualified evidence is at least 1. |
+| **DR-115 Count Replications** | A causal mechanism's count replications is the number of cohort replications related to the causal mechanism. |
+| **DR-116 Count Concordant Replications** | A causal mechanism's count concordant replications is the number of the causal mechanism's cohort replications that are replicated at nominal sig. |
+| **DR-117 Count Cross Ancestry Concordant** | A causal mechanism's count cross ancestry concordant is the number of the causal mechanism's cohort replications that are cross ancestry concordants. |
+| **DR-118 Replication Fraction** | The causal mechanism's replication fraction is determined by the following priority:<br>1. the count concordant replications divided by the count replications, if the count replications is greater than 0;<br>2. otherwise 0. |
+| **DR-119 Replicates Across Cohorts** | A causal mechanism is considered to replicate across cohorts if all of the following hold: the count replications is at least 2 and the count concordant replications is at least 2. |
+| **DR-120 Count Neg Control Tests** | A causal mechanism's count neg control tests is the number of negative control tests related to the causal mechanism. |
+| **DR-121 Count Neg Control Survived** | A causal mechanism's count neg control survived is the number of the causal mechanism's negative control tests that are survived. |
+| **DR-122 Survives Negative Controls** | A causal mechanism is considered to survive negative controls if all of the following hold: the count neg control tests is at least 1 and the count neg control survived is the count neg control tests. |
+| **DR-123 Is Spurious Derived** | A causal mechanism is considered spurious derived if at least one of the following holds: it is not the case that the replicates across cohorts flag is set; it is not the case that the survives negative controls flag is set; the count modalities supporting is less than 2; or the has pleiotropy flag is set. |
+| **DR-124 Causal Confidence** | The causal mechanism's causal confidence is determined by the following priority:<br>1. 1, if 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0 is greater than 1;<br>2. otherwise 0.30 times 1 if the count qualified evidence is at least 4, otherwise the count qualified evidence divided by 4 plus 0.20 times 1 if the count modalities supporting is at least 3, otherwise the count modalities supporting divided by 3 plus 0.30 times the replication fraction plus 0.20 times 1 if the survives negative controls flag is set, otherwise 0. |
+| **DR-125 Variant is Causal Candidate** | A causal mechanism's variant is causal candidate is false if the genomic variant is blank, otherwise the is causal candidate of the causal mechanism's genomic variant. |
+| **DR-126 Is Causal Architecture Node** | A causal mechanism is considered a causal architecture node if all of the following hold: the causal confidence is at least 0.7; the is experimentally falsifiable flag is set; it is not the case that the is spurious derived flag is set; and at least one of the following holds: the variant is causal candidate flag is set or the environmental exposure has a value. |
+| **DR-127 Is Ancestry Transportable** | A causal mechanism is considered an ancestry transportable if all of the following hold: the is causal architecture node flag is set and the count cross ancestry concordant is at least 1. |
+| **DR-128 Name** | An epistatic interaction's name is computed as the interaction label. |
+| **DR-129 Parent Path** | An epistatic interaction's parent path is the relative path of the epistatic interaction's individual. |
+| **DR-130 Relative Path** | An epistatic interaction's relative path is computed as the parent path, followed by the literal “/epistasis/”, followed by the epistatic interaction ID. |
+| **DR-131 Is High Order Epistasis** | An epistatic interaction is considered a high order epistasis if the epistasis score is greater than 0.5. |
+| **DR-132 Name** | A counterfactual trajectory's name is computed as the trajectory label. |
+| **DR-133 Parent Path** | A counterfactual trajectory's parent path is the relative path of the counterfactual trajectory's individual. |
+| **DR-134 Relative Path** | A counterfactual trajectory's relative path is computed as the parent path, followed by the literal “/trajectories/”, followed by the counterfactual trajectory ID. |
+| **DR-135 Autoimmune Disease Label** | A counterfactual trajectory's autoimmune disease label is the disease label of the counterfactual trajectory's autoimmune disease. |
+| **DR-136 Is Worsening Trajectory** | A counterfactual trajectory is considered a worsening trajectory if the projected severity is greater than 7. |
+| **DR-137 Name** | An individual prediction's name is computed as the prediction label. |
+| **DR-138 Parent Path** | An individual prediction's parent path is the relative path of the individual prediction's individual. |
+| **DR-139 Relative Path** | An individual prediction's relative path is computed as the parent path, followed by the literal “/predictions/”, followed by the individual prediction ID. |
+| **DR-140 Individual Ancestry Label** | An individual prediction's individual ancestry label is the ancestry label of the individual prediction's individual. |
+| **DR-141 Is Ancestry Holdout** | An individual prediction's is ancestry holdout is true when the individual prediction's individual is ancestry absent from training. |
+| **DR-142 Individual Causal Mass** | An individual prediction's individual causal mass is 0 if the individual is blank, otherwise the sum confirmed causal confidence of the individual prediction's individual. |
+| **DR-143 Individual Confirmed Node Count** | An individual prediction's individual confirmed node count is 0 if the individual is blank, otherwise the count confirmed causal nodes of the individual prediction's individual. |
+| **DR-144 Individual Cross Ancestry Node Count** | An individual prediction's individual cross ancestry node count is 0 if the individual is blank, otherwise the count cross ancestry confirmed nodes of the individual prediction's individual. |
+| **DR-145 Individual Has Cryptic Relatedness** | An individual prediction's individual has cryptic relatedness is false if the individual is blank, otherwise the has cryptic relatedness flag of the individual prediction's individual. |
+| **DR-146 Individual Max Severity Score** | An individual prediction's individual max severity score is 0 if the individual is blank, otherwise the max severity score of the individual prediction's individual. |
+| **DR-147 Individual Has High Severity Phenotype** | An individual prediction's individual has high severity phenotype is false if the individual is blank, otherwise the has high severity phenotype of the individual prediction's individual. |
+| **DR-148 Individual Has Predicted Treatment Response** | An individual prediction's individual has predicted treatment response is false if the individual is blank, otherwise the has predicted treatment response of the individual prediction's individual. |
+| **DR-149 Predicted Value** | The individual prediction's predicted value is determined by the following priority:<br>1. 10, if 2 times the individual causal mass plus 1.5 times the individual confirmed node count is greater than 10;<br>2. otherwise 2 times the individual causal mass plus 1.5 times the individual confirmed node count. |
+| **DR-150 Count Bins** | An individual prediction's count bins is the number of calibration bins related to the individual prediction. |
+| **DR-151 Count Well Calibrated Bins** | An individual prediction's count well calibrated bins is the number of the individual prediction's calibration bins that are well calibrated bins. |
+| **DR-152 Sum Bin Abs Error** | An individual prediction's sum bin abs error is the total bin abs error across the calibration bins related to the individual prediction. |
+| **DR-153 Mean Bin Abs Error** | The individual prediction's mean bin abs error is determined by the following priority:<br>1. the sum bin abs error divided by the count bins, if the count bins is greater than 0;<br>2. otherwise 1. |
+| **DR-154 Well Calibrated Fraction** | The individual prediction's well calibrated fraction is determined by the following priority:<br>1. the count well calibrated bins divided by the count bins, if the count bins is greater than 0;<br>2. otherwise 0. |
+| **DR-155 Calibrated Uncertainty** | An individual prediction's calibrated uncertainty is computed as 0 if 1 minus the mean bin abs error is less than 0, otherwise 1 minus the mean bin abs error times the well calibrated fraction. |
+| **DR-156 Rests on Confirmed Mechanism** | An individual prediction is considered to rest on confirmed mechanism if the individual confirmed node count is at least 1. |
+| **DR-157 Has Spurious Correlation Flag** | An individual prediction is considered to have a spurious correlation flag if at least one of the following holds: it is not the case that the rests on confirmed mechanism flag is set or the individual has cryptic relatedness flag is set. |
+| **DR-158 Is Falsifiability Backed** | An individual prediction is considered falsifiability backed if the individual confirmed node count is at least 1. |
+| **DR-159 Is Transportable to Absent Ancestry** | An individual prediction is considered a transportable to absent ancestry if all of the following hold: the is ancestry holdout flag is set; the individual cross ancestry node count is at least 1; and it is not the case that the has spurious correlation flag is set. |
+| **DR-160 Is Ancestry Transport Safe** | An individual prediction is considered an ancestry transport safe if the is transportable to absent ancestry if the is ancestry holdout flag is set, otherwise true. |
+| **DR-161 Transport Gate Status** | The individual prediction's transport gate status is determined by the following priority:<br>1. the literal “NotApplicable”, if it is not the case that the is ancestry holdout flag is set;<br>2. the literal “PASS-tested”, if the is transportable to absent ancestry flag is set;<br>3. otherwise the literal “FAIL”. |
+| **DR-162 Is High Confidence Prediction** | An individual prediction is considered a high confidence prediction if all of the following hold: the calibrated uncertainty is at least 0.7 and it is not the case that the has spurious correlation flag is set. |
+| **DR-163 Patient Stratification Tier** | The individual prediction's patient stratification tier is determined by the following priority:<br>1. the literal “High-Risk Pathway”, if the predicted value is at least 7;<br>2. the literal “Moderate-Risk Pathway”, if the predicted value is at least 4;<br>3. otherwise the literal “Low-Risk Pathway”. |
+| **DR-164 Predicted Severity Value** | An individual prediction's predicted severity value is computed as the individual max severity score. |
+| **DR-165 Severity Tier** | The individual prediction's severity tier is determined by the following priority:<br>1. the literal “Severe”, if the predicted severity value is greater than 7;<br>2. the literal “Moderate”, if the predicted severity value is at least 4;<br>3. otherwise the literal “Mild”. |
+| **DR-166 Is Severity Actionable** | An individual prediction is considered a severity actionable if all of the following hold: the individual has high severity phenotype flag is set; the rests on confirmed mechanism flag is set; and it is not the case that the has spurious correlation flag is set. |
+| **DR-167 Severity Deciding Factor** | The individual prediction's severity deciding factor is determined by the following priority:<br>1. the literal “HighSeverityOnConfirmedMechanism”, if the is severity actionable flag is set;<br>2. the literal “NotHighSeverity”, if it is not the case that the individual has high severity phenotype flag is set;<br>3. the literal “NoValidatedMechanism”, if it is not the case that the rests on confirmed mechanism flag is set;<br>4. the literal “SpuriousFlag”, if the has spurious correlation flag is set;<br>5. otherwise the literal “Undetermined”. |
+| **DR-168 Is Treatment Response Actionable** | An individual prediction is considered a treatment response actionable if the individual has predicted treatment response flag is set. |
+| **DR-169 Treatment Response Deciding Factor** | The individual prediction's treatment response deciding factor is determined by the following priority:<br>1. the literal “EffectiveOnConfirmedMechanism”, if the is treatment response actionable flag is set;<br>2. the literal “NoEffectiveTreatmentOnMechanism”, if the rests on confirmed mechanism flag is set;<br>3. otherwise the literal “NoConfirmedMechanism”. |
+| **DR-170 Is Clinically Actionable** | An individual prediction is considered a clinically actionable if all of the following hold: the is high confidence prediction flag is set; the is falsifiability backed flag is set; the is ancestry transport safe flag is set; and the predicted value is greater than 0. |
+| **DR-171 Lifecycle State Key** | The individual prediction's lifecycle state key is determined by the following priority:<br>1. the literal “Actionable”, if all of the following hold: the is high confidence prediction flag is set; the is falsifiability backed flag is set; the is ancestry transport safe flag is set; and the predicted value is greater than 0;<br>2. the literal “NotActionable”, if at least one of the following holds: it is not the case that the rests on confirmed mechanism flag is set or it is not the case that the is falsifiability backed flag is set;<br>3. the literal “NotActionable”, if the individual has cryptic relatedness flag is set;<br>4. the literal “NotActionable”, if the calibrated uncertainty is less than 0.7;<br>5. the literal “NotActionable”, if it is not the case that the is ancestry transport safe flag is set;<br>6. otherwise the literal “Actionable”. |
+| **DR-172 Deciding Gate** | The individual prediction's deciding gate is determined by the following priority:<br>1. the literal “AllGatesPass”, if the is clinically actionable flag is set;<br>2. the literal “NoValidatedMechanism”, if it is not the case that the rests on confirmed mechanism flag is set;<br>3. the literal “CrypticRelatedness”, if the individual has cryptic relatedness flag is set;<br>4. the literal “Calibration”, if the calibrated uncertainty is less than 0.7;<br>5. the literal “AncestryTransport”, if it is not the case that the is ancestry transport safe flag is set;<br>6. otherwise the literal “Undetermined”. |
+| **DR-173 Individual Target Pathway** | An individual prediction's individual target pathway is the target pathway of the individual prediction's individual. |
+| **DR-174 Individual Progression State Key** | An individual prediction's individual progression state key is the nephritis progression state key of the individual prediction's individual. |
+| **DR-175 Individual is Disease Progressing** | An individual prediction's individual is disease progressing is true when the individual prediction's individual is disease progressing. |
+| **DR-176 Recommended Treatment Line** | The individual prediction's recommended treatment line is determined by the following priority:<br>1. the literal “No targeted line — mechanism unconfirmed”, if it is not the case that the rests on confirmed mechanism flag is set;<br>2. the literal “Mycophenolate (induction)”, if at least one of the following holds: the individual progression state key is the literal “RenalFlareRisk” or the individual progression state key is the literal “BiopsyIndicated”;<br>3. the literal “Anifrolumab”, if the individual target pathway is the literal “type-I-IFN”;<br>4. the literal “Belimumab”, if the individual target pathway is the literal “B-cell/autoantibody”;<br>5. the literal “Secukinumab”, if the individual target pathway is the literal “IL-17/23”;<br>6. otherwise the literal “Standard-of-care (no mechanism-matched targeted line)”. |
+| **DR-177 Treatment Line Deciding Factor** | The individual prediction's treatment line deciding factor is determined by the following priority:<br>1. the literal “MechanismUnconfirmed”, if it is not the case that the rests on confirmed mechanism flag is set;<br>2. the literal “ActiveNephritis-Induction”, if at least one of the following holds: the individual progression state key is the literal “RenalFlareRisk” or the individual progression state key is the literal “BiopsyIndicated”;<br>3. the literal “IFNSignature-Anifrolumab”, if the individual target pathway is the literal “type-I-IFN”;<br>4. the literal “AutoantibodyDriven-Belimumab”, if the individual target pathway is the literal “B-cell/autoantibody”;<br>5. the literal “IL17Axis-Secukinumab”, if the individual target pathway is the literal “IL-17/23”;<br>6. otherwise the literal “NoMechanismMatch”. |
+| **DR-178 Progression Vs Actionability Disagree** | An individual prediction is flagged progression vs actionability disagree if all of the following hold: the individual is disease progressing flag is set and it is not the case that the is clinically actionable flag is set. |
+| **DR-179 Name** | A calibration bin's name is computed as the bin label. |
+| **DR-180 Parent Path** | A calibration bin's parent path is the relative path of the calibration bin's individual prediction. |
+| **DR-181 Relative Path** | A calibration bin's relative path is computed as the parent path, followed by the literal “/bins/”, followed by the calibration bin ID. |
+| **DR-182 Bin Abs Error** | The calibration bin's bin abs error is determined by the following priority:<br>1. the predicted probability band minus the observed event rate, if the predicted probability band is at least the observed event rate;<br>2. otherwise the observed event rate minus the predicted probability band. |
+| **DR-183 Is Well Calibrated Bin** | A calibration bin is considered a well calibrated bin if all of the following hold: the coverage count is at least 20 and the bin abs error is at most 0.1. |
+| **DR-184 Name** | An intervention target's name is computed as the target label. |
+| **DR-185 Parent Path** | An intervention target's parent path is the relative path of the intervention target's causal mechanism. |
+| **DR-186 Relative Path** | An intervention target's relative path is computed as the parent path, followed by the literal “/targets/”, followed by the intervention target ID. |
+| **DR-187 Causal Mechanism Label** | An intervention target's causal mechanism label is the mechanism label of the intervention target's causal mechanism. |
+| **DR-188 Is Gene Based Therapy** | An intervention target is considered a gene based therapy if the therapy class is the literal “Gene-based”. |
+| **DR-189 Is Cell Based Therapy** | An intervention target is considered a cell based therapy if the therapy class is the literal “Cell-based”. |
+| **DR-190 Name** | An axiom's name is computed as the statement. |
+| **DR-191 Relative Path** | An axiom's relative path is computed as the literal “/admin/axioms/”, followed by the axiom ID. |
+| **DR-192 Name** | A tests for success's name is computed as the claim. |
+| **DR-193 Relative Path** | A tests for success's relative path is computed as the literal “/admin/tests-for-success/”, followed by the test for success ID. |
+| **DR-194 Name** | A feature's name is computed as the title. |
+| **DR-195 Relative Path** | A feature's relative path is computed as the literal “/admin/features/”, followed by the feature ID. |
+| **DR-196 Meta Line** | A feature's meta line is computed as the literal “**Category:** ”, followed by the category, followed by the literal “ - **Priority:** ”, followed by the priority, followed by the literal “ - **Challenge refs:** ”, followed by the ref count. |
+| **DR-197 Name** | An inference kind's name is computed as the title. |
+| **DR-198 Relative Path** | An inference kind's relative path is computed as the literal “/admin/inference-kinds/”, followed by the inference kind ID. |
+| **DR-199 Name** | An open question's name is computed as the question. |
+| **DR-200 Relative Path** | An open question's relative path is computed as the literal “/admin/open-questions/”, followed by the open question ID. |
+| **DR-201 Name** | A non goal's name is computed as the statement. |
+| **DR-202 Relative Path** | A non goal's relative path is computed as the literal “/admin/non-goals/”, followed by the non goal ID. |
+| **DR-203 Name** | A glossary term's name is computed as the term. |
+| **DR-204 Relative Path** | A glossary term's relative path is computed as the literal “/admin/glossary/”, followed by the glossary term ID. |
+| **DR-205 Name** | A leopold loop's name is computed as the literal “Loop ”, followed by the loop number, followed by the literal “ — ”, followed by the title. |
+| **DR-206 Relative Path** | A leopold loop's relative path is computed as the literal “/admin/leopold-loops/”, followed by the leopold loop ID. |
+| **DR-207 Completedness** | A leopold loop's completedness is computed as the status. |
+| **DR-208 Is in Current Plan** | A leopold loop is considered in current plan if it is not the case that the status is the literal “done”. |
+| **DR-209 Name** | A routing and navigation's name is computed as the lower-cased display name with every a space replaced by a hyphen. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-210 Admin Can Create** | A routing and navigation is flagged admin can create if the admin CRUD mentions the literal “C”. |
+| **DR-211 Admin Can Read** | A routing and navigation is flagged admin can read if the admin CRUD mentions the literal “R”. |
+| **DR-212 Admin Can Update** | A routing and navigation is flagged admin can update if the admin CRUD mentions the literal “U”. |
+| **DR-213 Admin Can Delete** | A routing and navigation is flagged admin can delete if the admin CRUD mentions the literal “D”. |
+| **DR-214 Intake Clinician Can Create** | A routing and navigation is flagged intake clinician can create if the intake clinician CRUD mentions the literal “C”. |
+| **DR-215 Intake Clinician Can Read** | A routing and navigation is flagged intake clinician can read if the intake clinician CRUD mentions the literal “R”. |
+| **DR-216 Intake Clinician Can Update** | A routing and navigation is flagged intake clinician can update if the intake clinician CRUD mentions the literal “U”. |
+| **DR-217 Intake Clinician Can Delete** | A routing and navigation is flagged intake clinician can delete if the intake clinician CRUD mentions the literal “D”. |
+| **DR-218 Diagnosing Doctor Can Create** | A routing and navigation is flagged diagnosing doctor can create if the diagnosing doctor CRUD mentions the literal “C”. |
+| **DR-219 Diagnosing Doctor Can Read** | A routing and navigation is flagged diagnosing doctor can read if the diagnosing doctor CRUD mentions the literal “R”. |
+| **DR-220 Diagnosing Doctor Can Update** | A routing and navigation is flagged diagnosing doctor can update if the diagnosing doctor CRUD mentions the literal “U”. |
+| **DR-221 Diagnosing Doctor Can Delete** | A routing and navigation is flagged diagnosing doctor can delete if the diagnosing doctor CRUD mentions the literal “D”. |
+| **DR-222 External Llm Can Create** | A routing and navigation is flagged external llm can create if the external llm CRUD mentions the literal “C”. |
+| **DR-223 External Llm Can Read** | A routing and navigation is flagged external llm can read if the external llm CRUD mentions the literal “R”. |
+| **DR-224 External Llm Can Update** | A routing and navigation is flagged external llm can update if the external llm CRUD mentions the literal “U”. |
+| **DR-225 External Llm Can Delete** | A routing and navigation is flagged external llm can delete if the external llm CRUD mentions the literal “D”. |
+| **DR-226 Depth** | The routing and navigation's depth is determined by the following priority:<br>1. 0, if the parent route key is blank;<br>2. otherwise the length of the route key minus the length of the route key with every a period replaced by an empty string. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-227 Full Path** | A routing and navigation's full path is computed as the route. |
+| **DR-228 Handler Base Name** | A routing and navigation's handler base name is computed as the route key with every a period replaced by a space with every a hyphen replaced by a space. ⚠︎ mechanical <!-- rulespeak:reword --> |
+| **DR-229 Relative Path** | A routing and navigation's relative path is computed as the literal “/admin/routing/”, followed by the routing and navigation ID. |
+| **DR-230 Relative Path** | A state machine's relative path is computed as the literal “/admin/state-machine/”, followed by the state machine ID. |
+| **DR-231 State Count** | A state machine's state count is the number of machine states related to the state machine. |
+| **DR-232 Transition Rule Count** | A state machine's transition rule count is the number of state transition rules related to the state machine. |
+| **DR-233 Relative Path** | A machine state's relative path is computed as the literal “/admin/state-machine/states/”, followed by the machine state ID. |
+| **DR-234 Reachable State Count** | A machine state's reachable state count is the number of vw state transition rules closure related to the machine state. |
+| **DR-235 Relative Path** | A state transition rule's relative path is computed as the literal “/admin/state-machine/rules/”, followed by the state transition rule ID. |
+| **DR-236 From State Key** | A state transition rule's from state key is the state key of the state transition rule's from state. |
+| **DR-237 To State Key** | A state transition rule's to state key is the state key of the state transition rule's to state. |
+| **DR-238 Is Forward Edge** | A state transition rule is considered a forward edge if it is not the case that the to state key is the from state key. |
+| **DR-239 Relative Path** | A state transition's relative path is computed as the literal “/admin/state-machine/transitions/”, followed by the state transition ID. |
+| **DR-240 Is Forward** | A state transition is considered a forward if it is not the case that the to state key is the literal “Intake”. |
+| **DR-241 Relative Path** | A subject state instance's relative path is computed as the literal “/admin/state-machine/instances/”, followed by the subject state instance ID. |
+| **DR-242 Is Current** | A subject state instance is considered a current if the exited at is blank. |
+| **DR-243 Has Complete Lineage** | A subject state instance is considered to have a complete lineage if the sequence index is at least 1. |
+| **DR-244 Is Long Dwell** | A subject state instance is considered a long dwell if the dwell days is at least 90. |
+| **DR-245 Name** | A disease domain concept's name is computed as the concept label. |
+| **DR-246 Relative Path** | A disease domain concept's relative path is computed as the literal “/admin/disease-concepts/”, followed by the disease domain concept ID. |
+| **DR-247 Is Deeply Modeled** | A disease domain concept is considered deeply modeled if the modeling status is the literal “deep-dag”. |
+| **DR-248 Is Schema Modeled** | A disease domain concept is considered schema modeled if at least one of the following holds: the modeling status is the literal “deep-dag” or the modeling status is the literal “schema”. |
+| **DR-249 Prior Anti Ds Dna IU** | A serology observation's prior anti ds dna IU is the anti ds dna IU of the serology observation's prior observation. |
+| **DR-250 Prior C3** | A serology observation's prior c3 is the complement c3 of the serology observation's prior observation. |
+| **DR-251 Prior C4** | A serology observation's prior c4 is the complement c4 of the serology observation's prior observation. |
+| **DR-252 Anti Ds Dna Trend** | The serology observation's anti ds dna trend is determined by the following priority:<br>1. the literal “Stable”, if the prior anti ds dna IU is blank;<br>2. the literal “Rising”, if the anti ds dna IU is greater than the prior anti ds dna IU times 1.25;<br>3. the literal “Falling”, if the anti ds dna IU is less than the prior anti ds dna IU times 0.8;<br>4. otherwise the literal “Stable”. |
+| **DR-253 Complement Trend** | The serology observation's complement trend is determined by the following priority:<br>1. the literal “Stable”, if the prior c3 is blank;<br>2. the literal “Falling”, if the complement c3 plus the complement c4 is less than the prior c3 plus the prior c4 times 0.85;<br>3. the literal “Rising”, if the complement c3 plus the complement c4 is greater than the prior c3 plus the prior c4 times 1.15;<br>4. otherwise the literal “Stable”. |
+| **DR-254 Is Pre Nephritic Signature Panel** | A serology observation is considered a pre nephritic signature panel if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”. |
+| **DR-255 Is Significant Proteinuria** | A serology observation is considered a significant proteinuria if the proteinuria g per day is at least 0.5. |
+| **DR-256 Is Nephrotic Range Proteinuria** | A serology observation is considered a nephrotic range proteinuria if the proteinuria g per day is at least 3.0. |
+| **DR-257 Sledai Renal Points** | The serology observation's sledai renal points is determined by the following priority:<br>1. 8, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. 4, if the is significant proteinuria flag is set;<br>3. otherwise 0. |
+| **DR-258 Sledai Serology Points** | The serology observation's sledai serology points is determined by the following priority:<br>1. 4, if all of the following hold: the complement trend is the literal “Falling” and the anti ds dna trend is the literal “Rising”;<br>2. 2, if at least one of the following holds: the complement trend is the literal “Falling” or the anti ds dna trend is the literal “Rising”;<br>3. otherwise 0. |
+| **DR-259 Sledai Score** | A serology observation's sledai score is computed as the sledai renal points plus the sledai serology points. |
+| **DR-260 Progression State Key** | The serology observation's progression state key is determined by the following priority:<br>1. the literal “BiopsyIndicated”, if at least one of the following holds: the is nephrotic range proteinuria flag is set or the has active urinary sediment flag is set;<br>2. the literal “RenalFlareRisk”, if the proteinuria g per day is at least 1.0;<br>3. the literal “EarlyNephritis”, if the is significant proteinuria flag is set;<br>4. the literal “SerologicActive”, if all of the following hold: the anti ds dna trend is the literal “Rising” and the complement trend is the literal “Falling”;<br>5. otherwise the literal “PresymptomaticAutoimmunity”. |
+| **DR-261 Progression State Order** | The serology observation's progression state order is determined by the following priority:<br>1. 5, if the progression state key is the literal “BiopsyIndicated”;<br>2. 4, if the progression state key is the literal “RenalFlareRisk”;<br>3. 3, if the progression state key is the literal “EarlyNephritis”;<br>4. 2, if the progression state key is the literal “SerologicActive”;<br>5. otherwise 1. |
+| **DR-262 Relative Path** | A serology observation's relative path is computed as the literal “/admin/serology/”, followed by the serology observation ID. |
+| **DR-263 Name** | A therapy option's name is computed as the therapy label. |
+| **DR-264 Relative Path** | A therapy option's relative path is computed as the literal “/admin/therapy-options/”, followed by the therapy option ID. |
 
 ## 5 Traceability to Schema
 
@@ -725,6 +729,7 @@ the same logic the rulebook stores, written for a business reader._
 | **Individuals.IsDiseaseProgressing** | formula | `If(Or(NephritisProgressionStateKey = "EarlyNephritis", NephritisProgressionStateKey = "RenalFlareRisk", NephritisProgressionStateKey = "BiopsyIndicated"), True(), False())` |
 | **Individuals.TargetPathwayCode** | rollup | `Max(CausalMechanisms.TargetPathwayCode via Individual)` |
 | **Individuals.TargetPathway** | formula | `If(TargetPathwayCode = 1, "type-I-IFN", If(TargetPathwayCode = 2, "B-cell/autoantibody", If(TargetPathwayCode = 3, "T-cell-costim", If(TargetPathwayCode = 4, "IL-17/23", ""))))` |
+| **Individuals.ReachableStatesAhead** | lookup | `Lookup(MachineStates.ReachableStateCount via CurrentProgressionStateId)` |
 | **GenomicVariants.Name** | formula | `VariantLabel` |
 | **GenomicVariants.ParentPath** | lookup | `Lookup(Individuals.RelativePath via Individual)` |
 | **GenomicVariants.RelativePath** | formula | `ParentPath & "/variants/" & GenomicVariantId` |
@@ -905,6 +910,7 @@ the same logic the rulebook stores, written for a business reader._
 | **StateMachines.StateCount** | rollup | `Count(MachineStates via StateMachine)` |
 | **StateMachines.TransitionRuleCount** | rollup | `Count(StateTransitionRules via StateMachine)` |
 | **MachineStates.RelativePath** | formula | `"/admin/state-machine/states/" & MachineStateId` |
+| **MachineStates.ReachableStateCount** | rollup | `Count(vw_state_transition_rules_closure via FromId)` |
 | **StateTransitionRules.RelativePath** | formula | `"/admin/state-machine/rules/" & StateTransitionRuleId` |
 | **StateTransitionRules.FromStateKey** | lookup | `Lookup(MachineStates.StateKey via FromState)` |
 | **StateTransitionRules.ToStateKey** | lookup | `Lookup(MachineStates.StateKey via ToState)` |
